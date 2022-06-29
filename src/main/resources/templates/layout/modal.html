@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<th:block th:fragment="modal">
+    <!--
+        일반모달
+        - modalOpen 태그 속성 data-modal에 modal-container의 아이디값을 넣어 오픈한다.
+        - openColorPicker 클릭시 colorpicker 생성
+    -->
+    <!--알럿-->
+    <div class="modal-container alert" id="alert-modal">
+        <div class="modal-wrapper">
+            <div class="modal-content">
+                <header class="m-header">
+                    <h4 class="title"></h4>
+                </header>
+                <div class="contents-area">
+                    <p class="message"></p>
+                </div>
+                <footer class="m-footer">
+                    <a href="javascript:;" class="eBtn sColorB hrBtn modalClose">확인</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!--컨펌-->
+    <div class="modal-container" id="confirm-modal">
+        <div class="modal-wrapper">
+            <div class="modal-content">
+                <header class="m-header">
+                    <h4 class="title"></h4>
+                </header>
+                <div class="contents-area">
+                    <p class="message"></p>
+                </div>
+                <footer class="m-footer">
+                    <a href="javascript:;" class="eBtn sColorB hrBtn modalClose">취소</a>
+                    <a href="javascript:;" class="confirm-callback eBtn sColorBG hrBtn modalClose">확인</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!--알람-->
+    <div class="modal-container" id="alarm-modal">
+        <div class="modal-wrapper">
+            <div class="modal-content">
+                <header class="m-header">
+                    <h4 class="title t-l"></h4>
+                </header>
+                <div class="contents-area">
+                    <p class="category" style="color: #40C1AB;"></p>
+                    <p class="message" style="width: 570px; word-break: break-all;"></p>
+                </div>
+                <footer class="m-footer">
+                    <a href="javascript:;" class="eBtn sColorB hrBtn modalClose">취소</a>
+                    <a href="javascript:;" class="confirm-callback eBtn sColorBG hrBtn modalClose" id="readBtn">읽음 처리</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!--전략 정보-->
+    <div class="modal-container wideFix" id="strategy">
+        <div class="modal-wrapper">
+            <div class="modal-content">
+                <header class="m-header">
+                    <h4>전략 정보</h4>
+                    <a href="javascript:;" class="oiBtn close modalClose">닫기</a>
+                </header>
+                <div class="contents-area">
+                    <table class="table-colored">
+                        <colgroup>
+                            <col width="15%">
+                            <col width="20%">
+                            <col width="15%">
+                            <col width="20%">
+                            <col width="15%">
+                            <col width="20%">
+                        </colgroup>
+                        <tr>
+                            <th>전략이름</th>
+                            <td>
+                                <input type="text" placeholder="전략이름" value="전략이름" readonly>
+                            </td>
+                            <th>전략투입금액</th>
+                            <td>
+                                <input type="text" placeholder="0">
+                            </td>
+                            <th>매도가 구분</th>
+                            <td>
+                                <input type="text" placeholder="지정가" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>비중 (%)</th>
+                            <td>
+                                <input type="text" placeholder="비중 (%)" >
+                            </td>
+                            <th>1회 매수한도</th>
+                            <td>
+                                <input type="text" placeholder="0" readonly>
+                            </td>
+                            <th>매도가 구분</th>
+                            <td>
+                                <input type="text" placeholder="지정가" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>신규매수 시작시간</th>
+                            <td>
+                                <input type="text" placeholder="00:00" >
+                            </td>
+                            <th>신규매수 종료시간</th>
+                            <td>
+                                <input type="text" placeholder="00:00" >
+                            </td>
+                            <th>초과구동</th>
+                            <td>
+                                <div class="selectBox">
+                                    <select>
+                                        <option value="">사용안함</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>분할매수허용</th>
+                            <td>
+                                <div class="selectBox">
+                                    <select>
+                                        <option value="">사용</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <th>분할매도허용</th>
+                            <td>
+                                <div class="selectBox">
+                                    <select>
+                                        <option value="">사용</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <th>일괄매도 손익률 (%)</th>
+                            <td>
+                                <input type="text" placeholder="0" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>매수체결 제한 횟수</th>
+                            <td>
+                                <input type="text" placeholder="0" readonly>
+                            </td>
+                            <th>매수 취소 (분)</th>
+                            <td>
+                                <input type="text" placeholder="0" readonly>
+                            </td>
+                            <th>매도 취소 (분)</th>
+                            <td>
+                                <input type="text" placeholder="0" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>이익실현 (%)</th>
+                            <td>
+                                <input type="text" placeholder="0.0" >
+                            </td>
+                            <th>손실제한 (%)</th>
+                            <td>
+                                <input type="text" placeholder="00.0" >
+                            </td>
+                            <th>이익보존 (%)</th>
+                            <td>
+                                <div class="input">
+                                    <input type="text" placeholder="0.0">
+                                    <i class="unit">/</i>
+                                    <input type="text" placeholder="0.0">
+                                    <i class="unit">초</i>
+                                </div>
+                            </td>
+                        </tr>
+
+
+
+                    </table>
+                </div>
+                <footer class="m-footer btns">
+                    <a href="javascript:;" class="eBtn sColorBG hrBtn">저장</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!--환불금 정보 탭-->
+    <div class="modal-container wide grid" id="tab-grid">
+        <div class="modal-wrapper">
+            <div class="modal-content">
+                <header class="m-header">
+                    <h4>환불금 정보</h4>
+                    <a href="javascript:;" class="oiBtn close modalClose">닫기</a>
+                </header>
+                <div class="contents-grid column">
+                    <div class="item tab-area">
+                        <ul class="tab-btns">
+                            <li class="active"><a href="javascript:;">사용자 정보</a></li>
+                            <li><a href="javascript:;">결제관리</a></li>
+                            <li><a href="javascript:;">전략관리</a></li>
+                        </ul>
+                        <div class="contents-area">
+                            <div class="tab-box w60p active">
+                                <div class="autoHeight customScroll">
+                                    <table class="table-colored">
+                                        <colgroup>
+                                            <col width="15%">
+                                            <col width="20%">
+                                            <col width="15%">
+                                            <col width="40%">
+                                        </colgroup>
+                                        <tr>
+                                            <th>사용자 아이디</th>
+                                            <td colspan="3">
+                                                <div class="input">
+                                                    <input type="text" placeholder="사용자 아이디">
+                                                    <a href="javascript:;" class="sBtn sColorF">아이디 변경</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>이름</th>
+                                            <td>
+                                                <input type="text" placeholder="이름">
+                                            </td>
+                                            <th>연락처</th>
+                                            <td>
+                                                <input type="text" placeholder="연락처">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>비밀번호</th>
+                                            <td>
+                                                <input type="password" placeholder="비밀번호">
+                                            </td>
+                                            <th>비밀번호 확인</th>
+                                            <td>
+                                                <input type="password" placeholder="비밀번호 확인">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span>비밀번호 변경</span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>회원구분</th>
+                                            <td>
+                                                <div class="selectBox">
+                                                    <select>
+                                                        <option value="">회원구분</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <th>기기수량</th>
+                                            <td>
+                                                <div class="selectBox w210px">
+                                                    <select>
+                                                        <option value="">기기수량</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>예약체크</th>
+                                            <td>
+                                                <input type="text" placeholder="예약체크" class="datepicker w100p">
+                                            </td>
+                                            <th>정지일자</th>
+                                            <td>
+                                                <input type="text" placeholder="정지일자" class="datepicker ">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span>정지</span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>비고</th>
+                                            <td colspan="3">
+                                                <div class="input">
+                                                    <textarea ></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <footer class="m-footer btns">
+                                    <a href="javascript:;" class="eBtn sColorB hrBtn modalClose">조회</a>
+                                    <a href="javascript:;" class="eBtn sColorB hrBtn modalClose">신규</a>
+                                    <a href="javascript:;" class="eBtn sColorBG hrBtn">저장</a>
+                                </footer>
+                            </div>
+                            <div class="tab-box">
+                                <div class="autoHeight customScroll">
+                                    <table class="table-basic">
+                                        <colgroup>
+                                            <col width="20px">
+                                            <col width="5%">
+                                            <col>
+                                            <col width="10%">
+                                            <col width="10%">
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </th>
+                                            <th>번호</th>
+                                            <th>결제일</th>
+                                            <th>결제기간</th>
+                                            <th>결제방법</th>
+                                            <th>결제금액</th>
+                                            <th>시작일</th>
+                                            <th>종료일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td>2021-04-24</td>
+                                            <td>90</td>
+                                            <td>현금</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-04-24</td>
+                                            <td>2021-04-24</td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <footer class="m-footer btns">
+                                    <a href="javascript:;" class="eBtn sColorB hrBtn modalClose">조회</a>
+                                    <a href="javascript:;" class="eBtn sColorB hrBtn modalClose">추가</a>
+                                    <a href="javascript:;" class="eBtn sColorBG hrBtn">삭제</a>
+                                </footer>
+                            </div>
+                            <div class="tab-box">
+                                <div class="autoHeight customScroll">
+                                    <table class="table-basic">
+                                        <colgroup>
+                                            <col width="20px">
+                                            <col width="5%">
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </th>
+                                            <th>번호</th>
+                                            <th>전략명</th>
+                                            <th>순서</th>
+                                            <th>투입금액</th>
+                                            <th>1회 매수한도</th>
+                                            <th>매수체결제한</th>
+                                            <th>시작시간</th>
+                                            <th>종료시간</th>
+                                            <th>재매수제한</th>
+                                            <th>매수가구분</th>
+                                            <th>매도가구분</th>
+                                            <th>이익실현</th>
+                                            <th>손해제한</th>
+                                            <th>이익보존</th>
+                                            <th>이익보존시간</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="check">
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>2963</td>
+                                            <td><a href="javascript:;" class="modalOpen" data-modal="strategy">Master.G</a></td>
+                                            <td><input type="text" class="w35px" value="1"></td>
+                                            <td>6,000,000</td>
+                                            <td>6,000,000</td>
+                                            <td>2021-01-08</td>
+                                            <td>00:00</td>
+                                            <td>00:00</td>
+                                            <td>Y</td>
+                                            <td>지정가</td>
+                                            <td>지정가</td>
+                                            <td>21.0</td>
+                                            <td>99.0</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--환불금 정보-->
+    <div class="modal-container wide grid" id="info-grid">
+        <div class="modal-wrapper">
+            <div class="modal-content">
+                <header class="m-header">
+                    <h4>환불금 정보</h4>
+                    <a href="javascript:;" class="oiBtn close modalClose">닫기</a>
+                </header>
+                <div class="contents-grid column">
+                    <div class="item table">
+                        <div class="row">
+                            <div class="gBox contents-area customScroll">
+                                <table class="table-colored-multi">
+                                    <tr>
+                                        <th rowspan="3" class="bgColorDG">회원정보</th>
+                                        <th>회원명</th>
+                                        <td>정보가져오기</td>
+                                        <th>연락처</th>
+                                        <td>정보가져오기</td>
+                                        <th>매니저</th>
+                                        <td>정보가져오기</td>
+                                        <th>일 이용요금</th>
+                                    </tr>
+                                    <tr>
+                                        <th>가입일자</th>
+                                        <td>정보가져오기</td>
+                                        <th>만료일자</th>
+                                        <td>정보가져오기</td>
+                                        <th>해지신청일</th>
+                                        <td>정보가져오기</td>
+                                        <td rowspan="2">
+                                            하단 일 이용요금 <br>
+                                            기준 참고
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>결제구분</th>
+                                        <td>정보가져오기</td>
+                                        <th>결제금액</th>
+                                        <td>정보가져오기</td>
+                                        <th>기기종류</th>
+                                        <td>정보가져오기</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="gBox contents-area customScroll">
+                                <table class="table-colored-multi">
+                                    <tr>
+                                        <th rowspan="3" class="bgColorDG">환불금 정보</th>
+                                        <th></th>
+                                        <th>해지위약금</th>
+                                        <th>기기대금</th>
+                                        <th>이용수수료</th>
+                                        <th>총 공제금액</th>
+                                        <th>환불예정금액</th>
+                                        <th>소보원 기준</th>
+                                    </tr>
+                                    <tr>
+                                        <th>당일 기준</th>
+                                        <td>100,000,000</td>
+                                        <td>100,000,000</td>
+                                        <td>100,000,000</td>
+                                        <td>100,000,000</td>
+                                        <td>100,000,000</td>
+                                        <td>100,000,000</td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>신청일 기준</th>
+                                        <td>90,000,000</td>
+                                        <td>90,000,000</td>
+                                        <td>90,000,000</td>
+                                        <td>90,000,000</td>
+                                        <td>90,000,000</td>
+                                        <td>90,000,000</td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="gBox contents-area customScroll">
+                                <table class="table-basic tColorG">
+                                    <thead>
+                                    <tr>
+                                        <th>상담일자</th>
+                                        <th>대분류</th>
+                                        <th>중분류</th>
+                                        <th>소분류</th>
+                                        <th>예약일시</th>
+                                        <th>이관부서</th>
+                                        <th>메모</th>
+                                        <th>처리자</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>2021-01-01 09:00</td>
+                                        <td>네글자임</td>
+                                        <td>일곱글자까지임</td>
+                                        <td>일곱글자까지임</td>
+                                        <td>2021-01-01 09:00</td>
+                                        <td>이관부서</td>
+                                        <td>ACE 구매 금액 문의</td>
+                                        <td>박아름(CS)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2021-01-01 09:00</td>
+                                        <td>네글자임</td>
+                                        <td>일곱글자까지임</td>
+                                        <td>일곱글자까지임</td>
+                                        <td>2021-01-01 09:00</td>
+                                        <td>이관부서</td>
+                                        <td>ACE 구매 금액 문의</td>
+                                        <td>박아름(CS)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2021-01-01 09:00</td>
+                                        <td>네글자임</td>
+                                        <td>일곱글자까지임</td>
+                                        <td>일곱글자까지임</td>
+                                        <td>2021-01-01 09:00</td>
+                                        <td>이관부서</td>
+                                        <td>ACE 구매 금액 문의</td>
+                                        <td>박아름(CS)</td>
+                                    </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="gBox txt-box">
+                                <p>① (결제금액-기기대금) x 10%</p>
+                                <p>② (결제금액-기기대금) x 10%</p>
+                                <p>③ 보급-1,000,000원 / 고급-1,500,000원 / 프리미엄- 2,000,000원</p>
+                                <p>④ 보급-1,000,000원 / 고급-1,500,000원 / 프리미엄- 2,000,000원</p>
+                                <p>⑤ 일 이용요금x 당일까지 이용일 수</p>
+                                <p>⑥ 일 이용요금x 해지신청일까지 이용일 수</p>
+                                <p class="tColor1">
+                                    * 일 이용요금 기준<br />
+                                    가입일자 2021/04/02 <br />
+                                    전-개별알고리즘-전략당 300,000원 / 고급-전략당 40,000원 / 일반-전략당 25,000원 <br />
+                                    후-개별알고리즘-전략당 350,000원 / 고급-전략당 50,000원 / 일반-전략당 40,000원
+                                </p>
+                                <p>⑦ 1번+3번+5번 항목의 총 금액</p>
+                                <p>⑧ 2번+4번+6번 항목의 총 금액</p>
+                                <p>⑨ 결제금액-7번 항목의 금액</p>
+                                <p>⑩ 결제금액-8번 항목의 금액</p>
+                                <p>⑪ (결제금액÷90)x당일까지 이용일 수+1번+3번 항목의 금액</p>
+                                <p>⑫ (결제금액÷90)x신청일까지 이용일 수+2번+4번 항목의 금액</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--알림형 모달-->
+    <div class="modal-container alert">
+        <div class="modal-wrapper">
+            <div class="modal-content">
+                <header class="m-header">
+                    <h4>알림</h4>
+                </header>
+                <div class="contents-area">
+                    <div class="alert-message">
+                        <h5>이상엽(010-***-1234) <b>2021-01-02 09:00 상담예약</b></h5>
+                        <p class="txt">
+                            [가입/신규/문의]ACE 구매 금액 문의 ACE 구매 금액 문의
+                        </p>
+                    </div>
+                </div>
+                <footer class="m-footer">
+                    <a href="javascript:;" class="eBtn sColorBG hrBtn modalClose">확인</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!--발송정보 입력-->
+    <div class="modal-container alert" id="post-wrtie">
+        <div class="modal-wrapper">
+            <div class="modal-content">
+                <header class="m-header">
+                    <h4>발송정보입력</h4>
+                </header>
+                <div class="contents-area">
+                    <table class="table-colored">
+                        <colgroup>
+                            <col width="145px">
+                        </colgroup>
+                        <tr>
+                            <th>송장번호</th>
+                            <td>
+                                <div class="selectBox">
+                                    <select>
+                                        <option value="">송장번호</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>S/N</th>
+                            <td>
+                                <div class="selectBox">
+                                    <select>
+                                        <option value="">선택</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <footer class="m-footer">
+                    <a href="javascript:;" class="eBtn sColorBG hrBtn modalClose">저장</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</html>

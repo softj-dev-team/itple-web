@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/none-layout">
+
+<head>
+    <title>로그인</title>
+</head>
+
+<th:block layout:fragment="content">
+    <form method="post" th:action="@{/login}" id="loginForm" onsubmit="loading(1);">
+        <div class="loginWrap">
+            <div class="loginWrapOuter">
+                <div class="loginDivWrap">
+                    <div class="loginDiv_inner">
+                        <div class="login_logo mb50" style="background-image: url(/assets/img/logo-login1.png);/*background-image: url(/assets/img/logo-login2.png)*/"></div>
+                        <input type="text" class="input-lg mb10" name="username" placeholder="아이디">
+                        <input type="password" class="input-lg" name="password" placeholder="비밀번호">
+                        <div class="flexwrap mt10 mb50">
+                            <a href="/adminLogin">관리자 로그인</a>
+                            <a href="">아이디/비밀번호 찾기</a>
+                        </div>
+                        <button type="submit" class="btn mb10">로그인</button>
+                        <button type="button" class="btn btn-gray">회원가입</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+</html>

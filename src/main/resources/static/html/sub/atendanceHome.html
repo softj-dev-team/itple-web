@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>잇플ITPLE</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="/assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/common.css" rel="stylesheet" type="text/css">
+</head>
+<body class="">
+    <div class="loginWrap">
+        <div class="loginWrapOuter check">
+        <div class="loginDivWrap">
+            <div class="loginDiv_inner text-center">
+                <div class="ch-icon mb30" style="background-image: url(/assets/img/ch-icon.png)"></div>
+                <p class="mb20 text-center t32"><b>홍길동</b> 님</p>
+                <p class="mb50 text-center t28"><span>오후 2시 30분</span>에 하원하였습니다.</p>
+                <div class="pointWrap mb70">
+                    <table class="pointTable">
+                        <tbody>
+                            <tr>
+                                <th>포인트</th>
+                                <td><span class="t20 mr5"><b>1,000</b></span>포인트</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-gray" onclick="location.href='attendance.html'">메인으로</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script>  
+        $(document).ready(function(){
+            setTimeout('location.href="attendance.html"', 5000)
+        });
+    </script> 
+</body>
+</html>

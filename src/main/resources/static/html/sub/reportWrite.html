@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>잇플ITPLE</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <!-- 썸머노트 -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
+    <script src="http://jamesallardice.github.io/Placeholders.js/assets/js/placeholders.jquery.min.js"></script>
+    <link href="/assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/common.css" rel="stylesheet" type="text/css">
+</head>
+<body class="">
+    <div class="wrap">
+        <header class="header clearfix">
+            <h1 class="logo"><a href="../index.html">잇플</a></h1>
+            <div class="nav-out">
+                <ul class="gnb clearfix">
+                    <li>
+                        <a href="">잇플 커뮤니티</a>
+                        <ul class="lnb">
+                            <li><a href="">잇플코딩</a></li>
+                            <li><a href="">잇플영어</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="taskList.html">수업연계</a>
+                        <ul class="lnb lnb2">
+                            <li><a href="taskList.html">과제</a></li>
+                            <li><a href="bookReport.html">독후감</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="">도서대여</a>
+                        <ul class="lnb lnb3">
+                            <li><a href="bookList.html">전체도서</a></li>
+                            <li><a href="bookRecord.html">대여기록</a></li>
+                        </ul>
+                    </li>
+                    <li class="lnbBgN"><a href="">포트폴리오</a></li>
+                </ul>
+                <div class="hd-logout">
+                    <button type="button" class="logout-btn">로그아웃</button>
+                </div>
+                <div class="lnbBg"></div>
+            </div>
+            <div class="right-btn-box">
+                <button class="ham-btn"></button>
+            </div>
+        </header>
+        <div class="ham">
+            <div class="right-bg"></div>
+            <div class="ham-nav">
+                <div class="ham-hd">
+                    <button class="ham-close"></button>
+                    <a href="sub/myinfo.html" class="setting"></a>
+                </div>
+                <div class="ham-con">
+                    <p><span class="user-name">김잇플</span> 님</p>
+                    <p>포인트 : <span class="user-point">1,000</span></p>
+                    <ul class="ham-gnb">
+                        <li>
+                            <button class="bot-btn"></button><a href="">잇플 커뮤니티</a>
+                            <ul class="ham-lnb">
+                                <li><a href="">잇플코딩</a></li>
+                                <li><a href="">잇플영어</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button class="bot-btn"></button><a href="taskList.html">수업연계</a>
+                            <ul class="ham-lnb">
+                                <li><a href="taskList.html">과제</a></li>
+                                <li><a href="bookReport.html">독후감</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button class="bot-btn"></button><a href="bookList.html">도서대여</a>
+                            <ul class="ham-lnb">
+                                <li><a href="bookList.html">전체도서</a></li>
+                                <li><a href="bookRecord.html">대여기록</a></li>
+                            </ul>
+                        </li>
+                        <li class="lnbBgN"><a href="">포트폴리오</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h1 class="responsiveH1 subH1">독후감 작성</h1>
+            <div class="content-in clearfix">
+                <div class="writeCon">
+                    <div class="writeHead">
+                        <select name="" id="" class="reportSlt">
+                            <option value="">책 제목1 - 작가 이름</option>
+                            <option value="">책 제목2 - 작가 이름</option>
+                            <option value="">책 제목3 - 작가 이름</option>
+                        </select>
+                        <p class="writePeriod">2022.04.23 ~ 2022.04.30</p>
+                    </div>
+                    <div class="writeMain">
+                        <p>책 내용 설명 영역입니다.<br>
+                            책 내용 설명 영역입니다.<br>
+                            책 내용 설명 영역입니다.<br>
+                            책 내용 설명 영역입니다.<br>
+                            책 내용 설명 영역입니다. 책 내용 설명 영역입니다.
+                        </p>
+                        <div class="pointCom"><span>독서완료 포인트</span><p><span>1,000</span>포인트</p></div>
+                    </div>
+                    <div class="taskWrite">
+                        <textarea id="summernote">
+                            <h3 style="font-size: 16px;"><b>※ 왜 이 책을 골랐나요?</b>&nbsp;<span style="font-weight: normal;font-size: 14px;">책을 읽게 된 이유에 대해 자세하게 적어보세요.&nbsp;</span></h3>
+                            <p style="font-weight: normal;font-size: 14px;">예시 : 만약 이유가 생각나지 않는다면 <u>책의 표지나 그림 등을 처음 봤을 때 어떤 느낌을 받았는지, 어떤 내용을 예상했는지</u> 적어보세요.</p>
+                            <p><br></p><p><br></p><p><br></p><p><br></p>
+                            <h3 style="font-size: 16px;"><b>※ 이 책에 대해 간단하게 소개해 보세요.</b><span  style="font-weight: normal;font-size: 14px;">예시 : 이 책의 과학적 내용과 원리에는 어떤 것이 있었나요?</span></h3>
+                            <p><br></p><p><br></p><p><br></p><p><br></p>
+                            <h3 style="font-size: 16px;">※ 이 책에서 가장 ○○○했던 장면 또는 내용이 무엇이었나요?</h3>
+                            <p style="font-weight: normal;font-size: 14px;">예시 : <u>가장 기억에 남는</u>, <u>가장 인상적인</u>, <u>가장 흥미로운</u>, <u>가장 멋있는</u>, <u>가장 신기했던</u>, <u>가장 이해가 안 되는</u>, <u>가장 별로였던</u>, <u>가장 무서웠던</u>, <u>가장 싫었던</u> 등 이 책에 대한 나의 느낌과 감정을 내가 겪었던 경험과 곁들여 적어보세요.&nbsp;</p>
+                            <p style="font-weight: normal;font-size: 14px;">단, *6하 원칙에 최대한 맞춰서 적어보세요. ( <u>누가</u>, <u>언제</u>, <u>어디서</u>, <u>무엇을</u>, <u>왜</u>, <u>어떻게</u> 느꼈는지 자세하게 )</p>
+                            <p><br></p><p>1.</p><p><br></p><p>2.</p><p><br></p>
+                            <h3 style="font-size: 16px;">※ 이 책을 읽고 이전에는 몰랐던 새롭게 알게 된 ‘사실’과 ‘내용’을 구체적으로 적어보세요.&nbsp;</h3>
+                            <p style="font-weight: normal;font-size: 14px;">예시 : 만약 없다면, 책에 있는 과학적인 내용 중 일상생활에서 찾을 수 있는 내용을 찾아보세요.</p>
+                            <p>1.</p><p><br></p><p><br></p><p>2.</p><p><br></p><p><br></p>
+                            <h3 style="font-size: 16px;">※ 이 책을 읽고 난 후, 더 알고 싶은 점과 그 이유는 무엇인가요?</h3>
+                            <p style="font-weight: normal;font-size: 14px;">책에 있는 내용 또는 책에 없는 내용 모두 가능합니다. 또는 여전히 풀리지 않는 의문이 있다면 적어보세요.</p>
+                            <p>1.</p><p><br></p><p><br></p><p>2.</p><p><br></p><p><br></p>
+                            <h3 style="font-size: 16px;">※ 이 책을 읽고 하나의 사건에 대해서 토론을 한다고 가정했을 때 찬성과 반대 입장을 적고 그 입장에 대한 근거를 적어보세요.</h3>
+                            <h3 style="font-size: 16px;">토론주제:&nbsp;</h3>
+                            <p>찬성</p><p><br></p><p><br></p><p><br></p>
+                            <p>반대</p><p><br></p><p><br></p><p><br></p>
+                            <h3 style="font-size: 16px;">※ 이 책을 읽기 전과 읽고 느낀 점을 적어보세요.</h3>
+                            <p style="font-weight: normal;font-size: 14px;">1. 생각 : 결심, 계획, 상상 등&nbsp; &nbsp; 2. 느낌 : 기분, 감정 등</p><div><br></div>
+                        </textarea>
+                        <div class="fileBox">
+                           <form action="">
+                            <div class="fileHead">
+                                <p>첨부파일</p>
+                                <div class="file-btn">
+                                    <button type="button" class="chRemove">선택삭제</button>
+                                    <input type="file" multiple="multiple" class="" id="fileInput">
+                                    <label for="fileInput" class="fileBtn">파일첨부</label>
+                                </div>
+                            </div>
+                            <ul class="fileUP" id="articlefileChange">
+                            </ul>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-center Tbtn">
+                    <button type="button" class="btn btn-gray mr10">임시저장</button>
+                    <button type="button" class="btn submitBtn">제출하기</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal">
+            <div class="modal-bg"></div>
+            <div class="modalContent xs">
+                <div class="modalHd">
+                    <h3></h3>
+                    <button class="modalClose"></button>
+                </div>
+                <div class="modalBody">
+                    <div class="modalText">
+                        독후감을 제출하시겠습니까?
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-blue modalOff">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="footer-in clearfix">
+               <div class="f-info">
+                  <div class="foot-logo"></div>
+                  <div class="info-m">
+                       <p>사업자등록번호 : 366-86-01368 ㅣ 대표 : 정지숙</p>
+                       <p>주소 : 서울특별시 동대문구 답십리로 264, 201호, 303호(장안동, 성신빌딩)</p>
+                       <p>이메일 : (학원) itple333@naver.com , (출판사) itpleinfo@naver.com</p>
+                  </div>
+                  <p class="cop-p">Copyright (c) itpleinfo.com All Rights Reserved.</p>
+               </div>
+               <div class="f-cs">
+                   <p>CS CENTER</p>
+                   <div>
+                       <p><span>학원</span>0502-600-4926</p>
+                       <p><span>출판사</span>0502-600-4925</p>
+                       <p><span>팩스번호</span>0502-600-4924</p>
+                   </div>
+               </div>
+               <div class="f-bank">
+                   <p>BANK INFO</p>
+                   <div>
+                       <p><span>신한은행</span>140-012-545888</p>
+                       <p><span>국민은행</span>010937-04-005752</p>
+                       <p><span>예금주</span>㈜잇플ITPLE</p>
+                   </div>
+               </div>
+            </div>
+        </footer>
+    </div>
+    <script src="/assets/js/common.js"></script>
+    <script>
+         //summernote
+       $(document).ready(function (){
+            $('#summernote').summernote({
+                tabsize: 2,
+                height: 450,
+                lang: 'ko-KR'
+            });
+        });
+        $('.submitBtn').on('click', function () {
+            $('.modal').addClass('on');
+        });
+        $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+            $(this).parents('.modal').removeClass('on');
+        })
+        
+         //파일첨부
+        $(document).ready(function()
+		// input file 파일 첨부시 fileCheck 함수 실행
+		{
+			$("#fileInput").on("change", fileCheck);
+		});
+        // 파일 현재 필드 숫자 totalCount랑 비교값
+        var fileCount = 0;
+        // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+        var totalCount = 10;
+        // 파일 고유넘버
+        var fileNum = 0;
+        // 첨부파일 배열
+        var content_files = new Array();
+
+        function fileCheck(e) {
+            var files = e.target.files;
+
+            // 파일 배열 담기
+            var filesArr = Array.prototype.slice.call(files);
+
+            // 파일 개수 확인 및 제한
+            if (fileCount + filesArr.length > totalCount) {
+              alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+              return;
+            } else {
+                 fileCount = fileCount + filesArr.length;
+            }
+
+            // 각각의 파일 배열담기 및 기타
+            filesArr.forEach(function (f) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                content_files.push(f);
+                $('#articlefileChange').append(
+                    '<li file-value="' + fileNum + '"><input type="checkbox" id="file-ch'+fileNum+'" value="'+fileNum+'"><label for="file-ch'+fileNum+'"><span>' + f.name + '</span></label></li>'
+                );
+                fileNum ++;
+              };
+              reader.readAsDataURL(f);
+            });
+            console.log(content_files);
+            //초기화 한다.
+            $("#fileInput").val("");
+          }
+
+        // 파일 부분 삭제 함수
+
+        $('.chRemove').click(function(){
+            if(confirm("삭제하시겠습니까?")){
+                $(".fileUP input[type=checkbox]:checked").each(function(){
+                    var tr_value =$(this).val();
+                    var tr=$("li[file-value='"+tr_value+"']");
+                    var no = tr_value.replace(/[^0-9]/g, "");
+                    content_files[no].is_delete = true;
+                    
+                    tr.remove();
+                    fileCount --;
+                    console.log(content_files);
+                });
+            }else{
+                return false;
+            }
+        });
+
+        /*
+         * 폼 submit 로직
+         */
+            function registerAction(){
+
+            var form = $("form")[0];        
+            var formData = new FormData(form);
+                for (var x = 0; x < content_files.length; x++) {
+                    // 삭제 안한것만 담아 준다. 
+                    if(!content_files[x].is_delete){
+                         formData.append("article_file", content_files[x]);
+                    }
+                }
+           /*
+           * 파일업로드 multiple ajax처리
+           */    
+            $.ajax({
+                  type: "POST",
+                  enctype: "multipart/form-data",
+                  url: "/file-upload",
+                  data : formData,
+                  processData: false,
+                  contentType: false,
+                  success: function (data) {
+                    if(JSON.parse(data)['result'] == "OK"){
+                        alert("파일업로드 성공");
+                    } else
+                        alert("서버내 오류로 처리가 지연되고있습니다. 잠시 후 다시 시도해주세요");
+                  },
+                  error: function (xhr, status, error) {
+                    alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+                 return false;
+                  }
+                });
+                return false;
+            }
+    </script> 
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>잇플ITPLE</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.kr.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.standalone.min.css">
+    <link href="/assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/common.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <header class="header clearfix">
+            <h1 class="logo"><a href="../index.html">잇플</a></h1>
+            <div class="nav-out">
+                <ul class="gnb clearfix">
+                    <li>
+                        <a href="">잇플 커뮤니티</a>
+                        <ul class="lnb">
+                            <li><a href="">잇플코딩</a></li>
+                            <li><a href="">잇플영어</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="">수업연계</a>
+                        <ul class="lnb lnb2">
+                            <li><a href="">과제</a></li>
+                            <li><a href="">독후감</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="">도서대여</a>
+                        <ul class="lnb lnb3">
+                            <li><a href="bookList.html">전체도서</a></li>
+                            <li><a href="bookRecord.html">대여기록</a></li>
+                        </ul>
+                    </li>
+                    <li class="lnbBgN"><a href="">포트폴리오</a></li>
+                </ul>
+                <div class="hd-logout">
+                    <button type="button" class="logout-btn">로그아웃</button>
+                </div>
+                <div class="lnbBg"></div>
+            </div>
+            <div class="right-btn-box">
+                <button class="ham-btn"></button>
+            </div>
+        </header>
+        <div class="ham">
+            <div class="right-bg"></div>
+            <div class="ham-nav">
+                <div class="ham-hd">
+                    <button class="ham-close"></button>
+                    <a href="sub/myinfo.html" class="setting"></a>
+                </div>
+                <div class="ham-con">
+                    <p><span class="user-name">김잇플</span> 님</p>
+                    <p>포인트 : <span class="user-point">1,000</span></p>
+                    <ul class="ham-gnb">
+                        <li>
+                            <button class="bot-btn"></button><a href="">잇플 커뮤니티</a>
+                            <ul class="ham-lnb">
+                                <li><a href="">잇플코딩</a></li>
+                                <li><a href="">잇플영어</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button class="bot-btn"></button><a href="">수업연계</a>
+                            <ul class="ham-lnb">
+                                <li><a href="">과제</a></li>
+                                <li><a href="">독후감</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button class="bot-btn"></button><a href="bookList.html">도서대여</a>
+                            <ul class="ham-lnb">
+                                <li><a href="bookList.html">전체도서</a></li>
+                                <li><a href="bookRecord.html">대여기록</a></li>
+                            </ul>
+                        </li>
+                        <li class="lnbBgN"><a href="">포트폴리오</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="responsiveWrap">
+            <h1 class="responsiveH1">도서 상세정보</h1>
+            <div class="responsiveInner">
+                <div class="detailsIgm" style="background-image: url(/assets/img/book1.jpg);"></div>
+                <div class="detailsBox">
+                    <h2 class="detTit">정보 sw,로봇 영재원 대비 문제집</h2>
+                    <p class="detwriter">잇플ITPLE</p>
+                    <div class="tagBox">
+                        <span class="rental">대여중</span>
+                        <span class="delay">연체</span>
+                        <span class="available">대여가능</span>
+                        <span class="period">2022.02.10~2022.02.17</span><!--대여가능일때는 기간 안보이게-->
+                    </div>
+                    <div class="hr"></div>
+                    <p class="detInfo">정보(SW, 로봇) 영재원은 그 특성상 알고리즘적 사고, 이산수학적 사고, 컴퓨팅 사고력을 바탕으로 영재를 선발합니다. 이런 특성을 잘 파악해 영재선발을 위한 시험을 잘 대비할 수 있도록 본 교재를 편찬하게 되었습니다.
+                        본 교재는 다양한 기출문제 및 논문, 관련 서적을 참조로 해서 대학 및 교육청 정보 및 로봇영재원에 최적화된 파이널 교재 형태로 집필했습니다.</p>
+                </div>
+                <div class="btn-center mt60">
+                    <button type="button" class="btn btn-gray">메인으로</button>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+             <div class="footer-in clearfix">
+                <div class="f-info">
+                   <div class="foot-logo"></div>
+                   <div class="info-m">
+                        <p>사업자등록번호 : 366-86-01368 ㅣ 대표 : 정지숙</p>
+                        <p>주소 : 서울특별시 동대문구 답십리로 264, 201호, 303호(장안동, 성신빌딩)</p>
+                        <p>이메일 : (학원) itple333@naver.com , (출판사) itpleinfo@naver.com</p>
+                   </div>
+                   <p class="cop-p">Copyright (c) itpleinfo.com All Rights Reserved.</p>
+                </div>
+                <div class="f-cs">
+                    <p>CS CENTER</p>
+                    <div>
+                        <p><span>학원</span>0502-600-4926</p>
+                        <p><span>출판사</span>0502-600-4925</p>
+                        <p><span>팩스번호</span>0502-600-4924</p>
+                    </div>
+                </div>
+                <div class="f-bank">
+                    <p>BANK INFO</p>
+                    <div>
+                        <p><span>신한은행</span>140-012-545888</p>
+                        <p><span>국민은행</span>010937-04-005752</p>
+                        <p><span>예금주</span>㈜잇플ITPLE</p>
+                    </div>
+                </div>
+             </div>
+         </footer>
+    </div>
+    <script src="/assets/js/common.js"></script>
+</body>
+</html>

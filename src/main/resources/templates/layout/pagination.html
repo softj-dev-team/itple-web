@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<th:block th:fragment="pagination">
+    <style>
+        .pagination{margin-top: 15px; font-size: 14px; text-align: center;}
+        .pagination > *{display: inline-block; vertical-align: middle;}
+        .pagination a{display: inline-block; vertical-align: middle; border: 1px solid #ddd; background-color: #fff; color: #cdcdcd; line-height: 37px; height: 37px; padding: 0 8px; border-radius: 5px;}
+        .pagination a:hover{background-color: #f4f4f4;}
+        .pagination a.active{background: #ddd; color: #949494}
+
+        .pagination .page{margin: 0 7px;}
+        .pagination .page a + a{margin-left: 3px;}
+
+        .pagination .btns a + a{margin-left: 3px;}
+        .pagination .btns a{display: inline-block; overflow: hidden; width: 33px; font-size: 0; line-height: 9; background-repeat: no-repeat; background-position: center center; background-size: 60%;}
+        .pagination .btns a.first{background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.8'%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M21 3.77L19.2 2L9 12L19.195 22L20.995 20.23L12.609 12L21 3.77Z' fill='%23D3D7D6'/%3E%3C/g%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M13 3.77L11.2 2L1 12L11.195 22L12.995 20.23L4.609 12L13 3.77Z' fill='%23D3D7D6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");}
+        .pagination .btns a.prev{background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.8'%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M17.77 3.77L16 2L6.00002 12L16 22L17.77 20.23L9.54002 12L17.77 3.77Z' fill='%23D3D7D6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");}
+        .pagination .btns a.next{background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.8'%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M6.22998 20.23L7.99998 22L18 12L7.99998 2L6.22998 3.77L14.46 12L6.22998 20.23Z' fill='%23D3D7D6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");}
+        .pagination .btns a.end{background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.8'%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M3 20.23L4.8 22L15 12L4.805 2L3.005 3.77L11.391 12L3 20.23Z' fill='%23D3D7D6'/%3E%3C/g%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M11 20.23L12.8 22L23 12L12.805 2L11.005 3.77L19.391 12L11 20.23Z' fill='%23D3D7D6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");}
+    </style>
+
+    <div class="pagination"
+         th:with="curPageSlice = ${list.pageable.pageNumber/10},
+                  lastPageSlice = ${list.totalPages/10},
+                  curPageNumber = ${list.pageable.pageNumber+1},
+                  prevPageNumber = ${list.pageable.pageNumber-1},
+                  nextPageNumber = ${list.pageable.pageNumber+1},
+                  isPrev = ${list.pageable.pageNumber != 0},
+                  isNext = ${list.pageable.pageNumber != list.totalPages-1 and list.totalPages != 0},
+                  pageName= ${name != null ? name : 'page'}">
+        <div class="btns">
+            <a href="javascript:;" class="first" th:if="${curPageSlice != 0}" th:attr="data-page=0" th:classappend="${pageName}">맨앞으로</a>
+            <a href="javascript:;" class="prev" th:if="${isPrev}" th:attr="data-page=${prevPageNumber}" th:classappend="${pageName}">10페이지 앞으로</a>
+        </div>
+        <div class="page">
+            <a href="javascript:;"
+               th:each="i : ${#numbers.sequence(1, (curPageSlice==lastPageSlice ? list.totalPages%10 : 10))}"
+               th:attr="data-page=${((curPageSlice)*10+i)-1}"
+               th:classappend="|${(curPageNumber%10 == 0 ? 10 : curPageNumber%10) == i ? 'active' : ''} ${pageName}|"
+               th:if="${i != 0}">
+                [[${(curPageSlice)*10+i}]]
+            </a>
+        </div>
+        <div class="btns">
+            <a href="javascript:;" class="next" th:if="${isNext}" th:attr="data-page=${nextPageNumber}" th:classappend="${pageName}">10페이지 뒤로</a>
+            <a href="javascript:;" class="end" th:if="${curPageSlice != lastPageSlice}" th:attr="data-page=${list.totalPages-1}" th:classappend="${pageName}">맨뒤로</a>
+        </div>
+    </div>
+    
+    <script th:inline="javascript">
+        $(function(){
+            var pageName = /*[[${name != null ? name : 'page'}]]*/'page';
+            $(document).on("click","a."+pageName,function(){
+                var page = $(this).data("page");
+                /*<![CDATA[*/
+                var formId = /*[[${formId}]]*/ '';
+                /*]]>*/
+                $("#"+pageName).val(page);
+                $("#"+formId).submit();
+            });
+        });
+    </script>
+</th:block>
+
+<th:block th:fragment="pageInfo">
+    <div class="cBox">
+        <div class="search-list">
+            <article>
+                <h4>건수</h4>
+                <div class="input">
+                    <div class="selectBox change">
+                        <select th:name="${name != null ? name : 'size'}" onchange="sizeChange()">
+                            <option value="20" th:selected="${list.pageable.pageSize==20}">20건</option>
+                            <option value="40" th:selected="${list.pageable.pageSize==40}">40건</option>
+                            <option value="80" th:selected="${list.pageable.pageSize==80}">80건</option>
+                            <option value="100" th:selected="${list.pageable.pageSize==100}">100건</option>
+                            <option value="200" th:selected="${list.pageable.pageSize==200}">200건</option>
+                            <option value="500" th:selected="${list.pageable.pageSize==500}">500건</option>
+                            <option value="1000" th:selected="${list.pageable.pageSize==1000}">1,000건</option>
+                            <option value="10000" th:selected="${list.pageable.pageSize==10000}">10,000건</option>
+                        </select>
+                    </div>
+                </div>
+            </article>
+
+            <div class="btns">
+                <span class="guide">총 데이터 <b>[[${#numbers.formatInteger(list.totalElements, 1, 'COMMA')}]]</b>건</span>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        function sizeChange(){
+            loading(1);
+            /*<![CDATA[*/
+            var pageName = /*[[${pageName != null ? pageName : 'page'}]]*/'page';
+            var formId = /*[[${formId}]]*/ '';
+            /*]]>*/
+            $("#"+pageName).val(0);
+            $("#"+formId).submit();
+        }
+    </script>
+
+</th:block>
+</html>

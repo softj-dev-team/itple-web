@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>잇플ITPLE</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="/assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/common.css" rel="stylesheet" type="text/css">
+</head>
+<body class="">
+    <div class="loginWrap">
+        <div class="loginWrapOuter attd">
+        <div class="loginDivWrap">
+            <div class="loginDiv_inner clearfix">
+                <div class="login_logo mb50" style="background-image: url(/assets/img/logo-login1.png);"></div>
+                <form action="">
+                    <div class="left-portrait">
+                        <p class="mb20 text-center">출결번호를 입력하세요.</p>
+                        <div class="input-num-wrap">
+                            <input type="text" class="input-num" maxlength="1">
+                            <input type="text" class="input-num" maxlength="1">
+                            <input type="text" class="input-num" maxlength="1">
+                            <input type="text" class="input-num" maxlength="1">
+                        </div>
+                        <div class="w300-wrap t18">
+                            <button type="button" class="btn btn-blue mb10">잇플코딩에 도착했어요!</button>
+                            <button type="button" class="btn">열심히 공부하고 집에 가요!</button>
+                        </div>
+                    </div>
+                    <div class="right-portrait">
+                        <div class="w300-wrap t18">
+                            <div class="numbtn-wrap">
+                                <button type="button" value="1" class="numbtn">1</button>
+                                <button type="button" value="2" class="numbtn">2</button>
+                                <button type="button" value="3" class="numbtn">3</button>
+                                <button type="button" value="4" class="numbtn">4</button>
+                                <button type="button" value="5" class="numbtn">5</button>
+                                <button type="button" value="6" class="numbtn">6</button>
+                                <button type="button" value="7" class="numbtn">7</button>
+                                <button type="button" value="8" class="numbtn">8</button>
+                                <button type="button" value="9" class="numbtn">9</button>
+                                <button type="button" class="numbtn t18">지움</button>
+                                <button type="button" value="0" class="numbtn">0</button>
+                                <button type="button" class="numbtn ">←</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <a href="#" class="aWhite">관리자 로그아웃</a>
+        </div>
+    </div>
+    <script>  
+        $(document).ready(function(){
+            $(".numbtn").on("click", function(){
+                if($(this).index()==9){
+                    $(".input-num-wrap input").val("");
+                }else if($(this).index()==11){
+                    $($(".input-num-wrap input").get().reverse()).each(function(index, item){
+                        if($(this).val()){
+                            $(this).val("");
+                            return false
+                        }
+                    })
+                }else{
+                    var num = $(this).val()
+                    $(".input-num-wrap input").each(function(index, item){
+                        if(!$(this).val()){
+                            $(this).val(num);
+                            return false
+                        }
+                    });
+                }
+            });
+            $(".input-num-wrap input").each(function(index, item){
+                $(this).on("keyup", function(){
+                    var nextInput = index + 1
+                    if(this.value.length == 1){
+                        $(".input-num-wrap input").eq(nextInput).focus();
+                    }else{
+                        return false;
+                    }
+                });
+                $(this).on("keydown", function(event){
+                    var prevInput = index - 1
+                    if(event.keyCode === 8){
+                        if(!$(this).val()){
+                            $(".input-num-wrap input").eq(prevInput).val("").focus();
+                        }
+                    }
+                })
+                
+            });
+        });
+    </script> 
+</body>
+</html>

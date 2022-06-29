@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>잇플ITPLE</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="/assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/common.css" rel="stylesheet" type="text/css">
+</head>
+<body class="">
+    <div class="wrap">
+        <header class="header clearfix">
+            <h1 class="logo"><a href="indexAdmin.html">잇플</a></h1>
+            <div class="nav-out">
+                <ul class="gnb clearfix">
+                    <li class="lnbBgN"><a href="bookListAdmin.html">출판서적</a></li>
+                    <li>
+                        <a href="taskListAdmin.html">수업연계</a>
+                        <ul class="lnb">
+                            <li><a href="taskListAdmin.html">과제</a></li>
+                            <li><a href="reportAdmin.html">독후감</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="studList.html">학생관리</a>
+                        <ul class="lnb">
+                            <li><a href="studList.html">재원생</a></li>
+                            <li><a href="leaveList.html">휴원생</a></li>
+                            <li><a href="dischargeList.html">퇴원생</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="attendance.html">출결관리</a>
+                        <ul class="lnb">
+                            <li><a href="attendance.html">출결관리</a></li>
+                            <li><a href="">출석페이지</a></li>
+                        </ul>
+                    </li>
+                    <li class="lnbBgN"><a href="payment.html">수납관리</a></li>
+                    <li><a href="portfolioList.html">포트폴리오</a>
+                        <ul class="lnb">
+                            <li><a href="portfolioList.html">재원생</a></li>
+                            <li><a href="leavePortfolio.html">휴원생</a></li>
+                            <li><a href="dischargePortfoliot.html">퇴원생</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="communityList.html">잇플 커뮤니티</a>
+                        <ul class="lnb">
+                            <li><a href="communityList.html">잇플코딩</a></li>
+                            <li><a href="">잇플영어</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="hd-logout">
+                    <button type="button" class="logout-btn">로그아웃</button>
+                </div>
+            </div>
+            <div class="right-btn-box">
+                <button class="ham-btn"></button>
+            </div>
+        </header>
+        <div class="ham">
+            <div class="right-bg"></div>
+            <div class="ham-nav">
+                <div class="ham-hd">
+                    <button class="ham-close"></button>
+                    <a href="../sub/myinfo.html" class="setting"></a>
+                </div>
+                <div class="ham-con">
+                    <p><span class="user-name">김잇플</span> 님</p>
+                    <ul class="ham-gnb">
+                        <li><a href="bookListAdmin.html">출판서적</a></li>
+                        <li><button class="bot-btn"></button>
+                            <a href="taskListAdmin.html">수업연계</a>
+                            <ul class="ham-lnb">
+                                <li><a href="taskListAdmin.html">과제</a></li>
+                                <li><a href="reportAdmin.html">독후감</a></li>
+                            </ul>
+                        </li>
+                        <li><button class="bot-btn"></button>
+                            <a href="studList.html">학생관리</a>
+                            <ul class="ham-lnb li3">
+                                <li><a href="studList.html">재원생</a></li>
+                                <li><a href="leaveList.html">휴원생</a></li>
+                                <li><a href="dischargeList.html">퇴원생</a></li>
+                            </ul>
+                        </li>
+                        <li><button class="bot-btn"></button>
+                            <a href="attendance.html">출결관리</a>
+                            <ul class="ham-lnb">
+                                <li><a href="attendance.html">출결관리</a></li>
+                                <li><a href="">출석페이지</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="payment.html">수납관리</a></li>
+                        <li><button class="bot-btn"></button>
+                            <a href="portfolioList.html">포트폴리오</a>
+                            <ul class="ham-lnb li3">
+                                <li><a href="portfolioList.html">재원생</a></li>
+                                <li><a href="leavePortfolio.html">휴원생</a></li>
+                                <li><a href="dischargePortfoliot.html">퇴원생</a></li>
+                            </ul>
+                        </li>
+                        <li><button class="bot-btn"></button>
+                            <a href="communityList.html">잇플 커뮤니티</a>
+                            <ul class="ham-lnb">
+                                <li><a href="communityList.html">잇플코딩</a></li>
+                                <li><a href="">잇플영어</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h1 class="responsiveH1">잇플 커뮤니티</h1>
+            <div class="tab clearfix">
+                <ul class="tab-ul">
+                    <li class="active"><a href="communityList.htmlList.html">잇플 코딩</a></li>
+                    <li ><a href="">잇플 영어</a></li>
+                </ul>
+            </div>
+            <div class="content-in clearfix">
+                <div class="search clearfix">
+                    <form action="" class="search-in">
+                        <div class="in-box">
+                             <select name="" id="">
+                                <option value="all">전체</option>
+                                <option value="title">제목</option>
+                                <option value="text">내용</option>
+                                <option value="writer">글쓴이</option>
+                                <option value="category">카테고리</option>
+                            </select>
+                            <input type="text">
+                        </div>
+                        <button type="button" class="src-btn"></button>
+                    </form>
+                </div>
+                <ul class="commuListUl">
+                    <li>
+                        <div class="thumbbox" style="background-image: url(/assets/img/thumb1.jpg)"></div>
+                        <div class="rightwrap">
+                            <p class="category">[공지]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="(1)">잇플과 함께 할 선생님을 모십니다</span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="thumbbox" style="background-image: url(/assets/img/thumb2.jpg)"></div>
+                        <div class="rightwrap">
+                            <p class="category">[공지]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="(12)">코딩드론 11일 강의 대기자 선생님들 보세요</span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임닉네임닉네임닉네임닉네임닉네임닉네임닉네임닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="thumbbox" style="background-image: url(/assets/img/thumb3.jpg)"></div>
+                        <div class="rightwrap">
+                            <p class="category">[수업]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="(14)">파이썬과 드론 강의 연기 안내</span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="thumbbox"></div>
+                        <div class="rightwrap">
+                            <p class="category">[공지]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="(1)">11기 파이썬과 드론 저자 직강 마감 - 접수 확정된 인원</span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="thumbbox" style="background-image: url(/assets/img/thumb4.jpg)"></div>
+                        <div class="rightwrap">
+                            <p class="category">[공지]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="(1)">2021 SW 영재원 합격자 명단</span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="thumbbox" style="background-image: url(/assets/img/thumb5.jpg)"></div>
+                        <div class="rightwrap">
+                            <p class="category">[학부모소통]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="">아두이노내친구by스크래치 2편 라인트랙자동차 만들기 수업</span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                     <li>
+                        <div class="thumbbox"></div>
+                        <div class="rightwrap">
+                            <p class="category">[공지]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="(23)">코딩드론 11일 강의 대기자 선생님들 보세요 코딩드론 11일 강의 대기자 선생님들 보세요 코딩드론 11일 강의 대기자 선생님들 보세요 코딩드론 11일 강의 대기자 선생님들 보세요 코딩드론 11일 강의 대기자 선생님들 보세요 </span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="thumbbox" style="background-image: url(/assets/img/thumb6.jpg)"></div>
+                        <div class="rightwrap">
+                            <p class="category">[수업]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="">파이썬과 드론 강의 연기 안내</span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="thumbbox" style="background-image: url(/assets/img/thumb7.jpg)"></div>
+                        <div class="rightwrap">
+                            <p class="category">[공지]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="">11기 파이썬과 드론 저자 직강 마감 - 접수 확정된 인원</span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="thumbbox"></div>
+                        <div class="rightwrap">
+                            <p class="category">[공지]</p>
+                            <p class="titlewrap"><a href="#"><span class="title" data-reply="">2021 SW 영재원 합격자 명단</span></a></p>
+                            <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="adfooter-btn">
+                    <button type="button" class="m-btn btn-line mr5 categoryBtn">게시판 설정</button>
+                    <button type="button" class="m-btn">글쓰기</button>
+                </div>
+            </div>
+            <ul class="pagination">
+                <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+                <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+                <li class="page-item"><a class="page-link active" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                <li class="page-item"><a class="page-link" href="#">7</a></li>
+                <li class="page-item"><a class="page-link" href="#">8</a></li>
+                <li class="page-item"><a class="page-link" href="#">9</a></li>
+                <li class="page-item"><a class="page-link" href="#">10</a></li>
+                <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+                <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+            </ul>
+        </div>
+        <footer class="footer">
+            <div class="footer-in clearfix">
+               <div class="f-info">
+                  <div class="foot-logo"></div>
+                  <div class="info-m">
+                       <p>사업자등록번호 : 366-86-01368 ㅣ 대표 : 정지숙</p>
+                       <p>주소 : 서울특별시 동대문구 답십리로 264, 201호, 303호(장안동, 성신빌딩)</p>
+                       <p>이메일 : (학원) itple333@naver.com , (출판사) itpleinfo@naver.com</p>
+                  </div>
+                  <p class="cop-p">Copyright (c) itpleinfo.com All Rights Reserved.</p>
+               </div>
+               <div class="f-cs">
+                   <p>CS CENTER</p>
+                   <div>
+                       <p><span>학원</span>0502-600-4926</p>
+                       <p><span>출판사</span>0502-600-4925</p>
+                       <p><span>팩스번호</span>0502-600-4924</p>
+                   </div>
+               </div>
+               <div class="f-bank">
+                   <p>BANK INFO</p>
+                   <div>
+                       <p><span>신한은행</span>140-012-545888</p>
+                       <p><span>국민은행</span>010937-04-005752</p>
+                       <p><span>예금주</span>㈜잇플ITPLE</p>
+                   </div>
+               </div>
+            </div>
+        </footer>
+        <div class="modal" id="commOt">
+            <div class="modal-bg"></div>
+            <div class="modalContent md">
+                <div class="modalHd">
+                    <h3>게시판 설정</h3>
+                    <button class="modalClose"></button>
+                </div>
+                <div class="modalBody commOption">
+                    <label for="" class="mb5">쓰기 권한</label>
+                    <select name="" id="" class="input-df">
+                        <option value="관리자 이상">관리자 이상</option>
+                        <option value="전체">전체</option>
+                    </select>
+                    <div class="categoryBox">
+                        <label for="" class="mb5">카테고리</label>
+                        <input type="text" class="categoryInput"><button type="button" class="btn-add"></button>
+                        <div class="categoryCon">
+                            <div>
+                                <p class="categoryTit">수업</p>
+                                <div class="modiBtn-box">
+                                    <button class="categoryModi"></button>
+                                    <button class="categoryRemove"></button>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="categoryTit">공지사항</p>
+                                <div class="modiBtn-box">
+                                    <button class="categoryModi"></button>
+                                    <button class="categoryRemove"></button>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="categoryTit">학부모 소통</p>
+                                <div class="modiBtn-box">
+                                    <button class="categoryModi"></button>
+                                    <button class="categoryRemove"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-blue modalOff">저장하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="cateDel">
+            <div class="modal-bg"></div>
+            <div class="modalContent xs">
+                <div class="modalHd">
+                    <h3></h3>
+                    <button class="modalClose"></button>
+                </div>
+                <div class="modalBody commOption">
+                    <div class="modalText">
+                        카테고리를 정말 삭제하시겠습니까?<br>
+                        삭제한 카테고리는 복구할 수 없지만<br>
+                        카테고리 내의 글은 삭제되지 않습니다.
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-red modalOff">삭제하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/common.js"></script>
+    <script>
+        $(document).on("click", ".categoryRemove", function(){
+                $('#cateDel').addClass('on');
+            }).on("click", ".btn-add", function(){
+                let jb = $( '.categoryInput' ).val();
+                $(".categoryCon").append('<div><p class="categoryTit">' + jb + '</p><div class="modiBtn-box"><button class="categoryModi"></button><button class="categoryRemove"></button></div> </div>')
+                $( '.categoryInput' ).val('');
+        });
+        $(document).on("click", ".categoryModi", function (){
+           var tit = $(this).parents(".categoryCon > div").find(".categoryTit")
+           var modiform = $(this).parents('.categoryCon > div').find('.modiBox')
+           if(modiform.length >0){
+               tit.show();
+               modiform.remove();
+               $(this).parents(".categoryCon > div").removeClass('on');
+           }else{
+               tit.after('<div class="modiBox"><form action=""><input type="text" value="'+tit.text()+'"><button type="button" class="categoryCom"></button></form></div>');
+               $(this).parents(".categoryCon > div").addClass('on');
+               tit.hide();
+           }
+        });
+        $(document).on("click", ".categoryCom", function (){
+           var rp = $(this).parents(".categoryCon > div").find(".categoryTit")
+           var modirp = $(this).siblings("input").val();
+           rp.text(modirp).show();
+            $(this).parents(".modiBox").remove();
+            
+            $(".categoryCon > div").removeClass('on');
+        });
+        $(document).on("click", ".categoryBtn", function(){
+            $('#commOt').addClass('on');
+        });
+    </script> 
+</body>
+</html>

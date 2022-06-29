@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>잇플ITPLE</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="/assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/common.css" rel="stylesheet" type="text/css">
+</head>
+<body class="adminBody">
+    <div class="wrap">
+        <header class="header clearfix">
+            <h1 class="logo"><a href="indexAdmin.html">잇플</a></h1>
+            <div class="nav-out">
+                <ul class="gnb clearfix">
+                    <li class="lnbBgN"><a href="bookListAdmin.html">출판서적</a></li>
+                    <li>
+                        <a href="taskListAdmin.html">수업연계</a>
+                        <ul class="lnb">
+                            <li><a href="taskListAdmin.html">과제</a></li>
+                            <li><a href="reportAdmin.html">독후감</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="studList.html">학생관리</a>
+                        <ul class="lnb">
+                            <li><a href="studList.html">재원생</a></li>
+                            <li><a href="leaveList.html">휴원생</a></li>
+                            <li><a href="dischargeList.html">퇴원생</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="attendance.html">출결관리</a>
+                        <ul class="lnb">
+                            <li><a href="attendance.html">출결관리</a></li>
+                            <li><a href="">출석페이지</a></li>
+                        </ul>
+                    </li>
+                    <li class="lnbBgN"><a href="payment.html">수납관리</a></li>
+                    <li><a href="portfolioList.html">포트폴리오</a>
+                        <ul class="lnb">
+                            <li><a href="portfolioList.html">재원생</a></li>
+                            <li><a href="leavePortfolio.html">휴원생</a></li>
+                            <li><a href="dischargePortfoliot.html">퇴원생</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="communityList.html">잇플 커뮤니티</a>
+                        <ul class="lnb">
+                            <li><a href="communityList.html">잇플코딩</a></li>
+                            <li><a href="">잇플영어</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="hd-logout">
+                    <button type="button" class="logout-btn">로그아웃</button>
+                </div>
+            </div>
+            <div class="right-btn-box">
+                <button class="ham-btn"></button>
+            </div>
+        </header>
+        <div class="ham">
+            <div class="right-bg"></div>
+            <div class="ham-nav">
+                <div class="ham-hd">
+                    <button class="ham-close"></button>
+                    <a href="../sub/myinfo.html" class="setting"></a>
+                </div>
+                <div class="ham-con">
+                    <p><span class="user-name">김잇플</span> 님</p>
+                    <ul class="ham-gnb">
+                        <li><a href="bookListAdmin.html">출판서적</a></li>
+                        <li><button class="bot-btn"></button>
+                            <a href="taskListAdmin.html">수업연계</a>
+                            <ul class="ham-lnb">
+                                <li><a href="taskListAdmin.html">과제</a></li>
+                                <li><a href="reportAdmin.html">독후감</a></li>
+                            </ul>
+                        </li>
+                        <li><button class="bot-btn"></button>
+                            <a href="studList.html">학생관리</a>
+                            <ul class="ham-lnb li3">
+                                <li><a href="studList.html">재원생</a></li>
+                                <li><a href="leaveList.html">휴원생</a></li>
+                                <li><a href="dischargeList.html">퇴원생</a></li>
+                            </ul>
+                        </li>
+                        <li><button class="bot-btn"></button>
+                            <a href="attendance.html">출결관리</a>
+                            <ul class="ham-lnb">
+                                <li><a href="attendance.html">출결관리</a></li>
+                                <li><a href="">출석페이지</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="payment.html">수납관리</a></li>
+                        <li><button class="bot-btn"></button>
+                            <a href="portfolioList.html">포트폴리오</a>
+                            <ul class="ham-lnb li3">
+                                <li><a href="portfolioList.html">재원생</a></li>
+                                <li><a href="leavePortfolio.html">휴원생</a></li>
+                                <li><a href="dischargePortfoliot.html">퇴원생</a></li>
+                            </ul>
+                        </li>
+                        <li><button class="bot-btn"></button>
+                            <a href="communityList.html">잇플 커뮤니티</a>
+                            <ul class="ham-lnb">
+                                <li><a href="communityList.html">잇플코딩</a></li>
+                                <li><a href="">잇플영어</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="adContent">
+            <h1 class="adH1">수업연계</h1>
+            <div class="tab clearfix adTab">
+                <ul class="tab-ul">
+                    <li><a href="taskListAdmin.html">과제</a></li>
+                    <li class="active"><a href="reportAdmin.html">독후감</a></li>
+                </ul>
+            </div>
+            <div class="content-in clearfix">
+                <div class="adSearch clearfix">
+                    <form action="" class="adSearch-in">
+                        <div class="in-box">
+                            <select name="" id="">
+                                <option value="">전체</option>
+                                <option value="">학생</option>
+                                <option value="">출결번호</option>
+                                <option value="">독후감</option>
+                            </select>
+                            <input type="text">
+                        </div>
+                        <button type="button" class="src-btn"></button>
+                    </form>
+                </div>
+                <div class="subTit">
+                    <a href="taskClassAdmin.html" class="subTit-class">잇플코딩입문반A</a><span>EBS 강사가 추천하는 PAV 모빌리티 인기학과 진로코칭</span>
+                </div>
+                <table class="adTable list3">
+                    <thead class="adTable-head">
+                        <tr>
+                            <th>학생</th>
+                            <th>출결번호</th>
+                            <th>독후감</th>
+                            <th>독후감 확인</th>
+                        </tr>
+                    </thead>
+                    <tbody class="adTable-body adTbody checklist">
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>완료</td>
+                            <td><button type="button" class="s-btn reportBtn">독후감 보기</button></td>
+                        </tr>
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>완료</td>
+                            <td><button type="button" class="s-btn s-btnCom reportBtn" disabled="disabled">확인완료</button></td>
+                        </tr>
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>미완료</td>
+                            <td><button type="button" class="s-btn reportBtn s-btnDsb" disabled="disabled">확인하기</button></td>
+                        </tr>
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>미완료</td>
+                            <td><button type="button" class="s-btn reportBtn s-btnDsb" disabled="disabled">확인하기</button></td>
+                        </tr>
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>미완료</td>
+                            <td><button type="button" class="s-btn reportBtn s-btnDsb" disabled="disabled">확인하기</button></td>
+                        </tr>
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>완료</td>
+                            <td><button type="button" class="s-btn reportBtn">독후감 보기</button></td>
+                        </tr>
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>완료</td>
+                            <td><button type="button" class="s-btn reportBtn">독후감 보기</button></td>
+                        </tr>
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>완료</td>
+                            <td><button type="button" class="s-btn reportBtn">독후감 보기</button></td>
+                        </tr>
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>완료</td>
+                            <td><button type="button" class="s-btn reportBtn">독후감 보기</button></td>
+                        </tr>
+                        <tr>
+                            <td>김잇플</td>
+                            <td>1598</td>
+                            <td>완료</td>
+                            <td><button type="button" class="s-btn reportBtn">독후감 보기</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ul class="pagination">
+                <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+                <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+                <li class="page-item"><a class="page-link active" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                <li class="page-item"><a class="page-link" href="#">7</a></li>
+                <li class="page-item"><a class="page-link" href="#">8</a></li>
+                <li class="page-item"><a class="page-link" href="#">9</a></li>
+                <li class="page-item"><a class="page-link" href="#">10</a></li>
+                <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+                <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+            </ul>
+        </div>
+        <footer class="footer">
+            <div class="footer-in clearfix">
+               <div class="f-info">
+                  <div class="foot-logo"></div>
+                  <div class="info-m">
+                       <p>사업자등록번호 : 366-86-01368 ㅣ 대표 : 정지숙</p>
+                       <p>주소 : 서울특별시 동대문구 답십리로 264, 201호, 303호(장안동, 성신빌딩)</p>
+                       <p>이메일 : (학원) itple333@naver.com , (출판사) itpleinfo@naver.com</p>
+                  </div>
+                  <p class="cop-p">Copyright (c) itpleinfo.com All Rights Reserved.</p>
+               </div>
+               <div class="f-cs">
+                   <p>CS CENTER</p>
+                   <div>
+                       <p><span>학원</span>0502-600-4926</p>
+                       <p><span>출판사</span>0502-600-4925</p>
+                       <p><span>팩스번호</span>0502-600-4924</p>
+                   </div>
+               </div>
+               <div class="f-bank">
+                   <p>BANK INFO</p>
+                   <div>
+                       <p><span>신한은행</span>140-012-545888</p>
+                       <p><span>국민은행</span>010937-04-005752</p>
+                       <p><span>예금주</span>㈜잇플ITPLE</p>
+                   </div>
+               </div>
+            </div>
+        </footer>
+        <div class="modal " id="reportMo">
+            <div class="modal-bg"></div>
+            <div class="modalContent lg">
+                <div class="modalHd">
+                    <h3>독후감 확인</h3>
+                    <button class="modalClose"></button>
+                </div>
+                <div class="modalBody">
+                    <div class="modalHead">
+                        <p class="modalGroup">[잇플코딩 기초입문반A]</p>
+                        <p class="modalTit">EBS 강사가 추천하는 PAV 모빌리티 인기학과 진로코칭</p>
+                        <p class="modalName">김잇플</p>
+                    </div>
+                    <div class="modalMain">
+                        독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다.
+                        독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다.
+                        독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다.
+                    </div>
+                    <div class="mo-fileBox">
+                        <div class="fileHead">
+                            <p>첨부파일</p>
+                        </div>
+                        <ul class="fileUP">
+                            <li>첨부파일_1.jpg</li>
+                            <li>첨부파일_2.jpg</li>
+                            <li>첨부파일_3.jpg</li>
+                            <li>첨부파일_4.jpg</li>
+                            <li>첨부파일_5.jpg</li>
+                            <li>첨부파일_6.jpg</li>
+                            <li>첨부파일_7.jpg</li>
+                        </ul>
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-blue modalOff">확인하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/common.js"></script>
+    <script>
+        $('.RemoveBtn').on('click', function () {
+            $('#removeMo').addClass('on');
+        });
+        $('.reportBtn').on('click', function () {
+            $('#reportMo').addClass('on');
+        });
+        $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+                $(this).parents('.modal').removeClass('on');
+        })
+    </script> 
+</body>
+</html>
