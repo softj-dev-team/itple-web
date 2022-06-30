@@ -4,141 +4,78 @@
     <meta charset="UTF-8">
 </head>
 <th:block th:fragment="header">
-    <header id="header">
-   <span class="title">
-        <a href="javascript:;" class="oiBtn bars menuToggle">메뉴</a>
-        <a href="/" class="site-name">LEADERSTRADING</a>
-   </span>
-
-        <div class="user-menu">
-            <span th:if="${session.loginVO.isRole('1,2')}" class="cash">알리고 남은캐시 [[${#numbers.formatInteger(aligo.SMS_CNT*8.4, 0 ,'COMMA')}]]원</span>
-            <div class="my-menu-area">
-                <a href="javascript:;" class="my-page">
-                    <!--샘플이미지 주소: https://images.unsplash.com/photo-1601677492421-a9ec2452ca57?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60-->
-                    <span class="profile"><i style="background-image: url(/* 프로필 이미지 url */);"></i></span>
-                    [[${session.loginVO.team.name}]] [[${session.loginVO.name}]]
-                </a>
-                <div class="my-list">
-                    <ul>
-                        <li><a href="javascript:logout()">로그아웃</a></li>
+    <header class="header clearfix">
+        <h1 class="logo"><a href="/">잇플</a></h1>
+        <div class="nav-out">
+            <ul class="gnb clearfix">
+                <li>
+                    <a href="/c1/p1">잇플 커뮤니티</a>
+                    <ul class="lnb">
+                        <li><a href="/c1/p1">잇플코딩</a></li>
+                        <li><a href="/c1/p2">잇플영어</a></li>
                     </ul>
-                </div>
+                </li>
+                <li>
+                    <a href="">수업연계</a>
+                    <ul class="lnb lnb2">
+                        <li><a href="">과제</a></li>
+                        <li><a href="">독후감</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="sub/bookList.html">도서대여</a>
+                    <ul class="lnb lnb3">
+                        <li><a href="sub/bookList.html">전체도서</a></li>
+                        <li><a href="sub/bookRecord.html">대여기록</a></li>
+                    </ul>
+                </li>
+                <li class="lnbBgN"><a href="">포트폴리오</a></li>
+            </ul>
+            <div class="hd-logout">
+                <button type="button" class="logout-btn" onclick="location.href='/logout'">로그아웃</button>
             </div>
-            <div class="alaram-area">
-                <a href="javascript:;" class="oiBtn alaram openAlaram hasCount alarmOpenBtn">알림</a>
-                <article class="alaram-list">
-                    <h4 class="alarmHeader">
-                        알림
-                        <button type="button" onclick="alarmReadAll()" class="eBtn sColorB hrBtn iBtn search">모두 읽음 처리</button>
-                    </h4>
-                    <div class="customScroll">
-                        <ul id="alarmList">
-                        </ul>
-                    </div>
-                </article>
-            </div>
+            <div class="lnbBg"></div>
+        </div>
+        <div class="right-btn-box">
+            <button class="ham-btn"></button>
         </div>
     </header>
-
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        var alarmList = [];
-        /*]]>*/
-        $(function(){
-            reloadAlarm();
-            setInterval(function(){
-                reloadAlarm();
-            },10*60*1000); //10분마다
-        });
-
-        function alarmModal(seq){
-            var find = alarmList.find(function(el){
-                return el.seq == seq;
-            });
-
-            $("#alarm-modal .title").html((find.type == 'A' ? find.name+'('+find.phone+')' : '[공지사항]')+" [작성: "+ut.nullToStr(find.createdAt)+"]"+(ut.nullToStr(find.hisDate) ? '<br>[예약: '+ut.nullToStr(find.hisDate)+']' : ''));
-            $("#alarm-modal .category").text((find.type == 'A' ? "["+getCategory(1,find.categoryA)+"/"+getCategory(2,find.categoryB)+"/"+getCategory(3,find.categoryC)+"]" : ""));
-            $("#alarm-modal .message").html(find.content.replaceAll("\r\n","<br>"));
-            $("#alarm-modal #readBtn").attr("onclick","alarmRead("+find.seq+")");
-            modalOpen("alarm-modal");
-        }
-
-        function alarmReadAll(){
-            loading(1);
-            var formData = '';
-            $(".alaram-list a").each(function(){
-                formData += "seqList="+$(this).data("id")+"&";
-            })
-            $.post('/com/alarmRead',formData,function(){
-                $(".alaram-list a").addClass("read");
-                $(".openAlaram").removeClass("new");
-            });
-        }
-
-        function alarmRead(seq){
-            loading(1);
-            var formData = '';
-            formData += "seqList="+seq+"&";
-            $.post('/com/alarmRead',formData,function(){
-                $(".alaram-list a[data-id="+seq+"]").addClass("read");
-                if($(".alaram-list a:not(.read)").length == 0){
-                    $(".openAlaram").removeClass("new");
-                }
-            });
-        }
-        function reloadAlarm(){
-            $.post('/com/alarmList','',function(res){
-                alarmList = res.data;
-                var findUnRead = alarmList.find(function(el){
-                    return el.readYn == false;
-                });
-                if(!findUnRead){
-                    $(".openAlaram").removeClass("new");
-                }else{
-                    $(".openAlaram").addClass("new");
-                }
-
-                var findPopup = alarmList.find(function(el){
-                    var now = new Date();
-                    var his = ut.isEmpty(el.hisDate) ? null : new Date(el.hisDate);
-                    return el.readYn == false && -1000*60*20 <= now-his && now-his <= 1000*60*20;
-                });
-                if(findPopup){
-                    alarmModal(findPopup.seq);
-                }
-
-                var html = '';
-                if(ut.isEmpty(alarmList)){
-                    html += '<li>' +
-                                '<a href="javascript:;">'+
-                                    '<p class="subject">알림이 없습니다.</p>'+
-                                '</a>'+
-                            '</li>';
-                }else {
-                    alarmList.forEach(function (el) {
-                        html += '<li>' +
-                                    '<a href="javascript:;" class="'+(el.readYn ? 'read' : '')+'" data-id="'+el.seq+'" '+
-                                       'onclick="alarmModal('+el.seq+')">'+
-                                        '<p class="subject">' +
-                                            (el.type == 'A' ? el.name+'('+el.phone+')' : '[공지사항]')+' [작성: ' + ut.nullToStr(el.createdAt)+']' +
-                                            (ut.nullToStr(el.hisDate) ? '<br>[예약: '+ut.nullToStr(el.hisDate)+']' : '')+
-                                        '</p>'+
-                                        '<p class="info">'+
-                                            (el.type == 'A' ? '<span class="date">['+getCategory(1,el.categoryA)+'/'+getCategory(2,el.categoryB)+'/'+getCategory(3,el.categoryC)+']</span>' : '')+
-                                            el.content+
-                                        '</p>'+
-                                    '</a>'+
-                                '</li>';
-                    });
-                }
-                $("#alarmList").html(html);
-            });
-        }
-
-        function ldtToStr(localDateTime){
-            var date = new Date(localDateTime.year+"-"+localDateTime.monthValue+"-"+localDateTime.dayOfMonth+" "+localDateTime.hour+":"+localDateTime.minute+":"+localDateTime.second);
-            return isNaN(date) ? '' : date.format('yyyy-MM-dd HH:mm:ss');
-        }
-    </script>
+    <div class="ham">
+        <div class="right-bg"></div>
+        <div class="ham-nav">
+            <div class="ham-hd">
+                <button class="ham-close"></button>
+                <a href="sub/myinfo.html" class="setting"></a>
+            </div>
+            <div class="ham-con">
+                <p><span class="user-name">김잇플</span> 님</p>
+                <p>포인트 : <span class="user-point">1,000</span></p>
+                <ul class="ham-gnb">
+                    <li>
+                        <button class="bot-btn"></button><a href="">잇플 커뮤니티</a>
+                        <ul class="ham-lnb">
+                            <li><a href="">잇플코딩</a></li>
+                            <li><a href="">잇플영어</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button class="bot-btn"></button><a href="">수업연계</a>
+                        <ul class="ham-lnb">
+                            <li><a href="">과제</a></li>
+                            <li><a href="">독후감</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button class="bot-btn"></button><a href="sub/bookList.html">도서대여</a>
+                        <ul class="ham-lnb">
+                            <li><a href="sub/bookList.html">전체도서</a></li>
+                            <li><a href="sub/bookRecord.html">대여기록</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="">포트폴리오</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </th:block>
 </html>

@@ -53,20 +53,21 @@
 <body>
     <div id="wrap">
         <th:block th:replace="layout/header"></th:block>
-        <th:block th:replace="layout/navigation"></th:block>
 
-        <div id="container">
-            <th:block layout:fragment="content"></th:block>
-        </div>
+        <th:block layout:fragment="content"></th:block>
+
+        <th:block th:replace="layout/footer"></th:block>
     </div>
+
+    <th:block th:replace="layout/modal"></th:block>
 
     <!-- JS start -->
     <script type="text/javascript" th:src="@{/assets/js/common.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/customUtil.js}"></script>
-    <script type="text/javascript" th:src="@{/js/prototype-array.js}"></script>
-    <script type="text/javascript" th:src="@{/js/prototype-date.js}"></script>
-    <script type="text/javascript" th:src="@{/js/prototype-number.js}"></script>
-    <script type="text/javascript" th:src="@{/js/prototype-string.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/prototype-array.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/prototype-date.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/prototype-number.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/prototype-string.js}"></script>
     <!-- JS end -->
 </body>
 </html>

@@ -27,5 +27,15 @@
             </div>
         </div>
     </form>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+        $(function(){
+            if(ut.getParam("error") != null){
+                modal.alert("일치하는 계정정보가 없습니다.")
+            }
+        })
+    </script>
 </th:block>
 </html>

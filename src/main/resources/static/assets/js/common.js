@@ -105,3 +105,31 @@ function loading(isLoding){
     var isShow = isLoding ? 'show' : 'hide';
     $.LoadingOverlay(isShow);
 }
+
+var modal = {
+    alert: function (message, title = '알림') {
+        $("#alert-modal .modalHd h3").html(title ? title : '');
+        $("#alert-modal .modalText").html(message ? message : '');
+        modalOpen('alert-modal');
+    },
+    required: function (txt) {
+        this.alert(txt+" 을(를) 입력하세요.");
+    },
+    confirm: function (message, callback, title = '알림') {
+        $("#confirm-modal .modalHd h3").html(title ? title : '');
+        $("#confirm-modal .modalText").html(message ? message : '');
+        $("#confirm-modal #confirm-callback-btn").off();
+        $("#confirm-modal #confirm-callback-btn").on("click",function(){
+            callback();
+            modalCloseId('confirm-modal');
+        });
+        modalOpen('confirm-modal');
+    }
+};
+
+function modalOpen(id){
+    $("#"+id).addClass("on");
+}
+function modalCloseId(id){
+    $("#"+id).removeClass("on");
+}

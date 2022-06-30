@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @PropertySources({
 	@PropertySource("classpath:/properties/temp.properties"),
 })
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @SpringBootApplication
 public class ItpleApplication {
 

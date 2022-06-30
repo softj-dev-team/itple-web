@@ -102,7 +102,7 @@ dependencies {
 	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.2'
     
     //mysql
-	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
+//	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
 
 	//postgresql
 	implementation  'org.postgresql:postgresql'

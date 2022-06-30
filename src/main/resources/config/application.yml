@@ -58,14 +58,14 @@ spring:
   jpa:
     properties:
       hibernate:
-        jdbc:
-          lob:
+        temp:
+          use_jdbc_metadata_defaults: false
 
         ddl-auto: none
         show-sql: true
         format_sql: true
         use_sql_comments: true
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
 
 file:
   uploadDir: C:/file_storage
@@ -131,11 +131,14 @@ spring:
   jpa:
     properties:
       hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+
         ddl-auto: none
         show-sql: false
         format_sql: false
         use_sql_comments: false
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
 
 file:
   uploadDir: ./file_storage

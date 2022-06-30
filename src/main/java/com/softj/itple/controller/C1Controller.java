@@ -6,9 +6,9 @@ import com.softj.itple.service.C1Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -17,15 +17,14 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/c1")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ROLE_LOGIN')")
 public class C1Controller {
     private final C1Service c1Service;
     private final CommonService commonService;
 
     //목록
-    @RequestMapping("/p1")
+    @GetMapping("/p1")
     public String p1(ModelMap model, HttpSession session, Pageable pageable, SearchVO params){
-        return "c1/p1";
+        return "c1/c1p1";
     }
 
     //팝업
