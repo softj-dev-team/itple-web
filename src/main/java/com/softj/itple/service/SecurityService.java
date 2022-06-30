@@ -1,7 +1,7 @@
 package com.softj.itple.service;
 
 import com.softj.itple.entity.Role;
-import com.softj.itple.entity.Types;
+import com.softj.itple.domain.Types;
 import com.softj.itple.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

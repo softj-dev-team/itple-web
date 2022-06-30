@@ -1,9 +1,9 @@
 package com.softj.itple.entity;
 
+import com.softj.itple.domain.Types;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter

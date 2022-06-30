@@ -2,10 +2,13 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
+import com.softj.itple.domain.Types;
 import com.softj.itple.service.C1Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,16 +26,18 @@ public class C1Controller {
 
     //목록
     @GetMapping("/p1")
-    public String p1(ModelMap model, HttpSession session, Pageable pageable, SearchVO params){
+    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+        params.setBoardType(Types.BoardType.CODING);
+        model.addAttribute("list",c1Service.getBoardList(params, pageable));
+        model.addAttribute("params",params);
         return "c1/c1p1";
     }
-
-    //팝업
-    @RequestMapping("/p1/p1")
-    @ResponseBody
-    public Response p1p1(ModelMap model, HttpSession session, SearchVO params){
-        return Response.builder()
-                .build();
+    @RequestMapping("/p2")
+    public String p2(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+        params.setBoardType(Types.BoardType.ENGLISH);
+        model.addAttribute("list",c1Service.getBoardList(params, pageable));
+        model.addAttribute("params",params);
+        return "c1/c1p1";
     }
 
     //삭제

@@ -4,25 +4,7 @@
     <meta charset="UTF-8">
 </head>
 <th:block th:fragment="pagination">
-    <style>
-        .pagination{margin-top: 15px; font-size: 14px; text-align: center;}
-        .pagination > *{display: inline-block; vertical-align: middle;}
-        .pagination a{display: inline-block; vertical-align: middle; border: 1px solid #ddd; background-color: #fff; color: #cdcdcd; line-height: 37px; height: 37px; padding: 0 8px; border-radius: 5px;}
-        .pagination a:hover{background-color: #f4f4f4;}
-        .pagination a.active{background: #ddd; color: #949494}
-
-        .pagination .page{margin: 0 7px;}
-        .pagination .page a + a{margin-left: 3px;}
-
-        .pagination .btns a + a{margin-left: 3px;}
-        .pagination .btns a{display: inline-block; overflow: hidden; width: 33px; font-size: 0; line-height: 9; background-repeat: no-repeat; background-position: center center; background-size: 60%;}
-        .pagination .btns a.first{background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.8'%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M21 3.77L19.2 2L9 12L19.195 22L20.995 20.23L12.609 12L21 3.77Z' fill='%23D3D7D6'/%3E%3C/g%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M13 3.77L11.2 2L1 12L11.195 22L12.995 20.23L4.609 12L13 3.77Z' fill='%23D3D7D6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");}
-        .pagination .btns a.prev{background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.8'%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M17.77 3.77L16 2L6.00002 12L16 22L17.77 20.23L9.54002 12L17.77 3.77Z' fill='%23D3D7D6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");}
-        .pagination .btns a.next{background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.8'%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M6.22998 20.23L7.99998 22L18 12L7.99998 2L6.22998 3.77L14.46 12L6.22998 20.23Z' fill='%23D3D7D6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");}
-        .pagination .btns a.end{background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.8'%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M3 20.23L4.8 22L15 12L4.805 2L3.005 3.77L11.391 12L3 20.23Z' fill='%23D3D7D6'/%3E%3C/g%3E%3Cg opacity='0.8'%3E%3Cpath opacity='0.8' d='M11 20.23L12.8 22L23 12L12.805 2L11.005 3.77L19.391 12L11 20.23Z' fill='%23D3D7D6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");}
-    </style>
-
-    <div class="pagination"
+    <ul class="pagination"
          th:with="curPageSlice = ${list.pageable.pageNumber/10},
                   lastPageSlice = ${list.totalPages/10},
                   curPageNumber = ${list.pageable.pageNumber+1},
@@ -31,24 +13,29 @@
                   isPrev = ${list.pageable.pageNumber != 0},
                   isNext = ${list.pageable.pageNumber != list.totalPages-1 and list.totalPages != 0},
                   pageName= ${name != null ? name : 'page'}">
-        <div class="btns">
-            <a href="javascript:;" class="first" th:if="${curPageSlice != 0}" th:attr="data-page=0" th:classappend="${pageName}">맨앞으로</a>
-            <a href="javascript:;" class="prev" th:if="${isPrev}" th:attr="data-page=${prevPageNumber}" th:classappend="${pageName}">10페이지 앞으로</a>
-        </div>
-        <div class="page">
-            <a href="javascript:;"
+        <li class="page-arrow" th:if="${curPageSlice != 0}">
+            <a class="page-link p-L2" href="javascript:void(0)" th:attr="data-page=0" th:classappend="${pageName}"></a>
+        </li>
+        <li class="page-arrow" th:if="${isPrev}">
+            <a class="page-link p-L1" href="javascript:void(0)" th:attr="data-page=${prevPageNumber}" th:classappend="${pageName}"></a>
+        </li>
+        <li class="page-item">
+            <a class="page-link"
+               href="javascript:void(0)"
                th:each="i : ${#numbers.sequence(1, (curPageSlice==lastPageSlice ? list.totalPages%10 : 10))}"
                th:attr="data-page=${((curPageSlice)*10+i)-1}"
                th:classappend="|${(curPageNumber%10 == 0 ? 10 : curPageNumber%10) == i ? 'active' : ''} ${pageName}|"
                th:if="${i != 0}">
                 [[${(curPageSlice)*10+i}]]
             </a>
-        </div>
-        <div class="btns">
-            <a href="javascript:;" class="next" th:if="${isNext}" th:attr="data-page=${nextPageNumber}" th:classappend="${pageName}">10페이지 뒤로</a>
-            <a href="javascript:;" class="end" th:if="${curPageSlice != lastPageSlice}" th:attr="data-page=${list.totalPages-1}" th:classappend="${pageName}">맨뒤로</a>
-        </div>
-    </div>
+        </li>
+        <li class="page-arrow" th:if="${isNext}">
+            <a class="page-link p-R1" href="javascript:void(0)"th:attr="data-page=${nextPageNumber}" th:classappend="${pageName}"></a>
+        </li>
+        <li class="page-arrow" th:if="${curPageSlice != lastPageSlice}">
+            <a class="page-link p-R2" href="javascript:void(0)"th:attr="data-page=${list.totalPages-1}" th:classappend="${pageName}"></a>
+        </li>
+    </ul>
     
     <script th:inline="javascript">
         $(function(){

@@ -1,5 +1,7 @@
 package com.softj.itple.entity;
 
+import com.softj.itple.domain.Types;
+
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 

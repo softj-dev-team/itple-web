@@ -3,7 +3,26 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout/layout">
 <head>
-    <title>잇플코딩</title>
+    <title>잇플 커뮤니티</title>
+    <style>
+        @media screen and (max-width:768px) {
+            .writeBtn{
+                position: fixed;
+                right:20px;
+                bottom:30px;
+                width:70px!important;
+                height:70px!important;
+                border-radius: 50%!important;
+                white-space: nowrap;
+                text-indent: 200%;
+                overflow: hidden;
+                background-image: url(/assets/img/write-i.png);
+                background-size: 34px;
+                background-position: center 40%;
+                background-repeat: no-repeat;
+            }
+        }
+    </style>
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -11,151 +30,45 @@
         <h1 class="responsiveH1">잇플 커뮤니티</h1>
         <div class="tab clearfix">
             <ul class="tab-ul">
-                <li class="active"><a href="communityList.htmlList.html">잇플 코딩</a></li>
-                <li ><a href="">잇플 영어</a></li>
+                <li th:classappend="${#strings.equals(params.boardType,'CODING') ? 'active' : ''}"><a href="/c1/p1">잇플 코딩</a></li>
+                <li th:classappend="${#strings.equals(params.boardType,'ENGLISH') ? 'active' : ''}"><a href="/c1/p2">잇플 영어</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">
             <div class="search clearfix">
-                <form action="" class="search-in">
+                <form id="form1" class="search-in">
+                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <div class="in-box">
-                        <select name="" id="">
-                            <option value="all">전체</option>
-                            <option value="title">제목</option>
-                            <option value="text">내용</option>
-                            <option value="writer">글쓴이</option>
-                            <option value="category">카테고리</option>
+                        <select name="searchType">
+                            <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">제목</option>
+                            <option value="contents" th:selected="${#strings.equals(param.searchType, 'contents')}">내용</option>
+                            <option value="user" th:selected="${#strings.equals(param.searchType, 'user')}">글쓴이</option>
                         </select>
-                        <input type="text">
+                        <input type="text" name="searchValue" th:value="${param.searchValue}">
                     </div>
-                    <button type="button" class="src-btn"></button>
+                    <button type="button" class="src-btn" onclick="goSearch();"></button>
                 </form>
             </div>
             <ul class="commuListUl">
-                <li>
-                    <div class="thumbbox" style="background-image: url(/assets/img/thumb1.jpg)"></div>
+                <li th:each="el : ${list}">
+                    <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
                     <div class="rightwrap">
-                        <p class="category">[공지]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="(1)">잇플과 함께 할 선생님을 모십니다</span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumbbox" style="background-image: url(/assets/img/thumb2.jpg)"></div>
-                    <div class="rightwrap">
-                        <p class="category">[공지]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="(12)">코딩드론 11일 강의 대기자 선생님들 보세요</span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임닉네임닉네임닉네임닉네임닉네임닉네임닉네임닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumbbox" style="background-image: url(/assets/img/thumb3.jpg)"></div>
-                    <div class="rightwrap">
-                        <p class="category">[수업]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="(14)">파이썬과 드론 강의 연기 안내</span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumbbox"></div>
-                    <div class="rightwrap">
-                        <p class="category">[공지]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="(1)">11기 파이썬과 드론 저자 직강 마감 - 접수 확정된 인원</span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumbbox" style="background-image: url(/assets/img/thumb4.jpg)"></div>
-                    <div class="rightwrap">
-                        <p class="category">[공지]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="(1)">2021 SW 영재원 합격자 명단</span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumbbox" style="background-image: url(/assets/img/thumb5.jpg)"></div>
-                    <div class="rightwrap">
-                        <p class="category">[학부모소통]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="">아두이노내친구by스크래치 2편 라인트랙자동차 만들기 수업</span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumbbox"></div>
-                    <div class="rightwrap">
-                        <p class="category">[공지]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="(23)">코딩드론 11일 강의 대기자 선생님들 보세요 코딩드론 11일 강의 대기자 선생님들 보세요 코딩드론 11일 강의 대기자 선생님들 보세요 코딩드론 11일 강의 대기자 선생님들 보세요 코딩드론 11일 강의 대기자 선생님들 보세요 </span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumbbox" style="background-image: url(/assets/img/thumb6.jpg)"></div>
-                    <div class="rightwrap">
-                        <p class="category">[수업]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="">파이썬과 드론 강의 연기 안내</span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumbbox" style="background-image: url(/assets/img/thumb7.jpg)"></div>
-                    <div class="rightwrap">
-                        <p class="category">[공지]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="">11기 파이썬과 드론 저자 직강 마감 - 접수 확정된 인원</span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumbbox"></div>
-                    <div class="rightwrap">
-                        <p class="category">[공지]</p>
-                        <p class="titlewrap"><a href="#"><span class="title" data-reply="">2021 SW 영재원 합격자 명단</span></a></p>
-                        <p class="artiInfo"><span class="nickname">닉네임</span><span class="date">22.03.24</span><span class="view">9</span><span class="up">10</span></p>
+                        <p class="category" th:text="|[${el.boardCategory.message}]|"></p>
+                        <p class="titlewrap"><a th:href="|/c1/p1/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
+                        <p class="artiInfo"><span class="nickname" th:text="${el.student.name}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
                     </div>
                 </li>
             </ul>
-            <style>
-                @media screen and (max-width:768px) {
-                    .writeBtn{
-                        position: fixed;
-                        right:20px;
-                        bottom:30px;
-                        width:70px!important;
-                        height:70px!important;
-                        border-radius: 50%!important;
-                        white-space: nowrap;
-                        text-indent: 200%;
-                        overflow: hidden;
-                        background-image: url(/assets/img/write-i.png);
-                        background-size: 34px;
-                        background-position: center 40%;
-                        background-repeat: no-repeat;
-                    }
-                }
-
-            </style>
             <div class="btn-right">
                 <button type="button" class="m-btn mt10 writeBtn">글쓰기</button>
             </div>
         </div>
-        <ul class="pagination">
-            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
-            <li class="page-item"><a class="page-link active" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
-            <li class="page-item"><a class="page-link" href="#">7</a></li>
-            <li class="page-item"><a class="page-link" href="#">8</a></li>
-            <li class="page-item"><a class="page-link" href="#">9</a></li>
-            <li class="page-item"><a class="page-link" href="#">10</a></li>
-            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
-        </ul>
+
+        <!--페이지네이션-->
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
 
-    <script th:src="@{/assets/js/common.js(v='1.0.0')}"></script>
+    <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
         /*<![CDATA[*/

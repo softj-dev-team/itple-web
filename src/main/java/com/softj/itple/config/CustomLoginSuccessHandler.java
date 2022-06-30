@@ -2,7 +2,7 @@ package com.softj.itple.config;
 
 import com.softj.itple.entity.Admin;
 import com.softj.itple.entity.Student;
-import com.softj.itple.entity.Types;
+import com.softj.itple.domain.Types;
 import com.softj.itple.entity.User;
 import com.softj.itple.repo.AdminRepo;
 import com.softj.itple.repo.StudentRepo;
@@ -13,7 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
