@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/layout">
+<head>
+    <title>잇플 커뮤니티</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="content">
+        <h1 class="responsiveH1">잇플 커뮤니티</h1>
+        <div class="tab clearfix">
+            <ul class="tab-ul">
+                <li th:classappend="${#strings.equals(params.boardType,'CODING') ? 'active' : ''}"><a href="/c1/p1">잇플 코딩</a></li>
+                <li th:classappend="${#strings.equals(params.boardType,'ENGLISH') ? 'active' : ''}"><a href="/c1/p1?boardType=ENGLISH">잇플 영어</a></li>
+            </ul>
+        </div>
+        <div class="content-in clearfix">
+            <div class="detailAdmin btn-right" sec:authorize="hasAuthority('ADMIN')">
+                <button class="s-btn btn-line">삭제</button>
+                <button class="s-btn btn-line mr5">수정</button>
+            </div>
+            <div class="detailTitle">
+                <p class="category">[강사 소통]</p>
+                <p class="titlewrap"><a href="#"><span class="title" data-reply="(1)">2022년 3월 7일 월요일 공지사항 안내</span></a></p>
+                <p class="artiInfo"><span class="nickname">잇플코딩학원</span><span class="date">22.03.24</span><span class="view">219</span><span class="up">10</span></p>
+            </div>
+            <div class="detailContents">
+                내용
+            </div>
+            <div class="detailInfo clearfix">
+                <div class="rightwrap">
+                    <button type="button"><i class="icon i-star"></i>추천</button>
+                    <button type="button"><i class="icon i-share"></i>공유</button>
+                </div>
+                <div class="leftwrap">
+                    <span class="replyNum">댓글 <span class="text-blue">157</span></span>
+                    <span class="up">추천 213</span>
+                </div>
+            </div>
+            <div class="detailReply">
+                <form action="">
+                    <div class="replyInputbox">
+                        <input type="text" placeholder="댓글을 입력해주세요."><button type="submit">입력</button>
+                    </div>
+                </form>
+                <div>
+                    <div class="replyWrap">
+                        <p class="replyName">김잇플</p>
+                        <p class="replyText">댓글 내용입니다.</p>
+                        <p class="replyInfo">
+                            <span>22.04.24 15:31</span>
+                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn">삭제</button></span>
+                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
+                        </p>
+                    </div>
+                    <div class="replyWrap">
+                        <p class="replyName">김잇플</p>
+                        <p class="replyText">댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다.</p>
+                        <p class="replyInfo">
+                            <span>22.04.24 15:31</span>
+                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn" class="rpremoveBtn">삭제</button></span>
+                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
+                        </p>
+                    </div>
+                    <div class="replyWrap re">
+                        <p class="replyName">김잇플</p>
+                        <p class="replyText">댓글 내용입니다.</p>
+                        <p class="replyInfo">
+                            <span>22.04.24 15:31</span>
+                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn">삭제</button></span>
+                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
+                        </p>
+                    </div>
+                    <div class="replyWrap">
+                        <p class="replyName">김잇플</p>
+                        <p class="replyText">댓글 내용입니다.</p>
+                        <p class="replyInfo">
+                            <span>22.04.24 15:31</span>
+                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn">삭제</button></span>
+                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
+                        </p>
+                    </div>
+                    <div class="replyWrap">
+                        <p class="replyName">김잇플</p>
+                        <p class="replyText">댓글 내용입니다.</p>
+                        <p class="replyInfo">
+                            <span>22.04.24 15:31</span>
+                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn">삭제</button></span>
+                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
+                        </p>
+                    </div>
+                </div>
+                <!--페이지네이션-->
+                <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+            </div>
+            <div class="btn-center Tbtn">
+                <button type="button" class="btn btn-gray" onclick="history.back();">목록으로</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                댓글을 삭제합니다.
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-red modalOff">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</th:block>
+</body>
+</html>

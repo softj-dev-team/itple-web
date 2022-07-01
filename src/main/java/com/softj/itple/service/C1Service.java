@@ -7,10 +7,8 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
-import com.softj.itple.entity.Board;
-import com.softj.itple.entity.QBoard;
-import com.softj.itple.entity.QBoardComment;
-import com.softj.itple.entity.QBoardStar;
+import com.softj.itple.entity.*;
+import com.softj.itple.repo.BoardCommentRepo;
 import com.softj.itple.repo.BoardRepo;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.StringUtils;
@@ -29,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 public class C1Service {
     private final JPAQueryFactory jpaQueryFactory;
     final private BoardRepo boardRepo;
+    final private BoardCommentRepo boardCommentRepo;
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Page<Board> getBoardList(SearchVO params, Pageable pageable){
@@ -73,6 +72,27 @@ public class C1Service {
         .offset(pageable.getOffset());
 
         return new PageImpl<Board>(query.fetch(), pageable, query.fetchCount());
+    }
+
+    public Board getBoard(SearchVO params){
+        QBoard qBoard = QBoard.board;
+        QBoardComment qBoardComment = QBoardComment.boardComment;
+        QBoardStar qBoardStar = QBoardStar.boardStar;
+        BooleanBuilder where = new BooleanBuilder().and(qBoard.isDeleted.eq(false).and(qBoard.boardType.eq(params.getBoardType())));
+
+        JPAQuery<Board> query = jpaQueryFactory.select(qBoard)
+        .from(qBoard)
+        .join(qBoard.boardFileList)
+        .fetchJoin()
+        .where(where);
+
+        return query.fetchOne();
+    }
+
+    public Page<BoardComment> getBoardCommentList(SearchVO params, Pageable pageable){
+        QBoardComment qBoardComment = QBoardComment.boardComment;
+        BooleanBuilder where = new BooleanBuilder().and(qBoardComment.board.id.eq(params.getId()));
+        return boardCommentRepo.findAll(where, pageable);
     }
 //
 //    public Board getBoard(SearchVO params){

@@ -3,6 +3,7 @@ package com.softj.itple.controller;
 import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
+import com.softj.itple.entity.Board;
 import com.softj.itple.service.C1Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +13,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/c1")
@@ -27,24 +30,39 @@ public class C1Controller {
     //목록
     @GetMapping("/p1")
     public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
-        params.setBoardType(Types.BoardType.CODING);
+        if(Objects.isNull(params.getBoardType())) {
+            params.setBoardType(Types.BoardType.CODING);
+        }
         model.addAttribute("list",c1Service.getBoardList(params, pageable));
         model.addAttribute("params",params);
         return "c1/c1p1";
     }
-    @RequestMapping("/p2")
-    public String p2(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
-        params.setBoardType(Types.BoardType.ENGLISH);
-        model.addAttribute("list",c1Service.getBoardList(params, pageable));
+    //상세
+    @GetMapping("/p1-detail/{id}")
+    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+        params.setId(id);
+        if(Objects.isNull(params.getBoardType())) {
+            params.setBoardType(Types.BoardType.CODING);
+        }
+        model.addAttribute("el", c1Service.getBoard(params));
+        model.addAttribute("list",c1Service.getBoardCommentList(params, pageable));
         model.addAttribute("params",params);
-        return "c1/c1p1";
+        return "c1/c1p1-detail";
     }
 
-    //삭제
-    @RequestMapping("/p1/d1")
-    @ResponseBody
-    public Response p1d1(ModelMap model, HttpSession session, SearchVO params){
-        return Response.builder()
-                .build();
+    //작성
+    @GetMapping("/p1-write/{id}")
+    public String p1write(@PathVariable long id, ModelMap model, SearchVO params){
+        params.setId(id);
+        if(Objects.isNull(params.getBoardType())) {
+            params.setBoardType(Types.BoardType.CODING);
+        }
+        Board el = Board.builder().build();
+        if(id!=0){
+            el = c1Service.getBoard(params);
+        }
+        model.addAttribute("el",el);
+        model.addAttribute("params",params);
+        return "c1/c1p1-write";
     }
 }

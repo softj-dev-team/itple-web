@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/c1")
+@RequestMapping("/api/c1")
 @RestController
 @RequiredArgsConstructor
 public class C1RestController {

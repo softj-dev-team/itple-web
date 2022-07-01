@@ -14,6 +14,7 @@ import java.util.List;
 @ToString
 @Table(name = "tb_board")
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Board extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)

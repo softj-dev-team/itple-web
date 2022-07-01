@@ -4,25 +4,6 @@
       layout:decorate="layout/layout">
 <head>
     <title>잇플 커뮤니티</title>
-    <style>
-        @media screen and (max-width:768px) {
-            .writeBtn{
-                position: fixed;
-                right:20px;
-                bottom:30px;
-                width:70px!important;
-                height:70px!important;
-                border-radius: 50%!important;
-                white-space: nowrap;
-                text-indent: 200%;
-                overflow: hidden;
-                background-image: url(/assets/img/write-i.png);
-                background-size: 34px;
-                background-position: center 40%;
-                background-repeat: no-repeat;
-            }
-        }
-    </style>
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -31,14 +12,13 @@
         <div class="tab clearfix">
             <ul class="tab-ul">
                 <li th:classappend="${#strings.equals(params.boardType,'CODING') ? 'active' : ''}"><a href="/c1/p1">잇플 코딩</a></li>
-                <li th:classappend="${#strings.equals(params.boardType,'ENGLISH') ? 'active' : ''}"><a href="/c1/p1?boardType=ENGLISH">잇플 영어</a></li>
+                <li th:classappend="${#strings.equals(params.boardType,'ENGLISH') ? 'active' : ''}"><a href="/c1/p2">잇플 영어</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">
             <div class="search clearfix">
                 <form id="form1" class="search-in">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
-                    <input type="hidden" id="boardType" name="boardType" th:value="${params.boardType}">
                     <div class="in-box">
                         <select name="searchType">
                             <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">제목</option>
@@ -55,7 +35,7 @@
                     <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
                     <div class="rightwrap">
                         <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|"></p>
-                        <p class="titlewrap"><a th:href="|/c1/p1-detail/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
+                        <p class="titlewrap"><a th:href="|/c1/p1/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
                         <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
                     </div>
                 </li>
