@@ -53,9 +53,9 @@
                 <li th:each="el : ${list}">
                     <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
                     <div class="rightwrap">
-                        <p class="category" th:text="|[${el.boardCategory.message}]|"></p>
+                        <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|"></p>
                         <p class="titlewrap"><a th:href="|/c1/p1/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
-                        <p class="artiInfo"><span class="nickname" th:text="${el.student.name}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
+                        <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
                     </div>
                 </li>
             </ul>

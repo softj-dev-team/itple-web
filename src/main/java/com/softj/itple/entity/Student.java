@@ -15,8 +15,6 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Student extends Auditing{
-    private String name;
-
     @OneToOne
     private User user;
 }

@@ -19,6 +19,7 @@ import java.util.Set;
 public class User extends Auditing{
     private String userId;
     private String userPw;
+    private String userName;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)

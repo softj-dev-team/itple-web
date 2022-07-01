@@ -45,7 +45,7 @@ public class C1Service {
                     where.and(qBoard.contents.contains(params.getSearchValue()));
                     break;
                 case "user":
-                    where.and(qBoard.student.name.contains(params.getSearchValue()));
+                    where.and(qBoard.user.userName.contains(params.getSearchValue()));
                     break;
             }
         }
@@ -56,7 +56,7 @@ public class C1Service {
                 qBoard.subject,
                 qBoard.boardCategory,
                 qBoard.viewCount,
-                qBoard.student,
+                qBoard.user,
                 ExpressionUtils.as(
                         JPAExpressions.select(qBoardComment.count())
                                 .from(qBoardComment)

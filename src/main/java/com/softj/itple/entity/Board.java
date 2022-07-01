@@ -17,11 +17,10 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Board extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
-    private Student student;
+    private User user;
     @Convert(converter = Types.BoardType.Converter.class)
-    Types.BoardType boardType;
-    @Convert(converter = Types.BoardCategory.Converter.class)
-    Types.BoardCategory boardCategory;
+    private Types.BoardType boardType;
+    private String boardCategory;
     private String subject;
     private String thumbnail;
     private String contents;
