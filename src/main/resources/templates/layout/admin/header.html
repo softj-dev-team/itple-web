@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<th:block th:fragment="header">
+    <header class="header clearfix">
+        <h1 class="logo"><a href="indexAdmin.html">잇플</a></h1>
+        <div class="nav-out">
+            <ul class="gnb clearfix">
+                <li class="lnbBgN"><a href="bookListAdmin.html">출판서적</a></li>
+                <li>
+                    <a href="taskListAdmin.html">수업연계</a>
+                    <ul class="lnb">
+                        <li><a href="taskListAdmin.html">과제</a></li>
+                        <li><a href="reportAdmin.html">독후감</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="studList.html">학생관리</a>
+                    <ul class="lnb">
+                        <li><a href="studList.html">재원생</a></li>
+                        <li><a href="leaveList.html">휴원생</a></li>
+                        <li><a href="dischargeList.html">퇴원생</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="attendance.html">출결관리</a>
+                    <ul class="lnb">
+                        <li><a href="attendance.html">출결관리</a></li>
+                        <li><a href="">출석페이지</a></li>
+                    </ul>
+                </li>
+                <li class="lnbBgN"><a href="payment.html">수납관리</a></li>
+                <li><a href="portfolioList.html">포트폴리오</a>
+                    <ul class="lnb">
+                        <li><a href="portfolioList.html">재원생</a></li>
+                        <li><a href="leavePortfolio.html">휴원생</a></li>
+                        <li><a href="dischargePortfoliot.html">퇴원생</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="communityList.html">잇플 커뮤니티</a>
+                    <ul class="lnb">
+                        <li><a href="communityList.html">잇플코딩</a></li>
+                        <li><a href="">잇플영어</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="hd-logout">
+                <button type="button" class="logout-btn">로그아웃</button>
+            </div>
+        </div>
+        <div class="right-btn-box">
+            <button class="ham-btn"></button>
+        </div>
+    </header>
+    <div class="ham">
+        <div class="right-bg"></div>
+        <div class="ham-nav">
+            <div class="ham-hd">
+                <button class="ham-close"></button>
+                <a href="../sub/myinfo.html" class="setting"></a>
+            </div>
+            <div class="ham-con">
+                <p><span class="user-name">김잇플</span> 님</p>
+                <ul class="ham-gnb">
+                    <li><a href="bookListAdmin.html">출판서적</a></li>
+                    <li><button class="bot-btn"></button>
+                        <a href="taskListAdmin.html">수업연계</a>
+                        <ul class="ham-lnb">
+                            <li><a href="taskListAdmin.html">과제</a></li>
+                            <li><a href="reportAdmin.html">독후감</a></li>
+                        </ul>
+                    </li>
+                    <li><button class="bot-btn"></button>
+                        <a href="studList.html">학생관리</a>
+                        <ul class="ham-lnb li3">
+                            <li><a href="studList.html">재원생</a></li>
+                            <li><a href="leaveList.html">휴원생</a></li>
+                            <li><a href="dischargeList.html">퇴원생</a></li>
+                        </ul>
+                    </li>
+                    <li><button class="bot-btn"></button>
+                        <a href="attendance.html">출결관리</a>
+                        <ul class="ham-lnb">
+                            <li><a href="attendance.html">출결관리</a></li>
+                            <li><a href="">출석페이지</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="payment.html">수납관리</a></li>
+                    <li><button class="bot-btn"></button>
+                        <a href="portfolioList.html">포트폴리오</a>
+                        <ul class="ham-lnb li3">
+                            <li><a href="portfolioList.html">재원생</a></li>
+                            <li><a href="leavePortfolio.html">휴원생</a></li>
+                            <li><a href="dischargePortfoliot.html">퇴원생</a></li>
+                        </ul>
+                    </li>
+                    <li><button class="bot-btn"></button>
+                        <a href="communityList.html">잇플 커뮤니티</a>
+                        <ul class="ham-lnb">
+                            <li><a href="communityList.html">잇플코딩</a></li>
+                            <li><a href="">잇플영어</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>

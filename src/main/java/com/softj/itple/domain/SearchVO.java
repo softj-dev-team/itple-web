@@ -16,5 +16,8 @@ public class SearchVO {
 	//게시판
 	private Types.BoardType boardType;
 	private String subject;
+
+	//관리자-출판서적
+	private String writer;
 }
 

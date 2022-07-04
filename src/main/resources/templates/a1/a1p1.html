@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/layout">
+<head>
+    <title>잇플 출판서적목록</title>
+</head>
+<body class="adminBody">
+<th:block layout:fragment="content">
+    <div class="adContent">
+        <h1 class="adH1">출판서적</h1>
+        <div class="content-in clearfix">
+            <div class="adSearch clearfix">
+                <form id="form1" action="" class="adSearch-in">
+                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                    <div class="in-box">
+                         <select name="" id="">
+                            <option value="">전체</option>
+                            <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">책제목</option>
+                            <option value="writer" th:selected="${#strings.equals(param.searchType, 'writer')}">저자</option>
+                        </select>
+                        <input type="text" name="searchValue" th:value="${param.searchValue}">
+                    </div>
+                    <button type="button" class="src-btn" onclick="goSearch();"></button>
+                </form>
+            </div>
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                    <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                </div>
+                <div class="rightBox">
+                    <button type="button" class="m-btn btn-line" onclick="goAdd();">신규등록</button>
+                    <button type="button" class="m-btn QRBtn">QR촬영</button>
+                </div>
+            </div>
+            <table class="adTable list1">
+                <thead class="adTable-head">
+                    <tr>
+                        <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                        <th></th>
+                        <th>책 제목</th>
+                        <th>작가명</th>
+                        <th>대여기간</th>
+                        <th>대여자</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody class="adTable-body adTbody checklist">
+                    <tr th:each="el : ${list}">
+                        <td><input type="checkbox" id="ch1"><label for="ch1"></label></td>
+                        <td><div class="bookImg" th:style="|background-image: url('${el.thumbnail}');|"></div></td>
+                        <td><a href="|/a1/p1-detail/${el.id}|">정보 sw,로봇 영재원 대비 문제집</a></td>
+                        <td><span th:text="${el.writer}">작가명</span></td>
+                        <td><span th:text="${el.start_date + '~' + el.end_date}">대여기간</span></td>
+                        <td><span th:text="${el.writer}">대여자</span></td>
+                        <td><button type="button" class="btn btn-blue" onclick="taskList()">대여하기</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--페이지네이션-->
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    </div>
+
+    <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+        function goAdd(){
+            location.href = "/a1/p1-write";
+        }
+    </script>
+</th:block>
+</body>
+</html>

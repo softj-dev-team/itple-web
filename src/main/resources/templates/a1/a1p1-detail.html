@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/layout">
+<head>
+    <title>잇플 출판서적내용</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+<div class="responsiveWrap">
+    <h1 class="responsiveH1">도서 상세정보</h1>
+    <div class="responsiveInner">
+        <div class="filebox">
+            <div class="detailsIgm upFile" id="FileImg"onclick="fileupload();">
+                <div class="upFile-img" th:style="|background-image: url('${el.thumbnail}');|"></div>
+            </div>
+            <input type="file"  name="uploadBtn" class="uploadBtn"  id="image"  accept="image/*" onchange="setThumbnail(event);" style="display: none;">
+        </div>
+        <div class="detailsBox inputSec">
+            <label for="" class="mb5">책 제목</label>
+            <input type="text" th:value="${el.subject}" class="input-df mb20" >
+            <label for="" class="mb5">작가명</label>
+            <input type="text" th:value="${el.writer}" class="input-df mb20" >
+            <label for="" class="mb5">책 번호</label>
+            <input type="text" th:value="${el.book_no}" class="input-df mb20" >
+            <label for="" class="mb5">책 정보</label>
+            <textarea name="" id="" cols="30" rows="10" th:value="${el.contents}" th:text="${el.contents}">파이썬 첫걸음을 드론과 함께!</textarea>
+        </div>
+        <div class="btn-center mt60">
+            <button type="button" class="btn">저장하기</button>
+        </div>
+    </div>
+</div>
+</th:block>
+<script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
+<script th:inline="javascript">
+</script>
+</body>
+</html>
