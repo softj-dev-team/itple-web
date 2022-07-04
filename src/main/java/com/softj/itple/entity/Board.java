@@ -1,20 +1,24 @@
 package com.softj.itple.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.softj.itple.domain.Types;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@ToString
+@ToString(exclude = "user")
 @Table(name = "tb_board")
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Board extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,8 +35,28 @@ public class Board extends Auditing{
     @NotFound(action = NotFoundAction.IGNORE)
     private List<BoardFile> boardFileList;
 
+    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private List<BoardComment> boardCommentList;
+
     @Transient
     private long commentCount;
     @Transient
     private long starCount;
+
+    @Builder
+    public Board(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, Types.BoardType boardType, String boardCategory, String subject, String thumbnail, String contents, long viewCount, List<BoardFile> boardFileList, List<BoardComment> boardCommentList, long commentCount, long starCount) {
+        super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
+        this.user = user;
+        this.boardType = boardType;
+        this.boardCategory = boardCategory;
+        this.subject = subject;
+        this.thumbnail = thumbnail;
+        this.contents = contents;
+        this.viewCount = viewCount;
+        this.boardFileList = boardFileList;
+        this.boardCommentList = boardCommentList;
+        this.commentCount = commentCount;
+        this.starCount = starCount;
+    }
 }

@@ -1,4 +1,4 @@
-var path =  '/c1/p1';
+var path =  '/api/c1/p1';
 
 $(function(){
     $("#form1 input").on("keyup",function(e){
@@ -18,7 +18,7 @@ function goReset(flag){
     goSearch();
 }
 
-function goAction(flag, arg1, arg2) {
+function goAction(flag, arg1, arg2, arg3, arg4) {
     var form = $('#form1');
 
     switch (flag) {
@@ -38,26 +38,39 @@ function goAction(flag, arg1, arg2) {
                 });
             });
             break;
-        case "Q1":
-
+        /*댓 저장*/
+        case "S2":
+            if(ut.isEmpty($(arg4).siblings('input').val())){
+                modal.required("내용");
+                return;
+            }
+            $.post(path+'/s2',{id: arg1, upperId: arg2, commentId: arg3, contents: $(arg4).siblings('input').val()},function(res){
+                location.reload();
+            });
+            break;
+        case "U1":
+            $.post(`${path}/u1`,{id:arg1},function(){
+               location.reload();
+            });
             break;
         case "E1":
 
             break;
         /*삭제*/
         case "D1":
-            if($("input[name=seqList]:checked").length == 0){
-                modal.alert("체크한 데이터가 없습니다.");
-                return;
-            }
-            modal.confirm(null,"체크한 데이터를 삭제하시겠습니까?",function(){
-                loading(1);
-                $.post(path+'/d1',form.serialize(),function(){
-                    modal.alert('삭제되었습니다.');
-                    reload();
+            modal.confirm("삭제하시겠습니까?",function(){
+                $.post(`${path}/d1`,{id:arg1},function(){
+                    ut.redirect('/c1/p1');
                 });
             });
-
+            break;
+        /*댓 삭제*/
+        case "D2":
+            modal.confirm("삭제하시겠습니까?",function(){
+                $.post(`${path}/d2`,{id:arg1},function(){
+                    location.reload();
+                });
+            });
             break;
         /*팝업*/
         case "P1":

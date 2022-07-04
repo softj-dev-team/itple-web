@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="layout/layout">
 <head>
     <title>잇플 커뮤니티</title>
@@ -61,7 +62,7 @@
                 </li>
             </ul>
             <div class="btn-right">
-                <button type="button" class="m-btn mt10 writeBtn">글쓰기</button>
+                <button type="button" class="m-btn mt10 writeBtn" onclick="ut.redirect('/c1/p1-write/0')">글쓰기</button>
             </div>
         </div>
 

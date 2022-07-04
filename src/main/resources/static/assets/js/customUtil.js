@@ -665,3 +665,9 @@ ut.isEmptyForm = function(formId,excluedeNames = []){
 	});
 	return isEmptyForm;
 }
+ut.copyStr = function(str){
+	$("body").after("<textarea id='tmp'></textarea>");
+	$("#tmp").val(str).select();
+	document.execCommand('copy');
+	$("#tmp").remove();
+}

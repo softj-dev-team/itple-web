@@ -1,52 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="layout/layout">
 <head>
+    <!-- 썸머노트 -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
     <title>잇플 커뮤니티</title>
 </head>
 <body>
 <th:block layout:fragment="content">
     <div class="content">
-        <h1 class="responsiveH1">잇플 커뮤니티</h1>
-        <div class="tab clearfix">
-            <ul class="tab-ul">
-                <li th:classappend="${#strings.equals(params.boardType,'CODING') ? 'active' : ''}"><a href="/c1/p1">잇플 코딩</a></li>
-                <li th:classappend="${#strings.equals(params.boardType,'ENGLISH') ? 'active' : ''}"><a href="/c1/p2">잇플 영어</a></li>
-            </ul>
-        </div>
+        <h1 class="responsiveH1 subH1">커뮤니티 글 쓰기</h1>
         <div class="content-in clearfix">
-            <div class="search clearfix">
-                <form id="form1" class="search-in">
-                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
-                    <div class="in-box">
-                        <select name="searchType">
-                            <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">제목</option>
-                            <option value="contents" th:selected="${#strings.equals(param.searchType, 'contents')}">내용</option>
-                            <option value="user" th:selected="${#strings.equals(param.searchType, 'user')}">글쓴이</option>
-                        </select>
-                        <input type="text" name="searchValue" th:value="${param.searchValue}">
+            <div class="writeCon">
+                <div class="writeHead2">
+                    <select name="" id="" class="select-md">
+                        <option value="잇플 코딩 게시판">잇플 코딩 게시판</option>
+                        <option value="잇플 영어 게시판">잇플 영어 게시판</option>
+                    </select>
+                    <select name="" id="" class="select-md">
+                        <option value="수업">수업</option>
+                        <option value="공지사항">공지사항</option>
+                        <option value="학부모 소통">학부모 소통</option>
+                    </select>
+                    <input type="text" placeholder="제목을 입력하세요." class="input-df">
+                </div>
+                <div>
+                    <textarea id="summernote"></textarea>
+                    <div class="fileBox">
+                        <form action="">
+                            <div class="fileHead">
+                                <p>첨부파일</p>
+                                <div class="file-btn">
+                                    <button type="button" class="chRemove">선택삭제</button>
+                                    <input type="file" multiple="multiple" class="" id="fileInput">
+                                    <label for="fileInput" class="fileBtn">파일첨부</label>
+                                </div>
+                            </div>
+                            <ul class="fileUP" id="articlefileChange">
+                            </ul>
+                        </form>
                     </div>
-                    <button type="button" class="src-btn" onclick="goSearch();"></button>
-                </form>
+                </div>
             </div>
-            <ul class="commuListUl">
-                <li th:each="el : ${list}">
-                    <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
-                    <div class="rightwrap">
-                        <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|"></p>
-                        <p class="titlewrap"><a th:href="|/c1/p1/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
-                        <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
-                    </div>
-                </li>
-            </ul>
-            <div class="btn-right">
-                <button type="button" class="m-btn mt10 writeBtn">글쓰기</button>
+            <div class="btn-center Tbtn">
+                <button type="submit" class="btn submitBtn">작성하기</button>
             </div>
         </div>
-
-        <!--페이지네이션-->
-        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
 
     <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
@@ -54,6 +56,122 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         /*]]>*/
+
+        //summernote
+        $(document).ready(function (){
+            $('#summernote').summernote({
+                tabsize: 2,
+                height: 350,
+                lang: 'ko-KR'
+            });
+        });
+        $('.submitBtn').on('click', function () {
+            $('.modal').addClass('on');
+        });
+        $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+            $(this).parents('.modal').removeClass('on');
+        })
+
+
+        //파일첨부
+        $(document).ready(function() {
+            $("#fileInput").on("change", fileCheck);
+        });
+        // 파일 현재 필드 숫자 totalCount랑 비교값
+        var fileCount = 0;
+        // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+        var totalCount = 10;
+        // 파일 고유넘버
+        var fileNum = 0;
+        // 첨부파일 배열
+        var content_files = new Array();
+
+        function fileCheck(e) {
+            var files = e.target.files;
+
+            // 파일 배열 담기
+            var filesArr = Array.prototype.slice.call(files);
+
+            // 파일 개수 확인 및 제한
+            if (fileCount + filesArr.length > totalCount) {
+                alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+                return;
+            } else {
+                fileCount = fileCount + filesArr.length;
+            }
+
+            // 각각의 파일 배열담기 및 기타
+            filesArr.forEach(function (f) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    content_files.push(f);
+                    $('#articlefileChange').append(
+                        '<li file-value="' + fileNum + '"><input type="checkbox" id="file-ch'+fileNum+'" value="'+fileNum+'"><label for="file-ch'+fileNum+'"><span>' + f.name + '</span></label></li>'
+                    );
+                    fileNum ++;
+                };
+                reader.readAsDataURL(f);
+            });
+            console.log(content_files);
+            //초기화 한다.
+            $("#fileInput").val("");
+        }
+
+        // 파일 부분 삭제 함수
+
+        $('.chRemove').click(function(){
+            if(confirm("삭제하시겠습니까?")){
+                $(".fileUP input[type=checkbox]:checked").each(function(){
+                    var tr_value =$(this).val();
+                    var tr=$("li[file-value='"+tr_value+"']");
+                    var no = tr_value.replace(/[^0-9]/g, "");
+                    content_files[no].is_delete = true;
+
+                    tr.remove();
+                    fileCount --;
+                    console.log(content_files);
+                });
+            }else{
+                return false;
+            }
+        });
+
+        /*
+         * 폼 submit 로직
+         */
+        function registerAction(){
+
+            var form = $("form")[0];
+            var formData = new FormData(form);
+            for (var x = 0; x < content_files.length; x++) {
+                // 삭제 안한것만 담아 준다.
+                if(!content_files[x].is_delete){
+                    formData.append("article_file", content_files[x]);
+                }
+            }
+            /*
+            * 파일업로드 multiple ajax처리
+            */
+            $.ajax({
+                type: "POST",
+                enctype: "multipart/form-data",
+                url: "/file-upload",
+                data : formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if(JSON.parse(data)['result'] == "OK"){
+                        alert("파일업로드 성공");
+                    } else
+                        alert("서버내 오류로 처리가 지연되고있습니다. 잠시 후 다시 시도해주세요");
+                },
+                error: function (xhr, status, error) {
+                    alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+                    return false;
+                }
+            });
+            return false;
+        }
     </script>
 </th:block>
 </body>

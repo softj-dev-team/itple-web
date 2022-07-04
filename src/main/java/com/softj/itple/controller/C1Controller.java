@@ -41,12 +41,13 @@ public class C1Controller {
     @GetMapping("/p1-detail/{id}")
     public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
         params.setId(id);
-        if(Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.BoardType.CODING);
-        }
-        model.addAttribute("el", c1Service.getBoard(params));
+        Board el = c1Service.getBoard(params);
+        params.setBoardType(el.getBoardType());
+        model.addAttribute("el", el);
         model.addAttribute("list",c1Service.getBoardCommentList(params, pageable));
+        model.addAttribute("isStar",c1Service.isStar(params));
         model.addAttribute("params",params);
+        c1Service.viewBoard(params);
         return "c1/c1p1-detail";
     }
 
@@ -54,14 +55,7 @@ public class C1Controller {
     @GetMapping("/p1-write/{id}")
     public String p1write(@PathVariable long id, ModelMap model, SearchVO params){
         params.setId(id);
-        if(Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.BoardType.CODING);
-        }
-        Board el = Board.builder().build();
-        if(id!=0){
-            el = c1Service.getBoard(params);
-        }
-        model.addAttribute("el",el);
+        model.addAttribute("el",c1Service.getBoard(params));
         model.addAttribute("params",params);
         return "c1/c1p1-write";
     }
