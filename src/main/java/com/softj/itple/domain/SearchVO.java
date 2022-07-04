@@ -16,5 +16,8 @@ public class SearchVO {
 	//게시판
 	private Types.BoardType boardType;
 	private String subject;
+	private String contents;
+	private Long upperId;
+	private Long commentId;
 }
 

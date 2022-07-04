@@ -2,6 +2,7 @@ package com.softj.itple.util;
 
 import com.softj.itple.entity.Admin;
 import com.softj.itple.entity.Student;
+import com.softj.itple.entity.User;
 import com.softj.itple.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,18 @@ public class AuthUtil {
         ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession httpSession = servletRequestAttribute.getRequest().getSession(true);
         return (Admin)httpSession.getAttribute("adminVO");
+    }
+
+    public static long getUserId() {
+        ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession httpSession = servletRequestAttribute.getRequest().getSession(true);
+        return (long)httpSession.getAttribute("userId");
+    }
+
+    public static User getUser() {
+        ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession httpSession = servletRequestAttribute.getRequest().getSession(true);
+        return User.builder().id((long)httpSession.getAttribute("userId")).build();
     }
 
     public static Student getStudent() {

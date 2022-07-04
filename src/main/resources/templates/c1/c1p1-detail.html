@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="layout/layout">
 <head>
     <title>잇플 커뮤니티</title>
 </head>
 <body>
 <th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+        <input type="hidden" id="boardType" name="boardType" th:value="${params.boardType}">
+    </form>
     <div class="content">
-        <h1 class="responsiveH1">잇플 커뮤니티</h1>
+        <h1 class="responsiveH1" >잇플 커뮤니티</h1>
         <div class="tab clearfix">
             <ul class="tab-ul">
                 <li th:classappend="${#strings.equals(params.boardType,'CODING') ? 'active' : ''}"><a href="/c1/p1">잇플 코딩</a></li>
@@ -16,100 +21,64 @@
             </ul>
         </div>
         <div class="content-in clearfix">
-            <div class="detailAdmin btn-right" sec:authorize="hasAuthority('ADMIN')">
-                <button class="s-btn btn-line">삭제</button>
-                <button class="s-btn btn-line mr5">수정</button>
+            <div class="detailAdmin btn-right" th:if="${session.adminVO != null or el.user.id == session.userId}">
+                <button class="s-btn btn-line" th:onclick="|goAction('D1',${el.id})|">삭제</button>
+                <button class="s-btn btn-line mr5" th:onclick="|location.href='/c1/p1-write/${el.id}'|">수정</button>
             </div>
             <div class="detailTitle">
-                <p class="category">[강사 소통]</p>
-                <p class="titlewrap"><a href="#"><span class="title" data-reply="(1)">2022년 3월 7일 월요일 공지사항 안내</span></a></p>
-                <p class="artiInfo"><span class="nickname">잇플코딩학원</span><span class="date">22.03.24</span><span class="view">219</span><span class="up">10</span></p>
+                <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|">[강사 소통]</p>
+                <p class="titlewrap"><a href="#"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">2022년 3월 7일 월요일 공지사항 안내</span></a></p>
+                <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
             </div>
-            <div class="detailContents">
+            <div class="detailContents" th:utext="${el.contents}">
                 내용
             </div>
             <div class="detailInfo clearfix">
                 <div class="rightwrap">
-                    <button type="button"><i class="icon i-star"></i>추천</button>
-                    <button type="button"><i class="icon i-share"></i>공유</button>
+                    <button type="button" th:onclick="|goAction('U1','${el.id}')|"><i class="icon" th:classappend="${isStar ? 'i-star':'up'}"></i>추천</button>
+                    <button type="button" onclick="copy(location.href)"><i class="icon i-share"></i>공유</button>
                 </div>
                 <div class="leftwrap">
-                    <span class="replyNum">댓글 <span class="text-blue">157</span></span>
-                    <span class="up">추천 213</span>
+                    <span class="replyNum">댓글 <span class="text-blue" th:text="${el.commentCount}">157</span></span>
+                    <span class="up" th:text="|추천 ${el.starCount}|">추천 213</span>
                 </div>
             </div>
             <div class="detailReply">
                 <form action="">
                     <div class="replyInputbox">
-                        <input type="text" placeholder="댓글을 입력해주세요."><button type="submit">입력</button>
+                        <input type="text" placeholder="댓글을 입력해주세요."><button type="button" th:onclick="|goAction('S2',${el.id}, 0, 0, this)|">입력</button>
                     </div>
                 </form>
-                <div>
+                <th:block th:each="comment : ${list}">
                     <div class="replyWrap">
-                        <p class="replyName">김잇플</p>
-                        <p class="replyText">댓글 내용입니다.</p>
+                        <p class="replyName" th:text="${comment.user.userName}">김잇플</p>
+                        <p class="replyText" th:text="${comment.contents}">댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다.</p>
                         <p class="replyInfo">
-                            <span>22.04.24 15:31</span>
-                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn">삭제</button></span>
-                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
+                            <span th:text="${#temporals.format(comment.createdAt,'yyyy.MM.dd HH:mm')}">22.04.24 15:31</span>
+                            <th:block th:if="${session.adminVO != null or comment.user.id == session.userId}">
+                            <span><button type="button" class="modiBtn" th:attr="data-id=${comment.id}">수정</button>│<button type="button" class="rpremoveBtn" th:onclick="|goAction('D2','${comment.id}')|">삭제</button></span>
+                            </th:block>
+                            <span><button type="button" class="rpBtn" th:attr="data-id=${comment.id}">답글쓰기</button></span>
                         </p>
                     </div>
-                    <div class="replyWrap">
-                        <p class="replyName">김잇플</p>
-                        <p class="replyText">댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다.</p>
-                        <p class="replyInfo">
-                            <span>22.04.24 15:31</span>
-                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn" class="rpremoveBtn">삭제</button></span>
-                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
-                        </p>
-                    </div>
-                    <div class="replyWrap re">
-                        <p class="replyName">김잇플</p>
-                        <p class="replyText">댓글 내용입니다.</p>
-                        <p class="replyInfo">
-                            <span>22.04.24 15:31</span>
-                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn">삭제</button></span>
-                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
-                        </p>
-                    </div>
-                    <div class="replyWrap">
-                        <p class="replyName">김잇플</p>
-                        <p class="replyText">댓글 내용입니다.</p>
-                        <p class="replyInfo">
-                            <span>22.04.24 15:31</span>
-                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn">삭제</button></span>
-                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
-                        </p>
-                    </div>
-                    <div class="replyWrap">
-                        <p class="replyName">김잇플</p>
-                        <p class="replyText">댓글 내용입니다.</p>
-                        <p class="replyInfo">
-                            <span>22.04.24 15:31</span>
-                            <span><button type="button" class="modiBtn">수정</button>│<button type="button" class="rpremoveBtn">삭제</button></span>
-                            <span><button type="button" class="rpBtn">답글쓰기</button></span>
-                        </p>
-                    </div>
-                </div>
+                    <th:block th:each="commentChild : ${comment.children}">
+                        <div class="replyWrap re">
+                            <p class="replyName" th:text="${commentChild.user.userName}">김잇플</p>
+                            <p class="replyText" th:text="${commentChild.contents}">댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다.</p>
+                            <p class="replyInfo">
+                                <span th:text="${#temporals.format(commentChild.createdAt,'yyyy.MM.dd HH:mm')}">22.04.24 15:31</span>
+                                <th:block th:if="${session.adminVO != null or commentChild.user.id == session.userId}">
+                                <span><button type="button" class="modiBtn" th:attr="data-id=${commentChild.id}">수정</button>│<button type="button" class="rpremoveBtn" th:onclick="|goAction('D2','${commentChild.id}')|">삭제</button></span>
+                                </th:block>
+                            </p>
+                        </div>
+                    </th:block>
+                </th:block>
                 <!--페이지네이션-->
                 <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
             </div>
             <div class="btn-center Tbtn">
-                <button type="button" class="btn btn-gray" onclick="history.back();">목록으로</button>
-            </div>
-        </div>
-    </div>
-    <div class="modal">
-        <div class="modal-bg"></div>
-        <div class="modalContent xs">
-            <div class="modalHd">
-                <button class="modalClose"></button>
-            </div>
-            <div class="modalBody">
-                댓글을 삭제합니다.
-                <div class="modalBtnWrap">
-                    <button type="button" class="btn btn-red modalOff">삭제</button>
-                </div>
+                <button type="button" class="btn btn-gray" onclick="ut.redirect('/c1/p1', 'boardType', $('#boardType').val())">목록으로</button>
             </div>
         </div>
     </div>
@@ -118,7 +87,38 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
+        var boardId = /*[[${el.id}]]*/0;
         /*]]>*/
+
+
+        $(document).on("click", ".rpBtn", function (){
+            var parentId = $(this).data("id");
+            var re = $(this).parents(".replyWrap").next(".replyWrap")
+            if(re.hasClass('input')){
+                re.remove();
+            }else{
+                $(this).parents(".replyWrap").after(`<div class="replyWrap input"><div class="replyInputbox"><form action=""><input type="text" placeholder="댓글을 입력해주세요."><button type="button" onclick="goAction('S2', ${boardId}, ${parentId}, 0, this)">입력</button></form></div></div>`)
+            }
+        });
+        $(document).on("click", ".modiBtn", function (){
+            var commentId = $(this).data("id");
+            var rp = $(this).parents(".replyWrap").find(".replyText")
+            var modiform = $(this).parents('.replyWrap').find('.replyInputbox')
+            if(modiform.length >0){
+                console.log('already modifying')
+                rp.show();
+                modiform.remove();
+            }else{
+                rp.after(`<div class="replyInputbox"><form action=""><input type="text" value="${rp.text()}"><button type="button" class="modiCom" onclick="goAction('S2', ${boardId}, 0, ${commentId}, this)">수정</button></form></div>`);
+                rp.hide();
+            }
+        });
+        $(document).on("click", ".modiCom", function (){
+            var rp = $(this).parents(".replyWrap").find(".replyText")
+            var modirp = $(this).siblings("input").val();
+            rp.text(modirp).show();
+            $(this).parents(".replyInputbox").remove();
+        });
     </script>
 </th:block>
 </body>

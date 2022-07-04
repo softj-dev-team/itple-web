@@ -10,7 +10,9 @@ import com.softj.itple.domain.SearchVO;
 import com.softj.itple.entity.*;
 import com.softj.itple.repo.BoardCommentRepo;
 import com.softj.itple.repo.BoardRepo;
+import com.softj.itple.repo.BoardStarRepo;
 import com.softj.itple.util.AuthUtil;
+import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import org.springframework.data.querydsl.QSort;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class C1Service {
     private final JPAQueryFactory jpaQueryFactory;
     final private BoardRepo boardRepo;
     final private BoardCommentRepo boardCommentRepo;
+    final private BoardStarRepo boardStarRepo;
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Page<Board> getBoardList(SearchVO params, Pageable pageable){
@@ -75,24 +79,64 @@ public class C1Service {
     }
 
     public Board getBoard(SearchVO params){
-        QBoard qBoard = QBoard.board;
-        QBoardComment qBoardComment = QBoardComment.boardComment;
-        QBoardStar qBoardStar = QBoardStar.boardStar;
-        BooleanBuilder where = new BooleanBuilder().and(qBoard.isDeleted.eq(false).and(qBoard.boardType.eq(params.getBoardType())));
-
-        JPAQuery<Board> query = jpaQueryFactory.select(qBoard)
-        .from(qBoard)
-        .join(qBoard.boardFileList)
-        .fetchJoin()
-        .where(where);
-
-        return query.fetchOne();
+        Board el = boardRepo.findById(params.getId()).orElse(Board.builder().build());
+        if(LongUtils.noneEmpty(el.getId())) {
+            el.setCommentCount(boardCommentRepo.countByBoard(el));
+            el.setStarCount(boardStarRepo.countByBoard(el));
+        }
+        return el;
     }
 
     public Page<BoardComment> getBoardCommentList(SearchVO params, Pageable pageable){
         QBoardComment qBoardComment = QBoardComment.boardComment;
-        BooleanBuilder where = new BooleanBuilder().and(qBoardComment.board.id.eq(params.getId()));
+        BooleanBuilder where = new BooleanBuilder().and(qBoardComment.board.id.eq(params.getId()).and(qBoardComment.parent.isNull()));
         return boardCommentRepo.findAll(where, pageable);
+    }
+
+    public void deleteBoard(SearchVO params){
+        boardRepo.deleteById(params.getId());
+    }
+
+    public boolean isStar(SearchVO params){
+        return !Objects.isNull(boardStarRepo.findByUserIdAndBoardId(AuthUtil.getUserId(), params.getId()));
+    }
+
+    public void toggleStar(SearchVO params){
+        BoardStar el = boardStarRepo.findByUserIdAndBoardId(AuthUtil.getUserId(), params.getId());
+        if(Objects.isNull(el)){
+            boardStarRepo.save(BoardStar.builder()
+                    .board(Board.builder().id(params.getId()).build())
+                    .user(User.builder().id(AuthUtil.getUserId()).build())
+                    .build());
+        }else{
+            boardStarRepo.delete(el);
+        }
+    }
+
+    public void deleteBoardComment(SearchVO params){
+        boardCommentRepo.deleteById(params.getId());
+    }
+
+    public void saveBoardComment(SearchVO params){
+        BoardComment save = BoardComment.builder().build();
+        BoardComment parent = null;
+        if(LongUtils.noneEmpty(params.getCommentId())){
+            save = boardCommentRepo.findById(params.getCommentId()).get();
+        }
+        save.setBoard(Board.builder().id(params.getId()).build());
+        if(LongUtils.noneEmpty(params.getUpperId())){
+            parent = boardCommentRepo.findById(params.getUpperId()).get();
+            save.setParent(parent);
+        }
+        save.setContents(params.getContents());
+        save.setUser(AuthUtil.getUser());
+        boardCommentRepo.save(save);
+    }
+
+    public void viewBoard(SearchVO params){
+        Board save = boardRepo.findById(params.getId()).get();
+        save.setViewCount(save.getViewCount()+1L);
+        boardRepo.save(save);
     }
 //
 //    public Board getBoard(SearchVO params){

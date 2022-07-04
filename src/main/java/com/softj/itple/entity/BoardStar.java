@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @ToString
 @Table(name = "tb_board_star")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class BoardStar extends Auditing{

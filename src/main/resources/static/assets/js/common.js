@@ -1,3 +1,23 @@
+$(function(){
+    $("#chkAll").on("click",function(){
+        $("input[name=idList]").prop("checked",$(this).prop("checked"));
+    });
+
+    $(document).ajaxSend(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+        loading(1);
+    });
+    $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+        console.log(event, xhr, ajaxOptions, thrownError);
+        modal.alert("에러가 발생했습니다.");
+    });
+    $(document).ajaxComplete(function myCompleteHandler(event, xhr, ajaxOptions, thrownError) {
+        loading(0);
+        if(xhr.status == 200 && xhr.responseText.startsWith("<!DOCTYPE html>")){
+            modal.alert("로그인이 필요합니다.<br>페이지 새로고침 하시면 로그인페이지로 이동합니다.");
+        }
+    });
+});
+
 window.addEventListener("load", function(){
     setTimeout(loaded, 100);
 
@@ -132,4 +152,8 @@ function modalOpen(id){
 }
 function modalCloseId(id){
     $("#"+id).removeClass("on");
+}
+function copy(url){
+    ut.copyStr(url ? url : location.href);
+    modal.alert("URL이 복사되었습니다.");
 }

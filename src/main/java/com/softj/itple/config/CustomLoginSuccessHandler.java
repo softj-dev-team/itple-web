@@ -52,6 +52,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         HttpSession session = request.getSession();
 	    session.setAttribute("adminVO", adminVO);
 	    session.setAttribute("studentVO", studentVO);
+	    session.setAttribute("userId", Long.parseLong(principal.getUsername()));
 
         super.onAuthenticationSuccess(request, response, authentication);
 	}
