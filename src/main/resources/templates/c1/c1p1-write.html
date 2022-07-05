@@ -16,14 +16,16 @@
         <div class="content-in clearfix">
             <div class="writeCon">
                 <div class="writeHead2">
-                    <select name="" id="" class="select-md">
-                        <option value="잇플 코딩 게시판">잇플 코딩 게시판</option>
-                        <option value="잇플 영어 게시판">잇플 영어 게시판</option>
+                    <select name="boardType" class="select-md">
+                        <option th:each="e : ${T(com.softj.itple.domain.Types.BoardType).values()}"
+                                th:value="${e}" th:text="${e.message}"
+                                th:selected="${el.boardType == e}">잇플 코딩 게시판</option>
                     </select>
-                    <select name="" id="" class="select-md">
-                        <option value="수업">수업</option>
-                        <option value="공지사항">공지사항</option>
-                        <option value="학부모 소통">학부모 소통</option>
+                    <select name="boardCategory" class="select-md">
+                        <option th:each="e : ${@codeUtil.getCodeList(1)}"
+                                th:if="${@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType)}"
+                                th:value="${e.codeValue}" th:text="${e.codeName}"
+                                th:selected="${el.boardCategory == e.codeValue}">잇플 코딩 게시판</option>
                     </select>
                     <input type="text" placeholder="제목을 입력하세요." class="input-df">
                 </div>

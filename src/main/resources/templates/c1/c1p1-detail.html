@@ -21,7 +21,7 @@
             </ul>
         </div>
         <div class="content-in clearfix">
-            <div class="detailAdmin btn-right" th:if="${session.adminVO != null or el.user.id == session.userId}">
+            <div class="detailAdmin btn-right" th:if="${@authUtil.isRole('ADMIN') or el.user.id == session.userId}">
                 <button class="s-btn btn-line" th:onclick="|goAction('D1',${el.id})|">삭제</button>
                 <button class="s-btn btn-line mr5" th:onclick="|location.href='/c1/p1-write/${el.id}'|">수정</button>
             </div>
@@ -55,7 +55,7 @@
                         <p class="replyText" th:text="${comment.contents}">댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다.</p>
                         <p class="replyInfo">
                             <span th:text="${#temporals.format(comment.createdAt,'yyyy.MM.dd HH:mm')}">22.04.24 15:31</span>
-                            <th:block th:if="${session.adminVO != null or comment.user.id == session.userId}">
+                            <th:block th:if="${@authUtil.isRole('ADMIN') or comment.user.id == session.userId}">
                             <span><button type="button" class="modiBtn" th:attr="data-id=${comment.id}">수정</button>│<button type="button" class="rpremoveBtn" th:onclick="|goAction('D2','${comment.id}')|">삭제</button></span>
                             </th:block>
                             <span><button type="button" class="rpBtn" th:attr="data-id=${comment.id}">답글쓰기</button></span>
@@ -67,7 +67,7 @@
                             <p class="replyText" th:text="${commentChild.contents}">댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다. 댓글 내용입니다.</p>
                             <p class="replyInfo">
                                 <span th:text="${#temporals.format(commentChild.createdAt,'yyyy.MM.dd HH:mm')}">22.04.24 15:31</span>
-                                <th:block th:if="${session.adminVO != null or commentChild.user.id == session.userId}">
+                                <th:block th:if="${@authUtil.isRole('ADMIN') or commentChild.user.id == session.userId}">
                                 <span><button type="button" class="modiBtn" th:attr="data-id=${commentChild.id}">수정</button>│<button type="button" class="rpremoveBtn" th:onclick="|goAction('D2','${commentChild.id}')|">삭제</button></span>
                                 </th:block>
                             </p>

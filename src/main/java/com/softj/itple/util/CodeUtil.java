@@ -15,17 +15,21 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class CodeUtil {
-    private final CodeDetailRepo tradingCodeRepo;
+    private final CodeDetailRepo codeRepo;
 
     private static final List<CodeDetail> codeList = new ArrayList<>();
 
     @PostConstruct
     public void init() {
-        codeList.addAll(tradingCodeRepo.findAll());
+        codeList.addAll(codeRepo.findAll());
     }
 
     public List<CodeDetail> getCodeList(long masterId){
         return codeList.stream().filter(e -> e.getMasterId() == masterId).collect(Collectors.toList());
+    }
+
+    public List<CodeDetail> getCodeList(long masterId, String roleType){
+        return codeList.stream().filter(e -> e.getMasterId() == masterId && e.getRoleType().getName().equals(roleType)).collect(Collectors.toList());
     }
 
     public CodeDetail getCode(long masterId, String codeValue){
