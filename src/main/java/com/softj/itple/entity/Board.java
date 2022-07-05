@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@ToString(exclude = "user")
+@ToString
 @Table(name = "tb_board")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)

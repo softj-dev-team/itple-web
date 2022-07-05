@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/a1")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('ADMIN')")
 public class A1Controller {
 
     private final A1Service a1Service;

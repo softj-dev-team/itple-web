@@ -17,7 +17,7 @@ public class SecurityController {
 		if(SecurityUtil.isLogin()) {
 			return "redirect:/";
 		}else {
-			return "c1/c1p1";
+			return "login";
 		}
 	}
 
