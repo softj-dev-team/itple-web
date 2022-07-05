@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/admin/layout">
+<head>
+  <title>잇플 수업연계독후감목록</title>
+</head>
+<body class="adminBody">
+<th:block layout:fragment="content">
+  <div class="adContent">
+    <h1 class="adH1">수업연계</h1>
+    <div class="tab clearfix adTab">
+      <ul class="tab-ul">
+        <li><a href="/a2/p1">과제</a></li>
+        <li class="active"><a href="/a2/p2">독후감</a></li>
+      </ul>
+    </div>
+    <div class="content-in clearfix">
+      <div class="tableBtn-box">
+        <div class="leftBox">
+        </div>
+        <div class="rightBox">
+          <a href="/a2/p2-write" class="aBtn">독후감 등록</a>
+        </div>
+      </div>
+      <ul class="adTask-list">
+        <li>
+          <a href="/a2/p2-report">
+            <h3 class="engClass">잇플 영어입문반A<span class="">10</span></h3>
+            <p><span>사람은 무엇으로 사는가 - 톨스토이</span><span>~22.04.08</span></p>
+            <p><span>내 어깨 위 두 친구 - 이수 </span><span>~22.04.08</span></p>
+          </a>
+        </li>
+        <li>
+          <a href="reportClassAdmin.html">
+            <h3 class="codClass">잇플 파이썬 응용반A<span class="">10</span></h3>
+            <p><span>헬조선 원정대, 비밀결사 파일럿 권기옥의 궤적 - 김소연</span><span>~22.04.08</span></p>
+            <p><span>열네 살 CEO - 앤드루 노리스</span><span>~22.04.08</span></p>
+          </a>
+        </li>
+        <li>
+          <a href="reportClassAdmin.html">
+            <h3 class="codClass">잇플 파이썬 응용반A<span class="">10</span></h3>
+            <p><span>나를 지워줘 - 이담</span><span>~22.04.08</span></p>
+            <p><span>황금열광 - 하은경</span><span>~22.04.08</span></p>
+          </a>
+        </li>
+        <li>
+          <a href="reportClassAdmin.html">
+            <h3 class="codClass">잇플 파이썬 응용반A<span class="">10</span></h3>
+            <p><span>나는 거의 아무것도 아닌 존재 - 리자 발라부안느</span><span>~22.04.08</span></p>
+            <p><span>4월, 그 비밀들 - 문부일</span><span>~22.04.08</span></p>
+          </a>
+        </li>
+        <li>
+          <a href="reportClassAdmin.html">
+            <h3 class="engClass">잇플 영어입문반A<span class="">60</span></h3>
+            <p><span>메타버스에서 내리다 - 박하령</span><span>~22.04.08</span></p>
+            <p><span>집으로 가는 길 - 소피 커틀리</span><span>~22.04.08</span></p>
+          </a>
+        </li>
+        <li>
+          <a href="reportClassAdmin.html">
+            <h3 class="codClass">잇플 파이썬 응용반A<span class="">58</span></h3>
+            <p><span>있는 그대로 남아프리카공화국 - 정현재</span><span>~22.04.08</span></p>
+            <p><span>3모둠의 용의자들 - 하유지</span><span>~22.04.08</span></p>
+          </a>
+        </li>
+        <li>
+          <a href="reportClassAdmin.html">
+            <h3 class="engClass">잇플 영어입문반A<span class="">10</span></h3>
+            <p><span>십 대가 꼭 알아야 할 탄소 중립 교과서 - 인포비주얼연구소</span><span>~22.04.08</span></p>
+            <p><span>어느 날 문득, 내가 달라졌다 - 김이환</span><span>~22.04.08</span></p>
+          </a>
+        </li>
+        <li>
+          <a href="reportClassAdmin.html">
+            <h3 class="engClass">잇플 영어입문반A<span class="">10</span></h3>
+            <p><span>달러구트 꿈 백화점 2 - 이미예</span><span>~22.04.08</span></p>
+            <p><span>세계를 건너 너에게 갈게 - 이꽃님</span><span>~22.04.08</span></p>
+          </a>
+        </li>
+        <li>
+          <a href="reportClassAdmin.html">
+            <h3 class="engClass">잇플 영어입문반A<span class="">30</span></h3>
+            <p><span>코스모스 - 칼 세이건</span><span>~22.04.08</span></p>
+            <p><span>지속가능한 세상에서 동물과 공조한다는 것 - 배성호</span><span>~22.04.08</span></p>
+          </a>
+        </li>
+        <li>
+          <a href="reportClassAdmin.html">
+            <h3 class="engClass">잇플 영어입문반A<span class="">10</span></h3>
+            <p><span>10대와 통하는 세계사 - 손석춘</span><span>~22.04.08</span></p>
+            <p><span>반다나 시바, 상처받은 지구를 위로해 - 최형미</span><span>~22.04.08</span></p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <ul class="pagination">
+      <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+      <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+      <li class="page-item"><a class="page-link active" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">4</a></li>
+      <li class="page-item"><a class="page-link" href="#">5</a></li>
+      <li class="page-item"><a class="page-link" href="#">6</a></li>
+      <li class="page-item"><a class="page-link" href="#">7</a></li>
+      <li class="page-item"><a class="page-link" href="#">8</a></li>
+      <li class="page-item"><a class="page-link" href="#">9</a></li>
+      <li class="page-item"><a class="page-link" href="#">10</a></li>
+      <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+      <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+    </ul>
+  </div>
+  <script th:src="@{/assets/js/a2/a2p2.js(v='1.0.0')}"></script>
+  <script th:inline="javascript">
+
+  </script>
+</th:block>
+</body>
+</html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="layout/layout">
+      layout:decorate="layout/admin/layout">
 <head>
-    <title>잇플 출판서적내용</title>
+    <title>잇플 출판서적상세</title>
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -34,6 +34,23 @@
 </th:block>
 <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
 <script th:inline="javascript">
+    //파일첨부
+    function setThumbnail(event) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            document.getElementById("FileImg").innerHTML ="";
+            var img = document.createElement("div");
+            img.setAttribute("style", "background-image:url("+event.target.result+")");
+            img.setAttribute("ID", "profileimg");
+            document.querySelector("div#FileImg").appendChild(img);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    function fileupload(){
+        var ele=document.getElementById('image');
+        ele.click();
+        console.log('test');
+    }
 </script>
 </body>
 </html>

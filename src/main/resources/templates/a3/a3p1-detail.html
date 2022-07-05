@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/admin/layout">
+<head>
+    <title>잇플 학생관리상세</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="responsiveWrap">
+        <h1 class="responsiveH1">학생관리</h1>
+        <div class="responsiveInner">
+            <form action="">
+                <div class="inputSec">
+                    <label for="day2" class="mb5">입학일</label>
+                    <div class="datepickerWrap">
+                        <input type="text" name="day2" id="day2" class="input-df mb20 datepicker">
+                        <i class="i-date"></i>
+                    </div>
+                    <label for="class" class="mb5">반</label>
+                    <select name="class" id="class" class="input-df mb20">
+                        <option value="잇플코딩입문반">잇플코딩입문반</option>
+                    </select>
+                    <label for="user" class="mb5">이름</label>
+                    <input type="text" name="user" id="user" class="input-df mb20">
+                    <label for="no" class="mb5">출결번호</label>
+                    <input type="text" name="no" id="no" class="input-df mb20">
+                    <label for="birth" class="mb5">생일</label>
+                    <div class="datepickerWrap">
+                        <input type="text" name="birth" id="birth" class="input-df mb20 datepicker">
+                        <i class="i-date"></i>
+                    </div>
+                </div>
+                <div class="inputSec">
+                    <label for="school" class="mb5">학교</label>
+                    <input type="text" name="school" id="school" class="input-df mb20">
+                    <label for="grade" class="mb5">학년</label>
+                    <select name="grade" id="grade" class="input-df mb20">
+                        <option value="1학년">1학년</option>
+                        <option value="2학년">2학년</option>
+                        <option value="3학년">3학년</option>
+                        <option value="4학년">4학년</option>
+                        <option value="5학년">5학년</option>
+                        <option value="6학년">6학년</option>
+                    </select>
+                    <label for="email" class="mb5">이메일</label>
+                    <input type="text" name="email" id="email" class="input-df mb20">
+                </div>
+                <div class="inputSec">
+                    <label for="address1" class="mb5">집주소</label>
+                    <input type="text" name="address1" id="address1" class="input-df post mb10" readonly><button type="button" class="btn post-btn">우편번호</button>
+                    <input type="text" name="address2" id="address2" class="input-df mb20">
+                </div>
+                <div class="inputSec">
+                    <label for="prnt_name" class="mb5">보호자 성함</label>
+                    <input type="text" name="prnt_name" id="prnt_name" class="input-df mb20">
+                    <label for="prnt_tel" class="mb5">보호자 연락처</label>
+                    <input type="text" name="prnt_tel" id="prnt_tel" class="input-df mb20">
+                </div>
+                <div class="inputSec">
+                    <label for="day" class="mb5">납부일 설정</label>
+                    <select name="day" id="day" class="input-df mb20">
+                        <option value="1일">1일</option>
+                        <option value="5일">5일</option>
+                        <option value="10일">10일</option>
+                        <option value="15일">15일</option>
+                        <option value="20일">20일</option>
+                        <option value="25일">25일</option>
+                    </select>
+                    <label for="pay" class="mb5">수강료</label>
+                    <input type="text" name="pay" id="pay" class="input-df mb20 width90"><span class="width10">원</span>
+                </div>
+                <div class="inputSec">
+                    <label for="memo" class="mb5">메모</label>
+                    <input type="text" name="memo" id="memo" class="input-df mb20">
+                    <label for="coin" class="mb5">포인트</label>
+                    <input type="text" name="coin" id="coin" class="input-df mb20">
+                </div>
+                <div class="inputSec timeSelectOuter">
+                    <label for="yoil" class="mb10">등원 시간</label>
+                    <div class="timeSelectWrap">
+                        <select name="yoil" id="yoil" class="daySel">
+                            <option value="월요일">월요일</option>
+                            <option value="화요일">화요일</option>
+                            <option value="수요일">수요일</option>
+                            <option value="목요일">목요일</option>
+                            <option value="금요일">금요일</option>
+                            <option value="토요일">토요일</option>
+                            <option value="일요일">일요일</option>
+                        </select>
+                        <select name="hour" id="hour">
+                            <option value="9시">9시</option>
+                            <option value="10시">10시</option>
+                            <option value="11시">11시</option>
+                            <option value="12시">12시</option>
+                            <option value="13시">13시</option>
+                            <option value="14시">14시</option>
+                            <option value="15시">15시</option>
+                            <option value="16시">16시</option>
+                            <option value="17시">17시</option>
+                            <option value="18시">18시</option>
+                            <option value="19시">19시</option>
+                            <option value="20시">20시</option>
+                        </select>
+                        <select name="min" id="min">
+                            <option value="00분">00분</option>
+                            <option value="10분">10분</option>
+                            <option value="20분">20분</option>
+                            <option value="30분">30분</option>
+                            <option value="40분">40분</option>
+                            <option value="50분">50분</option>
+                        </select>
+                        <button type="button" class="btn-add"></button>
+                    </div>
+                </div>
+                <div class="btn-center mt60">
+                    <button type="submit" class="btn">저장하기</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <script th:src="@{/assets/js/a3/a3p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            $(".datepicker").datepicker({
+                format: "yyyy년 mm월 dd일",
+                language: "ko",
+                orientation: "auto"
+            });
+            $(document).on("click", ".btn-remove", function(){
+                $(this).parents('.timeSelectWrap').remove();
+            }).on("click", ".btn-add", function(){
+                if($(".timeSelectWrap").length > 6){
+                    $('.modalText').text('7일 이상 추가할 수 없습니다.');
+                    $('.modal').addClass('on');
+                }else{
+                    $(".timeSelectOuter").append('<div class="timeSelectWrap"><select name="" id="" class="daySel"><option value="월요일">월요일</option><option value="화요일">화요일</option><option value="수요일">수요일</option><option value="목요일">목요일</option><option value="금요일">금요일</option><option value="토요일">토요일</option><option value="일요일">일요일</option></select><select name="" id=""><option value="9시">9시</option><option value="10시">10시</option><option value="11시">11시</option><option value="12시">12시</option><option value="13시">13시</option><option value="14시">14시</option><option value="15시">15시</option><option value="16시">16시</option><option value="17시">17시</option><option value="18시">18시</option><option value="19시">19시</option><option value="20시">20시</option></select><select name="" id=""><option value="00분">00분</option><option value="10분">10분</option><option value="20분">20분</option><option value="30분">30분</option><option value="40분">40분</option><option value="50분">50분</option></select><button type="button" class="btn-remove"></button></div>')
+                }
+            });
+            $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+                $(this).parents('.modal').removeClass('on');
+            })
+            $(document).on("change", ".daySel", function(){
+                var thisVal = $(this).val()
+                if($('.daySel option[value="' + thisVal + '"]:selected').length > 1){
+                    $('.modalText').text('이미 선택된 요일입니다.');
+                    $('.modal').addClass('on');
+                }
+            })
+        });
+    </script>
+</th:block>
+</body>
+</html>

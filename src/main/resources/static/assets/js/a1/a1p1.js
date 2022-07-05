@@ -1,16 +1,3 @@
-function taskList(){
-    $(location).attr("href", "bookDetailsAdmin.html");
-}
-$('.RemoveBtn').on('click', function () {
-    $('#removeMo').addClass('on');
-});
-$('.QRBtn').on('click', function () {
-    $('#pcQR').addClass('on');
-});
-/*$(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
-    $(this).parents('.modal').removeClass('on');
-})*/
-
 var path =  '/a1/p1';
 
 $(function(){
@@ -98,20 +85,3 @@ function goAction(flag, arg1, arg2) {
     }
 }
 
-//파일첨부
-function setThumbnail(event) {
-    var reader = new FileReader();
-    reader.onload = function(event) {
-        document.getElementById("FileImg").innerHTML ="";
-        var img = document.createElement("div");
-        img.setAttribute("style", "background-image:url("+event.target.result+")");
-        img.setAttribute("ID", "profileimg");
-        document.querySelector("div#FileImg").appendChild(img);
-    };
-    reader.readAsDataURL(event.target.files[0]);
-}
-function fileupload(){
-    var ele=document.getElementById('image');
-    ele.click();
-    console.log('test');
-}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/admin/layout">
+<head>
+  <title>잇플 수납관리</title>
+</head>
+<body class="adminBody">
+<th:block layout:fragment="content">
+  <div class="adContent">
+    <h1 class="adH1">수납관리</h1>
+    <div class="content-in clearfix">
+      <div class="adSearch clearfix selSearch">
+        <form action="" class="adSearch-in">
+          <div class="in-box">
+            <select name="category" id="category" class="selClass">
+              <option value="">잇플 코딩입문반A</option>
+              <option value="">잇플 코딩입문반B</option>
+            </select>
+            <select name="year" id="year">
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+            </select>
+            <select name="month" id="month">
+              <option value="1월">1월</option>
+              <option value="2월">2월</option>
+              <option value="3월">3월</option>
+              <option value="4월">4월</option>
+              <option value="5월">5월</option>
+              <option value="6월">6월</option>
+              <option value="7월">7월</option>
+              <option value="8월">8월</option>
+              <option value="9월">9월</option>
+              <option value="10월">10월</option>
+              <option value="11월">11월</option>
+              <option value="12월">12월</option>
+            </select>
+          </div>
+          <button type="button" class="src-btn"></button>
+        </form>
+      </div>
+      <div class="tableBtn-box">
+        <div class="leftBox">
+          <button type="button" class="m-btn btn-line ComBtn">선택 완납처리</button>
+        </div>
+        <div class="rightBox">
+        </div>
+      </div>
+      <table class="adTable payTable checklist">
+        <thead class="adTable-head">
+        <tr>
+          <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+          <th>저장</th>
+          <th>학생</th>
+          <th>보호자</th>
+          <th>수강료</th>
+          <th>납부액</th>
+          <th>납부일</th>
+          <th>실제납부일</th>
+          <th>납부방법</th>
+          <th>메모</th>
+          <th>미납</th>
+        </tr>
+        </thead>
+        <tbody class="adTable-body ">
+        <tr>
+          <td><input type="checkbox" id="ch1"><label for="ch1"></label></td>
+          <td><button type="button" class="saveBtn">저장</button></td>
+          <td>김잇플</td>
+          <td>홍길동</td>
+          <td><input type="text" class="alignR" value="200,000"></td>
+          <td><input type="text" class="payComMoney alignR" value="200,000"></td>
+          <td>
+            <select name="day" id="day">
+              <option value="">1일</option>
+              <option value="">2일</option>
+              <option value="">3일</option>
+              <option value="">4일</option>
+              <option value="">5일</option>
+              <option value="">6일</option>
+              <option value="">7일</option>
+              <option value="">8일</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" class="payDate input-df datepicker">
+          <td>
+            <select name="method" id="method" class="payOption">
+              <option value="1">카드</option>
+              <option value="2">현금</option>
+              <option value="3">계좌이체</option>
+            </select>
+          </td>
+          <td><input type="text" class=""></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="pagination">
+      <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+      <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+      <li class="page-item"><a class="page-link active" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">4</a></li>
+      <li class="page-item"><a class="page-link" href="#">5</a></li>
+      <li class="page-item"><a class="page-link" href="#">6</a></li>
+      <li class="page-item"><a class="page-link" href="#">7</a></li>
+      <li class="page-item"><a class="page-link" href="#">8</a></li>
+      <li class="page-item"><a class="page-link" href="#">9</a></li>
+      <li class="page-item"><a class="page-link" href="#">10</a></li>
+      <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+      <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+    </ul>
+  </div>
+  <script th:src="@{/assets/js/a5/a5p1.js(v='1.0.0')}"></script>
+  <script th:inline="javascript">
+    $(document).ready(function(){
+      $(".datepicker").datepicker({
+        format: "yyyy-mm-dd",
+        language: "ko",
+        orientation: "auto"
+      });
+      $('.ComBtn').on('click', function () {
+        $('#payModal').addClass('on');
+      });
+      $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+        $(this).parents('.modal').removeClass('on');
+      })
+      $(document).on("click", "#payCom", function(){
+        var payDate = $("#payDate").val();
+        var payOption = $("#payOption option:selected").index();
+        var isChecked = $(".payTable input[type=checkbox]:checked").parents("tr");
+        isChecked.find("input.payDate").val(payDate);
+        isChecked.find(".payOption option:eq("+payOption+")").attr('selected', 'selected');
+        isChecked.find("td:last-child").text('');
+      });
+    });
+  </script>
+</th:block>
+</body>
+</html>

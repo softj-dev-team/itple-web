@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/admin/layout">
+<head>
+    <title>잇플 수업연계과제반목록</title>
+</head>
+<body class="adminBody">
+<th:block layout:fragment="content">
+    <div class="adContent">
+        <h1 class="adH1">수업연계</h1>
+        <div class="tab clearfix adTab">
+            <ul class="tab-ul">
+                <li class="active"><a href="/a2/p1">과제</a></li>
+                <li ><a href="/a2/p2">독후감</a></li>
+            </ul>
+        </div>
+        <div class="content-in clearfix">
+            <div class="adSearch clearfix">
+                <form action="" class="adSearch-in">
+                    <div class="in-box">
+                        <select name="" id="">
+                            <option value="">전체</option>
+                            <option value="">과제명</option>
+                        </select>
+                        <input type="text">
+                    </div>
+                    <button type="button" class="src-btn"></button>
+                </form>
+            </div>
+            <div class="subTit">
+                <p class="className">잇플 코딩입문반A</p>
+            </div>
+            <table class="adTable list2">
+                <thead class="adTable-head">
+                <tr>
+                    <th>과제</th>
+                    <th>기간</th>
+                </tr>
+                </thead>
+                <tbody class="adTable-body adTbody checklist">
+                <tr>
+                    <td><a href="/a2/p1-stud">입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="studAdmin.html">입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제블록코딩 복습해보고 결과 올리기블록코딩 복습해보고 결과 올리기블록코딩 복습해보고 결과 올리기블록코딩 복습해보고 결과 올리기</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="studAdmin.html">블록코딩 복습해보고 결과 올리기</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="studAdmin.html">입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="studAdmin.html">블록코딩 복습해보고 결과 올리기</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="studAdmin.html">블록코딩 복습해보고 결과 올리기블록코딩 복습해보고 결과 올리기</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="studAdmin.html">입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="studAdmin.html">입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="studAdmin.html">입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="studAdmin.html">입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제1 입문반을 위한 과제</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul class="pagination">
+            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+            <li class="page-item"><a class="page-link active" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            <li class="page-item"><a class="page-link" href="#">7</a></li>
+            <li class="page-item"><a class="page-link" href="#">8</a></li>
+            <li class="page-item"><a class="page-link" href="#">9</a></li>
+            <li class="page-item"><a class="page-link" href="#">10</a></li>
+            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+        </ul>
+    </div>
+    <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+    </script>
+</th:block>
+</body>
+</html>

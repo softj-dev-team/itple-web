@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="layout/layout">
+      layout:decorate="layout/admin/layout">
 <head>
-    <title>잇플 출판서적작성</title>
+    <title>잇플 출판서적등록</title>
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -17,14 +17,14 @@
                 <input type="file"  name="uploadBtn" class="uploadBtn"  id="image"  accept="image/*" onchange="setThumbnail(event);" style="display: none;">
             </div>
             <div class="detailsBox inputSec">
-                <label for="" class="mb5">책 제목</label>
-                <input type="text" th:value="${el.subject}" class="input-df mb20">
-                <label for="" class="mb5">작가명</label>
-                <input type="text" th:value="${el.writer}" class="input-df mb20">
-                <label for="" class="mb5">책 번호</label>
-                <input type="text" th:value="${el.book_no}" class="input-df mb20">
-                <label for="" class="mb5">책 </label>
-                <textarea name="" id="" cols="30" rows="10" th:value="${el.contents}" th:text="${el.contents}"></textarea>
+                <label for="subject" class="mb5">책 제목</label>
+                <input type="text" name="subject" id="subject" th:value="${el.subject}" class="input-df mb20">
+                <label for="writer" class="mb5">작가명</label>
+                <input type="text" name="writer" id="writer" th:value="${el.writer}" class="input-df mb20">
+                <label for="book_no" class="mb5">책 번호</label>
+                <input type="text" name="book_no" id="book_no" th:value="${el.book_no}" class="input-df mb20">
+                <label for="contents" class="mb5">책 </label>
+                <textarea name="contents" id="contents" cols="30" rows="10" th:value="${el.contents}" th:text="${el.contents}"></textarea>
             </div>
             <div class="btn-center mt60">
                 <button type="button" class="btn">저장하기</button>
@@ -33,6 +33,23 @@
     </div>
     <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
+        //파일첨부
+        function setThumbnail(event) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById("FileImg").innerHTML ="";
+                var img = document.createElement("div");
+                img.setAttribute("style", "background-image:url("+event.target.result+")");
+                img.setAttribute("ID", "profileimg");
+                document.querySelector("div#FileImg").appendChild(img);
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        function fileupload(){
+            var ele=document.getElementById('image');
+            ele.click();
+            console.log('test');
+        }
     </script>
 </th:block>
 </body>

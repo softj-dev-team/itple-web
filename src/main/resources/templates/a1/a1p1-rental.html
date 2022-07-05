@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/admin/layout">
+<head>
+    <title>잇플 출판서적대여</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="responsiveWrap">
+        <h1 class="responsiveH1">도서 대여/반납</h1>
+        <div class="responsiveInner">
+            <div class="detailsIgm" th:style="|background-image: url('${el.thumbnail}');|"></div>//style="background-image: url(../assets/img/book1.jpg);"
+            <div class="detailsBox">
+                <h2 class="detTit">정보 sw,로봇 영재원 대비 문제집</h2>
+                <p class="detwriter">잇플ITPLE</p>
+                <div class="hr"></div>
+                <p class="detInfo">도서정보에 대한 간략한 설명이 들어가는 곳. 도서정보에 대한 간략한 설명이 들어가는 곳. 도서정보에 대한 간략한 설명이 들어가는 곳.</p>
+                <div class="hr2"></div>
+                <div class="inputBox2 mb20">
+                    <div>
+                        <label for="user" class="mb5">대여자</label>
+                        <input type="text" name="user" id="user" class="input-df" value="김잇플">
+                    </div>
+                    <div>
+                        <label for="no" class="mb5">출결번호</label>
+                        <input type="text" name="no" id="no" class="input-df" value="2589">
+                    </div>
+                </div>
+                <div class="inputBox2">
+                    <div>
+                        <label for="status" class="mb5">대여 현황</label>
+                        <input type="text" name="status" id="status" class="input-df" value="연체" disabled>
+                    </div>
+                </div>
+                <div class="dateBox">
+                    <div class="datepickerWrap">
+                        <input type="text" class="input-df mb20 datepicker">
+                        <i class="i-date"></i>
+                    </div>
+                    <span>-</span>
+                    <div class="datepickerWrap">
+                        <input type="text" class="input-df mb20 datepicker">
+                        <i class="i-date"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-center mt60 btnL clearfix">
+                <button type="button" class="btn">대여하기</button>
+                <button type="button" class="btn btn-gray">반납하기</button>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+        $(".datepicker").datepicker({
+            format: "yyyy년 mm월 dd일",
+            language: "ko",
+            orientation: "auto"
+        });
+    </script>
+</th:block>
+</body>
+</html>

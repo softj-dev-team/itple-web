@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/admin/layout">
+<head>
+    <title>잇플 수업연계독후감반목록</title>
+</head>
+<body class="adminBody">
+<th:block layout:fragment="content">
+    <div class="adContent">
+        <h1 class="adH1">수업연계</h1>
+        <div class="tab clearfix adTab">
+            <ul class="tab-ul">
+                <li><a href="/a2/p1">과제</a></li>
+                <li class="active"><a href="/a2/p2">독후감</a></li>
+            </ul>
+        </div>
+        <div class="content-in clearfix">
+            <div class="adSearch clearfix">
+                <form action="" class="adSearch-in">
+                    <div class="in-box">
+                        <select name="" id="">
+                            <option value="">전체</option>
+                            <option value="">책 제목</option>
+                        </select>
+                        <input type="text">
+                    </div>
+                    <button type="button" class="src-btn"></button>
+                </form>
+            </div>
+            <div class="subTit">
+                <p class="className">잇플 코딩입문반A</p>
+            </div>
+            <table class="adTable list2">
+                <thead class="adTable-head">
+                <tr>
+                    <th>책 제목</th>
+                    <th>기간</th>
+                </tr>
+                </thead>
+                <tbody class="adTable-body adTbody checklist">
+                <tr>
+                    <td><a href="/a2/p1-restud">사람은 무엇으로 사는가</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="restudAdmin.html">나를 지워줘</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="restudAdmin.html">황금열광</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="restudAdmin.html">나는 거의 아무것도 아닌 존재</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="restudAdmin.html">4월, 그 비밀</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="restudAdmin.html">메타버스에서 내리다</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="restudAdmin.html">집으로 가는 길</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="restudAdmin.html">열네 살 CEO</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="restudAdmin.html">지속가능한 세상에서 동물과 공존한다는 것</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                <tr>
+                    <td><a href="restudAdmin.html">EBS 강사가 추천하는 PAV 모빌리티 인기학과 진로코칭</a></td>
+                    <td>2022.06.01 ~ 2022.06.07</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul class="pagination">
+            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+            <li class="page-item"><a class="page-link active" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            <li class="page-item"><a class="page-link" href="#">7</a></li>
+            <li class="page-item"><a class="page-link" href="#">8</a></li>
+            <li class="page-item"><a class="page-link" href="#">9</a></li>
+            <li class="page-item"><a class="page-link" href="#">10</a></li>
+            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+        </ul>
+    </div>
+    <script th:src="@{/assets/js/a2/a2p2.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+
+    </script>
+</th:block>
+</body>
+</html>

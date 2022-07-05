@@ -2,10 +2,8 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
-import com.softj.itple.entity.Board;
 import com.softj.itple.entity.Book;
 import com.softj.itple.service.A1Service;
-import com.softj.itple.service.C1Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/a1")
+@RequestMapping("/a3")
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
-public class A1Controller {
+public class A3Controller {
 
     private final A1Service a1Service;
     private final CommonService commonService;
@@ -37,44 +35,16 @@ public class A1Controller {
         }
         model.addAttribute("list",a1Service.getBookList(params, pageable));
         model.addAttribute("params",params);
-        return "a1/a1p1";
+        return "a3/a3p1";
     }
 
-    //내용
+    //학생관리상세
     @GetMapping("/p1-detail/{id}")
-    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params){
+    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params) {
         params.setId(id);
 
         model.addAttribute("el", a1Service.getBook(params));
-        model.addAttribute("params",params);
-        return "a1/a1p1-detail";
-    }
-
-    //작성
-    @GetMapping("/p1-write/{id}")
-    public String p1write(@PathVariable long id, ModelMap model, SearchVO params){
-        params.setId(id);
-
-        Book el = Book.builder().build();
-        if(id!=0){
-            el = a1Service.getBook(params);
-        }
-        model.addAttribute("el",el);
-        model.addAttribute("params",params);
-        return "a1/a1p1-write";
-    }
-
-    //대여
-    @GetMapping("/p1-rental/{id}")
-    public String p1rental(@PathVariable long id, ModelMap model, SearchVO params){
-        params.setId(id);
-
-        Book el = Book.builder().build();
-        if(id!=0){
-            el = a1Service.getBook(params);
-        }
-        model.addAttribute("el",el);
-        model.addAttribute("params",params);
-        return "a1/a1p1-rental";
+        model.addAttribute("params", params);
+        return "a3/a3p1-detail";
     }
 }

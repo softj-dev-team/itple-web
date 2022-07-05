@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="layout/layout">
+      layout:decorate="layout/admin/layout">
 <head>
     <title>잇플 출판서적목록</title>
 </head>
@@ -66,8 +66,20 @@
     <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
         function goAdd(){
-            location.href = "/a1/p1-write";
+            $(location).attr("href", "/a1/p1-write");
         }
+        function taskList(){
+            $(location).attr("href", "/a1/p1-rental");
+        }
+        $('.RemoveBtn').on('click', function () {
+            $('#removeMo').addClass('on');
+        });
+        $('.QRBtn').on('click', function () {
+            $('#pcQR').addClass('on');
+        });
+        $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+            $(this).parents('.modal').removeClass('on');
+        });
     </script>
 </th:block>
 </body>

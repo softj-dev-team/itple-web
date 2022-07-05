@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/admin/layout">
+<head>
+    <title>잇플 포트폴리오상세</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="fullbnr" th:style="|background-image: url('${el.thumbnail}');|"></div> //style="background-image:url(../assets/img/portfolio1.jpg)"
+    <div class="content portfolio">
+        <h1 class="portfolioH1">톨스토이의 &#60;사람은 무엇으로 사는가&#62; 독후감상문</h1>
+        <div class="portfolioSub">
+            <p class="name">김잇플</p>
+            <p class="class">잇플초등학교 │ 잇플 코딩입문반A</p>
+            <p class="text">
+                학원 수업과 연계된 도서인 톨스토이의 &#60;사람은 무엇으로 사는가&#62;를 읽은 뒤, 독후감상문을 작성. 학원 수업과 연계된 도서인 톨스토이의 &#60;사람은 무엇으로 사는가&#62;를 읽은 뒤, 독후감상문을 작성.
+            </p>
+        </div>
+        <div class="content-in clearfix">
+            <img src="../assets/img/portfolio1.jpg" alt="portfolio image">
+            <p>포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명
+                포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명<br/>
+                포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명
+                포트폴리오에 대한 설명 포트폴리오에 대한 설명<br/>
+                포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명 포트폴리오에 대한 설명 </p>
+        </div>
+        <div class="btn-center">
+            <button class="btn" onclick="goEdit();">포트폴리오 수정</button>
+        </div>
+
+    </div>
+    <script th:src="@{/assets/js/a6/a6p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+        function goEdit(){
+            $(location).attr("href", "/a6/p1-write");
+        }
+    </script>
+</th:block>
+</body>
+</html>

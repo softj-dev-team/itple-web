@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/admin/layout">
+<head>
+  <title>잇플 포트폴리오등록</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+  <div class="content">
+    <h1 class="responsiveH1 subH1">포트폴리오 쓰기</h1>
+    <div class="content-in clearfix">
+      <div class="writeCon porWrit">
+        <div class="writeHead2">
+          <select name="open" id="open" class="select-md">
+            <option value="공개">공개</option>
+            <option value="비공개">비공개</option>
+          </select>
+          <input type="text" placeholder="제목을 입력해주세요." class="input-df">
+          <textarea name="contents" id="contents" cols="30" rows="10" class="textA mt10" placeholder="포트폴리오에 대한 설명을 입력해주세요."></textarea>
+        </div>
+        <textarea id="summernote" placeholder="내용을 입력해주세요."></textarea>
+      </div>
+      <div class="btn-center Tbtn">
+        <button type="submit" class="btn submitBtn">작성하기</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal">
+    <div class="modal-bg"></div>
+    <div class="modalContent xs">
+      <div class="modalHd">
+        <h3></h3>
+        <button class="modalClose"></button>
+      </div>
+      <div class="modalBody">
+        <div class="modalText">
+          과제를 제출하시겠습니까?
+        </div>
+        <div class="modalBtnWrap">
+          <button type="button" class="btn btn-blue modalOff">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script th:src="@{/assets/js/a6/a6p1.js(v='1.0.0')}"></script>
+  <script th:inline="javascript">
+    //summernote
+    $(document).ready(function (){
+      $('#summernote').summernote({
+        tabsize: 2,
+        height: 350,
+        lang: 'ko-KR'
+      });
+    });
+    $('.submitBtn').on('click', function () {
+      $('.modal').addClass('on');
+    });
+    $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+      $(this).parents('.modal').removeClass('on');
+    })
+    $('.chRemove').click(function(){
+      if(confirm("삭제하시겠습니까?")){
+        $(".fileUP input[type=checkbox]:checked").each(function(){
+          var tr_value =$(this).val();
+          var tr=$("li[file-value='"+tr_value+"']");
+          tr.remove();
+        });
+      }else{
+        return false;
+      }
+    });
+  </script>
+</th:block>
+</body>
+</html>
