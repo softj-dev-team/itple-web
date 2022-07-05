@@ -57,6 +57,7 @@ public class AuthUtil {
 
         loop:
         for(String reqRole:reqRolesArr){
+            reqRole = reqRole.toUpperCase();
             for(GrantedAuthority role : getPrincipal().getAuthorities()){
                 if(role.getAuthority().equals(reqRole)){
                     isRole = true;
