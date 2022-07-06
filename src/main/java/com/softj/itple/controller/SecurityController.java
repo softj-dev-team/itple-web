@@ -24,7 +24,7 @@ public class SecurityController {
 	@GetMapping(value = "/adminLogin")
 	public String adminLoginPage(ModelMap model, HttpServletRequest req) {
 		if(SecurityUtil.isLogin()) {
-			return "redirect:/";
+			return "redirect:/a1/p1";
 		}else {
 			return "adminLogin";
 		}

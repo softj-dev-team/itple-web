@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/a5")
+@RequestMapping("/a6")
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class A6Controller {
