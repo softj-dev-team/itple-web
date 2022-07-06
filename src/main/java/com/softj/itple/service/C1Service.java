@@ -9,21 +9,29 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.entity.*;
 import com.softj.itple.repo.BoardCommentRepo;
+import com.softj.itple.repo.BoardFileRepo;
 import com.softj.itple.repo.BoardRepo;
 import com.softj.itple.repo.BoardStarRepo;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.QSort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.transaction.Transactional;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +40,12 @@ public class C1Service {
     final private BoardRepo boardRepo;
     final private BoardCommentRepo boardCommentRepo;
     final private BoardStarRepo boardStarRepo;
+    final private BoardFileRepo boardFileRepo;
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Value("${file.uploadDir}")
+    private String FILE_PATH;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
     public Page<Board> getBoardList(SearchVO params, Pageable pageable){
         QBoard qBoard = QBoard.board;
@@ -138,45 +151,72 @@ public class C1Service {
         save.setViewCount(save.getViewCount()+1L);
         boardRepo.save(save);
     }
-//
-//    public Board getBoard(SearchVO params){
-//        return boardRepo.findOneBySeq(params.getSeq());
-//    }
-//
-//    @Transactional
-//    public Board saveBoard(BoardDTO params){
-//        Dept accessDept = Dept.builder().build();
-//        accessDept.setSeq(params.getAccessDeptSeq());
-//        Board save = Board.builder()
-//                .content(params.getContent())
-//                .boardType("NOTICE")
-//                .title("공지사항")
-//                .accessDept(accessDept)
-//                .answer(AuthUtil.getLoginVO())
-//                .build();
-//        save.setSeq(params.getSeq());
-//        save = boardRepo.save(save);
-//
-//        List<Long> adminSeqList = null;
-//        adminSeqList = accessDept.getSeq() == 9999L ? deptRepo.findAdminSeq() : deptRepo.findAdminSeqByDept(accessDept);
-//        for(long adminSeq : adminSeqList) {
-//            alarmRepo.save(Alarm.builder()
-//                    .content(save.getContent())
-//                    .adminSeq(adminSeq)
-//                    .readYn(false)
-//                    .refSeq(save.getSeq())
-//                    .type("B") //공지사항
-//                    .build());
-//        }
-//        return save;
-//    }
-//
-//    @Transactional
-//    public void deleteBoard(SearchVO params){
-//        for(long seq:params.getSeqList()){
-//            Board board = boardRepo.findOneBySeq(seq);
-//            board.setDelAt(true);
-//            boardRepo.save(board);
-//        }
-//    }
+
+    @Transactional
+    public List<BoardFile> boardFileUpload(MultipartHttpServletRequest request) throws Exception{
+        List<BoardFile> result = new ArrayList<>();
+
+        List<MultipartFile> imgList = request.getFiles("files");
+        for(MultipartFile img : imgList) {
+            if (!Objects.isNull(img) && StringUtils.noneEmpty(img.getOriginalFilename())) {
+                String imagePath = null;
+                String realFileName = img.getOriginalFilename();
+                String ext = realFileName.substring(realFileName.lastIndexOf(".") + 1);
+                String systemFileName = UUID.randomUUID().toString().toUpperCase() + "." + ext;
+
+                String targetPath = FILE_PATH + "/" + sdf.format(new Date()) + "/";
+                File targetDir = new File(targetPath);
+
+                //폴더 생성
+                if (!targetDir.exists()) {
+                    targetDir.mkdirs();
+                }
+
+                FileUtils.writeByteArrayToFile(new File(targetPath + systemFileName), img.getBytes());
+
+                imagePath = targetPath + systemFileName;
+                imagePath = imagePath.replace("/", "_");
+                result.add(boardFileRepo.save(BoardFile.builder()
+                        .board(null)
+                        .orgFileName(realFileName)
+                        .uploadFileName(imagePath)
+                        .build()));
+            }
+        }
+
+        return result;
+    }
+
+    @Transactional
+    public void deleteBoardFile(SearchVO params){
+        for(long id:params.getIdList()){
+            boardFileRepo.deleteById(id);
+        }
+    }
+
+    @Transactional
+    public void saveBoard(SearchVO params){
+        Board save = Board.builder().build();
+        if(LongUtils.noneEmpty(params.getId())){
+            save = boardRepo.findById(params.getId()).get();
+        }
+        save.setSubject(params.getSubject());
+        save.setBoardCategory(params.getBoardCategory());
+        save.setBoardType(params.getBoardType());
+        save.setContents(params.getContents());
+        save.setUser(User.builder().id(AuthUtil.getUserId()).build());
+        int idxStart = save.getContents().indexOf("src=\"");
+        int idxEnd = save.getContents().indexOf("\">");
+        if(idxStart != -1){
+            String thumbnail = save.getContents().substring(idxStart+5, idxEnd);
+            save.setThumbnail(thumbnail);
+        }
+        Board finalSave = boardRepo.save(save);
+
+        List<BoardFile> fileList = boardFileRepo.findAllById(Arrays.asList(params.getIdList()));
+        for(BoardFile f:fileList){
+            f.setBoard(finalSave);
+        }
+        boardFileRepo.saveAll(fileList);
+    }
 }

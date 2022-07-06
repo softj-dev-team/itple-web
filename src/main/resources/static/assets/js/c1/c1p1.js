@@ -28,13 +28,12 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         /*저장*/
         case "S1":
-            var formS1 = $('#noticeForm');
-            modal.confirm(null,"저장하시겠습니까?",function(){
-                loading(1);
+            var formS1 = $('#form1');
+            modal.confirm("저장하시겠습니까?",function(){
+                $("input[name=idList]").prop("checked",true);
                 $.post(path+'/s1',formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
-                    loading(0)
-                    reload();
+                    ut.redirect("/c1/p1","boardType", $("[name=boardType]").val());
                 });
             });
             break;

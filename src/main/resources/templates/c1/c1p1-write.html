@@ -5,12 +5,14 @@
       layout:decorate="layout/layout">
 <head>
     <!-- 썸머노트 -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
+    <link href="/assets/plugins/summernote-0.8.18-dist/summernote-lite.css" rel="stylesheet" type="text/css">
+    <script src="/assets/plugins/summernote-0.8.18-dist/summernote-lite.js"></script>
     <title>잇플 커뮤니티</title>
 </head>
 <body>
 <th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" name="id" th:value="${el.id}">
     <div class="content">
         <h1 class="responsiveH1 subH1">커뮤니티 글 쓰기</h1>
         <div class="content-in clearfix">
@@ -27,31 +29,34 @@
                                 th:value="${e.codeValue}" th:text="${e.codeName}"
                                 th:selected="${el.boardCategory == e.codeValue}">잇플 코딩 게시판</option>
                     </select>
-                    <input type="text" placeholder="제목을 입력하세요." class="input-df">
+                    <input type="text" placeholder="제목을 입력하세요." class="input-df" th:value="${el.subject}" name="subject">
                 </div>
                 <div>
-                    <textarea id="summernote"></textarea>
+                    <textarea id="summernote" th:utext="${el.contents}" name="contents"></textarea>
                     <div class="fileBox">
-                        <form action="">
-                            <div class="fileHead">
-                                <p>첨부파일</p>
-                                <div class="file-btn">
-                                    <button type="button" class="chRemove">선택삭제</button>
-                                    <input type="file" multiple="multiple" class="" id="fileInput">
-                                    <label for="fileInput" class="fileBtn">파일첨부</label>
-                                </div>
+                        <div class="fileHead">
+                            <p>첨부파일</p>
+                            <div class="file-btn">
+                                <button type="button" class="chRemove">선택삭제</button>
+                                <input type="file" multiple="multiple" class="" id="fileInput" name="files">
+                                <label for="fileInput" class="fileBtn">파일첨부</label>
                             </div>
-                            <ul class="fileUP" id="articlefileChange">
-                            </ul>
-                        </form>
+                        </div>
+                        <ul class="fileUP" id="articlefileChange">
+                            <li th:each="file : ${el.boardFileList}">
+                                <input th:id="|file-ch${file.id}|" type="checkbox" name="idList" th:value="${file.id}">
+                                <label th:for="|file-ch${file.id}|"><span th:text="${file.orgFileName}"></span></label>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
             <div class="btn-center Tbtn">
-                <button type="submit" class="btn submitBtn">작성하기</button>
+                <button type="button" class="btn submitBtn" th:onclick="|goAction('S1',${el.id})|">작성하기</button>
             </div>
         </div>
     </div>
+    </form>
 
     <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
 
@@ -64,116 +69,91 @@
             $('#summernote').summernote({
                 tabsize: 2,
                 height: 350,
-                lang: 'ko-KR'
+                lang: 'ko-KR',
+                callbacks: {
+                    onImageUpload : function(files, editor, welEditable) {
+                        for (var i = files.length - 1; i >= 0; i--) {
+                            uploadSummernoteImageFile(files[i], this);
+                        }
+                    },
+                },
             });
         });
-        $('.submitBtn').on('click', function () {
-            $('.modal').addClass('on');
-        });
-        $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
-            $(this).parents('.modal').removeClass('on');
-        })
+        /**
+         * 이미지 파일 업로드
+         */
+        function uploadSummernoteImageFile(file, editor) {
+            var data = new FormData();
+            data.append("files", file);
+            $.ajax({
+                data : data,
+                type : "POST",
+                url : "/comFileUpload",
+                contentType : false,
+                processData : false,
+                success : function(res) {
+                    if(ut.isEmpty(res.data)){
+                        return;
+                    }
 
+                    res.data.forEach(function(el){
+                        $(editor).summernote('insertImage', `/comFileDownload/${el}`);
+                    });
+                }
+            });
+        }
 
         //파일첨부
         $(document).ready(function() {
-            $("#fileInput").on("change", fileCheck);
+            $("#fileInput").on("change", fileUpload);
         });
-        // 파일 현재 필드 숫자 totalCount랑 비교값
-        var fileCount = 0;
-        // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
-        var totalCount = 10;
-        // 파일 고유넘버
-        var fileNum = 0;
-        // 첨부파일 배열
-        var content_files = new Array();
 
-        function fileCheck(e) {
+        function fileUpload(e) {
             var files = e.target.files;
+            var formData = new FormData($("#form1")[0]);
+            $.ajax({
+                data : formData,
+                type : "POST",
+                url : "/api/c1/p1/f1",
+                contentType : false,
+                processData : false,
+                success : function(res) {
+                    if(ut.isEmpty(res.data)){
+                        return;
+                    }
 
-            // 파일 배열 담기
-            var filesArr = Array.prototype.slice.call(files);
-
-            // 파일 개수 확인 및 제한
-            if (fileCount + filesArr.length > totalCount) {
-                alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
-                return;
-            } else {
-                fileCount = fileCount + filesArr.length;
-            }
-
-            // 각각의 파일 배열담기 및 기타
-            filesArr.forEach(function (f) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    content_files.push(f);
-                    $('#articlefileChange').append(
-                        '<li file-value="' + fileNum + '"><input type="checkbox" id="file-ch'+fileNum+'" value="'+fileNum+'"><label for="file-ch'+fileNum+'"><span>' + f.name + '</span></label></li>'
-                    );
-                    fileNum ++;
-                };
-                reader.readAsDataURL(f);
+                    res.data.forEach(function(el){
+                        $('#articlefileChange').append(
+                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span>${el.orgFileName}</span></label></li>`
+                        );
+                    });
+                    $("#fileInput").val("");
+                }
             });
-            console.log(content_files);
-            //초기화 한다.
-            $("#fileInput").val("");
         }
 
         // 파일 부분 삭제 함수
-
         $('.chRemove').click(function(){
-            if(confirm("삭제하시겠습니까?")){
-                $(".fileUP input[type=checkbox]:checked").each(function(){
-                    var tr_value =$(this).val();
-                    var tr=$("li[file-value='"+tr_value+"']");
-                    var no = tr_value.replace(/[^0-9]/g, "");
-                    content_files[no].is_delete = true;
-
-                    tr.remove();
-                    fileCount --;
-                    console.log(content_files);
-                });
-            }else{
-                return false;
+            if($("input[name=idList]:checked").length == 0){
+                modal.alert("체크한 데이터가 없습니다.");
+                return;
             }
-        });
 
-        /*
-         * 폼 submit 로직
-         */
-        function registerAction(){
-
-            var form = $("form")[0];
-            var formData = new FormData(form);
-            for (var x = 0; x < content_files.length; x++) {
-                // 삭제 안한것만 담아 준다.
-                if(!content_files[x].is_delete){
-                    formData.append("article_file", content_files[x]);
-                }
-            }
-            /*
-            * 파일업로드 multiple ajax처리
-            */
-            $.ajax({
-                type: "POST",
-                enctype: "multipart/form-data",
-                url: "/file-upload",
-                data : formData,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    if(JSON.parse(data)['result'] == "OK"){
-                        alert("파일업로드 성공");
-                    } else
-                        alert("서버내 오류로 처리가 지연되고있습니다. 잠시 후 다시 시도해주세요");
-                },
-                error: function (xhr, status, error) {
-                    alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
-                    return false;
-                }
+            var formData = "";
+            $("input[name=idList]:checked").each(function(){
+                var id = $(this).val();
+               formData += `idList=${id}&`;
             });
-            return false;
-        }
+
+            modal.confirm("체크한 데이터를 삭제하시겠습니까?", function(){
+                $.post('api/c1/p1/d9', formData, function(){
+                    modal.alert('삭제되었습니다.');
+                    $("input[name=idList]:checked").each(function(){
+                        $(this).closest("li").remove();
+                    });
+                });
+            });
+        });
     </script>
 </th:block>
 </body>
