@@ -17,4 +17,5 @@ import javax.persistence.Table;
 public class Student extends Auditing{
     @OneToOne
     private User user;
+    private String attendanceNo;
 }

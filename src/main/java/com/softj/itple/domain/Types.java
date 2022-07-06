@@ -52,16 +52,30 @@ public class Types {
 
     @Getter
     @AllArgsConstructor
-    public enum BoardCategory implements Code<String> {
-        NOTICE("01", "공지"),
-        LESSON("02", "수업"),
-        COMMUNITY("03", "학부모소통");
+    public enum AttendanceStatus implements Code<String> {
+        COME("01", "등원"),
+        LEAVE("02", "하원");
         private String code;
         private String message;
 
-        public static class Converter extends AbstractEnumConverter<BoardCategory, String> {
+        public static class Converter extends AbstractEnumConverter<AttendanceStatus, String> {
             public Converter() {
-                super(BoardCategory.class);
+                super(AttendanceStatus.class);
+            }
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum AttendanceType implements Code<String> {
+        CODING("01", "잇플코딩"),
+        ENGLISH("02", "잇플영어");
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<AttendanceType, String> {
+            public Converter() {
+                super(AttendanceType.class);
             }
         }
     }

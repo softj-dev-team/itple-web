@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/none-layout">
+
+<head>
+    <title>등하원</title>
+</head>
+
+<th:block layout:fragment="content">
+    <input type="hidden" name="attendanceType" id="attendanceType" th:value="${params.attendanceType}"/>
+    <div class="loginWrap">
+        <div class="loginWrapOuter attd">
+            <div class="loginDivWrap">
+                <div class="loginDiv_inner clearfix">
+                    <div th:if="${#strings.equals(params.attendanceType,'CODING')}" class="login_logo mb50" style="background-image: url(../assets/img/logo-login1.png);"></div>
+                    <div th:if="${#strings.equals(params.attendanceType,'ENGLISH')}" class="login_logo mb50" style="background-image: url(../assets/img/logo-login2.png);"></div>
+                    <form action="">
+                        <div class="left-portrait">
+                            <p class="mb20 text-center">출결번호를 입력하세요.</p>
+                            <div class="input-num-wrap">
+                                <input type="text" class="input-num" readonly maxlength="1" pattern="[0-9]" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                <input type="text" class="input-num" readonly maxlength="1" pattern="[0-9]" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                <input type="text" class="input-num" readonly maxlength="1" pattern="[0-9]" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                <input type="text" class="input-num" readonly maxlength="1" pattern="[0-9]" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                            </div>
+                            <div class="w300-wrap t18">
+                                <button th:if="${#strings.equals(params.attendanceType,'CODING')}" type="button" class="btn btn-blue mb10" onclick="come()">잇플코딩에 도착했어요!</button>
+                                <button th:if="${#strings.equals(params.attendanceType,'ENGLISH')}" type="button" class="btn btn-red mb10" onclick="come()">잇플영어에 도착했어요!</button>
+                                <button type="button" class="btn" onclick="leave()">열심히 공부하고 집에 가요!</button>
+                            </div>
+                        </div>
+                        <div class="right-portrait">
+                            <div class="w300-wrap t18">
+                                <div class="numbtn-wrap">
+                                    <button type="button" value="1" class="numbtn">1</button>
+                                    <button type="button" value="2" class="numbtn">2</button>
+                                    <button type="button" value="3" class="numbtn">3</button>
+                                    <button type="button" value="4" class="numbtn">4</button>
+                                    <button type="button" value="5" class="numbtn">5</button>
+                                    <button type="button" value="6" class="numbtn">6</button>
+                                    <button type="button" value="7" class="numbtn">7</button>
+                                    <button type="button" value="8" class="numbtn">8</button>
+                                    <button type="button" value="9" class="numbtn">9</button>
+                                    <button type="button" class="numbtn t18">지움</button>
+                                    <button type="button" value="0" class="numbtn">0</button>
+                                    <button type="button" class="numbtn ">←</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <a href="/logout" class="aWhite">관리자 로그아웃</a>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+        var attendanceNo = '';
+
+        $(function(){
+            $(".numbtn").on("click", function(){
+                if($(this).index()==9){
+                    $(".input-num-wrap input").val("");
+                    attendanceNo = "";
+                }else if($(this).index()==11){
+                    $($(".input-num-wrap input").get().reverse()).each(function(index, item){
+                        if($(this).val()){
+                            $(this).val("");
+                            attendanceNo = attendanceNo.slice(0, -1);
+                            return false
+                        }
+                    })
+                }else{
+                    var num = $(this).val()
+                    $(".input-num-wrap input").each(function(index, item){
+                        if(!$(this).val()){
+                            $(this).val(num);
+                            attendanceNo += num;
+                            return false
+                        }
+                    });
+                }
+            });
+        })
+
+        function come(){
+            if(!isAttendanceNo()){
+                modal.alert("출결번호 4자리를 입력하세요.");
+                return;
+            }
+            goS1("COME");
+        }
+
+        function leave(){
+            if(!isAttendanceNo()){
+                modal.alert("출결번호 4자리를 입력하세요.");
+                return;
+            }
+            goS1("LEAVE");
+        }
+
+        function isAttendanceNo(){
+            return attendanceNo.length == 4;
+        }
+
+        function goS1(attendanceStatus){
+            $.post('/api/a4/p2/s1',{attendanceNo: attendanceNo, attendanceType: $("#attendanceType").val(), attendanceStatus: attendanceStatus},function(res){
+                ut.redirect('/a4/p3', 'id', res.data);
+            }).fail(function(){
+                $(".input-num-wrap input").val("");
+                attendanceNo = "";
+            })
+        }
+    </script>
+</th:block>
+</html>

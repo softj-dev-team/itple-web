@@ -3,6 +3,7 @@ package com.softj.itple.controller;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.service.A1Service;
+import com.softj.itple.service.A4Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class A4Controller {
-
-    private final A1Service a1Service;
+    private final A4Service a4Service;
     private final CommonService commonService;
 
     //목록
@@ -32,8 +32,26 @@ public class A4Controller {
         if (Objects.isNull(params.getBoardType())) {
             params.setBoardType(Types.BoardType.CODING);
         }
-        model.addAttribute("list", a1Service.getBookList(params, pageable));
+//        model.addAttribute("list", aService.getBookList(params, pageable));
         model.addAttribute("params", params);
         return "a4/a4p1";
+    }
+
+    //출결
+    @GetMapping("/p2")
+    public String a4p2(ModelMap model, SearchVO params) {
+        if (Objects.isNull(params.getAttendanceType())) {
+            params.setAttendanceType(Types.AttendanceType.CODING);
+        }
+        model.addAttribute("params", params);
+        return "a4/a4p2";
+    }
+
+    //출결 확인
+    @GetMapping("/p3")
+    public String a4p3(ModelMap model, SearchVO params) {
+        model.addAttribute("el", a4Service.getAttendanceHistory(params));
+        model.addAttribute("params", params);
+        return "a4/a4p3";
     }
 }

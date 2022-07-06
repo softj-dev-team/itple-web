@@ -8,7 +8,7 @@ $(function(){
     });
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
         console.log(event, xhr, ajaxOptions, thrownError);
-        modal.alert("에러가 발생했습니다.");
+        modal.alert(JSON.parse(xhr.responseText).message);
     });
     $(document).ajaxComplete(function myCompleteHandler(event, xhr, ajaxOptions, thrownError) {
         loading(0);

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/none-layout">
+
+<head>
+    <title>등하원</title>
+</head>
+
+<th:block layout:fragment="content">
+    <input type="hidden" name="attendanceType" id="attendanceType" th:value="${params.attendanceType}"/>
+    <div class="loginWrap">
+        <div class="loginWrapOuter check">
+            <div class="loginDivWrap">
+                <div class="loginDiv_inner text-center">
+                    <div class="ch-icon mb30" style="background-image: url(../assets/img/ch-icon.png)"></div>
+                    <p class="mb20 text-center t32"><b th:text="${el.user.userName}">홍길동</b> 님</p>
+                    <p class="mb50 text-center t28"><span th:text="${#temporals.format(el.createdAt,'a hh시 mm분')}">오후 2시 30분</span>에 <span th:text="${el.attendanceStatus.message}">하원</span>하였습니다.</p>
+                    <div class="pointWrap mb70">
+                        <table class="pointTable">
+                            <tbody>
+                            <tr>
+                                <th>포인트</th>
+                                <td><span class="t20 mr5"><b>1,000</b></span>포인트</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-gray" onclick="ut.redirect('/a4/p2','attendanceType', $('#attendanceType').val());">메인으로</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+        setTimeout(function (){
+            ut.redirect('/a4/p2',"attendanceType", $("#attendanceType").val());
+        }, 3000)
+    </script>
+</th:block>
+</html>

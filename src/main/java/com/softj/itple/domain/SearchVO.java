@@ -23,5 +23,10 @@ public class SearchVO {
 
 	//관리자-출판서적
 	private String writer;
+
+	//관리자-출결
+	private String attendanceNo;
+	private Types.AttendanceType attendanceType;
+	private Types.AttendanceStatus attendanceStatus;
 }
 

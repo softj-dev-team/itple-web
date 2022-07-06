@@ -10,6 +10,7 @@
 
 <body>
 <form method="post" th:action="@{/login}" id="loginForm" onsubmit="loading(1);">
+    <input type="hidden" name="attendanceType"/>
     <div class="loginWrap">
         <div class="loginWrapOuter">
             <div class="loginDivWrap admin">
@@ -21,9 +22,9 @@
                         <a href="/login">학생 로그인</a>
                         <a href="">아이디/비밀번호 찾기</a>
                     </div>
-                    <button type="submit" class="btn mb10">로그인</button>
-                    <button type="button" class="btn btn-blue mb10">코딩 출결 바로가기</button>
-                    <button type="button" class="btn btn-red">영어 출결 바로가기</button>
+                    <button type="button" class="btn mb10" onclick="formSubmit()">로그인</button>
+                    <button type="button" class="btn btn-blue mb10" onclick="formSubmit('CODING')">코딩 출결 바로가기</button>
+                    <button type="button" class="btn btn-red" onclick="formSubmit('ENGLISH')">영어 출결 바로가기</button>
                 </div>
             </div>
         </div>
@@ -36,7 +37,12 @@
         if(ut.getParam("error") != null){
             modal.alert("일치하는 계정정보가 없습니다.")
         }
-    })
+    });
+
+    function formSubmit(attendanceType){
+        $("input[name")
+        $("#loginForm").submit();
+    }
 </script>
 </body>
 </html>
