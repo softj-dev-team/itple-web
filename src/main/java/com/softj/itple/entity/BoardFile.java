@@ -13,12 +13,11 @@ import javax.persistence.Table;
 @ToString
 @Table(name = "tb_board_file")
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class BoardFile extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
     private String orgFileName;
     private String uploadFileName;
-    private String ext;
-    private String filePath;
 }

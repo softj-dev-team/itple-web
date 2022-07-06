@@ -68,7 +68,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL95Dialect
 
 file:
-  uploadDir: C:/file_storage
+  uploadDir: C:/fileStorage
 
 logging:
   file:
@@ -141,7 +141,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL95Dialect
 
 file:
-  uploadDir: file_storage
+  uploadDir: fileStorage
 
 logging:
   file:

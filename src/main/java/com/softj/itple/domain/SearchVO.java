@@ -8,7 +8,7 @@ import lombok.Setter;
 public class SearchVO {
 	//공통
 	private long id;
-	private long[] idList;
+	private Long[] idList;
 	private String isDeleted;
 	private String searchType;
 	private String searchValue;
@@ -19,6 +19,7 @@ public class SearchVO {
 	private String contents;
 	private Long upperId;
 	private Long commentId;
+	private String boardCategory;
 
 	//관리자-출판서적
 	private String writer;
