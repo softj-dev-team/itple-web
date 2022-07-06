@@ -53,7 +53,8 @@
 </head>
 <body>
     <div id="wrap">
-        <th:block th:replace="layout/header"></th:block>
+        <th:block sec:authorize="hasAuthority('STUDENT')" th:replace="layout/header"></th:block>
+        <th:block sec:authorize="hasAuthority('ADMIN')" th:replace="layout/adminHeader"></th:block>
 
         <th:block layout:fragment="content"></th:block>
 

@@ -39,7 +39,7 @@ public class C1Controller {
     }
     //상세
     @GetMapping("/p1-detail/{id}")
-    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
         params.setId(id);
         Board el = c1Service.getBoard(params);
         params.setBoardType(el.getBoardType());

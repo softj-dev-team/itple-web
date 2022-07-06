@@ -68,19 +68,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						"/signup",
 						"/adminLogin").permitAll()	// 언제나허용
 				.antMatchers("/**").authenticated() // /** 모든경로는 로그인시에 사용가능
-				.antMatchers("/c*/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-				.antMatchers("/a*/**").access("hasRole('ROLE_ADMIN')")
             .and() // 로그인 설정
                 .formLogin()
                 .loginPage("/login")	//로그인 뷰페이지 path설정 username과 password 를 param으로 받아야함
                 .defaultSuccessUrl("/")	//로그인성공시 redirect path
                 .successHandler(authenticationSuccessHandler())	//로그인성공시 처리될 핸들러
-				.failureHandler(authenticationFailureHandler()) //로그인실패시 처리될
-			.and() // 관리자로그인 설정
-				.formLogin()
-				.loginPage("/adminLogin")	//로그인 뷰페이지 path설정 username과 password 를 param으로 받아야함
-				.defaultSuccessUrl("/a1/p1")	//로그인성공시 redirect path
-				.successHandler(authenticationSuccessHandler())	//로그인성공시 처리될 핸들러
 				.failureHandler(authenticationFailureHandler()) //로그인실패시 처리될
             .and() // 로그아웃 설정
 	            .logout()
