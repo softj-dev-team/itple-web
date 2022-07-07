@@ -2226,7 +2226,7 @@ select.reportSlt{
 .detailInfo .leftwrap{
     float: left;
     font-weight: 800;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 .detailInfo .rightwrap{
     float: right;
@@ -2322,6 +2322,28 @@ i.icon{
     padding: 10px 0;
     margin-bottom:16px;
     border-bottom:1px solid #cccccc;
+}
+.fileV .fileT{font-weight: 600;}
+.fileV .fileT::before {
+    content: "";
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    vertical-align: -2px;
+    margin-right: 6px;
+    background: url(../img/file_icon.png) no-repeat center / contain;
+}
+.fileV ul{
+    padding: 10px 16px;
+    margin-top: 5px;
+    background: #f7f7f7;
+}
+.fileV ul li {
+    line-height: 25px;
+}
+.detailinfo-box{
+    overflow: hidden;
+    margin-top: 16px;
 }
 /*header ~1280p*/
 @media screen and (min-width: 1280px){

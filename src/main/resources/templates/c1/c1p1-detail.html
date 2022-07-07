@@ -34,13 +34,22 @@
                 내용
             </div>
             <div class="detailInfo clearfix">
-                <div class="rightwrap">
-                    <button type="button" th:onclick="|goAction('U1','${el.id}')|"><i class="icon" th:classappend="${isStar ? 'i-star':'up'}"></i>추천</button>
-                    <button type="button" onclick="copy(location.href)"><i class="icon i-share"></i>공유</button>
+                <div class="fileV">
+                    <p class="fileT">첨부파일</p>
+                    <ul class="file-li">
+                        <li><a href="">첨부파일.jpg</a></li>
+                        <li><a href="">첨부파일.jpg</a></li>
+                    </ul>
                 </div>
-                <div class="leftwrap">
-                    <span class="replyNum">댓글 <span class="text-blue" th:text="${el.commentCount}">157</span></span>
-                    <span class="up" th:text="|추천 ${el.starCount}|">추천 213</span>
+                <div class="detailinfo-box">
+                    <div class="rightwrap">
+                        <button type="button" th:onclick="|goAction('U1','${el.id}')|"><i class="icon" th:classappend="${isStar ? 'i-star':'up'}"></i>추천</button>
+                        <button type="button" onclick="copy(location.href)"><i class="icon i-share"></i>공유</button>
+                    </div>
+                    <div class="leftwrap">
+                        <span class="replyNum">댓글 <span class="text-blue" th:text="${el.commentCount}">157</span></span>
+                        <span class="up" th:text="|추천 ${el.starCount}|">추천 213</span>
+                    </div>
                 </div>
             </div>
             <div class="detailReply">
