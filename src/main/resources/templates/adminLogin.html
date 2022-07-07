@@ -40,8 +40,9 @@
     });
 
     function formSubmit(attendanceType){
-        $("input[name")
-        $("#loginForm").submit();
+        $.get('/setAttendanceType',{attendanceType: attendanceType}, function(res){
+            $("#loginForm").submit();
+        });
     }
 </script>
 </body>

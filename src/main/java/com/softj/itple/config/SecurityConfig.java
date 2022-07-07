@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         		.authorizeRequests()
         		.antMatchers("/login",
 						"/signup",
+						"/setAttendanceType",
 						"/adminLogin").permitAll()	// 언제나허용
 				.antMatchers("/**").authenticated() // /** 모든경로는 로그인시에 사용가능
             .and() // 로그인 설정

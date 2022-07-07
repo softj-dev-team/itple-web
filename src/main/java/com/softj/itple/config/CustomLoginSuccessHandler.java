@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,9 +31,12 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
+        HttpSession session = request.getSession(true);
         UserDetails principal = null;
         Admin adminVO = null;
         Student studentVO = null;
+        String attendanceType = (String)session.getAttribute("attendanceType");
+        session.setAttribute("attendanceType", null);
 
         try {
             principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -49,11 +53,14 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
             SecurityContextHolder.clearContext();
         }
 
-        HttpSession session = request.getSession();
 	    session.setAttribute("adminVO", adminVO);
 	    session.setAttribute("studentVO", studentVO);
 	    session.setAttribute("userId", Long.parseLong(principal.getUsername()));
 
-        super.onAuthenticationSuccess(request, response, authentication);
+	    if(StringUtils.isEmpty(attendanceType)){
+            super.onAuthenticationSuccess(request, response, authentication);
+        }else{
+	        response.sendRedirect("/a4/p2?attendanceType="+attendanceType);
+        }
 	}
 };

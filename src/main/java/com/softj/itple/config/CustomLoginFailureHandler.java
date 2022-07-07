@@ -14,6 +14,7 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws ServletException, IOException {
+        request.getSession(true).setAttribute("attendanceType", null);
         String referrer = request.getHeader("Referer");
         referrer = referrer.split("\\?")[0];
         response.sendRedirect(referrer + "?error");
