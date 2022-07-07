@@ -34,11 +34,10 @@
                 내용
             </div>
             <div class="detailInfo clearfix">
-                <div class="fileV">
+                <div class="fileV" th:if="${el.boardFileList != null && el.boardFileList.size() != 0}">
                     <p class="fileT">첨부파일</p>
                     <ul class="file-li">
-                        <li><a href="">첨부파일.jpg</a></li>
-                        <li><a href="">첨부파일.jpg</a></li>
+                        <li th:each="file : ${el.boardFileList}"><a th:href="|/boardFileDownload/${file.uploadFileName}|" th:text="${file.orgFileName}">첨부파일.jpg</a></li>
                     </ul>
                 </div>
                 <div class="detailinfo-box">
