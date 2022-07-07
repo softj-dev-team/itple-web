@@ -2331,7 +2331,7 @@ i.icon{
     height: 17px;
     vertical-align: -2px;
     margin-right: 6px;
-    background: url(../assets/img/file_icon.png) no-repeat center / contain;
+    background: url(../img/file_icon.png) no-repeat center / contain;
 }
 .fileV ul{
     padding: 10px 16px;
