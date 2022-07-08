@@ -2,9 +2,11 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.Response;
 import com.softj.itple.entity.BoardFile;
+import com.softj.itple.entity.StudentTaskFile;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.BoardFileRepo;
+import com.softj.itple.repo.StudentTaskFileRepo;
 import com.softj.itple.service.CommonService;
 import com.softj.itple.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 public class ComController {
     final private CommonService commonService;
     final private BoardFileRepo boardFileRepo;
+    final private StudentTaskFileRepo studentTaskFileRepo;
 
     @GetMapping("/comFileDownload/{path}")
     public void fileDownload(@PathVariable("path") String path,
@@ -43,6 +46,20 @@ public class ComController {
                              HttpServletRequest request,
                              HttpServletResponse response, @RequestParam HashMap<String,String> search) throws Exception {
         BoardFile file = boardFileRepo.findByUploadFileName(path).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        path = path.replace("_","/");
+        CommonUtil.setDisposition(file.getOrgFileName(), request, response);
+        byte[] data = null;
+
+        data = FileUtils.readFileToByteArray(new File(path));
+
+        IOUtils.write(data, response.getOutputStream());
+    }
+
+    @GetMapping("/studentTaskFileDownload/{path}")
+    public void studentTaskFileDownload(@PathVariable("path") String path,
+                             HttpServletRequest request,
+                             HttpServletResponse response, @RequestParam HashMap<String,String> search) throws Exception {
+        StudentTaskFile file = studentTaskFileRepo.findByUploadFileName(path).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
         path = path.replace("_","/");
         CommonUtil.setDisposition(file.getOrgFileName(), request, response);
         byte[] data = null;

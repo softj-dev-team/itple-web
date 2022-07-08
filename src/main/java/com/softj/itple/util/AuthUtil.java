@@ -28,27 +28,28 @@ public class AuthUtil {
     }
 
     public static Admin getAdmin() {
-        ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession httpSession = servletRequestAttribute.getRequest().getSession(true);
+        HttpSession httpSession = getSession();
         return (Admin)httpSession.getAttribute("adminVO");
     }
 
     public static long getUserId() {
-        ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession httpSession = servletRequestAttribute.getRequest().getSession(true);
+        HttpSession httpSession = getSession();
         return (long)httpSession.getAttribute("userId");
     }
 
     public static User getUser() {
-        ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession httpSession = servletRequestAttribute.getRequest().getSession(true);
+        HttpSession httpSession = getSession();
         return User.builder().id((long)httpSession.getAttribute("userId")).build();
     }
 
     public static Student getStudent() {
-        ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession httpSession = servletRequestAttribute.getRequest().getSession(true);
+        HttpSession httpSession = getSession();
         return (Student)httpSession.getAttribute("studentVO");
+    }
+
+    public static void setStudent(Student student) {
+        HttpSession httpSession = getSession();
+        httpSession.setAttribute("studentVO", student);
     }
 
     public boolean isRole(String reqRoles){
@@ -66,5 +67,10 @@ public class AuthUtil {
             }
         }
         return isRole;
+    }
+    
+    public static HttpSession getSession(){
+        ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        return servletRequestAttribute.getRequest().getSession(true);
     }
 }

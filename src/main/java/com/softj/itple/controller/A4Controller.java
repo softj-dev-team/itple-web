@@ -30,7 +30,7 @@ public class A4Controller {
     @GetMapping("/p1")
     public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
         if (Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.BoardType.CODING);
+            params.setBoardType(Types.AcademyType.CODING);
         }
 //        model.addAttribute("list", aService.getBookList(params, pageable));
         model.addAttribute("params", params);
@@ -41,7 +41,7 @@ public class A4Controller {
     @GetMapping("/p2")
     public String a4p2(ModelMap model, SearchVO params) {
         if (Objects.isNull(params.getAttendanceType())) {
-            params.setAttendanceType(Types.AttendanceType.CODING);
+            params.setAttendanceType(Types.AcademyType.CODING);
         }
         model.addAttribute("params", params);
         return "a4/a4p2";

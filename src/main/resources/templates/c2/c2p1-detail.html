@@ -7,61 +7,61 @@
     <!-- 썸머노트 -->
     <link href="/assets/plugins/summernote-0.8.18-dist/summernote-lite.css" rel="stylesheet" type="text/css">
     <script src="/assets/plugins/summernote-0.8.18-dist/summernote-lite.js"></script>
-    <title>잇플 커뮤니티</title>
+    <title>수업연계</title>
 </head>
 <body>
 <th:block layout:fragment="content">
     <form id="form1">
-        <input type="hidden" name="id" th:value="${el.id}">
+        <input type="hidden" name="id" th:value="${el.id}"/>
+        <input type="hidden" name="status" th:value="${el.status}"/>
     <div class="content">
-        <h1 class="responsiveH1 subH1">커뮤니티 글 쓰기</h1>
+        <h1 class="responsiveH1 subH1">과제 작성</h1>
         <div class="content-in clearfix">
             <div class="writeCon">
-                <div class="writeHead2">
-                    <select name="boardType" class="select-md">
-                        <option th:each="e : ${T(com.softj.itple.domain.Types.AcademyType).values()}"
-                                th:value="${e}" th:text="${e.message}"
-                                th:selected="${el.boardType == e}">잇플 코딩 게시판</option>
-                    </select>
-                    <select name="boardCategory" class="select-md">
-                        <option th:each="e : ${@codeUtil.getCodeList(1)}"
-                                th:if="${@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType)}"
-                                th:value="${e.codeValue}" th:text="${e.codeName}"
-                                th:selected="${el.boardCategory == e.codeValue}">잇플 코딩 게시판</option>
-                    </select>
-                    <input type="text" placeholder="제목을 입력하세요." class="input-df" th:value="${el.subject}" name="subject">
+                <div class="writeHead">
+                    <p class="writeGroup" th:text="|[${el.task.academyClass.className}]|">[잇플코딩 기초입문반A]</p>
+                    <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                    <p class="writePeriod" th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd')}|">2022.04.23 ~ 2022.04.30</p>
                 </div>
-                <div>
-                    <textarea id="summernote" th:utext="${el.contents}" name="contents"></textarea>
+                <div class="writeMain">
+                    <th:block th:utext="${el.task.contents}"></th:block>
+                    <div class="pointCom"><span>과제완료 포인트</span><p><span th:text="${#numbers.formatInteger(el.task.coin,0,'COMMA')}">1,000</span> 포인트</p></div>
+                </div>
+                <div class="taskWrite">
+                    <textarea id="summernote" name="contents" th:utext="${el.contents}"></textarea>
                     <div class="fileBox">
-                        <div class="fileHead">
-                            <p>첨부파일</p>
-                            <div class="file-btn">
-                                <button type="button" class="chRemove">선택삭제</button>
-                                <input type="file" multiple="multiple" class="" id="fileInput" name="files">
-                                <label for="fileInput" class="fileBtn">파일첨부</label>
+                        <form action="">
+                            <div class="fileHead">
+                                <p>첨부파일</p>
+                                <div class="file-btn" th:if="${#strings.equals(el.status, 'NOT_SUBMIT')}">
+                                    <button type="button" class="chRemove">선택삭제</button>
+                                    <input type="file" multiple="multiple" class="" id="fileInput" name="files">
+                                    <label for="fileInput" class="fileBtn">파일첨부</label>
+                                </div>
                             </div>
-                        </div>
-                        <ul class="fileUP" id="articlefileChange">
-                            <li th:each="file : ${el.boardFileList}">
-                                <input th:id="|file-ch${file.id}|" type="checkbox" name="idList" th:value="${file.id}">
-                                <label th:for="|file-ch${file.id}|"><span th:text="${file.orgFileName}"></span></label>
-                            </li>
-                        </ul>
+                            <ul class="fileUP" id="articlefileChange">
+                                <li th:each="file : ${el.studentTaskFileList}">
+                                    <input th:id="|file-ch${file.id}|" type="checkbox" name="idList" th:value="${file.id}">
+                                    <label th:for="|file-ch${file.id}|"><span th:text="${file.orgFileName}"></span></label>
+                                </li>
+                            </ul>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="btn-center Tbtn">
-                <button type="button" class="btn submitBtn" th:onclick="|goAction('S1',${el.id})|">작성하기</button>
+            <div class="btn-center Tbtn" th:if="${#strings.equals(el.status, 'NOT_SUBMIT')}">
+                <button type="button" class="btn btn-gray mr10" th:onclick="|goAction('S1','NOT_SUBMIT')|">임시저장</button>
+                <button type="button" class="btn submitBtn" th:onclick="|goAction('S1','SUBMIT')|">제출하기</button>
             </div>
         </div>
     </div>
     </form>
 
-    <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
+    <script th:src="@{/assets/js/c2/c2p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
         /*<![CDATA[*/
+        var status = /*[[${el.status}]]*/'';
         /*]]>*/
 
         //summernote
@@ -69,7 +69,9 @@
             $('#summernote').summernote({
                 tabsize: 2,
                 height: 350,
+                disabled: true,
                 lang: 'ko-KR',
+                disableDragAndDrop: true,
                 callbacks: {
                     onImageUpload : function(files, editor, welEditable) {
                         for (var i = files.length - 1; i >= 0; i--) {
@@ -78,6 +80,7 @@
                     },
                 },
             });
+            $('#summernote').summernote(status == 'NOT_SUBMIT' ? 'enable':'disable');
         });
         /**
          * 이미지 파일 업로드
@@ -114,7 +117,7 @@
             $.ajax({
                 data : formData,
                 type : "POST",
-                url : "/api/c1/p1/f1",
+                url : "/api/c2/p1/f1",
                 contentType : false,
                 processData : false,
                 success : function(res) {
@@ -124,7 +127,7 @@
 
                     res.data.forEach(function(el){
                         $('#articlefileChange').append(
-                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span>${el.orgFileName}</span></label></li>`
+                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span onclick="studentTaskFileDownload('${el.uploadFileName}')">${el.orgFileName}</span></label></li>`
                         );
                     });
                     $("#fileInput").val("");
@@ -142,11 +145,11 @@
             var formData = "";
             $("input[name=idList]:checked").each(function(){
                 var id = $(this).val();
-               formData += `idList=${id}&`;
+                formData += `idList=${id}&`;
             });
 
             modal.confirm("체크한 데이터를 삭제하시겠습니까?", function(){
-                $.post('api/c1/p1/d9', formData, function(){
+                $.post('api/c2/p1/d9', formData, function(){
                     modal.alert('삭제되었습니다.');
                     $("input[name=idList]:checked").each(function(){
                         $(this).closest("li").remove();
@@ -154,6 +157,10 @@
                 });
             });
         });
+
+        function studentTaskFileDownload(path){
+            location.href = '/studentTaskFileDownload/'+path;
+        }
     </script>
 </th:block>
 </body>

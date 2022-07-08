@@ -29,7 +29,7 @@ public class A6Controller {
     @GetMapping("/p1")
     public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
         if (Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.BoardType.CODING);
+            params.setBoardType(Types.AcademyType.CODING);
         }
         model.addAttribute("list", a1Service.getBookList(params, pageable));
         model.addAttribute("params", params);
@@ -40,7 +40,7 @@ public class A6Controller {
     @GetMapping("/p1-detail")
     public String p1detail(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
         if (Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.BoardType.CODING);
+            params.setBoardType(Types.AcademyType.CODING);
         }
         model.addAttribute("list", a1Service.getBookList(params, pageable));
         model.addAttribute("params", params);
@@ -51,7 +51,7 @@ public class A6Controller {
     @GetMapping("/p1-stud")
     public String p1stud(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
         if (Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.BoardType.CODING);
+            params.setBoardType(Types.AcademyType.CODING);
         }
         model.addAttribute("list", a1Service.getBookList(params, pageable));
         model.addAttribute("params", params);
@@ -62,7 +62,7 @@ public class A6Controller {
     @GetMapping("/p1-write")
     public String p1write(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
         if (Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.BoardType.CODING);
+            params.setBoardType(Types.AcademyType.CODING);
         }
         model.addAttribute("list", a1Service.getBookList(params, pageable));
         model.addAttribute("params", params);

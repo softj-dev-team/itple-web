@@ -14,19 +14,22 @@ public class SearchVO {
 	private String searchValue;
 
 	//게시판
-	private Types.BoardType boardType;
+	private Types.AcademyType boardType;
 	private String subject;
 	private String contents;
 	private Long upperId;
 	private Long commentId;
 	private String boardCategory;
 
+	//수업연계 과제
+	private Types.TaskStatus status;
+
 	//관리자-출판서적
 	private String writer;
 
 	//관리자-출결
 	private String attendanceNo;
-	private Types.AttendanceType attendanceType;
+	private Types.AcademyType attendanceType;
 	private Types.AttendanceStatus attendanceStatus;
 }
 

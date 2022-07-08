@@ -1,0 +1,33 @@
+package com.softj.itple.entity;
+
+import com.softj.itple.domain.Types;
+import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+
+@Getter
+@Setter
+@Entity
+@ToString
+@Table(name = "tb_student_task")
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+public class StudentTask extends Auditing{
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student student;
+    @Convert(converter = Types.TaskStatus.Converter.class)
+    private Types.TaskStatus status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Task task;
+    private String contents;
+    private LocalDate compDate;
+
+    @OneToMany(mappedBy = "studentTask",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private List<StudentTaskFile> studentTaskFileList;
+}

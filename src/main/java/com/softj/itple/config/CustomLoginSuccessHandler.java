@@ -41,9 +41,9 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         try {
             principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if(principal.getAuthorities().contains(new SimpleGrantedAuthority(Types.RoleType.ADMIN.name()))){
-                adminVO = adminRepo.findByUser(User.builder().id(Long.parseLong(principal.getUsername())).build());
+                adminVO = adminRepo.findWithUserByUser(User.builder().id(Long.parseLong(principal.getUsername())).build());
             }else{
-                studentVO = studentRepo.findByUser(User.builder().id(Long.parseLong(principal.getUsername())).build());
+                studentVO = studentRepo.findWithUserByUser(User.builder().id(Long.parseLong(principal.getUsername())).build());
             }
 
             if(adminVO == null && studentVO == null)

@@ -2,9 +2,7 @@ package com.softj.itple.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -15,7 +13,12 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Student extends Auditing{
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private AcademyClass academyClass;
+
     private String attendanceNo;
+    private long coin;
 }

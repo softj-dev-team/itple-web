@@ -6,6 +6,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,15 +14,17 @@ import java.util.List;
 @Setter
 @Entity
 @ToString
-@Table(name = "tb_attendance_history")
+@Table(name = "tb_task")
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class AttendanceHistory extends Auditing{
+public class Task extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-    @Convert(converter = Types.AttendanceStatus.Converter.class)
-    private Types.AttendanceStatus attendanceStatus;
-    @Convert(converter = Types.AcademyType.Converter.class)
-    private Types.AcademyType attendanceType;
+    @JoinColumn(name="class_id")
+    private AcademyClass academyClass;
+    private String subject;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String contents;
+    private long coin;
 }

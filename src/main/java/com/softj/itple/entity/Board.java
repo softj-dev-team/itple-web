@@ -23,8 +23,8 @@ import java.util.List;
 public class Board extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-    @Convert(converter = Types.BoardType.Converter.class)
-    private Types.BoardType boardType;
+    @Convert(converter = Types.AcademyType.Converter.class)
+    private Types.AcademyType boardType;
     private String boardCategory;
     private String subject;
     private String thumbnail;
@@ -45,7 +45,7 @@ public class Board extends Auditing{
     private long starCount;
 
     @Builder
-    public Board(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, Types.BoardType boardType, String boardCategory, String subject, String thumbnail, String contents, long viewCount, List<BoardFile> boardFileList, List<BoardComment> boardCommentList, long commentCount, long starCount) {
+    public Board(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, Types.AcademyType boardType, String boardCategory, String subject, String thumbnail, String contents, long viewCount, List<BoardFile> boardFileList, List<BoardComment> boardCommentList, long commentCount, long starCount) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.user = user;
         this.boardType = boardType;

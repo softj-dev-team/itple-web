@@ -37,15 +37,15 @@ public class Types {
 
     @Getter
     @AllArgsConstructor
-    public enum BoardType implements Code<String> {
+    public enum AcademyType implements Code<String> {
         CODING("01", "잇플코딩"),
         ENGLISH("02", "잇플영어");
         private String code;
         private String message;
 
-        public static class Converter extends AbstractEnumConverter<BoardType, String> {
+        public static class Converter extends AbstractEnumConverter<AcademyType, String> {
             public Converter() {
-                super(BoardType.class);
+                super(AcademyType.class);
             }
         }
     }
@@ -67,15 +67,17 @@ public class Types {
 
     @Getter
     @AllArgsConstructor
-    public enum AttendanceType implements Code<String> {
-        CODING("01", "잇플코딩"),
-        ENGLISH("02", "잇플영어");
+    public enum TaskStatus implements Code<String> {
+        NOT_SUBMIT("01", "미제출"),
+        SUBMIT("02", "제출"),
+        COMPLETE("03", "확인"),
+        ;
         private String code;
         private String message;
 
-        public static class Converter extends AbstractEnumConverter<AttendanceType, String> {
+        public static class Converter extends AbstractEnumConverter<TaskStatus, String> {
             public Converter() {
-                super(AttendanceType.class);
+                super(TaskStatus.class);
             }
         }
     }

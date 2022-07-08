@@ -6,6 +6,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,15 +14,13 @@ import java.util.List;
 @Setter
 @Entity
 @ToString
-@Table(name = "tb_attendance_history")
+@Table(name = "tb_student_task_file")
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class AttendanceHistory extends Auditing{
+public class StudentTaskFile extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-    @Convert(converter = Types.AttendanceStatus.Converter.class)
-    private Types.AttendanceStatus attendanceStatus;
-    @Convert(converter = Types.AcademyType.Converter.class)
-    private Types.AcademyType attendanceType;
+    private StudentTask studentTask;
+    private String orgFileName;
+    private String uploadFileName;
 }

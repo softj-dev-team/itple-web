@@ -13,15 +13,12 @@ import java.util.List;
 @Setter
 @Entity
 @ToString
-@Table(name = "tb_attendance_history")
+@Table(name = "tb_class")
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class AttendanceHistory extends Auditing{
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-    @Convert(converter = Types.AttendanceStatus.Converter.class)
-    private Types.AttendanceStatus attendanceStatus;
+public class AcademyClass extends Auditing{
     @Convert(converter = Types.AcademyType.Converter.class)
-    private Types.AcademyType attendanceType;
+    private Types.AcademyType academyType;
+    private String className;
 }
