@@ -21,8 +21,9 @@ public class SearchVO {
 	private Long commentId;
 	private String boardCategory;
 
-	//수업연계 과제
+	//수업연계
 	private Types.TaskStatus status;
+	private Types.TaskType taskType;
 
 	//관리자-출판서적
 	private String writer;

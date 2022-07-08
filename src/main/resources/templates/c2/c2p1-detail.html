@@ -14,13 +14,23 @@
     <form id="form1">
         <input type="hidden" name="id" th:value="${el.id}"/>
         <input type="hidden" name="status" th:value="${el.status}"/>
+        <input type="hidden" name="taskType" th:value="${el.task.taskType}"/>
     <div class="content">
-        <h1 class="responsiveH1 subH1">과제 작성</h1>
+        <h1 class="responsiveH1 subH1" th:text="${#strings.equals(el.task.taskType,'TASK') ? '과제 작성' : '독후감 작성'}">과제 작성</h1>
         <div class="content-in clearfix">
             <div class="writeCon">
                 <div class="writeHead">
-                    <p class="writeGroup" th:text="|[${el.task.academyClass.className}]|">[잇플코딩 기초입문반A]</p>
-                    <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                    <th:block th:if="${#strings.equals(el.task.taskType, 'TASK')}">
+                        <p class="writeGroup" th:text="|[${el.task.academyClass.className}]|">[잇플코딩 기초입문반A]</p>
+                        <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                    </th:block>
+                    <th:block th:if="${#strings.equals(el.task.taskType, 'BOOK_REPORT')}">
+                        <select name="" id="studentTaskId" class="reportSlt">
+                            <option value="">미작성 독후감 선택</option>
+                            <option th:each="e : ${notSubmitList}" th:value="${e.id}" th:text="${e.task.subject+' - '+el.task.author}">책 제목1 - 작가 이름</option>
+                        </select>
+                        <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                    </th:block>
                     <p class="writePeriod" th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd')}|">2022.04.23 ~ 2022.04.30</p>
                 </div>
                 <div class="writeMain">

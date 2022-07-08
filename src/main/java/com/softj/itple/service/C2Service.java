@@ -1,5 +1,6 @@
 package com.softj.itple.service;
 
+import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
@@ -7,6 +8,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
+import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
@@ -16,6 +18,7 @@ import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.modelmapper.internal.util.Lists;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -46,12 +49,18 @@ public class C2Service {
 
     public Page<StudentTask> getStudentTaskList(SearchVO params, Pageable pageable){
         QStudentTask qStudentTask = QStudentTask.studentTask;
-        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.student.eq(AuthUtil.getStudent())));
+        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(params.getTaskType())).and(qStudentTask.student.eq(AuthUtil.getStudent())));
         return studentTaskRepo.findAll(where, pageable);
     }
 
     public StudentTask getStudentTask(SearchVO params){
         return studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    public List<StudentTask> getNotSubmitList(SearchVO params){
+        QStudentTask qStudentTask = QStudentTask.studentTask;
+        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(Types.TaskType.BOOK_REPORT)).and(qStudentTask.student.eq(AuthUtil.getStudent())).and(qStudentTask.status.eq(Types.TaskStatus.NOT_SUBMIT)));
+        return ImmutableList.copyOf(studentTaskRepo.findAll(where));
     }
 
 //    public Page<BoardComment> getStudentTaskCommentList(SearchVO params, Pageable pageable){

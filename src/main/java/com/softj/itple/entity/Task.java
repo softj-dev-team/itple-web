@@ -22,7 +22,10 @@ public class Task extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="class_id")
     private AcademyClass academyClass;
+    @Convert(converter = Types.TaskType.Converter.class)
+    private Types.TaskType taskType;
     private String subject;
+    private String author;
     private LocalDate startDate;
     private LocalDate endDate;
     private String contents;

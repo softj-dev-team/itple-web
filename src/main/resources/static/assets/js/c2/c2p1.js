@@ -5,7 +5,14 @@ $(function(){
         if(e.keyCode == 13){
             goSearch();
         }
-    })
+    });
+
+    $("#studentTaskId").on("change",function(){
+        var studentTaskId = $(this).val();
+       if(studentTaskId != ''){
+           ut.redirect(`/c2/p1-detail/${studentTaskId}`);
+       }
+    });
 })
 
 function goSearch(){
@@ -35,7 +42,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 $.post(path+'/s1',formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
                     if(arg1 != 'NOT_SUBMIT') {
-                        ut.redirect("/c2/p1");
+                        ut.redirect("/c2/p1","taskType",$("input[name=taskType]").val());
                     }
                 });
             });

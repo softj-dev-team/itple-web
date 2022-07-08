@@ -81,4 +81,20 @@ public class Types {
             }
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum TaskType implements Code<String> {
+        TASK("01", "과제"),
+        BOOK_REPORT("02", "독후감"),
+        ;
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<TaskType, String> {
+            public Converter() {
+                super(TaskType.class);
+            }
+        }
+    }
 }
