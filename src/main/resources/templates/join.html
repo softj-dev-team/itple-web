@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/none-layout">
+
+<head>
+    <title>회원가입</title>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+
+<th:block layout:fragment="content">
+    <div class="responsiveWrap">
+        <h1 class="responsiveH1">회원가입</h1>
+        <div class="responsiveInner">
+            <form action="">
+                <div class="inputSec">
+                    <label for="userId" class="mb5">아이디</label>
+                    <input name="userId" id="userId" type="text" class="input-df post mb20" required><button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>
+                    <label for="userPw" class="mb5">비밀번호</label>
+                    <input name="userPw" id="userPw" type="password" class="input-df mb20" required>
+                    <label for="userPwRe" class="mb5">비밀번호 확인</label>
+                    <input name="userPwRe" id="userPwRe" type="password" class="input-df mb20" required>
+                </div>
+                <div class="inputSec">
+                    <label for="" class="mb5">반</label>
+                    <select name="classId" class="input-df mb20">
+                        <option th:each="class : ${classList}" th:value="class.id" th:text="${class.className}">잇플코딩입문반</option>
+                    </select>
+                    <label for="userName" class="mb5">이름</label>
+                    <input name="userName" id="userName" type="text" class="input-df mb20" required>
+                    <label for="attendanceNo" class="mb5">출결번호</label>
+                    <input name="attendanceNo" id="attendanceNo" type="text" class="input-df mb20" required>
+                    <label for="" class="mb5">생일</label>
+                    <div class="datepickerWrap">
+                        <input name="birth" type="text" class="input-df mb20 datepicker">
+                        <i class="i-date"></i>
+                    </div>
+                </div>
+                <div class="inputSec">
+                    <label for="school" class="mb5">학교</label>
+                    <input name="school" id="school" type="text" class="input-df mb20">
+                    <label for="" class="mb5">학년</label>
+                    <select name="grade" id="" class="input-df mb20">
+                        <option th:each="grade : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${grade.code}" th:text="${grade.message}">1학년</option>
+                    </select>
+                    <label for="email" class="mb5">이메일</label>
+                    <input name="email" id="email" type="text" class="input-df mb20">
+                </div>
+                <div class="inputSec">
+                    <label for="zonecode" class="mb5">집주소</label>
+                    <input name="zonecode" id="zonecode" type="text" class="input-df post mb10" readonly placeholder="우편번호"><button type="button" class="btn post-btn" onclick="oepnAddrPopup()">주소검색</button>
+                    <input name="roadAddress" type="text" class="input-df mb10" readonly placeholder="주소">
+                    <input name="detailAddress" type="text" class="input-df mb20" placeholder="상세주소">
+                    <label for="parentName" class="mb5">보호자 성함</label>
+                    <input name="parentName" id="parentName" type="text" class="input-df mb20" required>
+                    <label for="parentTel" class="mb5">보호자 연락처</label>
+                    <input name="parentTel" id="parentTel" type="text" class="input-df mb20" required>
+                </div>
+                <div class="inputSec timeSelectOuter">
+                    <label for="" class="mb10">등원 시간</label>
+                    <div class="timeSelectWrap">
+                        <select name="" id="" class="daySel">
+                            <option value="월요일">월요일</option>
+                            <option value="화요일">화요일</option>
+                            <option value="수요일">수요일</option>
+                            <option value="목요일">목요일</option>
+                            <option value="금요일">금요일</option>
+                            <option value="토요일">토요일</option>
+                            <option value="일요일">일요일</option>
+                        </select>
+                        <select name="" id="">
+                            <option value="9시">9시</option>
+                            <option value="10시">10시</option>
+                            <option value="11시">11시</option>
+                            <option value="12시">12시</option>
+                            <option value="13시">13시</option>
+                            <option value="14시">14시</option>
+                            <option value="15시">15시</option>
+                            <option value="16시">16시</option>
+                            <option value="17시">17시</option>
+                            <option value="18시">18시</option>
+                            <option value="19시">19시</option>
+                            <option value="20시">20시</option>
+                        </select>
+                        <select name="" id="">
+                            <option value="00분">00분</option>
+                            <option value="10분">10분</option>
+                            <option value="20분">20분</option>
+                            <option value="30분">30분</option>
+                            <option value="40분">40분</option>
+                            <option value="50분">50분</option>
+                        </select>
+                        <button type="button" class="btn-add"></button>
+                    </div>
+                </div>
+                <div class="btn-center mt60">
+                    <button type="button" class="btn">회원가입</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+        var checkId = "";
+
+        $(function(){
+            $(".datepicker").datepicker({
+                format: "yyyy년 mm월 dd일",
+                language: "ko",
+                orientation: "auto"
+            });
+
+            $(document).on("click", ".btn-remove", function(){
+                $(this).parents('.timeSelectWrap').remove();
+            }).on("click", ".btn-add", function(){
+                if($(".timeSelectWrap").length > 6){
+                    modal.alert('7일 이상 추가할 수 없습니다.');
+                }else{
+                    $(".timeSelectOuter").append('<div class="timeSelectWrap"><select name="" id="" class="daySel"><option value="월요일">월요일</option><option value="화요일">화요일</option><option value="수요일">수요일</option><option value="목요일">목요일</option><option value="금요일">금요일</option><option value="토요일">토요일</option><option value="일요일">일요일</option></select><select name="" id=""><option value="9시">9시</option><option value="10시">10시</option><option value="11시">11시</option><option value="12시">12시</option><option value="13시">13시</option><option value="14시">14시</option><option value="15시">15시</option><option value="16시">16시</option><option value="17시">17시</option><option value="18시">18시</option><option value="19시">19시</option><option value="20시">20시</option></select><select name="" id=""><option value="00분">00분</option><option value="10분">10분</option><option value="20분">20분</option><option value="30분">30분</option><option value="40분">40분</option><option value="50분">50분</option></select><button type="button" class="btn-remove"></button></div>')
+                }
+            });
+
+            $(document).on("change", ".daySel", function(){
+                var thisVal = $(this).val()
+                if($('.daySel option[value="' + thisVal + '"]:selected').length > 1){
+                    modal.alert('이미 선택된 요일입니다.');
+                }
+            })
+
+            $("input[name=userId]").on("input",function(){
+                checkId = "";
+                $("#idDupCheckBtn").removeClass("btn-blue");
+                $("#idDupCheckBtn").text("중복검사");
+            });
+        });
+
+        function oepnAddrPopup(){
+            new daum.Postcode({
+                autoClose: true,
+                oncomplete: function(data) {
+                    $("input[name=zonecode]").val(data.zonecode);
+                    $("input[name=roadAddress]").val(data.roadAddress);
+                    $("input[name=detailAddress]").focus();
+                }
+            }).open();
+        }
+
+        function idDupCheck(){
+            checkId = $("input[name=userId]").val();
+            $("#idDupCheckBtn").addClass("btn-blue");
+            $("#idDupCheckBtn").text("검사완료");
+        }
+    </script>
+</th:block>
+</html>

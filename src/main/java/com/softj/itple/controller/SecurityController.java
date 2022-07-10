@@ -6,6 +6,8 @@ import com.softj.itple.entity.Student;
 import com.softj.itple.entity.User;
 import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.repo.UserRepo;
+import com.softj.itple.service.CommonService;
+import com.softj.itple.service.SecurityService;
 import com.softj.itple.util.SMTPUtil;
 import com.softj.itple.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SecurityController {
 	final private StudentRepo studentRepo;
-	final private PasswordEncoder passwordEncoder;
-	final private UserRepo userRepo;
-	final private SMTPUtil smtpUtil;
+	final private SecurityService securityService;
+	final private CommonService commonService;
 
 	//로그인
 	@GetMapping(value = "/login")
@@ -55,11 +56,13 @@ public class SecurityController {
 		return Response.builder().build();
 	}
 
+	//아이디찾기
 	@GetMapping("/findID")
 	public String findID(ModelMap model){
 		return "findID";
 	}
 
+	//아이디완료
 	@PostMapping("/findIDComplete")
 	public String findIDComplete(ModelMap model, SearchVO params){
 		String findId = studentRepo.findID(params.getUserName(), params.getEmail());
@@ -67,25 +70,36 @@ public class SecurityController {
 		return "findIDComplete";
 	}
 
+	//비번찾기
 	@GetMapping("/findPW")
 	public String findPW(ModelMap model){
 		return "findPW";
 	}
 
+	//비번완료
 	@Transactional
 	@PostMapping("/findPWComplete")
 	public String findPWComplete(ModelMap model, SearchVO params){
-		boolean isSuccess = false;
-		String tempPw = UUID.randomUUID().toString();
-		Student find = studentRepo.findPW(params.getUserName(),params.getEmail(),params.getUserId());
-		if(Objects.nonNull(find)){
-			User save = find.getUser();
-			save.setUserPw(passwordEncoder.encode(tempPw));
-			userRepo.save(save);
-			smtpUtil.sendmail(find.getEmail(), "잇플 임시비밀번호", tempPw);
-			isSuccess = true;
-		}
-		model.addAttribute("isSuccess", isSuccess);
+		model.addAttribute("isSuccess", securityService.setAndSendTempPw(params));
 		return "findPWComplete";
+	}
+
+	@GetMapping("/join")
+	public String join(ModelMap model){
+		model.addAttribute("classList",commonService.getClassList());
+		return "join";
+	}
+
+	@ResponseBody
+	@PostMapping("/api/join")
+	public Response apiJoin(ModelMap model, SearchVO params){
+		securityService.join(params);
+		return Response.builder()
+				.build();
+	}
+
+	@GetMapping("/joinComplete")
+	public String joinComplete(ModelMap model){
+		return "joinComplete";
 	}
 }

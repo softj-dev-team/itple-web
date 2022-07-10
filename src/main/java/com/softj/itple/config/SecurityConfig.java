@@ -70,6 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						"/findIDComplete",
 						"/findPW",
 						"/findPWComplete",
+						"/join",
+						"/joinComplete",
 						"/setAttendanceType",
 						"/adminLogin").permitAll()	// 언제나허용
 				.antMatchers("/**").authenticated() // /** 모든경로는 로그인시에 사용가능

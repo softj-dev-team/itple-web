@@ -1,5 +1,6 @@
 package com.softj.itple.service;
 
+import com.softj.itple.entity.AcademyClass;
 import com.softj.itple.repo.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
@@ -15,6 +16,8 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class CommonService {
+    final private AcademyClassRepo academyClassRepo;
+
     @Value("${file.uploadDir}")
     private String FILE_PATH;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -47,5 +50,9 @@ public class CommonService {
         }
 
         return result;
+    }
+
+    public List<AcademyClass> getClassList(){
+        return academyClassRepo.findAll();
     }
 }

@@ -97,4 +97,51 @@ public class Types {
             }
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum DayOfWeek implements Code<String> {
+        MONDAY("01", "월요일"),
+        TUESDAY("02", "화요일"),
+        WEDNESDAY("03", "수요일"),
+        THURSDAY("04", "목요일"),
+        FRIDAY("05", "금요일"),
+        SATURDAY("06", "토요일"),
+        SUNDAY("07", "일요일"),
+        ;
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<DayOfWeek, String> {
+            public Converter() {
+                super(DayOfWeek.class);
+            }
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum Grade implements Code<String> {
+        EL1("01", "초등학교 1학년"),
+        EL2("02", "초등학교 2학년"),
+        EL3("03", "초등학교 3학년"),
+        EL4("04", "초등학교 4학년"),
+        EL5("05", "초등학교 5학년"),
+        EL6("06", "초등학교 6학년"),
+//        MID1("07", "중학교 1학년"),
+//        MID2("08", "중학교 2학년"),
+//        MID3("09", "중학교 3학년"),
+//        HIGH1("10", "고등학교 1학년"),
+//        HIGH2("11", "고등학교 2학년"),
+//        HIGH3("12", "고등학교 3학년"),
+        ;
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<Grade, String> {
+            public Converter() {
+                super(Grade.class);
+            }
+        }
+    }
 }

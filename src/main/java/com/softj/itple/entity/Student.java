@@ -1,5 +1,6 @@
 package com.softj.itple.entity;
 
+import com.softj.itple.domain.Types;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,7 +22,8 @@ public class Student extends Auditing{
 
     private String attendanceNo;
     private String school;
-    private String grade;
+    @Convert(converter = Types.Grade.Converter.class)
+    Types.Grade grade;
     private String parentName;
     private String parentTel;
     private String email;
