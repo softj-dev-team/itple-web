@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/none-layout">
+
+<head>
+    <title>아이디찾기</title>
+</head>
+
+<th:block layout:fragment="content">
+    <div class="responsiveWrap hasTab">
+        <h1 class="responsiveH1" style="padding: 0 !important;">아이디 찾기</h1>
+        <div class="tab clearfix">
+            <ul class="tab-ul">
+                <li class="active"><a href="/findID">아이디 찾기</a></li>
+                <li ><a href="/findPW">비밀번호 찾기</a></li>
+            </ul>
+        </div>
+        <div class="responsiveInner">
+            <th:block th:unless="${#strings.isEmpty(findId)}">
+                <div class="ch-icon mt100 mb30" style="background-image: url(../assets/img/ch-icon.png)"></div>
+                <p class="text-center mb5">아이디 찾기가 완료되었습니다.</p>
+                <p class="text-center t24">가입하신 아이디는 <b class="text-blue" th:text="${'**'+#strings.substring(findId, 2)}">**ple123</b>입니다.</p>
+            </th:block>
+            <th:block th:if="${#strings.isEmpty(findId)}">
+                <div class="ch-icon mt100 mb30" style="background-image: url(../assets/img/delete.png)"></div>
+                <p class="text-center t24">일치하는 데이터가 없습니다.</p>
+            </th:block>
+            <div class="btn-center mt100">
+                <button type="button" class="btn btn-gray" onclick="location.href='/findID'">이전 화면으로</button>
+                <button type="button" class="mt10 btn" onclick="location.href='/login'">로그인 화면으로</button>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</th:block>
+</html>

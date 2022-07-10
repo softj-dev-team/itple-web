@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/none-layout">
+
+<head>
+    <title>비밀번호찾기</title>
+</head>
+
+<th:block layout:fragment="content">
+    <div class="responsiveWrap hasTab">
+        <h1 class="responsiveH1" style="padding: 0 !important;">비밀번호 찾기</h1>
+        <div class="tab clearfix">
+            <ul class="tab-ul">
+                <li ><a href="/findID">아이디 찾기</a></li>
+                <li class="active"><a href="/findPW">비밀번호 찾기</a></li>
+            </ul>
+        </div>
+        <div class="responsiveInner">
+            <form action="/findPWComplete" method="post">
+                <div class="inputSec">
+                    <label for="userId" class="mb5">아이디</label>
+                    <input type="text" class="input-df mb20" required id="userId" name="userId">
+                    <label for="userName" class="mb5">이름</label>
+                    <input type="text" class="input-df mb20" required id="userName" name="userName">
+                    <label for="email" class="mb5">이메일</label>
+                    <input type="text" class="input-df mb20" required id="email" name="email">
+                </div>
+                <div class="btn-center mt60">
+                    <button type="submit" class="btn">비밀번호 찾기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</th:block>
+</html>

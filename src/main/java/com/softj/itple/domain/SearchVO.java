@@ -13,6 +13,11 @@ public class SearchVO {
 	private String searchType;
 	private String searchValue;
 
+	//아이디비번찾기
+	private String email;
+	private String userName;
+	private String userId;
+
 	//게시판
 	private Types.AcademyType boardType;
 	private String subject;

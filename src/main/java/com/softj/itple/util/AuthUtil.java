@@ -16,6 +16,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -24,7 +25,8 @@ public class AuthUtil {
     final private UserRepo userRepo;
 
     public static UserDetails getPrincipal() {
-        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal.equals("anonymousUser") ? null : (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public static Admin getAdmin() {

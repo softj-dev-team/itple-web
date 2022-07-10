@@ -20,5 +20,10 @@ public class Student extends Auditing{
     private AcademyClass academyClass;
 
     private String attendanceNo;
+    private String school;
+    private String grade;
+    private String parentName;
+    private String parentTel;
+    private String email;
     private long coin;
 }

@@ -41,7 +41,7 @@ public class SMTPUtil {
         	message.setFrom(new InternetAddress(env.getProperty("emailId")));
         	message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(id));
         	message.setSubject(subject);
-        	message.setContent(htmlMessage,"text/html; charset=utf-8");//글내용을 html타입 charset설정
+        	message.setContent(htmlMessage,"text/html; charset=utf-8");
         	System.out.println("send!!!");
         	Transport.send(message);
         } catch(Exception e){
