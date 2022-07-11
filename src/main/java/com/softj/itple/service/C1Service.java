@@ -212,11 +212,5 @@ public class C1Service {
             save.setThumbnail(thumbnail);
         }
         Board finalSave = boardRepo.save(save);
-
-        List<BoardFile> fileList = boardFileRepo.findAllById(Arrays.asList(params.getIdList()));
-        for(BoardFile f:fileList){
-            f.setBoard(finalSave);
-        }
-        boardFileRepo.saveAll(fileList);
     }
 }

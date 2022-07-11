@@ -11,11 +11,10 @@
         <h1 class="adH1">출판서적</h1>
         <div class="content-in clearfix">
             <div class="adSearch clearfix">
-                <form id="form1" action="" class="adSearch-in">
+                <form id="form1" name="form1" action="" class="adSearch-in">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <div class="in-box">
-                         <select name="" id="">
-                            <option value="">전체</option>
+                         <select name="searchType" id="searchType">
                             <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">책제목</option>
                             <option value="writer" th:selected="${#strings.equals(param.searchType, 'writer')}">저자</option>
                         </select>
@@ -26,13 +25,14 @@
             </div>
             <div class="tableBtn-box">
                 <div class="leftBox">
-                    <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                    <button type="button" class="m-btn btn-line RemoveBtn" onclick="goAction('D1')">선택삭제</button>
                 </div>
                 <div class="rightBox">
                     <button type="button" class="m-btn btn-line" onclick="goAdd();">신규등록</button>
                     <button type="button" class="m-btn QRBtn">QR촬영</button>
                 </div>
             </div>
+            <form id="form2" name="form2">
             <table class="adTable list1">
                 <thead class="adTable-head">
                     <tr>
@@ -47,16 +47,30 @@
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
                     <tr th:each="el : ${list}">
-                        <td><input type="checkbox" id="ch1"><label for="ch1"></label></td>
+                        <td>
+                            <input type="checkbox" name="seqList" id="ch1"><label for="ch1"></label>
+                            <input type="hidden" name="idList" th:value="${el.id}"/>
+                        </td>
                         <td><div class="bookImg" th:style="|background-image: url('${el.thumbnail}');|"></div></td>
-                        <td><a href="|/a1/p1-detail/${el.id}|">정보 sw,로봇 영재원 대비 문제집</a></td>
+                        <td><a th:href="|/a1/p1-detail/${el.id}|" ><span th:text="${el.subject}">책제목</span></a></td>
                         <td><span th:text="${el.writer}">작가명</span></td>
-                        <td><span th:text="${el.start_date + '~' + el.end_date}">대여기간</span></td>
-                        <td><span th:text="${el.writer}">대여자</span></td>
-                        <td><button type="button" class="btn btn-blue" onclick="taskList()">대여하기</button></td>
+                        <td><span th:if="${!#lists.isEmpty(el.bookRental)}"><span th:text="${el.bookRental.get(0).startDate + '~' + el.bookRental.get(0).endDate}">대여기간</span></span></td>
+                        <td><span th:text="${el.bookRental.get(0).user.userName}">대여자</span></td>
+                        <td>
+                            <span th:if="${#lists.isEmpty(el.bookRental)}">
+                                <button type="button" th:if="${el.bookRental.get(0).status}" class="btn btn-blue" onclick="taskList()">대여하기</button>
+                            </span>
+                            <span th:unless="${#lists.isEmpty(el.bookRental)}">
+                                <!--1: 대여안됨(반납), 2: 대여중, 3: 연체-->
+                                <button type="button" th:if="${el.bookRental.get(0).status == '1'}" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
+                                <button type="button" th:if="${el.bookRental.get(0).status == '2'}" class="btn btn-red" th:onclick="|goRental(${el.id})|">대여중</button>
+                                <button type="button" th:if="${el.bookRental.get(0).status == '3'}" class="btn btn-yellow" th:onclick="|goRental(${el.id})|">연체</button>
+                            </span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+            </form>
         </div>
 
         <!--페이지네이션-->
@@ -65,11 +79,11 @@
 
     <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
-        function goAdd(){
+        function goAdd() {
             $(location).attr("href", "/a1/p1-write");
         }
-        function taskList(){
-            $(location).attr("href", "/a1/p1-rental");
+        function goRental(id){
+            $(location).attr("href", "/a1/p1-rental/"+id);
         }
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');

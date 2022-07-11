@@ -3,6 +3,7 @@ package com.softj.itple.entity;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -15,7 +16,9 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Student extends Auditing{
-    @OneToOne
-    private User user;
-    private String attendanceNo;
+
+   @OneToOne
+   private User user;
+
+   private String attendanceNo;
 }

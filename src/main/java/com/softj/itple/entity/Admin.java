@@ -3,6 +3,7 @@ package com.softj.itple.entity;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Admin extends Auditing{
+
     @OneToOne
     private User user;
 }
