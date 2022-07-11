@@ -21,6 +21,12 @@ public class User extends Auditing{
     private String userPw;
     private String userName;
 
+    @OneToOne(mappedBy = "user")
+    private Student student;
+
+    @OneToOne(mappedBy = "user")
+    private Admin admin;
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Role> roleList;

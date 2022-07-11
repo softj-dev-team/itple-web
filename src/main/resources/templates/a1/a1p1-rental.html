@@ -7,30 +7,35 @@
 </head>
 <body>
 <th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" name="id" th:value="${el.id}"/>
+        <input type="hidden" name="nStatus" th:value="${el.status}"/>
     <div class="responsiveWrap">
         <h1 class="responsiveH1">도서 대여/반납</h1>
         <div class="responsiveInner">
-            <div class="detailsIgm" th:style="|background-image: url('${el.thumbnail}');|"></div>//style="background-image: url(../assets/img/book1.jpg);"
+            <div class="detailsIgm" th:style="|background-image: url('${el.thumbnail}');|"></div>
             <div class="detailsBox">
-                <h2 class="detTit">정보 sw,로봇 영재원 대비 문제집</h2>
-                <p class="detwriter">잇플ITPLE</p>
+                <h2 class="detTit" th:text="${el.subject}">책제목</h2>
+                <p class="detwriter" th:text="${el.writer}">작가명</p>
                 <div class="hr"></div>
-                <p class="detInfo">도서정보에 대한 간략한 설명이 들어가는 곳. 도서정보에 대한 간략한 설명이 들어가는 곳. 도서정보에 대한 간략한 설명이 들어가는 곳.</p>
+                <p class="detInfo" th:text="${el.contents}">도서정보에 대한 간략한 설명이 들어가는 곳.</p>
                 <div class="hr2"></div>
                 <div class="inputBox2 mb20">
                     <div>
-                        <label for="user" class="mb5">대여자</label>
-                        <input type="text" name="user" id="user" class="input-df" value="김잇플">
+                        <label for="userName" class="mb5">대여자</label>
+                        <input type="text" name="userName" id="userName" class="input-df" th:value="${el.bookRental.get(0).user.userName}" >
                     </div>
                     <div>
-                        <label for="no" class="mb5">출결번호</label>
-                        <input type="text" name="no" id="no" class="input-df" value="2589">
+                        <label for="attendanceNo" class="mb5">출결번호</label>
+                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df" th:value="${el.bookRental.get(0).user.student.attendanceNo}">
                     </div>
                 </div>
                 <div class="inputBox2">
                     <div>
                         <label for="status" class="mb5">대여 현황</label>
-                        <input type="text" name="status" id="status" class="input-df" value="연체" disabled>
+                        <input type="text" name="status" id="status" class="input-df" th:if="${el.bookRental.get(0).status == '1'}" value="대여가능" disabled>
+                        <input type="text" name="status" id="status" class="input-df" th:if="${el.bookRental.get(0).status == '2'}" value="대여중" disabled>
+                        <input type="text" name="status" id="status" class="input-df" th:if="${el.bookRental.get(0).status == '3'}" value="연체" disabled>
                     </div>
                 </div>
                 <div class="dateBox">
@@ -51,6 +56,7 @@
             </div>
         </div>
     </div>
+    </form>
     <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
         $(".datepicker").datepicker({

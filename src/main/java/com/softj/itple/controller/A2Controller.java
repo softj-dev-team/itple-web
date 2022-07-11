@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/a2")
@@ -53,7 +54,8 @@ public class A2Controller {
     public String p1task(@PathVariable long id, ModelMap model, SearchVO params){
         params.setId(id);
 
-        Book el = Book.builder().build();
+        Book el = new Book();
+
         if(id!=0){
             el = a1Service.getBook(params);
         }
@@ -67,7 +69,7 @@ public class A2Controller {
     public String p1write(@PathVariable long id, ModelMap model, SearchVO params){
         params.setId(id);
 
-        Book el = Book.builder().build();
+        Book el = new Book();
         if(id!=0){
             el = a1Service.getBook(params);
         }

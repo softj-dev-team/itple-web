@@ -6,7 +6,7 @@ $(function(){
             goSearch();
         }
     })
-})
+});
 
 function goSearch(){
     $("#page").val(0);
@@ -16,6 +16,10 @@ function goSearch(){
 function goReset(flag){
     $('#form1 input,#form1  select').each(function e(){$(this).val('');});
     goSearch();
+}
+
+function reload(){
+    window.location.reload();
 }
 
 function goAction(flag, arg1, arg2) {
@@ -28,14 +32,32 @@ function goAction(flag, arg1, arg2) {
             break;
         /*저장*/
         case "S1":
-            var formS1 = $('#noticeForm');
+            var formS1 = $('#form1');
             modal.confirm(null,"저장하시겠습니까?",function(){
                 loading(1);
-                $.post(path+'/s1',formS1.serialize(),function(res){
+                var url = '/api'+ path+'/s1';
+                if(arg1 != null && arg1 != ""){
+                    url = url + "/" + arg1
+                }
+
+                var formData = new FormData(formS1[0]);
+                $.ajax({
+                    data : formData,
+                    type : "POST",
+                    url : "/api/a1/p1/f1",
+                    contentType : false,
+                    processData : false,
+                    success : function(res) {
+                        modal.alert('저장되었습니다.');
+                        loading(0);
+                    }
+                });
+
+               /* $.post(url,formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
                     loading(0)
                     reload();
-                });
+                });*/
             });
             break;
         case "Q1":
@@ -46,13 +68,17 @@ function goAction(flag, arg1, arg2) {
             break;
         /*삭제*/
         case "D1":
+            var formS1 = $('#form2');
+
             if($("input[name=seqList]:checked").length == 0){
                 modal.alert("체크한 데이터가 없습니다.");
                 return;
             }
+            var url = '/api'+ path+'/d1';
+
             modal.confirm(null,"체크한 데이터를 삭제하시겠습니까?",function(){
                 loading(1);
-                $.post(path+'/d1',form.serialize(),function(){
+                $.post(url,formS1.serialize(),function(){
                     modal.alert('삭제되었습니다.');
                     reload();
                 });

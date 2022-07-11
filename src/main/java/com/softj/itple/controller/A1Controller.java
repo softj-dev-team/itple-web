@@ -1,5 +1,6 @@
 package com.softj.itple.controller;
 
+import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.Board;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/a1")
@@ -40,9 +42,10 @@ public class A1Controller {
         return "a1/a1p1";
     }
 
-    //내용
+    //상세
     @GetMapping("/p1-detail/{id}")
     public String p1detail(@PathVariable long id, ModelMap model, SearchVO params){
+
         params.setId(id);
 
         model.addAttribute("el", a1Service.getBook(params));
@@ -51,16 +54,8 @@ public class A1Controller {
     }
 
     //작성
-    @GetMapping("/p1-write/{id}")
-    public String p1write(@PathVariable long id, ModelMap model, SearchVO params){
-        params.setId(id);
-
-        Book el = Book.builder().build();
-        if(id!=0){
-            el = a1Service.getBook(params);
-        }
-        model.addAttribute("el",el);
-        model.addAttribute("params",params);
+    @GetMapping("/p1-write")
+    public String p1write(){
         return "a1/a1p1-write";
     }
 
@@ -69,7 +64,7 @@ public class A1Controller {
     public String p1rental(@PathVariable long id, ModelMap model, SearchVO params){
         params.setId(id);
 
-        Book el = Book.builder().build();
+        Book el = new Book();
         if(id!=0){
             el = a1Service.getBook(params);
         }
