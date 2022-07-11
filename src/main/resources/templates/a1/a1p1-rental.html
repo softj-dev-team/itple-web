@@ -23,19 +23,19 @@
                 <div class="inputBox2 mb20">
                     <div>
                         <label for="userName" class="mb5">대여자</label>
-                        <input type="text" name="userName" id="userName" class="input-df" th:value="${el.bookRental.get(0).user.userName}" >
+                        <input type="text" name="userName" id="userName" class="input-df" th:value="${el.user.userName}" >
                     </div>
                     <div>
                         <label for="attendanceNo" class="mb5">출결번호</label>
-                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df" th:value="${el.bookRental.get(0).user.student.attendanceNo}">
+                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df" th:value="${el.user.student.attendanceNo}">
                     </div>
                 </div>
                 <div class="inputBox2">
                     <div>
-                        <label for="status" class="mb5">대여 현황</label>
-                        <input type="text" name="status" id="status" class="input-df" th:if="${el.bookRental.get(0).status == '1'}" value="대여가능" disabled>
-                        <input type="text" name="status" id="status" class="input-df" th:if="${el.bookRental.get(0).status == '2'}" value="대여중" disabled>
-                        <input type="text" name="status" id="status" class="input-df" th:if="${el.bookRental.get(0).status == '3'}" value="연체" disabled>
+                        <label for="status1" class="mb5">대여 현황</label>
+                        <input type="text" name="status" id="status1" class="input-df" th:if="${el.status.code == '01'}" value="대여가능" disabled>
+                        <input type="text" name="status" id="status2" class="input-df" th:if="${el.status.code == '02'}" value="대여중" disabled>
+                        <input type="text" name="status" id="status3" class="input-df" th:if="${el.status.code == '03'}" value="연체" disabled>
                     </div>
                 </div>
                 <div class="dateBox">

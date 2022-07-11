@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -22,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Book  extends Auditing {
-    private String book_no;
+    private String bookNo;
     private String subject;
     private String thumbnail;
     private String writer;
@@ -34,5 +35,5 @@ public class Book  extends Auditing {
     private User user;
 
     @Convert(converter = Types.BookRentalStatus.Converter.class)
-    private Types.BookRentalStatus status;
+    private Types.BookRentalStatus bookStatus;
 }

@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class BookRental extends Auditing {
     @Convert(converter = Types.BookRentalStatus.Converter.class)
-    private Types.BookRentalStatus status;
+    private Types.BookRentalStatus rentalStatus;
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate returnDate;
@@ -26,4 +27,5 @@ public class BookRental extends Auditing {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Book book;
+
 }

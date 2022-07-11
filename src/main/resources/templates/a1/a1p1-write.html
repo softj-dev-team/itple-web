@@ -8,14 +8,15 @@
 <body>
 <th:block layout:fragment="content">
     <form id="form1">
+        <input type="hidden" name="thumbnail"/>
     <div class="responsiveWrap">
         <h1 class="responsiveH1">신규 등록</h1>
         <div class="responsiveInner">
             <div class="filebox">
                 <div class="detailsIgm upFile" id="FileImg" onclick="fileOpen();">
-                    <div class="upFile-img"></div>
+                    <div class="upFile-img" th:style="|background-image: url('${el.thumbnail}');|"></div>
                 </div>
-                <input type="file"  name="uploadBtn" class="uploadBtn"  id="image"  accept="image/*" multiple="multiple" onchange="setThumbnail(event);" style="display: none;">
+                <input type="file"  name="files" class="uploadBtn"  id="image"  accept="image/*" multiple="multiple" onchange="setThumbnail(event);" style="display: none;">
             </div>
             <div class="detailsBox inputSec">
                 <label for="subject" class="mb5">책 제목</label>
@@ -51,7 +52,6 @@
         function fileOpen(){
             var ele=document.getElementById('image');
             ele.click();
-            console.log('test');
         }
     </script>
 </th:block>

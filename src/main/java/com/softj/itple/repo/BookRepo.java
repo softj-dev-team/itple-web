@@ -14,11 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookRepo extends JpaRepository<Book, Long>, QuerydslPredicateExecutor<Book> {
-    @Query("select a from Book a where a.subject = :subject")
-    Page<Book> findBySubject(@Param("subject")String subject, Pageable pageable);
-    @Query("select a from Book a where a.writer = :writer")
-    Page<Book> findByWriter(@Param("writer")String writer, Pageable pageable);
     @Modifying
-    @Query("UPDATE Book a SET a.status = :status WHERE a.id = :id")
-    int updateStatus(String status, Long id);
+    @Query("UPDATE Book a SET a.bookStatus = :bookStatus WHERE a.id = :id")
+    int updateStatus(String bookStatus, Long id);
 }

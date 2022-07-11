@@ -1,5 +1,6 @@
 package com.softj.itple.service;
 
+import com.querydsl.core.BooleanBuilder;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
@@ -9,17 +10,14 @@ import com.softj.itple.repo.BookRepo;
 import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.util.LongUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.thymeleaf.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -40,35 +38,35 @@ public class A1Service {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
     public Page<Book> getBookList(SearchVO params, Pageable pageable){
-
-        if(StringUtils.equals(params.getSearchType(),"subject")){
-            return bookRepo.findBySubject(params.getSearchValue(), pageable);
-        }else if(StringUtils.equals(params.getSearchType(),"writer")){
-            return bookRepo.findByWriter(params.getSearchValue(), pageable);
-        }else{
-            return bookRepo.findAll(pageable);
+        QBook qBook = QBook.book;
+        BooleanBuilder where = new BooleanBuilder().and(qBook.isDeleted.eq(false));
+        if(com.softj.itple.util.StringUtils.noneEmpty(params.getSearchValue())){
+            switch (params.getSearchType()){
+                case "subject":
+                    where.and(qBook.subject.contains(params.getSearchValue()));
+                    break;
+                case "writer":
+                    where.and(qBook.writer.contains(params.getSearchValue()));
+                    break;
+            }
         }
+//        List<Book> bookList = (List<Book>) bookRepo.findAll(where);
+//        return new PageImpl<Book>(bookList, pageable, bookRepo.findAll(where, pageable).getTotalElements());
+        return bookRepo.findAll(where,pageable);
     }
     public Book getBook(SearchVO params){
         return bookRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
-
     }
 
     @Transactional
-    public void saveBookRental(SearchVO params) {
-        BookRental save = new BookRental();
-        if(LongUtils.noneEmpty(params.getId())){
-            save = bookRentalRepo.findById(params.getId()).get();
-        }
+    public long saveBookRental(SearchVO params) {
+        Book book = bookRepo.findById(params.getId()).orElseThrow(() -> new ApiException("책 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
 
         String attendanceNo = params.getAttendanceNo();
-        Optional<Student> student = studentRepo.findByAttendanceNo(attendanceNo);
+        Student student = studentRepo.findByAttendanceNo(attendanceNo).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
 
         LocalDate currentLocalDate = LocalDate.now();
         LocalDate endLocalDate = currentLocalDate.plusWeeks(1);
-
-        String startDate = currentLocalDate.format(df);
-        String endDate = endLocalDate.format(df);
 
         String status = null;
 
@@ -78,14 +76,14 @@ public class A1Service {
             status = "1";
         }
 
-        save.setBookId(params.getId());
-        save.setUserId(student.get().getUser().getId());
-        save.setStartDate(startDate);
-        save.setEndDate(endDate);
-        save.setStatus(status);
+        bookRepo.updateStatus(status,book.getId());
 
-        bookRentalRepo.save(save);
-        bookRepo.updateStatus(status,save.getBookId());
+        return bookRentalRepo.save(BookRental.builder()
+                .user(student.getUser())
+                .book(book)
+                .startDate(currentLocalDate)
+                .endDate(endLocalDate)
+                .build()).getId();
     }
 
     @Transactional
@@ -95,47 +93,29 @@ public class A1Service {
         }
     }
     @Transactional
-    public void saveBook(SearchVO params) {
-        Book save = new Book();
+    public long saveBook(SearchVO params) {
+      Book save = Book.builder().build();
+      if(LongUtils.noneEmpty(params.getId())){
+          save = bookRepo.findById(params.getId()).get();
+      }
 
-        String status = params.getStatus();
-        if(StringUtils.isEmpty(status)){
-            status = "1";
-        }
+      save.setSubject(params.getSubject());
+      save.setWriter(params.getSubject());
+      save.setBookNo(params.getSubject());
+      save.setContents(params.getSubject());
+      save.setThumbnail(params.getSubject());
 
-        save.setSubject(params.getSubject());
-        save.setWriter(params.getWriter());
-        save.setStatus(status);
-        save.setBook_no(params.getBook_no());
-        save.setContents(params.getContents());
+      if(StringUtils.isEmpty(params.getRentalStatus().getCode())){
+            save.setBookStatus(params.getRentalStatus());
+      }
 
-        bookRepo.save(save);
-    }
-    @Transactional
-    public String bookFileUpload(MultipartHttpServletRequest request) throws Exception{
-
-        MultipartFile img = request.getFile("file");
-        String imagePath = null;
-        if (!Objects.isNull(img) && com.softj.itple.util.StringUtils.noneEmpty(img.getOriginalFilename())) {
-
-            String realFileName = img.getOriginalFilename();
-            String ext = realFileName.substring(realFileName.lastIndexOf(".") + 1);
-            String systemFileName = UUID.randomUUID().toString().toUpperCase() + "." + ext;
-
-            String targetPath = FILE_PATH + "/" + sdf.format(new Date()) + "/";
-            File targetDir = new File(targetPath);
-
-            //폴더 생성
-            if (!targetDir.exists()) {
-                targetDir.mkdirs();
-            }
-
-            FileUtils.writeByteArrayToFile(new File(targetPath + systemFileName), img.getBytes());
-
-            imagePath = targetPath + systemFileName;
-            imagePath = imagePath.replace("/", "_");
-        }
-
-        return imagePath;
+        return bookRepo.save(Book.builder()
+                .subject(save.getSubject())
+                .writer(save.getWriter())
+                .bookNo(save.getBookNo())
+                .contents(save.getContents())
+                .thumbnail(save.getThumbnail())
+                .bookStatus(save.getBookStatus())
+                .build()).getId();
     }
 }

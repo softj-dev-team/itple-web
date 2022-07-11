@@ -33,11 +33,12 @@ public class SearchVO {
 	//관리자-출판서적
 	private String book_no;
 	private String thumbnail;
-	private String rentalStatus;
+	private Types.BookRentalStatus bookStatus;
 	private String writer;
 
 	//관리자-대여
 	private String nStatus; // 현재상태
+	private Types.BookRentalStatus rentalStatus;
 
 	//관리자-출결
 	private String attendanceNo;

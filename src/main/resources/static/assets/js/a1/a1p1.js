@@ -41,10 +41,11 @@ function goAction(flag, arg1, arg2) {
                 }
 
                 var formData = new FormData(formS1[0]);
+                console.log(formData);
                 $.ajax({
                     data : formData,
                     type : "POST",
-                    url : "/api/a1/p1/f1",
+                    url : url,
                     contentType : false,
                     processData : false,
                     success : function(res) {
