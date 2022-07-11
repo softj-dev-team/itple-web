@@ -1,8 +1,10 @@
 package com.softj.itple.entity;
 
+import com.softj.itple.domain.Types;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -13,21 +15,15 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class BookRental extends Auditing {
-
-    @Column(name="book_id")
-    private long bookId;
-    @Column(name="user_id")
-    private long userId;
-    private String status;
-    private String startDate;
-    private String endDate;
-    private String returnDate;
+    @Convert(converter = Types.BookRentalStatus.Converter.class)
+    private Types.BookRentalStatus status;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate returnDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id",insertable = false,updatable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id",insertable = false,updatable = false)
     private Book book;
 }

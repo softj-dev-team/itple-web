@@ -144,4 +144,21 @@ public class Types {
             }
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum BookRentalStatus implements Code<String> {
+        AVAILABLE("01", "대여가능"),
+        LOAN("02", "대여중"),
+        DELINQUENT("03", "연체"),
+        ;
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<BookRentalStatus, String> {
+            public Converter() {
+                super(BookRentalStatus.class);
+            }
+        }
+    }
 }

@@ -33,7 +33,7 @@ public class SearchVO {
 	//관리자-출판서적
 	private String book_no;
 	private String thumbnail;
-	private String status;
+	private String rentalStatus;
 	private String writer;
 
 	//관리자-대여
