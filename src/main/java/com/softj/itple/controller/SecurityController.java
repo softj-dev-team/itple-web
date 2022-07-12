@@ -8,6 +8,7 @@ import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.repo.UserRepo;
 import com.softj.itple.service.CommonService;
 import com.softj.itple.service.SecurityService;
+import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.SMTPUtil;
 import com.softj.itple.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -107,6 +108,21 @@ public class SecurityController {
 	@PostMapping("/api/dupCheck")
 	public Response dupCheck(ModelMap model, SearchVO params){
 		securityService.dupCheck(params);
+		return Response.builder()
+				.build();
+	}
+
+	@GetMapping("/myInfo")
+	public String myInfo(ModelMap model){
+		model.addAttribute("el",studentRepo.findByUser(AuthUtil.getUser()));
+		model.addAttribute("classList",commonService.getClassList());
+		return "myInfo";
+	}
+
+	@PostMapping("/api/myInfoModify")
+	@ResponseBody
+	public Response myInfoModify(ModelMap model, SearchVO params){
+		AuthUtil.setStudent(securityService.updateStudent(params));
 		return Response.builder()
 				.build();
 	}

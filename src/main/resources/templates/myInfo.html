@@ -2,13 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="layout/none-layout">
-
+      layout:decorate="layout/layout">
 <head>
-    <title>회원가입</title>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <title>내 정보</title>
 </head>
-
+<body>
 <th:block layout:fragment="content">
     <div class="responsiveWrap">
         <h1 class="responsiveH1">회원가입</h1>
@@ -16,80 +14,109 @@
             <form id="form1">
                 <div class="inputSec">
                     <label for="userId" class="mb5">아이디</label>
-                    <input name="userId" id="userId" type="text" class="input-df post mb20" required><button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>
-                    <label for="userPw" class="mb5">비밀번호</label>
+                    <input name="userId" id="userId" type="text" class="input-df mb20" required disabled th:value="${el.user.userId}"><!--<button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>-->
+                    <label for="userPw" class="mb5">비밀번호 <span>수정시에만 입력하세요.</span></label>
                     <input name="userPw" id="userPw" type="password" class="input-df mb20" required>
-                    <label for="userPwRe" class="mb5">비밀번호 확인</label>
+                    <label for="userPwRe" class="mb5">비밀번호 확인 <span>수정시에만 입력하세요.</span></label>
                     <input name="userPwRe" id="userPwRe" type="password" class="input-df mb20" required>
                 </div>
                 <div class="inputSec">
                     <label for="" class="mb5">반</label>
-                    <select name="classId" class="input-df mb20">
-                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}">잇플코딩입문반</option>
+                    <select name="classId" class="input-df mb20" disabled>
+                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.className, el.academyClass.className)}">잇플코딩입문반</option>
                     </select>
                     <label for="userName" class="mb5">이름</label>
-                    <input name="userName" id="userName" type="text" class="input-df mb20" required>
+                    <input name="userName" id="userName" type="text" class="input-df mb20" required th:value="${el.user.userName}">
                     <label for="attendanceNo" class="mb5">출결번호</label>
-                    <input name="attendanceNo" id="attendanceNo" type="text" class="input-df mb20" required maxlength="4">
+                    <input name="attendanceNo" id="attendanceNo" type="text" class="input-df mb20" required maxlength="4" disabled th:value="${el.attendanceNo}">
                     <label for="" class="mb5">생일</label>
                     <div class="datepickerWrap">
-                        <input name="birth" type="text" class="input-df mb20 datepicker">
+                        <input name="birth" type="text" class="input-df mb20 datepicker" th:value="${#temporals.format(el.birth,'yyyy-MM-dd')}">
                         <i class="i-date"></i>
                     </div>
                 </div>
                 <div class="inputSec">
                     <label for="school" class="mb5">학교</label>
-                    <input name="school" id="school" type="text" class="input-df mb20">
+                    <input name="school" id="school" type="text" class="input-df mb20" th:value="${el.school}">
                     <label for="" class="mb5">학년</label>
                     <select name="grade" id="" class="input-df mb20">
-                        <option th:each="grade : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${grade}" th:text="${grade.message}">1학년</option>
+                        <option th:each="grade : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${grade}" th:text="${grade.message}" th:selected="${grade == el.grade}">1학년</option>
                     </select>
                     <label for="email" class="mb5">이메일</label>
-                    <input name="email" id="email" type="text" class="input-df mb20">
+                    <input name="email" id="email" type="text" class="input-df mb20" th:value="${el.email}">
                 </div>
                 <div class="inputSec">
                     <label for="zonecode" class="mb5">집주소</label>
-                    <input name="zonecode" id="zonecode" type="text" class="input-df post mb10" readonly placeholder="우편번호"><button type="button" class="btn post-btn" onclick="oepnAddrPopup()">주소검색</button>
-                    <input name="roadAddress" type="text" class="input-df mb10" readonly placeholder="주소">
-                    <input name="detailAddress" type="text" class="input-df mb20" placeholder="상세주소">
+                    <input name="zonecode" id="zonecode" type="text" class="input-df post mb10" readonly placeholder="우편번호" th:value="${el.zonecode}"><button type="button" class="btn post-btn" onclick="oepnAddrPopup()">주소검색</button>
+                    <input name="roadAddress" type="text" class="input-df mb10" readonly placeholder="주소" th:value="${el.roadAddress}">
+                    <input name="detailAddress" type="text" class="input-df mb20" placeholder="상세주소" th:value="${el.detailAddress}">
                     <label for="parentName" class="mb5">보호자 성함</label>
-                    <input name="parentName" id="parentName" type="text" class="input-df mb20" required>
+                    <input name="parentName" id="parentName" type="text" class="input-df mb20" required th:value="${el.parentName}">
                     <label for="parentTel" class="mb5">보호자 연락처</label>
-                    <input name="parentTel" id="parentTel" type="text" class="input-df mb20" required>
+                    <input name="parentTel" id="parentTel" type="text" class="input-df mb20" required th:value="${el.parentTel}">
                 </div>
                 <div class="inputSec timeSelectOuter">
                     <label for="" class="mb10">등원 시간</label>
                     <div class="timeSelectWrap">
                         <select name="dayOfWeekList" class="daySel">
-                            <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}">월요일</option>
+                            <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}" th:selected="${day == el.user.attendanceList.get(0).attendanceDay}">월요일</option>
                         </select>
                         <select name="hourList">
-                            <option value="9">9시</option>
-                            <option value="10">10시</option>
-                            <option value="11">11시</option>
-                            <option value="12">12시</option>
-                            <option value="13">13시</option>
-                            <option value="14">14시</option>
-                            <option value="15">15시</option>
-                            <option value="16">16시</option>
-                            <option value="17">17시</option>
-                            <option value="18">18시</option>
-                            <option value="19">19시</option>
-                            <option value="20">20시</option>
+                            <option value="9" th:selected="${#strings.equals(9, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">9시</option>
+                            <option value="10" th:selected="${#strings.equals(10, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">10시</option>
+                            <option value="11" th:selected="${#strings.equals(11, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">11시</option>
+                            <option value="12" th:selected="${#strings.equals(12, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">12시</option>
+                            <option value="13" th:selected="${#strings.equals(13, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">13시</option>
+                            <option value="14" th:selected="${#strings.equals(14, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">14시</option>
+                            <option value="15" th:selected="${#strings.equals(15, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">15시</option>
+                            <option value="16" th:selected="${#strings.equals(16, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">16시</option>
+                            <option value="17" th:selected="${#strings.equals(17, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">17시</option>
+                            <option value="18" th:selected="${#strings.equals(18, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">18시</option>
+                            <option value="19" th:selected="${#strings.equals(19, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">19시</option>
+                            <option value="20" th:selected="${#strings.equals(20, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">20시</option>
                         </select>
                         <select name="minList">
-                            <option value="0">00분</option>
-                            <option value="10">10분</option>
-                            <option value="20">20분</option>
-                            <option value="30">30분</option>
-                            <option value="40">40분</option>
-                            <option value="50">50분</option>
+                            <option value="0" th:selected="${#strings.equals(0, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">00분</option>
+                            <option value="10" th:selected="${#strings.equals(10, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">10분</option>
+                            <option value="20" th:selected="${#strings.equals(20, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">20분</option>
+                            <option value="30" th:selected="${#strings.equals(30, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">30분</option>
+                            <option value="40" th:selected="${#strings.equals(40, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">40분</option>
+                            <option value="50" th:selected="${#strings.equals(50, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">50분</option>
                         </select>
                         <button type="button" class="btn-add"></button>
                     </div>
+
+                    <div class="timeSelectWrap" th:each="at : ${el.user.attendanceList}" th:if="${atStat.index != 0}">
+                        <select name="dayOfWeekList" class="daySel">
+                            <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}" th:selected="${day == at.attendanceDay}">월요일</option>
+                        </select>
+                        <select name="hourList">
+                            <option value="9" th:selected="${#strings.equals(9, #temporals.format(at.attendanceAt,'H'))}">9시</option>
+                            <option value="10" th:selected="${#strings.equals(10, #temporals.format(at.attendanceAt,'H'))}">10시</option>
+                            <option value="11" th:selected="${#strings.equals(11, #temporals.format(at.attendanceAt,'H'))}">11시</option>
+                            <option value="12" th:selected="${#strings.equals(12, #temporals.format(at.attendanceAt,'H'))}">12시</option>
+                            <option value="13" th:selected="${#strings.equals(13, #temporals.format(at.attendanceAt,'H'))}">13시</option>
+                            <option value="14" th:selected="${#strings.equals(14, #temporals.format(at.attendanceAt,'H'))}">14시</option>
+                            <option value="15" th:selected="${#strings.equals(15, #temporals.format(at.attendanceAt,'H'))}">15시</option>
+                            <option value="16" th:selected="${#strings.equals(16, #temporals.format(at.attendanceAt,'H'))}">16시</option>
+                            <option value="17" th:selected="${#strings.equals(17, #temporals.format(at.attendanceAt,'H'))}">17시</option>
+                            <option value="18" th:selected="${#strings.equals(18, #temporals.format(at.attendanceAt,'H'))}">18시</option>
+                            <option value="19" th:selected="${#strings.equals(19, #temporals.format(at.attendanceAt,'H'))}">19시</option>
+                            <option value="20" th:selected="${#strings.equals(20, #temporals.format(at.attendanceAt,'H'))}">20시</option>
+                        </select>
+                        <select name="minList">
+                            <option value="0" th:selected="${#strings.equals(0, #temporals.format(at.attendanceAt,'m'))}">00분</option>
+                            <option value="10" th:selected="${#strings.equals(10, #temporals.format(at.attendanceAt,'m'))}">10분</option>
+                            <option value="20" th:selected="${#strings.equals(20, #temporals.format(at.attendanceAt,'m'))}">20분</option>
+                            <option value="30" th:selected="${#strings.equals(30, #temporals.format(at.attendanceAt,'m'))}">30분</option>
+                            <option value="40" th:selected="${#strings.equals(40, #temporals.format(at.attendanceAt,'m'))}">40분</option>
+                            <option value="50" th:selected="${#strings.equals(50, #temporals.format(at.attendanceAt,'m'))}">50분</option>
+                        </select>
+                        <button type="button" class="btn-remove"></button>
+                    </div>
                 </div>
                 <div class="btn-center mt60">
-                    <button type="button" class="btn" onclick="join()">회원가입</button>
+                    <button type="button" class="btn" onclick="myInfoSave()">저장하기</button>
                 </div>
             </form>
         </div>
@@ -98,8 +125,6 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         /*]]>*/
-        var checkId = "";
-
         $(function(){
             $(".datepicker").datepicker({
                 format: "yyyy-mm-dd",
@@ -184,7 +209,7 @@
             });
         }
 
-        function join(){
+        function myInfoSave(){
             var userId = $("input[name=userId]").val();
             var userPw = $("input[name=userPw]").val();
             var userPwRe = $("input[name=userPwRe]").val();
@@ -197,10 +222,6 @@
             var parentName = $("input[name=parentName]").val();
             var parentTel = $("input[name=parentTel]").val();
 
-            if(checkId != userId){
-                modal.alert("중복확인을 해주세요.");
-                return;
-            }
             if(attendanceNo.length != 4){
                 modal.alert("출결번호는 4자리 입력해주세요");
                 return;
@@ -215,14 +236,6 @@
             }
             if(ut.isEmpty(userId)){
                 modal.required("아이디");
-                return;
-            }
-            if(ut.isEmpty(userPw)){
-                modal.required("비밀번호");
-                return;
-            }
-            if(ut.isEmpty(userPwRe)){
-                modal.required("비밀번호 확인");
                 return;
             }
             if(ut.isEmpty(userName)){
@@ -268,10 +281,12 @@
                 modal.alert("중복된 요일은 선택 할 수 없습니다.");
                 return;
             }
-            $.post("/api/join",$("#form1").serialize(),function(res){
-                ut.redirect("/joinComplete")
+
+            $.post("/api/myInfoModify",$("#form1").serialize(),function(res){
+                modal.alert("저장되었습니다.");
             });
         }
     </script>
 </th:block>
+</body>
 </html>

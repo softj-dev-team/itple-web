@@ -12,8 +12,10 @@ import com.softj.itple.repo.AcademyClassRepo;
 import com.softj.itple.repo.AttendanceRepo;
 import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.repo.UserRepo;
+import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.SMTPUtil;
+import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -130,5 +132,40 @@ public class SecurityService implements UserDetailsService{
         if(Objects.nonNull(userRepo.findByUserId(params.getUserId()))) {
             throw new ApiException("아이디가 중복됩니다.", ErrorCode.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Transactional
+    public Student updateStudent(SearchVO params){
+        Student save = studentRepo.findByUser(AuthUtil.getUser());
+        if(StringUtils.noneEmpty(params.getUserPw())) {
+            save.getUser().setUserPw(new BCryptPasswordEncoder().encode(params.getUserPw()));
+        }
+        save.getUser().setUserName(params.getUserName());
+//        save.getUser().setUserId(params.getUserId());
+        userRepo.save(save.getUser());
+
+//        save.getAcademyClass().setId(params.getClassId());
+
+//        save.setAttendanceNo(params.getAttendanceNo());
+        save.setBirth(params.getBirth());
+        save.setSchool(params.getSchool());
+        save.setZonecode(params.getZonecode());
+        save.setRoadAddress(params.getRoadAddress());
+        save.setDetailAddress(params.getDetailAddress());
+        save.setParentName(params.getParentName());
+        save.setParentTel(params.getParentTel());
+        studentRepo.save(save);
+
+        attendanceRepo.deleteAllByUser(save.getUser());
+        attendanceRepo.flush();
+
+        for(int i=0; i < params.getDayOfWeekList().length; i++){
+            attendanceRepo.save(Attendance.builder()
+                    .user(save.getUser())
+                    .attendanceAt(LocalTime.of(params.getHourList()[i], params.getMinList()[i]))
+                    .attendanceDay(params.getDayOfWeekList()[i])
+                    .build());
+        }
+        return save;
     }
 }

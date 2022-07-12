@@ -21,7 +21,7 @@
                 <div class="sec-in">
                     <p class="sec-name"><span th:text="${session.studentVO.user.userName}">잇플학원</span> 님</p>
                     <p class="sec-point">포인트 : <span th:text="| ${#numbers.formatInteger(session.studentVO.coin,0,'COMMA')}|">1,000</span></p>
-                    <a href="sub/myinfo.html" class="sec-mypage">내 정보</a>
+                    <a href="/myInfo" class="sec-mypage">내 정보</a>
                 </div>
             </div>
             <div class="sec sec2">
