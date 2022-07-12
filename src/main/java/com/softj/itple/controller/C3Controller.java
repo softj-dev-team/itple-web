@@ -27,24 +27,18 @@ public class C3Controller {
 
     //목록
     @GetMapping("/p1")
-    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
-        model.addAttribute("list",null);
+    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 12) Pageable pageable){
+        model.addAttribute("list",c3Service.getBookList(params, pageable));
         model.addAttribute("params",params);
         return "c3/c3p1";
     }
-//    //상세
-//    @GetMapping("/p1-detail/{id}")
-//    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
-//        if(Objects.isNull(params.getTaskType())) {
-//            params.setTaskType(Types.TaskType.TASK);
-//        }
-//        params.setId(id);
-//        StudentTask el = c3Service.getStudentTask(params);
-//        model.addAttribute("el", el);
-//        model.addAttribute("notSubmitList", c3Service.getNotSubmitList(params));
-//        model.addAttribute("params",params);
-//        return "c3/c3p1-detail";
-//    }
+    //상세
+    @GetMapping("/p1-detail/{id}")
+    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
+        model.addAttribute("el", c3Service.getBook(params));
+        model.addAttribute("params",params);
+        return "c3/c3p1-detail";
+    }
 //
 //    //작성
 //    @GetMapping("/p1-write/{id}")

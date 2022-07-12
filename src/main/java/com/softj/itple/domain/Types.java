@@ -151,6 +151,7 @@ public class Types {
         AVAILABLE("01", "대여가능"),
         LOAN("02", "대여중"),
         DELINQUENT("03", "연체"),
+        RETURN("04", "반납완료"),
         ;
         private String code;
         private String message;

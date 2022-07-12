@@ -1251,7 +1251,7 @@ i.i-date{
     padding: 4px 10px;
     display: inline-block;
 }
-.rental{
+.loan{
     background-color: #C24444;
 }
 .available {
@@ -1260,7 +1260,7 @@ i.i-date{
 .return{
     background-color: #C7C7C7;
 }
-.delay{
+.delinquent{
     background-color: #EBA400;
 }
 .book-list .book-info .book-tit{

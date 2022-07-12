@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <!-- 썸머노트 -->
+    <link href="/assets/plugins/summernote-0.8.18-dist/summernote-lite.css" rel="stylesheet" type="text/css">
+    <script src="/assets/plugins/summernote-0.8.18-dist/summernote-lite.js"></script>
+    <title>수업연계</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="responsiveWrap">
+        <h1 class="responsiveH1">도서 상세정보</h1>
+        <div class="responsiveInner">
+            <div class="detailsIgm" th:style="|background-image: url(${el.thumbnail});|"></div>
+            <div class="detailsBox">
+                <h2 class="detTit" th:text="${el.subject}">정보 sw,로봇 영재원 대비 문제집</h2>
+                <p class="detwriter" th:text="${el.writer}">잇플ITPLE</p>
+                <div class="tagBox">
+                    <span th:classappend="${#strings.toLowerCase(el.bookStatus)}" th:text="${el.bookStatus.message}">대여중</span>
+                    <span th:unless="${#strings.equals(el.bookStatus,'AVAILABLE')}" class="period" th:text="|${#temporals.format(el.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.endDate,'yyyy.MM.dd')}|">2022.02.10~2022.02.17</span><!--대여가능일때는 기간 안보이게-->
+                </div>
+                <div class="hr"></div>
+                <p class="detInfo" th:utext="${el.contents}">정보(SW, 로봇) 영재원은 그 특성상 알고리즘적 사고, 이산수학적 사고, 컴퓨팅 사고력을 바탕으로 영재를 선발합니다. 이런 특성을 잘 파악해 영재선발을 위한 시험을 잘 대비할 수 있도록 본 교재를 편찬하게 되었습니다.
+                    본 교재는 다양한 기출문제 및 논문, 관련 서적을 참조로 해서 대학 및 교육청 정보 및 로봇영재원에 최적화된 파이널 교재 형태로 집필했습니다.</p>
+            </div>
+            <div class="btn-center mt60">
+                <button type="button" class="btn btn-gray" onclick="history.back()">이전으로</button>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/assets/js/c3/c3p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</th:block>
+</body>
+</html>

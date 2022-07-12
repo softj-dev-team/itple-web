@@ -8,9 +8,6 @@
 </head>
 <body>
 <th:block layout:fragment="content">
-    <form id="form1">
-<!--        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">-->
-    </form>
     <div class="content">
         <h1 class="responsiveH1">도서대여</h1>
         <div class="tab clearfix">
@@ -21,142 +18,32 @@
         </div>
         <div class="content-in clearfix">
             <div class="search clearfix">
-                <form action="" class="search-in">
+                <form id="form1" class="search-in">
+                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <div class="in-box">
-                        <select name="" id="">
-                            <option value="">전체</option>
-                            <option value="">책제목</option>
-                            <option value="">저자</option>
+                        <select name="searchType">
+                            <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">제목</option>
+                            <option value="writer" th:selected="${#strings.equals(param.searchType, 'writer')}">저자</option>
                         </select>
-                        <input type="text">
+                        <input type="text" name="searchValue" th:value="${param.searchValue}">
                     </div>
-                    <button type="button" class="src-btn"></button>
+                    <button type="button" class="src-btn" onclick="goSearch()"></button>
                 </form>
             </div>
             <ul class="book-box  clearfix">
-                <li class="book-list ">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book1.jpg);"></div>
+                <li class="book-list" th:each="el : ${list}">
+                    <a th:href="|/c3/p1-detail/${el.id}|">
+                        <div class="book-img" th:style="|background-image: url(${el.thumbnail});|"></div>
                         <div class="book-info">
-                            <span class="rental">대여중</span>
-                            <p class="book-tit">영재를 위한 엔트리 수학 vol.3</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book2.jpg);"></div>
-                        <div class="book-info">
-                            <span class="delay">연체</span>
-                            <p class="book-tit">영재를 위한 엔트리 수학 vol.3</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
-                        <div class="book-info">
-                            <span class="available">대여가능</span>
-                            <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book4.jpg);"></div>
-                        <div class="book-info">
-                            <span class="available">대여가능</span>
-                            <p class="book-tit">파이썬 첫 걸음</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
-                        <div class="book-info">
-                            <span class="available">대여가능</span>
-                            <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
-                        <div class="book-info">
-                            <span class="available">대여가능</span>
-                            <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
-                        <div class="book-info">
-                            <span class="available">대여가능</span>
-                            <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
-                        <div class="book-info">
-                            <span class="available">대여가능</span>
-                            <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book2.jpg);"></div>
-                        <div class="book-info">
-                            <span class="delay">연체</span>
-                            <p class="book-tit">영재를 위한 엔트리 수학 vol.3</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
-                        <div class="book-info">
-                            <span class="available">대여가능</span>
-                            <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book4.jpg);"></div>
-                        <div class="book-info">
-                            <span class="available">대여가능</span>
-                            <p class="book-tit">파이썬 첫 걸음</p>
-                            <p class="book-author">잇플ITPLE</p>
-                        </div>
-                    </a>
-                </li>
-                <li class="book-list">
-                    <a href="">
-                        <div class="book-img" style="background-image: url(../assets/img/book2.jpg);"></div>
-                        <div class="book-info">
-                            <span class="delay">연체</span>
-                            <p class="book-tit">영재를 위한 엔트리 수학 vol.3</p>
-                            <p class="book-author">잇플ITPLE</p>
+                            <span th:classappend="${#strings.toLowerCase(el.bookStatus)}" th:text="${el.bookStatus.message}">대여중</span>
+                            <p class="book-tit" th:text="${el.subject}">영재를 위한 엔트리 수학 vol.3</p>
+                            <p class="book-author" th:text="${el.writer}">잇플ITPLE</p>
                         </div>
                     </a>
                 </li>
             </ul>
         </div>
-<!--        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>-->
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
 
     <script th:src="@{/assets/js/c3/c3p1.js(v='1.0.0')}"></script>

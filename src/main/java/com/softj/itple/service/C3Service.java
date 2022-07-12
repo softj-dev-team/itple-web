@@ -5,14 +5,10 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
-import com.softj.itple.entity.QStudentTask;
-import com.softj.itple.entity.StudentTask;
-import com.softj.itple.entity.StudentTaskFile;
+import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
-import com.softj.itple.repo.StudentTaskFileRepo;
-import com.softj.itple.repo.StudentTaskRepo;
-import com.softj.itple.repo.TaskRepo;
+import com.softj.itple.repo.*;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -34,22 +30,34 @@ import java.util.*;
 @RequiredArgsConstructor
 public class C3Service {
     private final JPAQueryFactory jpaQueryFactory;
+    private final BookRepo bookRepo;
+    private final BookRentalRepo bookRentalRepo;
 
     @Value("${file.uploadDir}")
     private String FILE_PATH;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-//    public Page<StudentTask> getStudentTaskList(SearchVO params, Pageable pageable){
-//        QStudentTask qStudentTask = QStudentTask.studentTask;
-//        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(params.getTaskType())).and(qStudentTask.student.eq(AuthUtil.getStudent())));
-//        return studentTaskRepo.findAll(where, pageable);
-//    }
-//
-//    public StudentTask getStudentTask(SearchVO params){
-//        return studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
-//    }
-//
+    public Page<Book> getBookList(SearchVO params, Pageable pageable){
+        QBook qBook = QBook.book;
+        BooleanBuilder where = new BooleanBuilder().and(qBook.isDeleted.eq(false));
+        if(StringUtils.noneEmpty(params.getSearchValue())){
+            switch (params.getSearchType()){
+                case "subject":
+                    where.and(qBook.subject.contains(params.getSearchValue()));
+                    break;
+                case "writer":
+                    where.and(qBook.writer.contains(params.getSearchValue()));
+                    break;
+            }
+        }
+        return bookRepo.findAll(where, pageable);
+    }
+
+    public Book getBook(SearchVO params){
+        return bookRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
 //    public List<StudentTask> getNotSubmitList(SearchVO params){
 //        QStudentTask qStudentTask = QStudentTask.studentTask;
 //        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(Types.TaskType.BOOK_REPORT)).and(qStudentTask.student.eq(AuthUtil.getStudent())).and(qStudentTask.status.eq(Types.TaskStatus.NOT_SUBMIT)));
