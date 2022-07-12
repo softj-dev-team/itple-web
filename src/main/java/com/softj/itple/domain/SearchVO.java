@@ -2,6 +2,9 @@ package com.softj.itple.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -13,10 +16,24 @@ public class SearchVO {
 	private String searchType;
 	private String searchValue;
 
-	//아이디비번찾기
+	//회원가입
 	private String email;
 	private String userName;
 	private String userId;
+	private String userPw;
+	private String school;
+	private String zonecode;
+	private String roadAddress;
+	private String detailAddress;
+	private String parentName;
+	private String parentTel;
+	private Types.Grade grade;
+	private Long classId;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate birth;
+	private Types.DayOfWeek[] dayOfWeekList = new Types.DayOfWeek[0];
+	private Integer[] hourList = new Integer[0];
+	private Integer[] minList = new Integer[0];
 
 	//게시판
 	private Types.AcademyType boardType;

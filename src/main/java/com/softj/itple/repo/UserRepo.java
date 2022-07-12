@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepo extends JpaRepository<User, Long>, QuerydslPredicateExecutor<User> {
     @EntityGraph(attributePaths = {"roleList"}, type = EntityGraph.EntityGraphType.LOAD)
     User findWithRoleListByUserId(@Param("userId") String userId);
+    User findByUserId(@Param("userId") String userId);
 }

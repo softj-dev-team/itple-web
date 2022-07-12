@@ -4,6 +4,7 @@ import com.softj.itple.domain.Types;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -22,10 +23,14 @@ public class Student extends Auditing{
 
     private String attendanceNo;
     private String school;
+    private String zonecode;
+    private String roadAddress;
+    private String detailAddress;
     @Convert(converter = Types.Grade.Converter.class)
     Types.Grade grade;
     private String parentName;
     private String parentTel;
+    private LocalDate birth;
     private String email;
     private long coin;
 }

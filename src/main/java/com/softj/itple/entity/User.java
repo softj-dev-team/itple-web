@@ -31,11 +31,19 @@ public class User extends Auditing{
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Role> roleList;
 
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private List<Attendance> attendanceList;
+
     @Builder
-    public User(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String userId, String userPw, List<Role> roleList) {
+    public User(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String userId, String userPw, String userName, Student student, Admin admin, List<Role> roleList, List<Attendance> attendanceList) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.userId = userId;
         this.userPw = userPw;
+        this.userName = userName;
+        this.student = student;
+        this.admin = admin;
         this.roleList = roleList;
+        this.attendanceList = attendanceList;
     }
 }

@@ -1,11 +1,18 @@
 package com.softj.itple.service;
 
 import com.softj.itple.domain.SearchVO;
+import com.softj.itple.entity.AcademyClass;
+import com.softj.itple.entity.Attendance;
 import com.softj.itple.entity.Role;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.Student;
+import com.softj.itple.exception.ApiException;
+import com.softj.itple.exception.ErrorCode;
+import com.softj.itple.repo.AcademyClassRepo;
+import com.softj.itple.repo.AttendanceRepo;
 import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.repo.UserRepo;
+import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.SMTPUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.transaction.Transactional;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +41,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SecurityService implements UserDetailsService{
     final private StudentRepo studentRepo;
+    final private AttendanceRepo attendanceRepo;
+    final private AcademyClassRepo academyClassRepo;
     final private UserRepo userRepo;
     final private SMTPUtil smtpUtil;
 
@@ -83,7 +94,41 @@ public class SecurityService implements UserDetailsService{
         return isSuccess;
     }
 
-    public void join(SearchVO params){
+    @Transactional
+    public void saveStudent(SearchVO params){
+        Student save = Student.builder()
+                .user(com.softj.itple.entity.User.builder()
+                        .userId(params.getUserId())
+                        .userPw(new BCryptPasswordEncoder().encode(params.getUserPw()))
+                        .userName(params.getUserName())
+                        .build())
+                .academyClass(AcademyClass.builder()
+                        .id(params.getClassId())
+                        .build())
+                .attendanceNo(params.getAttendanceNo())
+                .birth(params.getBirth())
+                .school(params.getSchool())
+                .zonecode(params.getZonecode())
+                .roadAddress(params.getRoadAddress())
+                .detailAddress(params.getDetailAddress())
+                .parentName(params.getParentName())
+                .parentTel(params.getParentTel())
+                .build();
+        userRepo.save(save.getUser());
+        studentRepo.save(save);
 
+        for(int i=0; i < params.getDayOfWeekList().length; i++){
+            attendanceRepo.save(Attendance.builder()
+                    .user(save.getUser())
+                    .attendanceAt(LocalTime.of(params.getHourList()[i], params.getMinList()[i]))
+                    .attendanceDay(params.getDayOfWeekList()[i])
+                    .build());
+        }
+    }
+
+    public void dupCheck(SearchVO params){
+        if(Objects.nonNull(userRepo.findByUserId(params.getUserId()))) {
+            throw new ApiException("아이디가 중복됩니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 }

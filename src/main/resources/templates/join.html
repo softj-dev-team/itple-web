@@ -13,7 +13,7 @@
     <div class="responsiveWrap">
         <h1 class="responsiveH1">회원가입</h1>
         <div class="responsiveInner">
-            <form action="">
+            <form id="form1">
                 <div class="inputSec">
                     <label for="userId" class="mb5">아이디</label>
                     <input name="userId" id="userId" type="text" class="input-df post mb20" required><button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>
@@ -25,12 +25,12 @@
                 <div class="inputSec">
                     <label for="" class="mb5">반</label>
                     <select name="classId" class="input-df mb20">
-                        <option th:each="class : ${classList}" th:value="class.id" th:text="${class.className}">잇플코딩입문반</option>
+                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}">잇플코딩입문반</option>
                     </select>
                     <label for="userName" class="mb5">이름</label>
                     <input name="userName" id="userName" type="text" class="input-df mb20" required>
                     <label for="attendanceNo" class="mb5">출결번호</label>
-                    <input name="attendanceNo" id="attendanceNo" type="text" class="input-df mb20" required>
+                    <input name="attendanceNo" id="attendanceNo" type="text" class="input-df mb20" required maxlength="4">
                     <label for="" class="mb5">생일</label>
                     <div class="datepickerWrap">
                         <input name="birth" type="text" class="input-df mb20 datepicker">
@@ -42,7 +42,7 @@
                     <input name="school" id="school" type="text" class="input-df mb20">
                     <label for="" class="mb5">학년</label>
                     <select name="grade" id="" class="input-df mb20">
-                        <option th:each="grade : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${grade.code}" th:text="${grade.message}">1학년</option>
+                        <option th:each="grade : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${grade}" th:text="${grade.message}">1학년</option>
                     </select>
                     <label for="email" class="mb5">이메일</label>
                     <input name="email" id="email" type="text" class="input-df mb20">
@@ -60,42 +60,36 @@
                 <div class="inputSec timeSelectOuter">
                     <label for="" class="mb10">등원 시간</label>
                     <div class="timeSelectWrap">
-                        <select name="" id="" class="daySel">
-                            <option value="월요일">월요일</option>
-                            <option value="화요일">화요일</option>
-                            <option value="수요일">수요일</option>
-                            <option value="목요일">목요일</option>
-                            <option value="금요일">금요일</option>
-                            <option value="토요일">토요일</option>
-                            <option value="일요일">일요일</option>
+                        <select name="dayOfWeekList" class="daySel">
+                            <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}">월요일</option>
                         </select>
-                        <select name="" id="">
-                            <option value="9시">9시</option>
-                            <option value="10시">10시</option>
-                            <option value="11시">11시</option>
-                            <option value="12시">12시</option>
-                            <option value="13시">13시</option>
-                            <option value="14시">14시</option>
-                            <option value="15시">15시</option>
-                            <option value="16시">16시</option>
-                            <option value="17시">17시</option>
-                            <option value="18시">18시</option>
-                            <option value="19시">19시</option>
-                            <option value="20시">20시</option>
+                        <select name="hourList">
+                            <option value="9">9시</option>
+                            <option value="10">10시</option>
+                            <option value="11">11시</option>
+                            <option value="12">12시</option>
+                            <option value="13">13시</option>
+                            <option value="14">14시</option>
+                            <option value="15">15시</option>
+                            <option value="16">16시</option>
+                            <option value="17">17시</option>
+                            <option value="18">18시</option>
+                            <option value="19">19시</option>
+                            <option value="20">20시</option>
                         </select>
-                        <select name="" id="">
-                            <option value="00분">00분</option>
-                            <option value="10분">10분</option>
-                            <option value="20분">20분</option>
-                            <option value="30분">30분</option>
-                            <option value="40분">40분</option>
-                            <option value="50분">50분</option>
+                        <select name="minList">
+                            <option value="0">00분</option>
+                            <option value="10">10분</option>
+                            <option value="20">20분</option>
+                            <option value="30">30분</option>
+                            <option value="40">40분</option>
+                            <option value="50">50분</option>
                         </select>
                         <button type="button" class="btn-add"></button>
                     </div>
                 </div>
                 <div class="btn-center mt60">
-                    <button type="button" class="btn">회원가입</button>
+                    <button type="button" class="btn" onclick="join()">회원가입</button>
                 </div>
             </form>
         </div>
@@ -108,7 +102,7 @@
 
         $(function(){
             $(".datepicker").datepicker({
-                format: "yyyy년 mm월 dd일",
+                format: "yyyy-mm-dd",
                 language: "ko",
                 orientation: "auto"
             });
@@ -119,7 +113,43 @@
                 if($(".timeSelectWrap").length > 6){
                     modal.alert('7일 이상 추가할 수 없습니다.');
                 }else{
-                    $(".timeSelectOuter").append('<div class="timeSelectWrap"><select name="" id="" class="daySel"><option value="월요일">월요일</option><option value="화요일">화요일</option><option value="수요일">수요일</option><option value="목요일">목요일</option><option value="금요일">금요일</option><option value="토요일">토요일</option><option value="일요일">일요일</option></select><select name="" id=""><option value="9시">9시</option><option value="10시">10시</option><option value="11시">11시</option><option value="12시">12시</option><option value="13시">13시</option><option value="14시">14시</option><option value="15시">15시</option><option value="16시">16시</option><option value="17시">17시</option><option value="18시">18시</option><option value="19시">19시</option><option value="20시">20시</option></select><select name="" id=""><option value="00분">00분</option><option value="10분">10분</option><option value="20분">20분</option><option value="30분">30분</option><option value="40분">40분</option><option value="50분">50분</option></select><button type="button" class="btn-remove"></button></div>')
+                    var html = `
+                        <div class="timeSelectWrap">
+                            <select name="dayOfWeekList" class="daySel">
+                                <option value="MONDAY">월요일</option>
+                                <option value="TUESDAY">화요일</option>
+                                <option value="WEDNESDAY">수요일</option>
+                                <option value="THURSDAY">목요일</option>
+                                <option value="FRIDAY">금요일</option>
+                                <option value="SATURDAY">토요일</option>
+                                <option value="SUNDAY">일요일</option>
+                            </select>
+                            <select name="hourList">
+                                <option value="9">9시</option>
+                                <option value="10">10시</option>
+                                <option value="11">11시</option>
+                                <option value="12">12시</option>
+                                <option value="13">13시</option>
+                                <option value="14">14시</option>
+                                <option value="15">15시</option>
+                                <option value="16">16시</option>
+                                <option value="17">17시</option>
+                                <option value="18">18시</option>
+                                <option value="19">19시</option>
+                                <option value="20">20시</option>
+                            </select>
+                            <select name="minList">
+                                <option value="0">00분</option>
+                                <option value="10">10분</option>
+                                <option value="20">20분</option>
+                                <option value="30">30분</option>
+                                <option value="40">40분</option>
+                                <option value="50">50분</option>
+                            </select>
+                            <button type="button" class="btn-remove"></button>
+                        </div>
+                    `;
+                    $(".timeSelectOuter").append(html);
                 }
             });
 
@@ -149,9 +179,105 @@
         }
 
         function idDupCheck(){
-            checkId = $("input[name=userId]").val();
-            $("#idDupCheckBtn").addClass("btn-blue");
-            $("#idDupCheckBtn").text("검사완료");
+            var userId = $("input[name=userId]").val();
+            if(regExp.isNotId(userId)){
+                modal.alert("아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자로 설정해주세요.");
+                return;
+            }
+            $.post("/api/dupCheck",{userId: userId},function (res){
+                checkId = userId;
+                $("#idDupCheckBtn").addClass("btn-blue");
+                $("#idDupCheckBtn").text("검사완료");
+            });
+        }
+
+        function join(){
+            var userId = $("input[name=userId]").val();
+            var userPw = $("input[name=userPw]").val();
+            var userPwRe = $("input[name=userPwRe]").val();
+            var userName = $("input[name=userName]").val();
+            var attendanceNo = $("input[name=attendanceNo]").val();
+            var birth = $("input[name=birth]").val();
+            var school = $("input[name=school]").val();
+            var email = $("input[name=email]").val();
+            var zonecode = $("input[name=zonecode]").val();
+            var parentName = $("input[name=parentName]").val();
+            var parentTel = $("input[name=parentTel]").val();
+
+            if(checkId != userId){
+                modal.alert("중복확인을 해주세요.");
+                return;
+            }
+            if(attendanceNo.length != 4){
+                modal.alert("출결번호는 4자리 입력해주세요");
+                return;
+            }
+            if(userPw != userPwRe){
+                modal.alert("비밀번호와 비밀번호 확인이 다릅니다.");
+                return;
+            }
+            if(regExp.isNotEmail(email)){
+                modal.alert("이메일 형식이 아닙니다.")
+                return;
+            }
+            if(ut.isEmpty(userId)){
+                modal.required("아이디");
+                return;
+            }
+            if(ut.isEmpty(userPw)){
+                modal.required("비밀번호");
+                return;
+            }
+            if(ut.isEmpty(userPwRe)){
+                modal.required("비밀번호 확인");
+                return;
+            }
+            if(ut.isEmpty(userName)){
+                modal.required("이름");
+                return;
+            }
+            if(ut.isEmpty(attendanceNo)){
+                modal.required("출결번호");
+                return;
+            }
+            if(ut.isEmpty(birth)){
+                modal.required("생일");
+                return;
+            }
+            if(ut.isEmpty(school)){
+                modal.required("학교");
+                return;
+            }
+            if(ut.isEmpty(email)){
+                modal.required("이메일");
+                return;
+            }
+            if(ut.isEmpty(zonecode)){
+                modal.required("주소");
+                return;
+            }
+            if(ut.isEmpty(parentName)){
+                modal.required("보호자 성함");
+                return;
+            }
+            if(ut.isEmpty(parentTel)){
+                modal.required("보호자 연락처");
+                return;
+            }
+
+            var dayArr = [];
+            $("select[name=dayOfWeekList]").each(function(){
+                dayArr.push($(this).val());
+            });
+            var daySet = new Set(dayArr);
+
+            if(dayArr.length != daySet.size){
+                modal.alert("중복된 요일은 선택 할 수 없습니다.");
+                return;
+            }
+            $.post("/api/join",$("#form1").serialize(),function(res){
+                ut.redirect("/joinComplete")
+            });
         }
     </script>
 </th:block>

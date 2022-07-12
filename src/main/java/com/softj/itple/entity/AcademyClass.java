@@ -15,10 +15,16 @@ import java.util.List;
 @ToString
 @Table(name = "tb_class")
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class AcademyClass extends Auditing{
     @Convert(converter = Types.AcademyType.Converter.class)
     private Types.AcademyType academyType;
     private String className;
+
+    @Builder
+    public AcademyClass(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, Types.AcademyType academyType, String className) {
+        super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
+        this.academyType = academyType;
+        this.className = className;
+    }
 }

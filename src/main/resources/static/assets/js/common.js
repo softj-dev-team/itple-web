@@ -157,3 +157,22 @@ function copy(url){
     ut.copyStr(url ? url : location.href);
     modal.alert("URL이 복사되었습니다.");
 }
+
+var regExp = {
+    isId: function (asValue) {
+        var regExp = /^[A-z]+[A-z0-9]{3,19}$/g;
+
+        return regExp.test(asValue);
+    },
+    isNotId: function (asValue) {
+        return !this.isId(asValue);
+    },
+    isEmail: function (asValue) {
+        var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+        return regExp.test(asValue);
+    },
+    isNotEmail: function (asValue) {
+        return !this.isEmail(asValue);
+    },
+}

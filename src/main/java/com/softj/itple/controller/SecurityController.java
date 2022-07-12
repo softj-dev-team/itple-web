@@ -93,7 +93,7 @@ public class SecurityController {
 	@ResponseBody
 	@PostMapping("/api/join")
 	public Response apiJoin(ModelMap model, SearchVO params){
-		securityService.join(params);
+		securityService.saveStudent(params);
 		return Response.builder()
 				.build();
 	}
@@ -101,5 +101,13 @@ public class SecurityController {
 	@GetMapping("/joinComplete")
 	public String joinComplete(ModelMap model){
 		return "joinComplete";
+	}
+
+	@ResponseBody
+	@PostMapping("/api/dupCheck")
+	public Response dupCheck(ModelMap model, SearchVO params){
+		securityService.dupCheck(params);
+		return Response.builder()
+				.build();
 	}
 }
