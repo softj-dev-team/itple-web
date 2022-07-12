@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>도서대여</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="content">
+        <h1 class="responsiveH1">도서대여</h1>
+        <div class="tab clearfix">
+            <ul class="tab-ul">
+                <li ><a href="/c3/p1">전체도서</a></li>
+                <li class="active"><a href="/c3/p2">대여기록</a></li>
+            </ul>
+        </div>
+        <div class="content-in clearfix">
+            <div class="search clearfix">
+                <form id="form1" class="search-in">
+                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                    <div class="in-box">
+                        <select name="searchType">
+                            <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">제목</option>
+                            <option value="writer" th:selected="${#strings.equals(param.searchType, 'writer')}">저자</option>
+                        </select>
+                        <input type="text" name="searchValue" th:value="${param.searchValue}">
+                    </div>
+                    <button type="button" class="src-btn" onclick="goSearch()"></button>
+                </form>
+            </div>
+            <ul class="book-box  clearfix">
+                <li class="book-list" th:each="el : ${list}">
+                    <a th:href="|/c3/p2-detail/${el.id}|">
+                        <div class="book-img" th:style="|background-image: url(${el.book.thumbnail});|"></div>
+                        <div class="book-info">
+                            <span th:classappend="${#strings.toLowerCase(el.rentalStatus)}" th:text="${el.rentalStatus.message}">대여중</span>
+                            <p class="book-tit" th:text="${el.book.subject}">영재를 위한 엔트리 수학 vol.3</p>
+                            <p class="book-author" th:text="${el.book.writer}">잇플ITPLE</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    </div>
+
+    <script th:src="@{/assets/js/c3/c3p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</th:block>
+</body>
+</html>

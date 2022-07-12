@@ -58,6 +58,26 @@ public class C3Service {
         return bookRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
     }
 
+    public Page<BookRental> getBookRentalList(SearchVO params, Pageable pageable){
+        QBookRental qBookRental = QBookRental.bookRental;
+        BooleanBuilder where = new BooleanBuilder().and(qBookRental.isDeleted.eq(false).and(qBookRental.user.eq(AuthUtil.getUser())));
+        if(StringUtils.noneEmpty(params.getSearchValue())){
+            switch (params.getSearchType()){
+                case "subject":
+                    where.and(qBookRental.book.subject.contains(params.getSearchValue()));
+                    break;
+                case "writer":
+                    where.and(qBookRental.book.writer.contains(params.getSearchValue()));
+                    break;
+            }
+        }
+        return bookRentalRepo.findAll(where, pageable);
+    }
+
+    public BookRental getBookRental(SearchVO params){
+        return bookRentalRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
 //    public List<StudentTask> getNotSubmitList(SearchVO params){
 //        QStudentTask qStudentTask = QStudentTask.studentTask;
 //        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(Types.TaskType.BOOK_REPORT)).and(qStudentTask.student.eq(AuthUtil.getStudent())).and(qStudentTask.status.eq(Types.TaskStatus.NOT_SUBMIT)));

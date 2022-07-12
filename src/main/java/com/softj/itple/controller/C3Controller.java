@@ -39,13 +39,18 @@ public class C3Controller {
         model.addAttribute("params",params);
         return "c3/c3p1-detail";
     }
-//
-//    //작성
-//    @GetMapping("/p1-write/{id}")
-//    public String p1write(@PathVariable long id, ModelMap model, SearchVO params){
-//        params.setId(id);
-//        model.addAttribute("el",c3Service.getBoard(params));
-//        model.addAttribute("params",params);
-//        return "c3/c3p1-write";
-//    }
+    //목록
+    @GetMapping("/p2")
+    public String p2(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 12) Pageable pageable){
+        model.addAttribute("list",c3Service.getBookRentalList(params, pageable));
+        model.addAttribute("params",params);
+        return "c3/c3p2";
+    }
+    //상세
+    @GetMapping("/p2-detail/{id}")
+    public String p2detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
+        model.addAttribute("el", c3Service.getBookRental(params));
+        model.addAttribute("params",params);
+        return "c3/c3p2-detail";
+    }
 }
