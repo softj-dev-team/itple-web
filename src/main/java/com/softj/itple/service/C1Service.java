@@ -32,6 +32,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -205,12 +207,18 @@ public class C1Service {
         save.setBoardType(params.getBoardType());
         save.setContents(params.getContents());
         save.setUser(User.builder().id(AuthUtil.getUserId()).build());
-        int idxStart = save.getContents().indexOf("src=\"");
-        int idxEnd = save.getContents().indexOf("\">");
-        if(idxStart != -1){
-            String thumbnail = save.getContents().substring(idxStart+5, idxEnd);
+        Pattern p = Pattern.compile("src=\"(.+\\..{1,6})\"");
+        Matcher m = p.matcher(save.getContents());
+        if(m.find()){
+            String thumbnail = m.group(1);
             save.setThumbnail(thumbnail);
         }
         Board finalSave = boardRepo.save(save);
+
+        List<BoardFile> fileList = boardFileRepo.findAllById(Arrays.asList(params.getIdList()));
+        for(BoardFile f:fileList){
+            f.setBoard(finalSave);
+        }
+        boardFileRepo.saveAll(fileList);
     }
 }

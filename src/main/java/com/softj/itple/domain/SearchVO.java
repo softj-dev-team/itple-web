@@ -8,7 +8,7 @@ import lombok.Setter;
 public class SearchVO {
 	//공통
 	private long id;
-	private Long[] idList;
+	private Long[] idList = new Long[0];
 	private String isDeleted;
 	private String searchType;
 	private String searchValue;
