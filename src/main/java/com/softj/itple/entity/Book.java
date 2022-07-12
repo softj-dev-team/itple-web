@@ -28,11 +28,11 @@ public class Book  extends Auditing {
     private String thumbnail;
     private String writer;
     private String contents;
+    private String rentalName;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+
 
     @Convert(converter = Types.BookRentalStatus.Converter.class)
     private Types.BookRentalStatus bookStatus;
