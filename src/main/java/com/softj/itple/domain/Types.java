@@ -162,4 +162,20 @@ public class Types {
             }
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum VisibleStatus implements Code<String> {
+        VISIBLE("01", "공개"),
+        INVISIBLE("02", "비공개"),
+        ;
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<VisibleStatus, String> {
+            public Converter() {
+                super(VisibleStatus.class);
+            }
+        }
+    }
 }

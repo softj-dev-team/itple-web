@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>포트폴리오</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+    </form>
+    <div class="content">
+        <h1 class="responsiveH1" th:text="|${session.studentVO.user.userName} 포트폴리오|"> 포트폴리오</h1>
+        <div class="content-in clearfix">
+            <ul class="book-box portfolio clearfix">
+                <li class="book-list" th:each="el : ${list}">
+                    <a th:href="|/c4/p1-detail/${el.id}|">
+                        <div class="book-img" th:style="|background-image: url(${el.thumbnail});|"></div>
+                        <div class="book-info">
+                            <p class="book-tit" th:text="${el.subject}">제 50회 발명품 대회</p>
+                            <p class="book-author text-gray" th:text="${el.user.student.academyClass.className+' | '+el.user.userName}">잇플 코딩입문반Aㅣ김잇플</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    </div>
+
+    <script th:src="@{/assets/js/c4/c4p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</th:block>
+</body>
+</html>
