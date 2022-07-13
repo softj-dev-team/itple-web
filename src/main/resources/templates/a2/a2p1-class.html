@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="layout/layout">
 <head>
-    <title>잇플 수업연계독후감반목록</title>
+    <title>수업연계</title>
 </head>
-<body class="adminBody">
+<body>
 <th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+        <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
+    </form>
     <div class="adContent">
         <h1 class="adH1">수업연계</h1>
         <div class="tab clearfix adTab">
             <ul class="tab-ul">
-                <li><a href="/a2/p1">과제</a></li>
-                <li class="active"><a href="/a2/p2">독후감</a></li>
+                <li><a href="taskListAdmin.html">과제</a></li>
+                <li class="active"><a href="reportAdmin.html">독후감</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">
@@ -40,7 +45,7 @@
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
                 <tr>
-                    <td><a href="/a2/p1-restud">사람은 무엇으로 사는가</a></td>
+                    <td><a href="restudAdmin.html">사람은 무엇으로 사는가</a></td>
                     <td>2022.06.01 ~ 2022.06.07</td>
                 </tr>
                 <tr>
@@ -82,26 +87,14 @@
                 </tbody>
             </table>
         </div>
-        <ul class="pagination">
-            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
-            <li class="page-item"><a class="page-link active" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
-            <li class="page-item"><a class="page-link" href="#">7</a></li>
-            <li class="page-item"><a class="page-link" href="#">8</a></li>
-            <li class="page-item"><a class="page-link" href="#">9</a></li>
-            <li class="page-item"><a class="page-link" href="#">10</a></li>
-            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
-        </ul>
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
-    <script th:src="@{/assets/js/a2/a2p2.js(v='1.0.0')}"></script>
-    <script th:inline="javascript">
 
+    <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
     </script>
 </th:block>
 </body>
