@@ -178,4 +178,20 @@ public class Types {
             }
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum CoinStatus implements Code<String> {
+        PLUS("01", "적립"),
+        MINUS("02", "시용"),
+        ;
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<CoinStatus, String> {
+            public Converter() {
+                super(CoinStatus.class);
+            }
+        }
+    }
 }

@@ -1,5 +1,7 @@
 package com.softj.itple.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.softj.itple.domain.Types;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
@@ -17,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class StudentTask extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;

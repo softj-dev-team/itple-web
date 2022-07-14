@@ -1,4 +1,4 @@
-var path =  '/api/c2/p1';
+var path =  '/api/a2/p1';
 
 $(function(){
     $("#form1 input").on("keyup",function(e){
@@ -10,7 +10,7 @@ $(function(){
     $("#studentTaskId").on("change",function(){
         var studentTaskId = $(this).val();
        if(studentTaskId != ''){
-           ut.redirect(`/c2/p1-detail/${studentTaskId}`);
+           ut.redirect(`/a2/p1-detail/${studentTaskId}`);
        }
     });
 })
@@ -42,19 +42,16 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 $.post(path+'/s1',formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
                     if(arg1 != 'NOT_SUBMIT') {
-                        ut.redirect("/c2/p1","taskType",$("input[name=taskType]").val());
+                        ut.redirect("/a2/p1","taskType",$("input[name=taskType]").val());
                     }
                 });
             });
             break;
-        /*댓 저장*/
         case "S2":
-            if(ut.isEmpty($(arg4).siblings('input').val())){
-                modal.required("내용");
-                return;
-            }
-            $.post(path+'/s2',{id: arg1, upperId: arg2, commentId: arg3, contents: $(arg4).siblings('input').val()},function(res){
-                location.reload();
+            modal.confirm("확인 하시겠습니까?",function(){
+                $.post(path+'/s2',{id: arg1},function(res){
+                    location.reload();
+                });
             });
             break;
         case "U1":
@@ -69,7 +66,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
         case "D1":
             modal.confirm("삭제하시겠습니까?",function(){
                 $.post(`${path}/d1`,{id:arg1},function(){
-                    ut.redirect('/c2/p1');
+                    ut.redirect('/a2/p1');
                 });
             });
             break;
@@ -83,26 +80,32 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         /*팝업*/
         case "P1":
-            // $('#noticeForm input').each(function e(){$(this).val('');});
-            $('#noticeForm textarea').each(function e(){$(this).val('');});
-            $('#noticeForm select').val(9999).change();
-            $('#noticeForm input[name=seq]').val(0);
-            if(arg1){
-                $.post(path+'/p1',{seq: arg1},function(res){
-                    var el = res.data;
-                    $("textarea[name=content]").val(el.content);
-                    $('#noticeForm select').val(el.accessDept.seq).change();
-                    $('#noticeForm input[name=seq]').val(el.seq);
-                    if(loginRole=='ROLE_1' || loginRole=='ROLE_2'){
-                        $("#p1Save").show();
-                    }else if(loginRole=='ROLE_3' && loginDeptSeq == el.accessDept.seq){
-                        $("#p1Save").show();
-                    }else{
-                        $("#p1Save").hide();
-                    }
-                });
-            }
-            modalOpen('notice-write');
+            $.post(path+'/p1',{id: arg1},function(res){
+                var el = res.data;
+                console.log(el);
+                $("#reportMo .modalGroup").html(`[${el.student.academyClass.className}]`);
+                $("#reportMo .modalTit").html(el.task.subject);
+                $("#reportMo .modalName").html(el.student.user.userName);
+                $("#reportMo .modalMain").html(el.contents);
+                $("#reportMo .fileUP").empty();
+                if(el.status == 'SUBMIT') {
+                    $("#reportMo .modalBtnWrap").show();
+                    $("#completeBtn").attr("onclick",`goAction('S2',${el.id})`);
+                }else{
+                    $("#reportMo .modalBtnWrap").hide();
+                }
+
+                modalOpen('reportMo');
+
+                var fileList = el.studentTaskFileList;
+                if(ut.isEmpty(fileList)){
+                    return;
+                }
+                fileList.forEach(function(el){
+                    var html = `<li><a href="/studentTaskFileDownload/${el.uploadFileName}">${el.orgFileName}</a></li>`;
+                    $("#reportMo .fileUP").append(html);
+                })
+            });
             break;
     }
 }

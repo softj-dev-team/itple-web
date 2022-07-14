@@ -30,7 +30,7 @@
             </div>
             <ul class="adTask-list">
                 <li th:each="el : ${list}">
-                    <a th:href="|/a2/p1-class/${el.id}|">
+                    <a th:href="|/a2/p1-class/${el.id}?taskType=${params.taskType}|">
                         <h3 th:classappend="${#strings.equals(el.academyType,'CODING') ? 'codClass' : 'engClass'}" th:utext="|${el.className} <span>${el.studentCount}</span>|">잇플 영어입문반A<span class="">10</span></h3>
                         <p th:each="task : ${el.taskList}">
                             <span th:text="${task.subject}">사람은 무엇으로 사는가</span>

@@ -1,5 +1,7 @@
 package com.softj.itple.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.softj.itple.domain.Types;
 import lombok.*;
 
@@ -14,8 +16,9 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Student extends Auditing{
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")

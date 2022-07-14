@@ -1,5 +1,8 @@
 package com.softj.itple.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -16,6 +19,7 @@ import java.util.Set;
 @Table(name = "tb_user")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class User extends Auditing{
     private String userId;
     private String userPw;

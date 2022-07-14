@@ -12,10 +12,7 @@ import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
-import com.softj.itple.repo.AcademyClassRepo;
-import com.softj.itple.repo.StudentTaskFileRepo;
-import com.softj.itple.repo.StudentTaskRepo;
-import com.softj.itple.repo.TaskRepo;
+import com.softj.itple.repo.*;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
@@ -43,6 +40,8 @@ public class A2Service {
     private final TaskRepo taskRepo;
     private final StudentTaskFileRepo studentTaskFileRepo;
     private final StudentTaskRepo studentTaskRepo;
+    private final StudentRepo studentRepo;
+    private final CoinHistoryRepo coinHistoryRepo;
 
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -90,16 +89,71 @@ public class A2Service {
         return new PageImpl<AcademyClass>(list, pageable, query.fetchCount());
     }
 
-//    public StudentTask getStudentTask(SearchVO params){
-//        return studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
-//    }
-//
-//    public List<StudentTask> getNotSubmitList(SearchVO params){
-//        QStudentTask qStudentTask = QStudentTask.studentTask;
-//        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(Types.TaskType.BOOK_REPORT)).and(qStudentTask.student.eq(AuthUtil.getStudent())).and(qStudentTask.status.eq(Types.TaskStatus.NOT_SUBMIT)));
-//        return ImmutableList.copyOf(studentTaskRepo.findAll(where));
-//    }
-//
+    public AcademyClass getClass(SearchVO params){
+        return academyClassRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    public Task getTask(SearchVO params){
+        return taskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    public Page<Task> getTaskList(SearchVO params, Pageable pageable){
+        QTask qTask = QTask.task;
+        BooleanBuilder where = new BooleanBuilder().and(qTask.isDeleted.eq(false)).and(qTask.academyClass.eq(params.getAcademyClass())).and(qTask.taskType.eq(params.getTaskType()));
+        if(StringUtils.noneEmpty(params.getSearchValue())){
+            switch (params.getSearchType()){
+                case "subject":
+                    where.and(qTask.subject.contains(params.getSearchValue()));
+                    break;
+            }
+        }
+        return taskRepo.findAll(where, pageable);
+    }
+
+    public StudentTask getStudentTask(SearchVO params){
+        return studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    public StudentTask getStudentTaskFetch(SearchVO params){
+        return studentTaskRepo.findWithStudentById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    public Page<StudentTask> getStudentTaskList(SearchVO params, Pageable pageable){
+        QStudentTask qStudentTask = QStudentTask.studentTask;
+        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false)).and(qStudentTask.task.eq(params.getTask()));
+        if(StringUtils.noneEmpty(params.getSearchValue())){
+            switch (params.getSearchType()){
+                case "userName":
+                    where.and(qStudentTask.student.user.userName.contains(params.getSearchValue()));
+                    break;
+                case "attendanceNo":
+                    where.and(qStudentTask.student.attendanceNo.contains(params.getSearchValue()));
+                    break;
+            }
+        }
+        return studentTaskRepo.findAll(where, pageable);
+    }
+
+    @Transactional
+    public void completeStudentTask(SearchVO params){
+        StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        find.setStatus(Types.TaskStatus.COMPLETE);
+        studentTaskRepo.save(find);
+
+        Task task = find.getTask();
+        Student student = find.getStudent();
+        student.setCoin(student.getCoin()+ task.getCoin());
+        studentRepo.save(student);
+
+        coinHistoryRepo.save(CoinHistory.builder()
+                .user(student.getUser())
+                .coinStatus(Types.CoinStatus.PLUS)
+                .coin(task.getCoin())
+                .memo("과제/독후감 확인")
+                .build());
+
+    }
+
 //    public Page<BoardComment> getStudentTaskCommentList(SearchVO params, Pageable pageable){
 //        qStudentTaskComment qStudentTaskComment = qStudentTaskComment.boardComment;
 //        BooleanBuilder where = new BooleanBuilder().and(qStudentTaskComment.board.id.eq(params.getId()).and(qStudentTaskComment.parent.isNull()));

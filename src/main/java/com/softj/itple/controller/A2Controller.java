@@ -2,7 +2,8 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
-import com.softj.itple.entity.Book;
+import com.softj.itple.entity.AcademyClass;
+import com.softj.itple.entity.Task;
 import com.softj.itple.service.A2Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/a2")
@@ -36,5 +36,33 @@ public class A2Controller {
         model.addAttribute("list",a2Service.getClassTaskList(params, pageable));
         model.addAttribute("params",params);
         return "a2/a2p1";
+    }
+    //반 과제
+    @GetMapping("/p1-class/{id}")
+    public String p1class(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
+        if(Objects.isNull(params.getTaskType())) {
+            params.setTaskType(Types.TaskType.TASK);
+        }
+        params.setId(id);
+        AcademyClass academyClass = a2Service.getClass(params);
+        params.setAcademyClass(academyClass);
+        model.addAttribute("academyClass", academyClass);
+        model.addAttribute("list",a2Service.getTaskList(params, pageable));
+        model.addAttribute("params",params);
+        return "a2/a2p1-class";
+    }
+    //반 과제 유저
+    @GetMapping("/p1-detail/{id}")
+    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
+        if(Objects.isNull(params.getTaskType())) {
+            params.setTaskType(Types.TaskType.TASK);
+        }
+        params.setId(id);
+        Task task = a2Service.getTask(params);
+        params.setTask(task);
+        model.addAttribute("task", task);
+        model.addAttribute("list",a2Service.getStudentTaskList(params, pageable));
+        model.addAttribute("params",params);
+        return "a2/a2p1-detail";
     }
 }

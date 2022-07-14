@@ -43,7 +43,7 @@
                                 <span th:text="${session.studentVO.academyClass.className}">잇플코딩 입문반A</span>ㅣ
                                 <span th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd')}|">22.03.24 ~ 22.03.27</span>
                             </p>
-                            <th:block th:switch="${el.status}">
+                            <th:block th:switch="${#strings.toString(el.status)}">
                                 <button th:case="NOT_SUBMIT" type="button" class="btn btn-blue" onclick="taskList()">과제 작성</button>
                                 <button th:case="SUBMIT" type="button" class="btn btn-yellow" onclick="taskList()">확인중</button>
                                 <button th:case="COMPLETE" type="button" class="btn btn-lightGray" onclick="taskList()">과제 완료</button>

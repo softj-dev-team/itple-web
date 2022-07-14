@@ -1,5 +1,7 @@
 package com.softj.itple.domain;
 
+import com.softj.itple.entity.AcademyClass;
+import com.softj.itple.entity.Task;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,6 +48,8 @@ public class SearchVO {
 	//수업연계
 	private Types.TaskStatus status;
 	private Types.TaskType taskType;
+	private AcademyClass academyClass;
+	private Task task;
 
 	//관리자-출판서적
 	private String book_no;
