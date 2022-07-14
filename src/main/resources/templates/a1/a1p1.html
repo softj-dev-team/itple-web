@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout/layout">
 <head>
-    <title>잇플 출판서적목록</title>
+    <title>출판서적</title>
 </head>
 <body class="adminBody">
 <th:block layout:fragment="content">
@@ -25,7 +25,7 @@
             </div>
             <div class="tableBtn-box">
                 <div class="leftBox">
-                    <button type="button" class="m-btn btn-line RemoveBtn" onclick="goAction('D1')">선택삭제</button>
+                    <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
                 </div>
                 <div class="rightBox">
                     <button type="button" class="m-btn btn-line" onclick="goAdd();">신규등록</button>
@@ -33,6 +33,8 @@
                 </div>
             </div>
             <form id="form2" name="form2">
+                <input type="hidden" name="idList" id="idList" />
+            </form>
             <table class="adTable list1">
                 <thead class="adTable-head">
                     <tr>
@@ -48,25 +50,61 @@
                 <tbody class="adTable-body adTbody checklist">
                     <tr th:each="el : ${list}">
                         <td>
-                            <input type="checkbox" name="seqList" id="ch1"><label for="ch1"></label>
-                            <input type="hidden" name="idList" th:value="${el.id}"/>
+                            <input type="checkbox" name="seqList" th:id="|a${elStat.count}|" ><label th:for="|a${elStat.count}|"></label>
+                            <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
                         </td>
                         <td>
                         <div class="bookImg" th:style="|background-image: url('${el.thumbnail}');|"></div></td>
-                        <td><a th:href="|/a1/p1-detail/${el.id}|"><span th:text="${el.subject}">책제목</span></a></td>
+                        <td><a th:href="|/a1/p1-detail/${el.id}/${list.pageable.pageNumber}|"><span th:text="${el.subject}">책제목</span></a></td>
                         <td><span th:text="${el.writer}">작가명</span></td>
-                        <td><span th:text="${el.startDate + '~' + el.endDate}">대여기간</span></td>
-                        <td><span th:text="${el.user.userName}">대여자</span></td>
+                        <td><span th:if="${not #strings.isEmpty(el.startDate) and not #strings.isEmpty(el.endDate)}" th:text="${el.startDate + '~' + el.endDate}">대여기간</span></td>
+                        <td><span th:if="${not #strings.isEmpty(el.rentalName)}" th:text="${el.rentalName}">대여자</span></td>
                         <td>
-                            <!--1: 대여가능, 2: 대여중, 3: 연체-->
-                            <button type="button" th:if="${el.status.code == '01'}" class="btn btn-blue" th:onclick="|goRental(${el.id)|">대여하기</button>
-                            <button type="button" th:if="${el.status.code == '02'}" class="btn btn-red" th:onclick="|goRental(${el.id})|">대여중</button>
-                            <button type="button" th:if="${el.status.code == '03'}" class="btn btn-yellow" th:onclick="|goRental(${el.id})|">연체</button>
+                            <th:block th:switch="${#strings.toString(el.bookStatus)}">
+                                <button type="button" th:case="AVAILABLE" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
+                                <button type="button" th:case="LOAN" class="btn btn-red" th:onclick="|goRental(${el.id})|">대여중</button>
+                                <button type="button" th:case="DELINQUENT" class="btn btn-yellow" th:onclick="|goRental(${el.id})|">연체</button>
+                            </th:block>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            </form>
+        </div>
+        <div class="modal" id="removeMo">
+            <div class="modal-bg"></div>
+            <div class="modalContent xs">
+                <div class="modalHd">
+                    <h3></h3>
+                    <button class="modalClose"></button>
+                </div>
+                <div class="modalBody">
+                    <div class="modalText">
+                        선택 도서를 정말 삭제하시겠습니까?<br>
+                        삭제한 도서는 복구할 수 없습니다.
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-red modalOff" onclick="goAction('D1')">삭제하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="pcQR">
+            <div class="modal-bg"></div>
+            <div class="modalContent xs">
+                <div class="modalHd">
+                    <h3></h3>
+                    <button class="modalClose"></button>
+                </div>
+                <div class="modalBody">
+                    <div class="modalText">
+                        QR 촬영은 모바일에서 가능합니다.<br>
+                        PC에서는 도서명을 검색해주세요.
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-blue modalOff">확인</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!--페이지네이션-->
@@ -79,7 +117,8 @@
             $(location).attr("href", "/a1/p1-write");
         }
         function goRental(id){
-            $(location).attr("href", "/a1/p1-rental/"+id);
+            var page = $("#page").val();
+            $(location).attr("href", "/a1/p1-rental/"+id+"/"+page);
         }
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');

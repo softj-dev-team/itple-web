@@ -17,6 +17,7 @@ public class SearchVO {
 	private String isDeleted;
 	private String searchType;
 	private String searchValue;
+	private int page;
 
 	//회원가입
 	private String email;
@@ -52,14 +53,18 @@ public class SearchVO {
 	private Task task;
 
 	//관리자-출판서적
-	private String book_no;
+	private long bookId;
+	private String bookNo;
 	private String thumbnail;
 	private Types.BookRentalStatus bookStatus;
 	private String writer;
+	private String rentalName;
 
 	//관리자-대여
-	private String nStatus; // 현재상태
+	private String evBookRental; // 대여/반납 이벤트구분
 	private Types.BookRentalStatus rentalStatus;
+	private String startDate;
+	private String endDate;
 
 	//관리자-출결
 	private String attendanceNo;

@@ -3,56 +3,62 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout/layout">
 <head>
-    <title>잇플 출판서적대여</title>
+    <title>출판서적</title>
 </head>
 <body>
 <th:block layout:fragment="content">
     <form id="form1">
         <input type="hidden" name="id" th:value="${el.id}"/>
-        <input type="hidden" name="nStatus" th:value="${el.status}"/>
+        <input type="hidden" name="bookId" th:value="${el.book.id}"/>
+        <input type="hidden" name="evBookRental" id="evBookRental" />
+        <input type="hidden" name="page" id="page" th:value="${params.page}"/>
     <div class="responsiveWrap">
         <h1 class="responsiveH1">도서 대여/반납</h1>
         <div class="responsiveInner">
-            <div class="detailsIgm" th:style="|background-image: url('${el.thumbnail}');|"></div>
+            <div class="detailsIgm" th:style="|background-image: url('${el.book.thumbnail}');|"></div>
             <div class="detailsBox">
-                <h2 class="detTit" th:text="${el.subject}">책제목</h2>
-                <p class="detwriter" th:text="${el.writer}">작가명</p>
+                <h2 class="detTit" th:text="${el.book.subject}">책제목</h2>
+                <p class="detwriter" th:text="${el.book.writer}">작가명</p>
                 <div class="hr"></div>
-                <p class="detInfo" th:text="${el.contents}">도서정보에 대한 간략한 설명이 들어가는 곳.</p>
+                <p class="detInfo" th:text="${el.book.contents}">도서정보에 대한 간략한 설명이 들어가는 곳.</p>
                 <div class="hr2"></div>
                 <div class="inputBox2 mb20">
                     <div>
                         <label for="userName" class="mb5">대여자</label>
-                        <input type="text" name="userName" id="userName" class="input-df" th:value="${el.user.userName}" >
+                        <input type="text" name="userName" id="userName" class="input-df" th:value="${el.user?.userName}" >
                     </div>
                     <div>
                         <label for="attendanceNo" class="mb5">출결번호</label>
-                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df" th:value="${el.user.student.attendanceNo}">
+                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df" th:value="${el.user?.student?.attendanceNo}">
                     </div>
                 </div>
                 <div class="inputBox2">
                     <div>
-                        <label for="status1" class="mb5">대여 현황</label>
-                        <input type="text" name="status" id="status1" class="input-df" th:if="${el.status.code == '01'}" value="대여가능" disabled>
-                        <input type="text" name="status" id="status2" class="input-df" th:if="${el.status.code == '02'}" value="대여중" disabled>
-                        <input type="text" name="status" id="status3" class="input-df" th:if="${el.status.code == '03'}" value="연체" disabled>
+                        <label class="mb5">대여 현황</label>
+                        <div th:if="${#objects.nullSafe(el.rentalStatus,'') != ''}">
+                        <th:block th:switch="${#strings.toString(el.rentalStatus)}">
+                            <input type="text" name="status" class="input-df" th:case="AVAILABLE" value="대여가능" disabled>
+                            <input type="text" name="status" class="input-df" th:case="LOAN" value="대여중" disabled>
+                            <input type="text" name="status" class="input-df" th:case="DELINQUENT" value="연체" disabled>
+                        </th:block>
+                        </div>
                     </div>
                 </div>
                 <div class="dateBox">
                     <div class="datepickerWrap">
-                        <input type="text" class="input-df mb20 datepicker">
+                        <input type="text" name="startDate" id="startDate" class="input-df mb20 datepicker">
                         <i class="i-date"></i>
                     </div>
                     <span>-</span>
                     <div class="datepickerWrap">
-                        <input type="text" class="input-df mb20 datepicker">
+                        <input type="text" name="endDate" id="endDate" class="input-df mb20 datepicker">
                         <i class="i-date"></i>
                     </div>
                 </div>
             </div>
             <div class="btn-center mt60 btnL clearfix">
-                <button type="button" class="btn">대여하기</button>
-                <button type="button" class="btn btn-gray">반납하기</button>
+                <button type="button" class="btn" onclick="goLoanReturn('LOAN')">대여하기</button>
+                <button type="button" class="btn btn-gray" onclick="goLoanReturn('RETURN')">반납하기</button>
             </div>
         </div>
     </div>
@@ -64,7 +70,77 @@
             language: "ko",
             orientation: "auto"
         });
+
+        $(document).ready(function(){
+            var startDateEl = [[${el.startDate}]];
+            var endDateEl = [[${el.endDate}]];
+            var startDate = "";
+            var endDate = "";
+            var startDateArr = new Array();
+            var endDateArr = new Array();
+            var startDateStr = "";
+            var endDateStr = "";
+
+            if(startDateEl !== null){
+                startDate = startDateEl.toString();
+                startDateArr = startDate.split("-");
+                startDateStr = startDateArr[0]+"년 "+startDateArr[1]+"월 "+ startDateArr[2]+"일";
+            }
+
+            if(endDateEl !== null){
+                endDate = endDateEl.toString();
+                endDateArr = endDate.split("-");
+                endDateStr = endDateArr[0]+"년 "+ endDateArr[1]+"월 "+ endDateArr[2]+"일";
+            }
+            $("#startDate").val(startDateStr);
+            $("#endDate").val(endDateStr);
+        });
+
+        function goLoanReturn(evBookRental){
+
+            var userName = $("#userName").val();
+
+            if(userName === ""){
+                modal.alert("대여자를 적어주세요.");
+                return;
+            }
+
+            var attendanceNo = $("#attendanceNo").val();
+
+            if(attendanceNo === ""){
+                modal.alert("출결번호를 적어주세요.");
+                return;
+            }
+
+            var startDateStr = $("#startDate").val();
+            var endDateStr = $("#endDate").val();
+
+            if(startDateStr === "" || endDateStr === ""){
+                modal.alert("대여일을 선택해주세요.");
+                return;
+            }
+
+            var startDateYear = startDateStr.substring(0, startDateStr.indexOf("년"));
+            var startDateMonth = startDateStr.substring(6, startDateStr.indexOf("월"));
+            var startDateDay = startDateStr.substring(10, startDateStr.indexOf("일"));
+            var endDateYear = endDateStr.substring(0, endDateStr.indexOf("년"));
+            var endDateMonth = endDateStr.substring(6, endDateStr.indexOf("월"));
+            var endDateDay = endDateStr.substring(10, endDateStr.indexOf("일"));
+
+            var startDate = new Date(startDateYear+"-"+startDateMonth+"-"+startDateDay);
+            var endDate = new Date(endDateYear+"-"+endDateMonth+"-"+endDateDay);
+
+            if(startDate > endDate){
+                modal.alert("대여반납일은 대여시작일보다 작을 수 없습니다.");
+                return;
+            }
+
+            $("#evBookRental").val(evBookRental);
+            goAction('S2');
+
+        }
     </script>
 </th:block>
 </body>
 </html>
+
