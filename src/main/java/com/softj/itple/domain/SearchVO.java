@@ -1,12 +1,14 @@
 package com.softj.itple.domain;
 
 import com.softj.itple.entity.AcademyClass;
+import com.softj.itple.entity.CodeDetail;
 import com.softj.itple.entity.Task;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -63,8 +65,8 @@ public class SearchVO {
 	//관리자-대여
 	private String evBookRental; // 대여/반납 이벤트구분
 	private Types.BookRentalStatus rentalStatus;
-	private String startDate;
-	private String endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 
 	//관리자-출결
 	private String attendanceNo;
