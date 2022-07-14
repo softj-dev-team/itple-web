@@ -126,7 +126,7 @@ public class A1Service {
         BookRental bookRental = BookRental.builder().build();
 
         if(book.getBookStatus().equals(Types.BookRentalStatus.LOAN)) {
-            bookRental = bookRentalRepo.findTopByBookIdOrderByCreatedAtDesc(book.getId()).orElse(BookRental.builder().build());
+            bookRental = bookRentalRepo.findTopByBookOrderByCreatedAtDesc(book).orElse(BookRental.builder().build());
         }
 
         bookRental.setBook(book);

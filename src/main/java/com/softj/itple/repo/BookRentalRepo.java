@@ -12,6 +12,5 @@ import java.util.Optional;
 
 @Repository
 public interface BookRentalRepo extends JpaRepository<BookRental, Long>, QuerydslPredicateExecutor<BookRental> {
-    Optional<BookRental> findTopByBookIdOrderByCreatedAtDesc(Long bookId);
-    List<BookRental> findByBookIdOrderByCreatedAtDesc(Long bookId);
+    Optional<BookRental> findTopByBookOrderByCreatedAtDesc(Book book);
 }

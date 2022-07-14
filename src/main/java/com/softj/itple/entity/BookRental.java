@@ -22,25 +22,19 @@ public class BookRental extends Auditing {
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate returnDate;
-
-    @Column(name="book_id", insertable = false, updatable = false)
-    private Long bookId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
 
     @Builder
-    public BookRental(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, Book book, LocalDate returnDate, LocalDate startDate, LocalDate endDate, Types.BookRentalStatus rentalStatus, Long bookId) {
+    public BookRental(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, Book book, LocalDate returnDate, LocalDate startDate, LocalDate endDate, Types.BookRentalStatus rentalStatus) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.startDate = startDate;
         this.endDate = endDate;
         this.returnDate = returnDate;
-        this.bookId = bookId;
         this.rentalStatus = rentalStatus;
         this.user = user;
         this.book = book;

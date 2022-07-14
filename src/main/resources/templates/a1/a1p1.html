@@ -70,6 +70,42 @@
                 </tbody>
             </table>
         </div>
+        <div class="modal" id="removeMo">
+            <div class="modal-bg"></div>
+            <div class="modalContent xs">
+                <div class="modalHd">
+                    <h3></h3>
+                    <button class="modalClose"></button>
+                </div>
+                <div class="modalBody">
+                    <div class="modalText">
+                        선택 도서를 정말 삭제하시겠습니까?<br>
+                        삭제한 도서는 복구할 수 없습니다.
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-red modalOff" onclick="goAction('D1')">삭제하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="pcQR">
+            <div class="modal-bg"></div>
+            <div class="modalContent xs">
+                <div class="modalHd">
+                    <h3></h3>
+                    <button class="modalClose"></button>
+                </div>
+                <div class="modalBody">
+                    <div class="modalText">
+                        QR 촬영은 모바일에서 가능합니다.<br>
+                        PC에서는 도서명을 검색해주세요.
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-blue modalOff">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!--페이지네이션-->
         <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
