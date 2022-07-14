@@ -65,7 +65,9 @@ public class SearchVO {
 	//관리자-대여
 	private String evBookRental; // 대여/반납 이벤트구분
 	private Types.BookRentalStatus rentalStatus;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate startDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
 
 	//관리자-출결
