@@ -1,12 +1,8 @@
 package com.softj.itple.controller;
 
-import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
-import com.softj.itple.entity.Board;
-import com.softj.itple.entity.Book;
 import com.softj.itple.service.A1Service;
-import com.softj.itple.service.C1Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -33,20 +29,22 @@ public class A1Controller {
 
     //목록
     @GetMapping("/p1")
-    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         if(Objects.isNull(params.getBoardType())) {
             params.setBoardType(Types.AcademyType.CODING);
         }
+
         model.addAttribute("list",a1Service.getBookList(params, pageable));
         model.addAttribute("params",params);
         return "a1/a1p1";
     }
 
     //상세
-    @GetMapping("/p1-detail/{id}")
-    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params){
+    @GetMapping("/p1-detail/{id}/{page}")
+    public String p1detail(@PathVariable long id, @PathVariable int page, ModelMap model, SearchVO params){
 
         params.setId(id);
+        params.setPage(page);
 
         model.addAttribute("el", a1Service.getBook(params));
         model.addAttribute("params",params);
@@ -60,16 +58,13 @@ public class A1Controller {
     }
 
     //대여
-    @GetMapping("/p1-rental/{id}")
+    @GetMapping("/p1-rental/{id}/{page}")
     public String p1rental(@PathVariable long id, ModelMap model, SearchVO params){
-        params.setId(id);
-
-        Book el = new Book();
-        if(id!=0){
-            el = a1Service.getBook(params);
-        }
-        model.addAttribute("el",el);
+        params.setBookId(id);
+        params.setId(0);
+        model.addAttribute("el",a1Service.getBookRental(params));
         model.addAttribute("params",params);
+
         return "a1/a1p1-rental";
     }
 }

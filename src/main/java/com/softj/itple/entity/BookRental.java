@@ -2,6 +2,8 @@ package com.softj.itple.entity;
 
 import com.softj.itple.domain.Types;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,7 +14,6 @@ import java.time.LocalDateTime;
 @Entity
 @ToString
 @Table(name = "tb_book_rental_history")
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class BookRental extends Auditing {
@@ -22,10 +23,27 @@ public class BookRental extends Auditing {
     private LocalDate endDate;
     private LocalDate returnDate;
 
+    @Column(name="book_id", insertable = false, updatable = false)
+    private Long bookId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
+
+    @Builder
+    public BookRental(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, Book book, LocalDate returnDate, LocalDate startDate, LocalDate endDate, Types.BookRentalStatus rentalStatus, Long bookId) {
+        super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.returnDate = returnDate;
+        this.bookId = bookId;
+        this.rentalStatus = rentalStatus;
+        this.user = user;
+        this.book = book;
+    }
 
 }

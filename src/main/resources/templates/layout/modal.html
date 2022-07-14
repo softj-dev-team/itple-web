@@ -13,7 +13,6 @@
             </div>
             <div class="modalBody">
                 <div class="modalText">
-
                 </div>
                 <div class="modalBtnWrap">
                     <button type="button" class="btn btn-blue modalOff">확인</button>
@@ -52,7 +51,7 @@
                     삭제한 도서는 복구할 수 없습니다.
                 </div>
                 <div class="modalBtnWrap">
-                    <button type="button" class="btn btn-red modalOff">삭제하기</button>
+                    <button type="button" class="btn btn-red modalOff" onclick="goAction('D1')">삭제하기</button>
                 </div>
             </div>
         </div>
@@ -75,7 +74,7 @@
             </div>
         </div>
     </div>
-    <div class="modal">
+    <div class="modal" id="commDelMo">
         <div class="modal-bg"></div>
         <div class="modalContent xs">
             <div class="modalHd">
@@ -179,7 +178,7 @@
             </div>
         </div>
     </div>
-    <div class="modal">
+    <div class="modal" id="submitMo">
         <div class="modal-bg"></div>
         <div class="modalContent xs">
             <div class="modalHd">
@@ -273,7 +272,7 @@
             </div>
         </div>
     </div>
-    <div class="modal">
+    <div class="modal" id="chkMo">
         <div class="modal-bg"></div>
         <div class="modalContent xs">
             <div class="modalHd">

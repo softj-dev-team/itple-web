@@ -28,37 +28,48 @@ function goAction(flag, arg1, arg2) {
     switch (flag) {
         /*목록*/
         case "L1":
-            location.href=path;
+            var url = path+"?page="+arg1;
+            location.href=url;
             break;
         /*저장*/
         case "S1":
-            var formS1 = $('#form1');
-            modal.confirm(null,"저장하시겠습니까?",function(){
-                loading(1);
-                var url = '/api'+ path+'/s1';
-                if(arg1 != null && arg1 != ""){
-                    url = url + "/" + arg1
-                }
 
-                var formData = new FormData(formS1[0]);
-                console.log(formData);
+            var formS1 = $('#form1');
+            var url = '/api'+ path+'/s1';
+
+            modal.confirm("저장하시겠습니까?",function(){
+                loading(1);
+
+                $.post(url,formS1.serialize(),function(){
+                    loading(0);
+                    modal.alert('저장되었습니다.');
+                    var page = $("#page").val();
+                    goAction("L1", page);
+                });
+            });
+            break;
+        /*대여*/
+        case "S2":
+
+            var formS1 = $('#form1');
+            //var formData = new FormData(formS1[0]);
+            var url = '/api'+ path+'/s2';
+
+            modal.confirm("저장하시겠습니까?",function(){
+                loading(1);
                 $.ajax({
-                    data : formData,
+                    data : formS1.serialize(),
                     type : "POST",
                     url : url,
-                    contentType : false,
-                    processData : false,
                     success : function(res) {
+                        loading(0);
                         modal.alert('저장되었습니다.');
+                        var page = $("#page").val();
+                        goAction("L1", page);
+                    },error : function(request,status,error){
                         loading(0);
                     }
                 });
-
-               /* $.post(url,formS1.serialize(),function(res){
-                    modal.alert('저장되었습니다.');
-                    loading(0)
-                    reload();
-                });*/
             });
             break;
         case "Q1":
@@ -69,26 +80,32 @@ function goAction(flag, arg1, arg2) {
             break;
         /*삭제*/
         case "D1":
-            var formS1 = $('#form2');
+                var formS1 = $('#form2');
+                var url = '/api'+ path+'/d1';
 
-            if($("input[name=seqList]:checked").length == 0){
-                modal.alert("체크한 데이터가 없습니다.");
-                return;
-            }
-            var url = '/api'+ path+'/d1';
-
-            modal.confirm(null,"체크한 데이터를 삭제하시겠습니까?",function(){
+                if($("input[name=seqList]:checked").length == 0){
+                    modal.alert("체크한 데이터가 없습니다.");
+                    return;
+                }
                 loading(1);
-                $.post(url,formS1.serialize(),function(){
-                    modal.alert('삭제되었습니다.');
-                    reload();
+                var idList = new Array();
+                $("input[name=seqList]:checked").each(function(){
+                        var numId = $(this).prop("id");
+                        var num = numId.substring(1, numId.length);
+                        var bookId = "id"+num;
+                        idList.push($("#"+bookId).val());
                 });
-            });
 
-            break;
+                $("#idList").val(idList);
+                $.post(url,formS1.serialize(),function(){
+                    loading(0);
+                    modal.alert('삭제되었습니다.');
+                    var page = $("#page").val();
+                    goAction("L1", page);
+                });
+                break;
         /*팝업*/
         case "P1":
-            // $('#noticeForm input').each(function e(){$(this).val('');});
             $('#noticeForm textarea').each(function e(){$(this).val('');});
             $('#noticeForm select').val(9999).change();
             $('#noticeForm input[name=seq]').val(0);

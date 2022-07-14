@@ -3,50 +3,83 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout/layout">
 <head>
-    <title>잇플 출판서적등록</title>
+    <title>출판서적</title>
 </head>
 <body>
 <th:block layout:fragment="content">
     <form id="form1">
-        <input type="hidden" name="thumbnail"/>
+        <input type="hidden" name="thumbnail" id="thumbnail" />
     <div class="responsiveWrap">
         <h1 class="responsiveH1">신규 등록</h1>
         <div class="responsiveInner">
             <div class="filebox">
                 <div class="detailsIgm upFile" id="FileImg" onclick="fileOpen();">
-                    <div class="upFile-img" th:style="|background-image: url('${el.thumbnail}');|"></div>
+                    <div class="upFile-img"></div>
                 </div>
-                <input type="file"  name="files" class="uploadBtn"  id="image"  accept="image/*" multiple="multiple" onchange="setThumbnail(event);" style="display: none;">
+                <input type="file" name="files" class="uploadBtn" id="image" accept="image/*" multiple="multiple" style="display: none;">
             </div>
             <div class="detailsBox inputSec">
                 <label for="subject" class="mb5">책 제목</label>
                 <input type="text" name="subject" id="subject" class="input-df mb20">
                 <label for="writer" class="mb5">작가명</label>
                 <input type="text" name="writer" id="writer" class="input-df mb20">
-                <label for="book_no" class="mb5">책 번호</label>
-                <input type="text" name="book_no" id="book_no" class="input-df mb20">
+                <label for="bookNo" class="mb5">책 번호</label>
+                <input type="text" name="bookNo" id="bookNo" class="input-df mb20">
                 <label for="contents" class="mb5">책 정보</label>
                 <textarea name="contents" id="contents" cols="30" rows="10" ></textarea>
             </div>
             <div class="btn-center mt60">
-                <button type="button" class="btn" th:onclick="|goAction('S1')|">저장하기</button>
+                <button type="button" class="btn" onclick="goSave();">저장하기</button>
             </div>
         </div>
     </div>
     </form>
     <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
+        function goSave(){
+            var subject = $("#subject").val();
+            if(subject === ""){
+                modal.alert("책제목을 적어주세요.");
+                return;
+            }
+
+            var bookNo = $("#bookNo").val();
+            if(bookNo === ""){
+                modal.alert("책번호를 적어주세요.");
+                return;
+            }
+
+            goAction('S1');
+        }
         //파일첨부
-        function setThumbnail(event) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById("FileImg").innerHTML ="";
-                var img = document.createElement("div");
-                img.setAttribute("style", "background-image:url("+event.target.result+")");
-                img.setAttribute("ID", "profileimg");
-                document.querySelector("div#FileImg").appendChild(img);
-            };
-            reader.readAsDataURL(event.target.files[0]);
+        $(document).ready(function() {
+            $("#image").on("change", fileUpload);
+        });
+
+        //파일첨부
+        function fileUpload(e) {
+            var formData = new FormData($("#form1")[0]);
+
+            $.ajax({
+                data : formData,
+                type : "POST",
+                url : "/comFileUpload",
+                contentType : false,
+                processData : false,
+                success : function(res) {
+                    if(ut.isEmpty(res.data)){
+                        return;
+                    }
+
+                    document.getElementById("FileImg").innerHTML ="";
+                    var img = document.createElement("div");
+                    img.setAttribute("style", "background-image:url('/comFileDownload/"+res.data[0]+"')");
+                    img.setAttribute("ID", "profileimg");
+                    document.querySelector("div#FileImg").appendChild(img);
+                    $("#thumbnail").val("/comFileDownload/"+res.data[0])
+                    $("#image").val();
+                }
+            });
         }
 
         function fileOpen(){
