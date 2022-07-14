@@ -46,12 +46,12 @@
                 </div>
                 <div class="dateBox">
                     <div class="datepickerWrap">
-                        <input type="text" name="startDate" id="startDate" class="input-df mb20 datepicker">
+                        <input type="text" name="startDate" id="startDate" th:value="${el.startDate}" class="input-df mb20 datepicker">
                         <i class="i-date"></i>
                     </div>
                     <span>-</span>
                     <div class="datepickerWrap">
-                        <input type="text" name="endDate" id="endDate" class="input-df mb20 datepicker">
+                        <input type="text" name="endDate" id="endDate" th:value="${el.endDate}" class="input-df mb20 datepicker">
                         <i class="i-date"></i>
                     </div>
                 </div>
@@ -66,34 +66,9 @@
     <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
         $(".datepicker").datepicker({
-            format: "yyyy년 mm월 dd일",
+            format: "yyyy-mm-dd",
             language: "ko",
             orientation: "auto"
-        });
-
-        $(document).ready(function(){
-            var startDateEl = [[${el.startDate}]];
-            var endDateEl = [[${el.endDate}]];
-            var startDate = "";
-            var endDate = "";
-            var startDateArr = new Array();
-            var endDateArr = new Array();
-            var startDateStr = "";
-            var endDateStr = "";
-
-            if(startDateEl !== null){
-                startDate = startDateEl.toString();
-                startDateArr = startDate.split("-");
-                startDateStr = startDateArr[0]+"년 "+startDateArr[1]+"월 "+ startDateArr[2]+"일";
-            }
-
-            if(endDateEl !== null){
-                endDate = endDateEl.toString();
-                endDateArr = endDate.split("-");
-                endDateStr = endDateArr[0]+"년 "+ endDateArr[1]+"월 "+ endDateArr[2]+"일";
-            }
-            $("#startDate").val(startDateStr);
-            $("#endDate").val(endDateStr);
         });
 
         function goLoanReturn(evBookRental){
@@ -120,15 +95,8 @@
                 return;
             }
 
-            var startDateYear = startDateStr.substring(0, startDateStr.indexOf("년"));
-            var startDateMonth = startDateStr.substring(6, startDateStr.indexOf("월"));
-            var startDateDay = startDateStr.substring(10, startDateStr.indexOf("일"));
-            var endDateYear = endDateStr.substring(0, endDateStr.indexOf("년"));
-            var endDateMonth = endDateStr.substring(6, endDateStr.indexOf("월"));
-            var endDateDay = endDateStr.substring(10, endDateStr.indexOf("일"));
-
-            var startDate = new Date(startDateYear+"-"+startDateMonth+"-"+startDateDay);
-            var endDate = new Date(endDateYear+"-"+endDateMonth+"-"+endDateDay);
+            var startDate = new Date(startDateStr);
+            var endDate = new Date(endDateStr);
 
             if(startDate > endDate){
                 modal.alert("대여반납일은 대여시작일보다 작을 수 없습니다.");

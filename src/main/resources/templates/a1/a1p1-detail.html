@@ -9,9 +9,9 @@
 <th:block layout:fragment="content">
 <form id="form1">
     <input type="hidden" name="id" th:value="${el.id}" />
-    <input type="hidden" name="thumbnail" id="thumbnail" th:value="${el.thumbnail}"/>
-    <input type="hidden" name="startDate" id="startDate" />
-    <input type="hidden" name="endDate" id="endDate" />
+    <input type="hidden" name="thumbnail" id="thumbnail" th:value="${el.thumbnail}" />
+    <input type="hidden" name="startDate" id="startDate" th:value="${el.startDate}" />
+    <input type="hidden" name="endDate" id="endDate" th:value="${el.endDate}" />
     <input type="hidden" name="rentalName" th:value="${el.rentalName}"/>
     <input type="hidden" name="bookStatus" th:value="${el.bookStatus}"/>
     <input type="hidden" name="page" id="page" th:value="${params.page}"/>
@@ -61,32 +61,7 @@
 
     //파일첨부
     $(document).ready(function() {
-
-        var startDateEl = [[${el.startDate}]];
-        var endDateEl = [[${el.endDate}]];
-        var startDate = "";
-        var endDate = "";
-        var startDateArr = new Array();
-        var endDateArr = new Array();
-        var startDateStr = "";
-        var endDateStr = "";
-
-        if(startDateEl !== null){
-            startDate = startDateEl.toString();
-            startDateArr = startDate.split("-");
-            startDateStr = startDateArr[0]+"년 "+startDateArr[1]+"월 "+ startDateArr[2]+"일";
-        }
-
-        if(endDateEl !== null){
-            endDate = endDateEl.toString();
-            endDateArr = endDate.split("-");
-            endDateStr = endDateArr[0]+"년 "+ endDateArr[1]+"월 "+ endDateArr[2]+"일";
-        }
-        $("#startDate").val(startDateStr);
-        $("#endDate").val(endDateStr);
-
         $("#image").on("change", fileUpload);
-
     });
 
     //파일첨부

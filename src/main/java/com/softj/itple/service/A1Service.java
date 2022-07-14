@@ -70,27 +70,8 @@ public class A1Service {
 
       Book save = bookRepo.findById(params.getId()).orElse(Book.builder().build());
 
-      String startDateStr = params.getStartDate();
-      String endDateStr = params.getEndDate();
-
-      LocalDate startDate = null;
-      LocalDate endDate = null;
-
-      if(!StringUtils.isEmpty(startDateStr)){
-          int startDateYear = Integer.parseInt(startDateStr.substring(0,startDateStr.indexOf("년")));
-          int startDateMonth = Integer.parseInt(startDateStr.substring(6,startDateStr.indexOf("월")));
-          int startDateDay = Integer.parseInt(startDateStr.substring(10,startDateStr.indexOf("일")));
-
-          startDate = LocalDate.of(startDateYear,startDateMonth,startDateDay);
-      }
-
-      if(!StringUtils.isEmpty(endDateStr)){
-          int endDateYear = Integer.parseInt(endDateStr.substring(0,endDateStr.indexOf("년")));
-          int endDateMonth = Integer.parseInt(endDateStr.substring(6,endDateStr.indexOf("월")));
-          int endDateDay = Integer.parseInt(endDateStr.substring(10,endDateStr.indexOf("일")));
-
-          endDate = LocalDate.of(endDateYear,endDateMonth,endDateDay);
-      }
+      LocalDate startDate = params.getStartDate();
+      LocalDate endDate = params.getEndDate();
 
       save.setSubject(params.getSubject());
       save.setWriter(params.getWriter());
@@ -160,19 +141,9 @@ public class A1Service {
             status = Types.BookRentalStatus.AVAILABLE;
             returnDate = LocalDate.now();
         }
-        String startDateStr = params.getStartDate();
-        String endDateStr = params.getEndDate();
 
-        int startDateYear = Integer.parseInt(startDateStr.substring(0,startDateStr.indexOf("년")));
-        int startDateMonth = Integer.parseInt(startDateStr.substring(6,startDateStr.indexOf("월")));
-        int startDateDay = Integer.parseInt(startDateStr.substring(10,startDateStr.indexOf("일")));
-
-        int endDateYear = Integer.parseInt(endDateStr.substring(0,endDateStr.indexOf("년")));
-        int endDateMonth = Integer.parseInt(endDateStr.substring(6,endDateStr.indexOf("월")));
-        int endDateDay = Integer.parseInt(endDateStr.substring(10,endDateStr.indexOf("일")));
-
-        LocalDate startDate = LocalDate.of(startDateYear,startDateMonth,startDateDay);
-        LocalDate endDate = LocalDate.of(endDateYear,endDateMonth,endDateDay);
+        LocalDate startDate = params.getStartDate();
+        LocalDate endDate = params.getEndDate();
 
         save.setRentalStatus(status);
         save.setStartDate(startDate);
