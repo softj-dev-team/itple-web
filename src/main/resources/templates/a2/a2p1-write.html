@@ -1,0 +1,77 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>수업연계</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="responsiveWrap">
+        <h1 class="responsiveH1">수업연계</h1>
+        <div class="responsiveInner">
+            <form id="form1">
+                <input type="hidden" id="id" name="id" th:value="${el.id}">
+                <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
+                <div class="inputSec">
+                    <label for="" class="mb5">반 선택</label>
+                    <select name="classId" class="input-df mb20" onchange="setStudentList()">
+                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}">잇플코딩입문반</option>
+                    </select>
+                    <label for="" class="mb5">학생 선택</label>
+                    <div class="studCh">
+                        <input type="checkbox" id="studAll"><label for="studAll">전체선택</label>
+                        <div id="studentList">
+                            <input type="checkbox" id="stud1"><label for="stud1">김잇플</label>
+                        </div>
+                    </div>
+                    <label for="subject" class="mb5">제목</label>
+                    <input type="text" class="input-df mb20" name="subject" id="subject" th:value="${el.subject}">
+                    <label th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" for="author" class="mb5">저자</label>
+                    <input th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" type="text" class="input-df mb20" id="author" name="author" th:value="${el.author}">
+                    <label for="contents" class="mb5">책 내용</label>
+                    <textarea name="contents" id="contents" cols="30" rows="10" class="mb20" th:value="${el.contents}"></textarea>
+                    <div class="dateBox mb20">
+                        <label class="mb5">독후감 마감일</label>
+                        <div class="datepickerWrap">
+                            <input type="text" class="input-df datepicker" name="startDate" th:value="${#temporals.format(el.startDate,'yyyy-MM-dd')}">
+                            <i class="i-date"></i>
+                        </div>
+                        <span>-</span>
+                        <div class="datepickerWrap">
+                            <input type="text" class="input-df datepicker" name="endDate" th:value="${#temporals.format(el.endDate,'yyyy-MM-dd')}">
+                            <i class="i-date"></i>
+                        </div>
+                    </div>
+                    <div class="dateBox">
+                        <label for="coin" class="mb5">지급포인트</label>
+                        <div class="datepickerWrap">
+                            <input type="text" class="input-df mb20 txtRight" th:value="${el.coin}" name="coin" id="coin">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-center mt60">
+                    <button type="button" class="btn" onclick="goAction('S1')">등록하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+        $(function(){
+            setStudentList();
+            $(".datepicker").datepicker({
+                format: "yyyy-mm-dd",
+                language: "ko",
+                orientation: "auto"
+            });
+        })
+    </script>
+</th:block>
+</body>
+</html>

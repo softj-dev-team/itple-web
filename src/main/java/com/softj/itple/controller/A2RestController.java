@@ -24,7 +24,14 @@ public class A2RestController {
                 .data(a2Service.getStudentTaskFetch(params))
                 .build();
     }
-    //팝업
+    //저장
+    @PostMapping("/p1/s1")
+    public Response s1(SearchVO params){
+        a2Service.saveStudentTask(params);
+        return Response.builder()
+                .build();
+    }
+    //확인
     @PostMapping("/p1/s2")
     public Response s2(SearchVO params){
         a2Service.completeStudentTask(params);

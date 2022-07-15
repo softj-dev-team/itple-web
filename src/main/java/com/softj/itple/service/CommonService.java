@@ -1,6 +1,8 @@
 package com.softj.itple.service;
 
+import com.softj.itple.domain.SearchVO;
 import com.softj.itple.entity.AcademyClass;
+import com.softj.itple.entity.Student;
 import com.softj.itple.repo.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
@@ -17,6 +19,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CommonService {
     final private AcademyClassRepo academyClassRepo;
+    final private StudentRepo studentRepo;
 
     @Value("${file.uploadDir}")
     private String FILE_PATH;
@@ -54,5 +57,9 @@ public class CommonService {
 
     public List<AcademyClass> getClassList(){
         return academyClassRepo.findAll();
+    }
+
+    public List<Student> getClassStudentList(SearchVO params){
+        return studentRepo.findAllWithUserByAcademyClass(AcademyClass.builder().id(params.getId()).build());
     }
 }

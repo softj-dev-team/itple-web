@@ -1,5 +1,6 @@
 package com.softj.itple.repo;
 
+import com.softj.itple.entity.AcademyClass;
 import com.softj.itple.entity.Admin;
 import com.softj.itple.entity.Student;
 import com.softj.itple.entity.User;
@@ -10,6 +11,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,4 +24,6 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
     String findID(@Param("userName")String userName, @Param("email") String email);
     @Query("select a from Student a where a.user.userName = :userName and a.email = :email and a.user.userId = :userId")
     Student findPW(@Param("userName")String userName, @Param("email") String email, @Param("userId")String userId);
+    @EntityGraph(attributePaths = {"user"}, type = EntityGraph.EntityGraphType.LOAD)
+    List<Student> findAllWithUserByAcademyClass(@Param("academyClass")AcademyClass academyClass);
 }

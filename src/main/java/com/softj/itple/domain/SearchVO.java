@@ -53,6 +53,9 @@ public class SearchVO {
 	private Types.TaskType taskType;
 	private AcademyClass academyClass;
 	private Task task;
+	private String author;
+	private Long[] studentIdList = new Long[0];
+	private long coin;
 
 	//관리자-출판서적
 	private long bookId;

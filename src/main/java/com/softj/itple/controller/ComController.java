@@ -1,6 +1,7 @@
 package com.softj.itple.controller;
 
 import com.softj.itple.domain.Response;
+import com.softj.itple.domain.SearchVO;
 import com.softj.itple.entity.BoardFile;
 import com.softj.itple.entity.StudentTaskFile;
 import com.softj.itple.exception.ApiException;
@@ -74,6 +75,14 @@ public class ComController {
     public Response comFileUpload(MultipartHttpServletRequest request) throws Exception{
         return Response.builder()
                 .data(commonService.comFileUpload(request))
+                .build();
+    }
+
+    //반별 학생리스트
+    @PostMapping("/api/classStudentList")
+    public Response classStudentList(SearchVO params) throws Exception{
+        return Response.builder()
+                .data(commonService.getClassStudentList(params))
                 .build();
     }
 }

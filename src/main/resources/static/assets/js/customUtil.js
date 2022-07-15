@@ -36,10 +36,10 @@ ut.isValidDate = function(dateString, pattern) {
 }
 
 /** 날짜 비교(시작날짜, 종료날짜) */
-ut.isValidDateRange = function(start, end, pattern) {
+ut.isValidDateRange = function(start, end) {
 	var tmp = start.replace(/[^0-9]/g, '');
 	var tmp2 = end.replace(/[^0-9]/g, '');
-	return tmp.toDate(pattern) <= tmp2.toDate(pattern);
+	return tmp.toDate('yyyyMMdd') <= tmp2.toDate('yyyyMMdd');
 }
 
 /** 날짜 기간 체크(일단위) */

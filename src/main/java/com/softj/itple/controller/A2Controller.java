@@ -65,4 +65,16 @@ public class A2Controller {
         model.addAttribute("params",params);
         return "a2/a2p1-detail";
     }
+    //반 과제 유저
+    @GetMapping("/p1-write/{id}")
+    public String p1write(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
+        if(Objects.isNull(params.getTaskType())) {
+            params.setTaskType(Types.TaskType.TASK);
+        }
+        params.setId(id);
+        model.addAttribute("el", Task.builder().build());
+        model.addAttribute("classList", commonService.getClassList());
+        model.addAttribute("params",params);
+        return "a2/a2p1-write";
+    }
 }

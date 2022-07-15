@@ -35,15 +35,43 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         /*저장*/
         case "S1":
-            $("input[name=status]").val(arg1);
+            var subject = $("input[name=subject]").val();
+            var author = $("input[name=author]").val();
+            var contents = $("textarea[name=contents]").val();
+            var startDate = $("input[name=startDate]").val();
+            var endDate = $("input[name=endDate]").val();
+            var coin = $("input[name=coin]").val();
+            var taskType = $("input[name=taskType]").val();
+
+            if(ut.isEmpty(subject)){
+                modal.required("제목");
+                return;
+            }
+            if(taskType == 'BOOK_REPORT' && ut.isEmpty(author)){
+                modal.required("저자");
+                return;
+            }
+            if(ut.isEmpty(contents)){
+                modal.required("내용");
+                return;
+            }
+            if(ut.isEmpty(startDate) || ut.isEmpty(endDate)){
+                modal.required("독후감 마감일");
+                return;
+            }
+            if(!ut.isValidDateRange(startDate, endDate)){
+                modal.alert("독후감 마감일을 확인해주세요.");
+                return;
+            }
+            if(ut.isEmpty(coin)){
+                modal.required("지급포인트");
+                return;
+            }
             var formS1 = $('#form1');
             modal.confirm("저장하시겠습니까?",function(){
-                $("input[name=idList]").prop("checked",true);
                 $.post(path+'/s1',formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
-                    if(arg1 != 'NOT_SUBMIT') {
-                        ut.redirect("/a2/p1","taskType",$("input[name=taskType]").val());
-                    }
+                    ut.redirect("/a2/p1","taskType", $("input[name=taskType]").val());
                 });
             });
             break;
@@ -108,4 +136,22 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             });
             break;
     }
+}
+
+function setStudentList(){
+    $("#studentList").empty();
+    var classId = $("select[name=classId]").val();
+    $.post("/api/classStudentList",{id: classId}, function(res) {
+        var list = res.data;
+        var html = "";
+
+        if(ut.isEmpty(list)){
+            return;
+        }
+
+        list.forEach(function(el){
+            html += `<input type="checkbox" id="stud${el.id}" name="studentIdList" value="${el.id}"><label for="stud${el.id}">${el.user.userName}</label>`;
+        });
+        $("#studentList").html(html);
+    });
 }

@@ -7,13 +7,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
 @ToString
 @Table(name = "tb_student")
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
@@ -36,4 +36,22 @@ public class Student extends Auditing{
     private LocalDate birth;
     private String email;
     private long coin;
+
+    @Builder
+    public Student(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, AcademyClass academyClass, String attendanceNo, String school, String zonecode, String roadAddress, String detailAddress, Types.Grade grade, String parentName, String parentTel, LocalDate birth, String email, long coin) {
+        super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
+        this.user = user;
+        this.academyClass = academyClass;
+        this.attendanceNo = attendanceNo;
+        this.school = school;
+        this.zonecode = zonecode;
+        this.roadAddress = roadAddress;
+        this.detailAddress = detailAddress;
+        this.grade = grade;
+        this.parentName = parentName;
+        this.parentTel = parentTel;
+        this.birth = birth;
+        this.email = email;
+        this.coin = coin;
+    }
 }
