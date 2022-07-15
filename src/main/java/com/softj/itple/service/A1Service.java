@@ -9,21 +9,15 @@ import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.BookRentalRepo;
 import com.softj.itple.repo.BookRepo;
 import com.softj.itple.repo.StudentRepo;
-import com.softj.itple.util.LongUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.thymeleaf.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,12 +26,6 @@ public class A1Service {
     private final BookRepo bookRepo;
     private final BookRentalRepo bookRentalRepo;
     private final StudentRepo studentRepo;
-
-    final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    @Value("${file.uploadDir}")
-    private String FILE_PATH;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
     public Page<Book> getBookList(SearchVO params, Pageable pageable){
         QBook qBook = QBook.book;
@@ -66,7 +54,7 @@ public class A1Service {
     }
 
     @Transactional
-    public long saveBook(SearchVO params) {
+    public void saveBook(SearchVO params) {
 
       Book save = bookRepo.findById(params.getId()).orElse(Book.builder().build());
 
@@ -88,18 +76,7 @@ public class A1Service {
             save.setBookStatus(Types.BookRentalStatus.AVAILABLE);
       }
 
-        return bookRepo.save(Book.builder()
-                .id(save.getId())
-                .subject(save.getSubject())
-                .writer(save.getWriter())
-                .bookNo(save.getBookNo())
-                .contents(save.getContents())
-                .thumbnail(save.getThumbnail())
-                .bookStatus(save.getBookStatus())
-                .rentalName(save.getRentalName())
-                .startDate(save.getStartDate())
-                .endDate(save.getEndDate())
-                .build()).getId();
+      bookRepo.save(save);
     }
 
     public BookRental getBookRental(SearchVO params){
@@ -116,14 +93,14 @@ public class A1Service {
     }
 
     @Transactional
-    public long saveBookRental(SearchVO params) throws ApiException {
+    public void saveBookRental(SearchVO params) throws ApiException {
         BookRental save = bookRentalRepo.findById(params.getId()).orElse(BookRental.builder().build());
 
         Book book = bookRepo.findById(params.getBookId()).orElseThrow(() -> new ApiException("도서 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
 
         Student student = studentRepo.findByAttendanceNo(params.getAttendanceNo()).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
 
-        Types.BookRentalStatus status = null;
+        Types.BookRentalStatus status;
         LocalDate returnDate = null;
 
         if(StringUtils.equals(params.getEvBookRental(),"LOAN")){
@@ -135,7 +112,7 @@ public class A1Service {
         }else{
             if(!StringUtils.equals(save.getUser().getUserName(),params.getUserName()))
                 throw new ApiException("대여한 대여자와 반납하는 대여자가 일치하지 않습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
-            if(save.getUser().getUserId() != student.getUser().getUserId())
+            if(save.getUser().getId() != student.getUser().getId())
                 throw new ApiException("대여한 출결번호와 반납하는 출결번호가 일치하지 않습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
 
             status = Types.BookRentalStatus.AVAILABLE;
@@ -164,27 +141,7 @@ public class A1Service {
             book.setRentalName("");
         }
 
-        bookRepo.save(Book.builder()
-                .id(book.getId())
-                .subject(book.getSubject())
-                .thumbnail(book.getThumbnail())
-                .contents(book.getContents())
-                .bookNo(book.getBookNo())
-                .writer(book.getWriter())
-                .bookStatus(book.getBookStatus())
-                .startDate(book.getStartDate())
-                .endDate(book.getEndDate())
-                .rentalName(book.getRentalName())
-                .build());
-
-        return bookRentalRepo.save(BookRental.builder()
-                .id(save.getId())
-                .user(save.getUser())
-                .book(save.getBook())
-                .rentalStatus(save.getRentalStatus())
-                .startDate(save.getStartDate())
-                .endDate(save.getEndDate())
-                .returnDate(save.getReturnDate())
-                .build()).getId();
+        bookRepo.save(book);
+        bookRentalRepo.save(save);
     }
 }
