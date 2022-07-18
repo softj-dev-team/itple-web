@@ -4,6 +4,17 @@
       layout:decorate="layout/layout">
 <head>
   <title>잇플 출결관리</title>
+  <!--풀캘린더-->
+  <link href="/assets/plugins/fullcalendar/packages/core/main.css" rel="stylesheet" />
+  <link href="/assets/plugins/fullcalendar/packages/scheduler/main.min.css" rel="stylesheet" />
+  <script src="/assets/plugins/fullcalendar/packages/core/main.js"></script>
+  <script src="/assets/plugins/fullcalendar/packages/interaction/main.js"></script>
+  <script src="/assets/plugins/fullcalendar/packages-premium/resource-common/main.js"></script>
+  <script src="/assets/plugins/fullcalendar/packages/moment/main.js"></script>
+  <script src="/assets/plugins/fullcalendar/packages/scheduler/main.min.js"></script>
+  <script src="/assets/js/popper.js"></script>
+  <script src="/assets/js/tooltip.js"></script>
+
 </head>
 <body class="adminBody">
 <th:block layout:fragment="content">
@@ -45,10 +56,11 @@
       <div class="subTit">
         <p class="className">2022년 3월 잇플 코딩입문반A</p>
       </div>
-      <table id="calendar" class="calendar">
-        <thead class="calendar-head"></thead>
-        <tbody class="calendar-body"></tbody>
-      </table>
+      <div class="fullcalendar" id="calendar"></div>
+<!--      <table id="calendar" class="calendar">-->
+<!--        <thead class="calendar-head"></thead>-->
+<!--        <tbody class="calendar-body"></tbody>-->
+<!--      </table>-->
     </div>
     <ul class="pagination">
       <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
@@ -69,49 +81,28 @@
   </div>
   <script th:src="@{/assets/js/a4/a4p1.js(v='1.0.0')}"></script>
   <script th:inline="javascript">
-    function buildCalendar() {
-      var today = new Date();
-      var date = new Date();
-      var student = new Array('김잇플', '김잇플', '김잇플', '김잇플', '김잇플', '김잇플', '김잇플', '김잇플', '김잇플', '김잇플', '김잇플', '김잇플', '김잇플');
-      var nowClass = "잇플 코딩입문반A"
-
-      nowYear = today.getFullYear();
-      nowMonth = today.getMonth();
-      firstDate = new Date(nowYear,nowMonth,1).getDate();
-      firstDay = new Date(nowYear,nowMonth,1).getDay(); //1st의 요일
-      lastDate = new Date(nowYear,nowMonth+1,0).getDate();
-
-      if((nowYear%4===0 && nowYear % 100 !==0) || nowYear%400===0) { //윤년 적용
-        lastDate[1]=29;
-      }
-      $(".className").text(nowYear+"년 "+(nowMonth+1)+"월 "+nowClass);//제목 생성
-
-      $("#calendar thead").append("<tr><th></th></tr>");//thead 넣기
-      for (i=1; i <=lastDate; i++){ // 날짜 채우기
-        plusDate = new Date(nowYear,nowMonth,i).getDay();
-        if (plusDate==0 || plusDate==6) {
-          $("#calendar thead tr:last").append("<th class='holliday' id='date" + i + "'>"+ i +"</th>");
-        }else{
-          $("#calendar thead tr:last").append("<th class='date' id='date" + i + "'>"+ i +"</th>");
-        }
-
-      }
-
-      for(i=0; i<student.length; i++){
-        $("#calendar tbody").append("<tr><td>"+ student[i] +"</td></tr>");//학생 목록 생성
-        for (t=1; t <=lastDate; t++){ // 날짜 채우기
-          plusDate = new Date(nowYear,nowMonth,t).getDay();
-          if (plusDate==0 || plusDate==6) {
-            $("#calendar tbody tr:last").append("<td class='holiday' id='"+i+"date" + t + "'></td>");
-          }else{
-            $("#calendar tbody tr:last").append("<td class='date' id='"+i+"date" + t + "'></td>");
-          }
-        }
-      }
-    }
-    buildCalendar();
-    $("#0date2, #2date2, #3date2, #4date2, #5date2, #6date2, #7date2, #8date2, #9date2, #10date2, #11date2").addClass("present");
-    $("#1date2, #12date2, #13date2").addClass("absent");
+    document.addEventListener('DOMContentLoaded', function(){
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        timeZone: 'UTC',
+        initialView: 'resourceTimelineMonth',
+        schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+        headerToolbar:{
+          left: 'prev, next',
+          center:'title',
+          right: false
+        },
+        editable: true,
+        resourceAreaHeaderContent: ' ',
+        resources: [
+            {id: 'a', title: '1'},
+            {id: 'b', title: '2'},
+            {id: 'c', title: '3'},
+            {id: 'd', title: '4'}
+          ]
+      });
+      calendar.render();
+    })
   </script>
 </th:block>
 </body>
