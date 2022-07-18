@@ -13,13 +13,12 @@
         <h1 class="portfolioH1" th:text="${el.subject}">톨스토이의 &#60;사람은 무엇으로 사는가&#62; 독후감상문</h1>
         <div class="portfolioSub">
             <p class="name" th:text="${el.user.userName}">김잇플</p>
-            <p class="class" th:text="${el.user.student.academyClass.className+' | '+el.user.userName}">잇플초등학교 │ 잇플 코딩입문반A</p>
+            <p class="class" th:text="${el.user.student.school+' | '+el.user.student.academyClass.className}">잇플초등학교 │ 잇플 코딩입문반A</p>
             <p class="text" th:utext="${el.summary}">
                 학원 수업과 연계된 도서인 톨스토이의 &#60;사람은 무엇으로 사는가&#62;를 읽은 뒤, 독후감상문을 작성. 학원 수업과 연계된 도서인 톨스토이의 &#60;사람은 무엇으로 사는가&#62;를 읽은 뒤, 독후감상문을 작성.
             </p>
         </div>
         <div class="content-in clearfix">
-            <img th:src="${el.thumbnail}" alt="portfolio image">
             <div th:utext="${el.contents}"></div>
         </div>
         <div class="btn-center">

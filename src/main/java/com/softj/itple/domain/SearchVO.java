@@ -87,5 +87,9 @@ public class SearchVO {
 	private String attendanceNo;
 	private Types.AcademyType attendanceType;
 	private Types.AttendanceStatus attendanceStatus;
+
+	//관리자-포트폴리오
+	private Types.VisibleStatus visibleStatus;
+	private String summary;
 }
 

@@ -1,76 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="layout/layout">
 <head>
-  <title>잇플 포트폴리오등록</title>
+    <!-- 썸머노트 -->
+    <link href="/assets/plugins/summernote-0.8.18-dist/summernote-lite.css" rel="stylesheet" type="text/css">
+    <script src="/assets/plugins/summernote-0.8.18-dist/summernote-lite.js"></script>
+    <title>포트폴리오</title>
 </head>
 <body>
 <th:block layout:fragment="content">
-  <div class="content">
-    <h1 class="responsiveH1 subH1">포트폴리오 쓰기</h1>
-    <div class="content-in clearfix">
-      <div class="writeCon porWrit">
-        <div class="writeHead2">
-          <select name="open" id="open" class="select-md">
-            <option value="공개">공개</option>
-            <option value="비공개">비공개</option>
-          </select>
-          <input type="text" placeholder="제목을 입력해주세요." class="input-df">
-          <textarea name="contents" id="contents" cols="30" rows="10" class="textA mt10" placeholder="포트폴리오에 대한 설명을 입력해주세요."></textarea>
+    <form id="form1">
+        <input type="hidden" name="id" th:value="${el.id}"/>
+        <input type="hidden" name="userId" th:value="${param.userId}"/>
+    <div class="content">
+        <h1 class="responsiveH1 subH1">포트폴리오 쓰기</h1>
+        <div class="content-in clearfix">
+            <div class="writeCon porWrit">
+                <div class="writeHead2">
+                    <select name="visibleStatus" id="" class="select-md">
+                        <option th:each="visibleStatus : ${T(com.softj.itple.domain.Types.VisibleStatus).values()}" th:value="${visibleStatus}" th:text="${visibleStatus.message}" th:selected="${visibleStatus == el.visibleStatus}"></option>
+                    </select>
+                    <input type="text" placeholder="제목을 입력해주세요." class="input-df" th:value="${el.subject}" name="subject">
+                    <textarea name="summary" id="summary" cols="30" rows="10" class="textA mt10" placeholder="포트폴리오에 대한 설명을 입력해주세요." th:utext="${el.summary}"></textarea>
+                </div>
+                <textarea id="summernote" placeholder="내용을 입력해주세요." th:utext="${el.contents}" name="contents"></textarea>
+            </div>
+            <div class="btn-center Tbtn">
+                <button type="button" class="btn submitBtn" onclick="goAction('S1')">작성하기</button>
+            </div>
         </div>
-        <textarea id="summernote" placeholder="내용을 입력해주세요."></textarea>
-      </div>
-      <div class="btn-center Tbtn">
-        <button type="submit" class="btn submitBtn">작성하기</button>
-      </div>
     </div>
-  </div>
-  <div class="modal">
-    <div class="modal-bg"></div>
-    <div class="modalContent xs">
-      <div class="modalHd">
-        <h3></h3>
-        <button class="modalClose"></button>
-      </div>
-      <div class="modalBody">
-        <div class="modalText">
-          과제를 제출하시겠습니까?
-        </div>
-        <div class="modalBtnWrap">
-          <button type="button" class="btn btn-blue modalOff">확인</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script th:src="@{/assets/js/a6/a6p1.js(v='1.0.0')}"></script>
-  <script th:inline="javascript">
-    //summernote
-    $(document).ready(function (){
-      $('#summernote').summernote({
-        tabsize: 2,
-        height: 350,
-        lang: 'ko-KR'
-      });
-    });
-    $('.submitBtn').on('click', function () {
-      $('.modal').addClass('on');
-    });
-    $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
-      $(this).parents('.modal').removeClass('on');
-    })
-    $('.chRemove').click(function(){
-      if(confirm("삭제하시겠습니까?")){
-        $(".fileUP input[type=checkbox]:checked").each(function(){
-          var tr_value =$(this).val();
-          var tr=$("li[file-value='"+tr_value+"']");
-          tr.remove();
+    </form>
+
+    <script th:src="@{/assets/js/a6/a6p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+        //summernote
+        $(document).ready(function (){
+            $('#summernote').summernote({
+                tabsize: 2,
+                height: 350,
+                lang: 'ko-KR',
+                callbacks: {
+                    onImageUpload : function(files, editor, welEditable) {
+                        for (var i = files.length - 1; i >= 0; i--) {
+                            uploadSummernoteImageFile(files[i], this);
+                        }
+                    },
+                },
+            });
         });
-      }else{
-        return false;
-      }
-    });
-  </script>
+        /**
+         * 이미지 파일 업로드
+         */
+        function uploadSummernoteImageFile(file, editor) {
+            var data = new FormData();
+            data.append("files", file);
+            $.ajax({
+                data : data,
+                type : "POST",
+                url : "/comFileUpload",
+                contentType : false,
+                processData : false,
+                success : function(res) {
+                    if(ut.isEmpty(res.data)){
+                        return;
+                    }
+
+                    res.data.forEach(function(el){
+                        $(editor).summernote('insertImage', `/comFileDownload/${el}`);
+                    });
+                }
+            });
+        }
+
+        //파일첨부
+        $(document).ready(function() {
+            $("#fileInput").on("change", fileUpload);
+        });
+
+        function fileUpload(e) {
+            var files = e.target.files;
+            var formData = new FormData($("#form1")[0]);
+            $.ajax({
+                data : formData,
+                type : "POST",
+                url : "/api/c2/p1/f1",
+                contentType : false,
+                processData : false,
+                success : function(res) {
+                    if(ut.isEmpty(res.data)){
+                        return;
+                    }
+
+                    res.data.forEach(function(el){
+                        $('#articlefileChange').append(
+                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span onclick="studentTaskFileDownload('${el.uploadFileName}')">${el.orgFileName}</span></label></li>`
+                        );
+                    });
+                    $("#fileInput").val("");
+                }
+            });
+        }
+
+        // 파일 부분 삭제 함수
+        $('.chRemove').click(function(){
+            if($("input[name=idList]:checked").length == 0){
+                modal.alert("체크한 데이터가 없습니다.");
+                return;
+            }
+
+            var formData = "";
+            $("input[name=idList]:checked").each(function(){
+                var id = $(this).val();
+                formData += `idList=${id}&`;
+            });
+
+            modal.confirm("체크한 데이터를 삭제하시겠습니까?", function(){
+                $.post('api/c2/p1/d9', formData, function(){
+                    modal.alert('삭제되었습니다.');
+                    $("input[name=idList]:checked").each(function(){
+                        $(this).closest("li").remove();
+                    });
+                });
+            });
+        });
+    </script>
 </th:block>
 </body>
 </html>

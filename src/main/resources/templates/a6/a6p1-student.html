@@ -12,11 +12,18 @@
         <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
     </form>
     <div class="content">
-        <h1 class="responsiveH1" th:text="|${session.studentVO.user.userName} 포트폴리오|"> 포트폴리오</h1>
+        <h1 class="responsiveH1" th:text="|${student.user.userName} 포트폴리오|"> 포트폴리오</h1>
         <div class="content-in clearfix">
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                </div>
+                <div class="rightBox">
+                    <a th:href="|javascript:ut.redirect('/a6/p1-write/0','userId','${student.user.id}')|" class="aBtn">포트폴리오 등록</a>
+                </div>
+            </div>
             <ul class="book-box portfolio clearfix">
                 <li class="book-list" th:each="el : ${list}">
-                    <a th:href="|/c4/p1-detail/${el.id}|">
+                    <a th:href="|/a6/p1-detail/${el.id}|">
                         <div class="book-img" th:style="|background-image: url(${el.thumbnail});|"></div>
                         <div class="book-info">
                             <p class="book-tit" th:text="${el.subject}">제 50회 발명품 대회</p>
@@ -29,7 +36,7 @@
         <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
 
-    <script th:src="@{/assets/js/c4/c4p1.js(v='1.0.0')}"></script>
+    <script th:src="@{/assets/js/a6/a6p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
         /*<![CDATA[*/

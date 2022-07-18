@@ -207,7 +207,7 @@ public class C1Service {
         save.setBoardType(params.getBoardType());
         save.setContents(params.getContents());
         save.setUser(User.builder().id(AuthUtil.getUserId()).build());
-        Pattern p = Pattern.compile("src=\"(.+\\..{1,6})\"");
+        Pattern p = Pattern.compile("src=\"([^\"]+)\".*>");
         Matcher m = p.matcher(save.getContents());
         if(m.find()){
             String thumbnail = m.group(1);
