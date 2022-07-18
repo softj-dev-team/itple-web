@@ -8,10 +8,7 @@ import com.softj.itple.domain.Types;
 import com.softj.itple.entity.Student;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
-import com.softj.itple.repo.AcademyClassRepo;
-import com.softj.itple.repo.AttendanceRepo;
-import com.softj.itple.repo.StudentRepo;
-import com.softj.itple.repo.UserRepo;
+import com.softj.itple.repo.*;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.SMTPUtil;
@@ -31,6 +28,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +41,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SecurityService implements UserDetailsService{
     final private StudentRepo studentRepo;
+    final private RoleRepo roleRepo;
     final private AttendanceRepo attendanceRepo;
     final private AcademyClassRepo academyClassRepo;
     final private UserRepo userRepo;
@@ -60,13 +59,20 @@ public class SecurityService implements UserDetailsService{
             //DB에서 id로 매칭해서 가져온 user정보
             com.softj.itple.entity.User findUser = userRepo.findWithRoleListByUserId(username);
 
+            if(findUser == null) {
+            	throw new UsernameNotFoundException(username);
+            }
+
+            //권한확인
             if(!findUser.getRoleList().stream().map(Role::getRoleType).collect(Collectors.toList()).contains(url.contains("/adminLogin") ? Types.RoleType.ADMIN : Types.RoleType.STUDENT)){
                 findUser = null;
             }
 
-            if(findUser == null) {
-            	throw new UsernameNotFoundException(username);
+            //승인확인
+            if(!findUser.isApproved()){
+                findUser = null;
             }
+
             authorities.add(new SimpleGrantedAuthority("LOGIN"));
 
             findUser.getRoleList().forEach(e -> authorities.add(new SimpleGrantedAuthority(e.getRoleType().name())));
@@ -110,14 +116,26 @@ public class SecurityService implements UserDetailsService{
                 .attendanceNo(params.getAttendanceNo())
                 .birth(params.getBirth())
                 .school(params.getSchool())
+                .grade(params.getGrade())
                 .zonecode(params.getZonecode())
                 .roadAddress(params.getRoadAddress())
                 .detailAddress(params.getDetailAddress())
                 .parentName(params.getParentName())
                 .parentTel(params.getParentTel())
+                .paymentDay(1)
+                .price(0L)
+                .coin(0L)
+                .studentStatus(Types.StudentStatus.STUDENT)
+                .enterDate(LocalDate.now())
                 .build();
         userRepo.save(save.getUser());
         studentRepo.save(save);
+
+        roleRepo.save(Role.builder()
+                .roleName(Types.RoleType.STUDENT.getName())
+                .roleType(Types.RoleType.STUDENT)
+                .user(save.getUser())
+                .build());
 
         for(int i=0; i < params.getDayOfWeekList().length; i++){
             attendanceRepo.save(Attendance.builder()
@@ -149,6 +167,7 @@ public class SecurityService implements UserDetailsService{
 //        save.setAttendanceNo(params.getAttendanceNo());
         save.setBirth(params.getBirth());
         save.setSchool(params.getSchool());
+        save.setGrade(params.getGrade());
         save.setZonecode(params.getZonecode());
         save.setRoadAddress(params.getRoadAddress());
         save.setDetailAddress(params.getDetailAddress());

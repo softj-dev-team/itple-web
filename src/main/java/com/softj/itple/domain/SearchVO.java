@@ -73,6 +73,16 @@ public class SearchVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
 
+	//관리자-학생관리
+	private Types.StudentStatus studentStatus;
+	private Long studentId;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate enterDate;
+	private Integer paymentDay;
+	private Long price;
+	private String memo;
+	private String approved;
+
 	//관리자-출결
 	private String attendanceNo;
 	private Types.AcademyType attendanceType;

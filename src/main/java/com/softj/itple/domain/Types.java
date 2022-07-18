@@ -128,12 +128,12 @@ public class Types {
         EL4("04", "초등학교 4학년"),
         EL5("05", "초등학교 5학년"),
         EL6("06", "초등학교 6학년"),
-//        MID1("07", "중학교 1학년"),
-//        MID2("08", "중학교 2학년"),
-//        MID3("09", "중학교 3학년"),
-//        HIGH1("10", "고등학교 1학년"),
-//        HIGH2("11", "고등학교 2학년"),
-//        HIGH3("12", "고등학교 3학년"),
+        MID1("07", "중학교 1학년"),
+        MID2("08", "중학교 2학년"),
+        MID3("09", "중학교 3학년"),
+        HIGH1("10", "고등학교 1학년"),
+        HIGH2("11", "고등학교 2학년"),
+        HIGH3("12", "고등학교 3학년"),
         ;
         private String code;
         private String message;
@@ -191,6 +191,23 @@ public class Types {
         public static class Converter extends AbstractEnumConverter<CoinStatus, String> {
             public Converter() {
                 super(CoinStatus.class);
+            }
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum StudentStatus implements Code<String> {
+        STUDENT("01", "재원생"),
+        LEAVE("02", "휴원생"),
+        DISCHARGE("03", "퇴원생"),
+        ;
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<StudentStatus, String> {
+            public Converter() {
+                super(StudentStatus.class);
             }
         }
     }

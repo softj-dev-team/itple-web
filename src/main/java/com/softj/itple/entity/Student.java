@@ -36,9 +36,15 @@ public class Student extends Auditing{
     private LocalDate birth;
     private String email;
     private long coin;
+    private LocalDate enterDate;
+    private String memo;
+    private Integer paymentDay;
+    private Long price;
+    @Convert(converter = Types.StudentStatus.Converter.class)
+    Types.StudentStatus studentStatus;
 
     @Builder
-    public Student(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, AcademyClass academyClass, String attendanceNo, String school, String zonecode, String roadAddress, String detailAddress, Types.Grade grade, String parentName, String parentTel, LocalDate birth, String email, long coin) {
+    public Student(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, AcademyClass academyClass, String attendanceNo, String school, String zonecode, String roadAddress, String detailAddress, Types.Grade grade, String parentName, String parentTel, LocalDate birth, String email, long coin, LocalDate enterDate, String memo, Integer paymentDay, Long price, Types.StudentStatus studentStatus) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.user = user;
         this.academyClass = academyClass;
@@ -53,5 +59,10 @@ public class Student extends Auditing{
         this.birth = birth;
         this.email = email;
         this.coin = coin;
+        this.enterDate = enterDate;
+        this.memo = memo;
+        this.paymentDay = paymentDay;
+        this.price = price;
+        this.studentStatus = studentStatus;
     }
 }

@@ -1,177 +1,74 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="layout/layout">
 <head>
-    <title>잇플 학생관리목록</title>
+    <title>학생관리</title>
 </head>
-<body class="adminBody">
+<body>
 <th:block layout:fragment="content">
     <div class="adContent">
-        <h1 class="adH1">학생관리 목록</h1>
+        <h1 class="adH1">학생관리</h1>
         <div class="tab clearfix adTab">
             <ul class="tab-ul">
-                <li class="active"><a href="/a3/p1">재원생</a></li>
-                <li><a href="/a3/p1">휴원생</a></li>
-                <li><a href="/a3/p1">퇴원생</a></li>
+                <li th:classappend="${#strings.equals(params.studentStatus,'STUDENT') ? 'active' : ''}"><a href="/a3/p1?studentStatus=STUDENT">재원생</a></li>
+                <li th:classappend="${#strings.equals(params.studentStatus,'LEAVE') ? 'active' : ''}"><a href="/a3/p1?studentStatus=LEAVE">휴원생</a></li>
+                <li th:classappend="${#strings.equals(params.studentStatus,'DISCHARGE') ? 'active' : ''}"><a href="/a3/p1?studentStatus=DISCHARGE">퇴원생</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">
             <div class="adSearch clearfix">
-                <form action="" class="adSearch-in">
+                <form id="form1" class="adSearch-in">
+                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                    <input type="hidden" id="studentStatus" name="studentStatus" th:value="${params.studentStatus}">
                     <div class="in-box">
-                        <select name="" id="">
-                            <option value="">전체</option>
-                            <option value="">학생</option>
-                            <option value="">반</option>
-                            <option value="">입학일</option>
-                            <option value="">포인트</option>
+                        <select name="searchType" id="searchType">
+                            <option value="userName" th:selected="${#strings.equals(param.searchType, 'userName')}">이름</option>
+                            <option value="className" th:selected="${#strings.equals(param.searchType, 'className')}">반</option>
+                            <option value="parentName" th:selected="${#strings.equals(param.searchType, 'parentName')}">부모님 성함</option>
+                            <option value="parentTel" th:selected="${#strings.equals(param.searchType, 'parentTel')}">부모님 연락처</option>
                         </select>
-                        <input type="text">
+                        <input type="text" name="searchValue" th:value="${param.searchValue}">
                     </div>
-                    <button type="button" class="src-btn"></button>
+                    <button type="button" class="src-btn" onclick="goSearch()"></button>
                 </form>
             </div>
             <table class="adTable list4">
                 <thead class="adTable-head">
                 <tr>
+                    <th>승인여부</th>
                     <th>학생</th>
                     <th>보호자 성함</th>
                     <th>보호자 연락처</th>
                     <th>반</th>
-                    <th>표시1</th>
-                    <th>표시2</th>
+                    <th>메모</th>
                     <th>입학일</th>
                     <th>포인트</th>
                 </tr>
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>-1000</td>
-                </tr>
-
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>-1000</td>
-                </tr>
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>1000</td>
-                </tr>
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>1000</td>
-                </tr>
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>1000</td>
-                </tr>
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>1000</td>
-                </tr>
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>-1000</td>
-                </tr>
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>-1000</td>
-                </tr>
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>-1000</td>
-                </tr>
-                <tr>
-                    <td>김잇플</td>
-                    <td>보호자</td>
-                    <td>010-1234-5678</td>
-                    <td>잇플 코딩입문반A</td>
-                    <td></td>
-                    <td></td>
-                    <td>2022.03.24</td>
-                    <td>-1000</td>
+                <tr th:each="el : ${list}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">
+                    <td th:text="${el.user.approved ? '승인' : '미승인'}"></td>
+                    <td th:text="${el.user.userName}">김잇플</td>
+                    <td th:text="${el.parentName}">보호자</td>
+                    <td th:text="${el.parentTel}">010-1234-5678</td>
+                    <td th:text="${el.academyClass.className}">잇플 코딩입문반A</td>
+                    <td th:text="${el.memo}"></td>
+                    <td th:text="${#temporals.format(el.enterDate,'yyyy.MM.dd')}">2022.03.24</td>
+                    <td th:text="${el.coin}">1000</td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <ul class="pagination">
-            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
-            <li class="page-item"><a class="page-link active" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
-            <li class="page-item"><a class="page-link" href="#">7</a></li>
-            <li class="page-item"><a class="page-link" href="#">8</a></li>
-            <li class="page-item"><a class="page-link" href="#">9</a></li>
-            <li class="page-item"><a class="page-link" href="#">10</a></li>
-            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
-        </ul>
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
+
     <script th:src="@{/assets/js/a3/a3p1.js(v='1.0.0')}"></script>
+
     <script th:inline="javascript">
-        $('.list4 tbody tr').on('click', function () {
-            $(location).attr("href", "/a3/p1-detail.html");
-        });
+        /*<![CDATA[*/
+        /*]]>*/
     </script>
 </th:block>
 </body>
