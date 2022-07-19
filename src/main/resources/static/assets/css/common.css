@@ -2345,6 +2345,58 @@ i.icon{
     overflow: hidden;
     margin-top: 16px;
 }
+
+.body-scroll{
+    max-height: 500px;
+    overflow-y: scroll;
+    /*scrollbar-width: none;*/
+}
+.body-scroll::-webkit-scrollbar {
+    display: none;
+}
+.table.modalTable .table-head tr{
+    height: 45px;
+}
+.table.modalTable .table-body tr td:nth-child(2){
+    text-align: center;
+}
+.moTable-con h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+.table.modalTable .table-body tr.noneTr{
+    height: 100px;
+    text-align: center;
+}
+.table.modalTable .table-body tr td:nth-child(2) div{
+    height: 28px;
+    margin: 0 auto;
+}
+div.repCom,i.repCom {
+    background: url(../img/com.png) no-repeat center / contain;
+}
+div.repEd,i.repEd {
+    background: url(../img/ed.png) no-repeat center / contain;
+}
+div.repRe,i.repRe {
+    background: url(../img/re.png) no-repeat center / contain;
+}
+.stampIn{
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: flex-end;
+}
+.stampIn > p{
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+}
+.stampIn > p i{
+    display: block;
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+}
 /*header ~1280p*/
 @media screen and (min-width: 1280px){
     .header{padding-right: calc((100% - 1280px)/2 + 23.5px)!important;}
@@ -3059,6 +3111,16 @@ i.icon{
         width: 100%;
         text-align: center;
         margin-bottom: 16px;
+    }
+
+    .body-scroll{
+        max-height: 400px;
+    }
+    .table.modalTable .table-body tr td{
+        padding: 10px 0;
+    }
+    .stampIn > p{
+        font-size: 14px;
     }
 }
 @media screen and (max-width: 476px){
