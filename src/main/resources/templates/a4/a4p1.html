@@ -27,7 +27,6 @@
         <div class="content-in clearfix">
             <div class="adSearch clearfix selSearch">
                 <form onsubmit="return false;" class="adSearch-in" id="form1">
-                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <div class="in-box">
                         <select name="academyClass" class="input-df mb20">
                             <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.className, params.academyClass)}">잇플코딩입문반</option>
@@ -36,67 +35,35 @@
                             <option th:each="studentStatus : ${T(com.softj.itple.domain.Types.StudentStatus).values()}" th:value="${studentStatus}" th:text="${studentStatus.message}" th:selected="${studentStatus == params.studentStatus}">1학년</option>
                         </select>
                         <select name="year" id="year">
-                            <option th:each="num : ${#numbers.sequence(-5,1)}" th:value="${#temporals.format(#temporals.createNow(),'yyyy')+num}" th:text="${#temporals.format(#temporals.createNow(),'yyyy')+num}">2022</option>
-                            <option value="2021">2021</option>
+                            <option th:each="num : ${#numbers.sequence(0,-5)}" th:value="${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}" th:text="|${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}년|">2022</option>
                         </select>
                         <select name="month" id="month">
-                            <option value="1">1월</option>
-                            <option value="2">2월</option>
-                            <option value="3">3월</option>
-                            <option value="4">4월</option>
-                            <option value="5">5월</option>
-                            <option value="6">6월</option>
-                            <option value="7">7월</option>
-                            <option value="8">8월</option>
-                            <option value="9">9월</option>
-                            <option value="10">10월</option>
-                            <option value="11">11월</option>
-                            <option value="12">12월</option>
+                            <option th:each="num : ${#numbers.sequence(1,12)}" th:value="${num}" th:text="|${num}월|" th:selected="${#strings.equals(#temporals.format(#temporals.createNow(),'M'), num)}"></option>
                         </select>
                     </div>
-                    <button type="button" class="src-btn"></button>
+                    <button type="button" class="src-btn" onclick="calendar.refetchResources()"></button>
                 </form>
             </div>
-            <div class="subTit">
-                <p class="className">2022년 3월 잇플 코딩입문반A</p>
-            </div>
             <div class="fullcalendar" id="calendar"></div>
-            <!--      <table id="calendar" class="calendar">-->
-            <!--        <thead class="calendar-head"></thead>-->
-            <!--        <tbody class="calendar-body"></tbody>-->
-            <!--      </table>-->
         </div>
-        <ul class="pagination">
-            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
-            <li class="page-item"><a class="page-link active" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
-            <li class="page-item"><a class="page-link" href="#">7</a></li>
-            <li class="page-item"><a class="page-link" href="#">8</a></li>
-            <li class="page-item"><a class="page-link" href="#">9</a></li>
-            <li class="page-item"><a class="page-link" href="#">10</a></li>
-            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
-        </ul>
     </div>
 
 <!--    <script th:src="@{/assets/js/a4/a4p1.js(v='1.0.0')}"></script>-->
     <script th:inline="javascript">
         var calendar;
+        var resources = [];
+        var events = [];
+
         $(function() {
             var calendarEl = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(calendarEl, {
                 timeZone: 'UTC', //시간대
                 initialView: 'resourceTimelineMonth', //초기 뷰 형식
-                initialDate: '2022-07-01', //초기월
+                initialDate: '2000-01-01', //초기월
                 schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source', //라이선슼 키
                 headerToolbar: { //헤더 표시목록
                     left: '',
-                    center: 'title',
+                    center: '',
                     right: ''
                 },
                 contentHeight: 400, //높이
@@ -104,31 +71,83 @@
                 resourceAreaHeaderContent: ' ', //빈공간 텍스트
                 slotMinWidth: 60, //열 크기
                 resourceAreaWidth: '10%', //리소스 와이드 크기
-                refetchResourcesOnNavigate: true, //리소스 재실행 여부
+                // refetchResourcesOnNavigate: true, //리소스 재실행 여부
                 views: {
                     timeGrid: {
                         dayMaxEventRows: 1 //1일에 이벤트몇개까지
                     }
                 },
-                events: function (start, callback) {
+                events: async function (info, callback) {
                     console.log(1);
-                    console.log(start);
-                    callback([
-                        {"resourceId":"a","title":"O","start":"2022-07-14", "color":"#428bca", "className": "text-center"},
-                        {"resourceId":"a","title":"X","start":"2022-07-15", "color":"#dd5a43", "className": "text-center"},
-                    ]);
+                    callback(await getEvents(info));
                 },
-                resources: function (fetchInfo, callback) {
-                    console.log(2);
-                    console.log(fetchInfo);
-                    callback([
-                        {"id":"a","title":"김잇플"},
-                        {"id":"b","title":"이플"},
-                    ]);
+                resources: async function (fetchInfo, callback) {
+                    callback(await getResources());
+                    var year = $("select[name=year]").val();
+                    var month = $("select[name=month]").val();
+                    var tmpDate = new Date(`${year}-${month}-1`);
+                    calendar.gotoDate(tmpDate.format('yyyy-MM-dd'));
+                    if(fetchInfo.start.format('yyyyMMdd') == tmpDate.format('yyyyMMdd')) {
+                        calendar.refetchEvents();
+                    }
                 },
             });
             calendar.render();
         });
+
+        function getResources(){
+            var formData = {
+                classId: $("select[name=academyClass]").val(),
+                studentStatus: $("select[name=studentStatus]").val(),
+            };
+
+            return new Promise((resolve, reject) => {
+                $.post("/api/a4/p1/l1", formData, function (res) {
+                    resources = res.data
+                    resolve(resources);
+                });
+            });
+        }
+
+        function getEvents(info) {
+            if (calendar) {
+                calendar.removeAllEvents();
+            }
+
+            events = [];
+            return new Promise((resolve, reject) => {
+                $.post("/api/a4/p1/l2", resources.reduce((prev, cur) => prev + `idList=${cur.id}&`, "") + `startDate=${info.start.format('yyyy-MM-dd')}`, function (res) {
+                    resources.forEach(el => {
+                       var atDays = el.attendanceList;
+                       var start = new Date(info.start);
+                       var end = info.end;
+                       while (start < end){
+                           if(!atDays.includes(start.getDay().toString())){
+                               start.plusDate(1);
+                               continue;
+                           }
+                           events.push({
+                               "resourceId": el.id,
+                               "title":"X",
+                               "start": start.format('yyyy-MM-dd'),
+                               "color":"#dd5a43",
+                               "className": "text-center"
+                           });
+                           start.plusDate(1);
+                       }
+                    });
+
+                    res.data.forEach(el => {
+                        events.push(el);
+                        var idx = events.findIndex(el2 => el2.resourceId == el.resourceId && el.start == el2.start);
+                        if(idx != -1){
+                            events.splice(idx, 1);
+                        }
+                    });
+                    resolve(events);
+                });
+            });
+        }
     </script>
 </th:block>
 </body>

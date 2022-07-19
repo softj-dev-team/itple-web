@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.util.List;
+import java.util.Map;
+
 @RequestMapping("/api/a4")
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +21,20 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class A4RestController {
     final private A4Service a4Service;
 
+    //학생목록
+    @PostMapping("/p1/l1")
+    public Response p1l1(SearchVO params){
+        return Response.builder()
+                .data(a4Service.getUserList(params))
+                .build();
+    }
+    //출결현황
+    @PostMapping("/p1/l2")
+    public Response p1l2(SearchVO params){
+        return Response.builder()
+                .data(a4Service.getAttendanceHistoryList(params))
+                .build();
+    }
     //등하원
     @PostMapping("/p2/s1")
     public Response p1p1(SearchVO params){
@@ -25,4 +42,5 @@ public class A4RestController {
                 .data(a4Service.saveAttendanceHistory(params))
                 .build();
     }
+
 }

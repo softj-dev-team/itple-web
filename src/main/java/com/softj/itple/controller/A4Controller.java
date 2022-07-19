@@ -24,7 +24,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class A4Controller {
-    private final A3Service a3Service;
     private final A4Service a4Service;
     private final CommonService commonService;
 
@@ -34,7 +33,6 @@ public class A4Controller {
         if (Objects.isNull(params.getStudentStatus())) {
             params.setStudentStatus(Types.StudentStatus.STUDENT);
         }
-        model.addAttribute("list", a3Service.getStudentList(params, pageable));
         model.addAttribute("classList", commonService.getClassList());
         model.addAttribute("params", params);
         return "a4/a4p1";
