@@ -38,8 +38,8 @@ public class Types {
     @Getter
     @AllArgsConstructor
     public enum AcademyType implements Code<String> {
-        CODING("01", "잇플코딩"),
-        ENGLISH("02", "잇플영어");
+        CODING("01", "잇플 코딩"),
+        ENGLISH("02", "잇플 영어");
         private String code;
         private String message;
 

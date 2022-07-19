@@ -1,9 +1,5 @@
 package com.softj.itple.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.softj.itple.domain.Types;
 import lombok.*;
 import org.hibernate.annotations.NotFound;

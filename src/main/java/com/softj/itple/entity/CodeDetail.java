@@ -3,17 +3,16 @@ package com.softj.itple.entity;
 import com.softj.itple.domain.Types;
 import lombok.*;
 
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @ToString
 @Table(name = "tb_code_detail")
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class CodeDetail extends Auditing{
@@ -24,4 +23,13 @@ public class CodeDetail extends Auditing{
     private Types.RoleType roleType;
     private int sort;
 
+    @Builder
+    public CodeDetail(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, long masterId, String codeName, String codeValue, Types.RoleType roleType, int sort) {
+        super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
+        this.masterId = masterId;
+        this.codeName = codeName;
+        this.codeValue = codeValue;
+        this.roleType = roleType;
+        this.sort = sort;
+    }
 }

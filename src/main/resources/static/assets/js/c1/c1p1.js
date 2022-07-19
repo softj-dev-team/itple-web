@@ -26,6 +26,21 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
         case "L1":
             location.href=path;
             break;
+        /*카테고리 목록*/
+        case "L2":
+            $.post(path+'/l1',{masterId : 1},function(res){
+                var data = res.data;
+                var idx = 1;
+
+                data.forEach(function(ec){
+                    $(".categoryCon").append('<div class="categorySub" id="cate_'+idx+'"><input type="hidden" name="updateIdList" id="id_'+idx+'" value="'+ec.id+'"/><input type="hidden" name="codeNameList" class="codeNameList" id="codeName_'+idx+'" value="'+ec.codeName+'"/><p class="categoryTit">'+ec.codeName+'</p><div class="modiBtn-box"><button type="button" class="categoryModi"></button><button type="button" class="categoryRemove"></button></div></div>');
+                    idx++;
+                });
+                $('#commOt').addClass('on');
+
+            });
+
+            break;
         /*저장*/
         case "S1":
             var formS1 = $('#form1');
@@ -45,6 +60,16 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             }
             $.post(path+'/s2',{id: arg1, upperId: arg2, commentId: arg3, contents: $(arg4).siblings('input').val()},function(res){
                 location.reload();
+            });
+            break;
+        /*카테고리 저장*/
+        case "S3":
+            var formS2 = $('#form2');
+            modal.confirm("저장하시겠습니까?",function(){
+                $.post(path+'/s3',formS2.serialize(),function(res){
+                    modal.alert('저장되었습니다.');
+                    ut.redirect("/c1/p1","boardType", $("[name=boardType]").val());
+                });
             });
             break;
         case "U1":

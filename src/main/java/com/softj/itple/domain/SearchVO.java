@@ -42,11 +42,19 @@ public class SearchVO {
 
 	//게시판
 	private Types.AcademyType boardType;
+	private Types.RoleType roleType;
 	private String subject;
 	private String contents;
 	private Long upperId;
 	private Long commentId;
 	private String boardCategory;
+	private long masterId;
+	private CodeDetail codeDetail;
+	private long[] removeIdList;
+	private long[] updateIdList;
+	private String[] codeNameList;
+	private String[] newCodeNameList;
+
 
 	//수업연계
 	private Types.TaskStatus status;

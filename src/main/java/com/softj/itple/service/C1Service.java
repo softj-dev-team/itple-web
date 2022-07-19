@@ -7,12 +7,11 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
+import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
-import com.softj.itple.repo.BoardCommentRepo;
-import com.softj.itple.repo.BoardFileRepo;
-import com.softj.itple.repo.BoardRepo;
-import com.softj.itple.repo.BoardStarRepo;
+import com.softj.itple.repo.*;
 import com.softj.itple.util.AuthUtil;
+import com.softj.itple.util.CodeUtil;
 import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +26,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -43,7 +46,7 @@ public class C1Service {
     final private BoardCommentRepo boardCommentRepo;
     final private BoardStarRepo boardStarRepo;
     final private BoardFileRepo boardFileRepo;
-    final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    final private CodeDetailRepo codeDetailRepo;
 
     @Value("${file.uploadDir}")
     private String FILE_PATH;
@@ -220,5 +223,101 @@ public class C1Service {
             f.setBoard(finalSave);
         }
         boardFileRepo.saveAll(fileList);
+    }
+
+    @Transactional
+    public List<CodeDetail> selectBoardCategoryList(SearchVO params){
+        CodeUtil cu = new CodeUtil(codeDetailRepo);
+        List<CodeDetail> list = cu.getCodeList(params.getMasterId());
+        return list;
+    }
+
+    public CodeDetail selectBoardWriteConfig(){
+        CodeUtil cu = new CodeUtil(codeDetailRepo);
+        CodeDetail codeDetail = cu.getCode(2,"01");
+        return codeDetail;
+    }
+
+    @Transactional
+    public void saveBoardCategory(SearchVO params, HttpServletRequest request){
+        // delete
+        HttpSession session = request.getSession();
+        LocalDateTime now = LocalDateTime.now();
+
+        if(params.getRemoveIdList() != null) {
+            for (long id : params.getRemoveIdList()) {
+                CodeDetail save = codeDetailRepo.findById(id).get();
+                save.setUpdatedAt(now);
+                save.setUpdatedId(session.getAttribute("userId").toString());
+                save.setDeleted(true);
+                codeDetailRepo.save(save);
+            }
+        }
+
+        // update
+        if(params.getUpdateIdList() != null){
+            int i=0;
+            String[] codeNameList = params.getCodeNameList();
+
+            for(long id: params.getUpdateIdList()){
+                CodeDetail save = codeDetailRepo.findById(id).get();
+                save.setCodeName(codeNameList[i]);
+                save.setUpdatedAt(now);
+                save.setUpdatedId(session.getAttribute("userId").toString());
+                codeDetailRepo.save(save);
+                i++;
+            }
+        }
+
+        // insert
+        if(params.getNewCodeNameList() != null){
+
+            long masterId = 1;
+            CodeDetail getTopCodeDetailOrderBySort = codeDetailRepo.findTopByMasterIdOrderBySortDesc(masterId).orElse(CodeDetail.builder().build());
+            CodeDetail getTopCodeDetailOrderByCodeValue = codeDetailRepo.findTopByMasterIdOrderByCodeValueDesc(masterId).orElse(CodeDetail.builder().build());
+
+
+            int startSort = getTopCodeDetailOrderBySort.getSort();
+            int startCodeValue = Integer.parseInt(getTopCodeDetailOrderByCodeValue.getCodeValue());
+            for(String codeName : params.getNewCodeNameList()){
+                CodeDetail save = codeDetailRepo.findByCodeName(codeName).orElse(CodeDetail.builder().build());
+
+                if(save.getId() != 0){
+                    save.setDeleted(false);
+                    save.setUpdatedAt(now);
+                    save.setUpdatedId(session.getAttribute("userId").toString());
+                    codeDetailRepo.save(save);
+                }else {
+                    String codeValue = "";
+                    startCodeValue = startCodeValue + 1;
+
+                    if (startCodeValue < 10) {
+                        codeValue = "0" + startCodeValue;
+                    } else {
+                        codeValue = Integer.toString(startCodeValue);
+                    }
+                    startSort += 1;
+
+                    save.setMasterId(1);
+                    save.setCodeName(codeName);
+                    save.setCodeValue(codeValue);
+                    save.setRoleType(Types.RoleType.STUDENT);
+                    save.setSort(startSort);
+                    codeDetailRepo.save(save);
+                }
+            }
+        }
+
+        CodeDetail save = codeDetailRepo.findByMasterId(2).orElse(CodeDetail.builder().build());
+
+        if(params.getRoleType() != save.getRoleType()) {
+            save.setUpdatedAt(now);
+            save.setUpdatedId(session.getAttribute("userId").toString());
+            save.setRoleType(params.getRoleType());
+            codeDetailRepo.save(save);
+        }
+
+        CodeUtil cu = new CodeUtil(codeDetailRepo);
+        cu.refresh();
     }
 }

@@ -1,6 +1,5 @@
 package com.softj.itple.controller;
 
-import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.Board;
@@ -15,7 +14,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
@@ -33,6 +31,7 @@ public class C1Controller {
         if(Objects.isNull(params.getBoardType())) {
             params.setBoardType(Types.AcademyType.CODING);
         }
+        params.setCodeDetail(c1Service.selectBoardWriteConfig());
         model.addAttribute("list",c1Service.getBoardList(params, pageable));
         model.addAttribute("params",params);
         return "c1/c1p1";
