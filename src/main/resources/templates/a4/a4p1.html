@@ -3,110 +3,133 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout/layout">
 <head>
-  <title>잇플 출결관리</title>
-  <!--풀캘린더-->
-  <link href="/assets/plugins/fullcalendar/packages/core/main.css" rel="stylesheet" />
-  <link href="/assets/plugins/fullcalendar/packages/scheduler/main.min.css" rel="stylesheet" />
-  <script src="/assets/plugins/fullcalendar/packages/core/main.js"></script>
-  <script src="/assets/plugins/fullcalendar/packages/interaction/main.js"></script>
-  <script src="/assets/plugins/fullcalendar/packages-premium/resource-common/main.js"></script>
-  <script src="/assets/plugins/fullcalendar/packages/moment/main.js"></script>
-  <script src="/assets/plugins/fullcalendar/packages/scheduler/main.min.js"></script>
-  <script src="/assets/js/popper.js"></script>
-  <script src="/assets/js/tooltip.js"></script>
+<title>잇플 출결관리</title>
+    <!--풀캘린더-->
+    <link href="/assets/plugins/fullcalendar/packages/core/main.css" rel="stylesheet" />
+    <link href="/assets/plugins/fullcalendar/packages/scheduler/main.min.css" rel="stylesheet" />
+    <script src="/assets/plugins/fullcalendar/packages/core/main.js"></script>
+    <script src="/assets/plugins/fullcalendar/packages/interaction/main.js"></script>
+    <script src="/assets/plugins/fullcalendar/packages-premium/resource-common/main.js"></script>
+    <script src="/assets/plugins/fullcalendar/packages/moment/main.js"></script>
+    <script src="/assets/plugins/fullcalendar/packages/scheduler/main.min.js"></script>
+    <script src="/assets/js/popper.js"></script>
+    <script src="/assets/js/tooltip.js"></script>
 
 </head>
 <body class="adminBody">
 <th:block layout:fragment="content">
-  <div class="adContent">
-    <div class="contHd">
-      <h1 class="adH1">출결관리</h1>
-      <a href="" class="attendBtn">출석 페이지로</a>
+    <div class="adContent">
+        <div class="contHd">
+            <h1 class="adH1">출결관리</h1>
+            <button onclick="location.href='/a4/p2'" type="button" class="attendBtn btn btn-blue">잇플코딩 출석페이지</button>
+            <button onclick="location.href='/a4/p2?attendanceType=ENGLISH'" type="button" class="ml10 attendBtn btn btn-red">잇플영어 출석페이지</button>
+        </div>
+        <div class="content-in clearfix">
+            <div class="adSearch clearfix selSearch">
+                <form onsubmit="return false;" class="adSearch-in" id="form1">
+                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                    <div class="in-box">
+                        <select name="academyClass" class="input-df mb20">
+                            <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.className, params.academyClass)}">잇플코딩입문반</option>
+                        </select>
+                        <select name="studentStatus" class="input-df mb20">
+                            <option th:each="studentStatus : ${T(com.softj.itple.domain.Types.StudentStatus).values()}" th:value="${studentStatus}" th:text="${studentStatus.message}" th:selected="${studentStatus == params.studentStatus}">1학년</option>
+                        </select>
+                        <select name="year" id="year">
+                            <option th:each="num : ${#numbers.sequence(-5,1)}" th:value="${#temporals.format(#temporals.createNow(),'yyyy')+num}" th:text="${#temporals.format(#temporals.createNow(),'yyyy')+num}">2022</option>
+                            <option value="2021">2021</option>
+                        </select>
+                        <select name="month" id="month">
+                            <option value="1">1월</option>
+                            <option value="2">2월</option>
+                            <option value="3">3월</option>
+                            <option value="4">4월</option>
+                            <option value="5">5월</option>
+                            <option value="6">6월</option>
+                            <option value="7">7월</option>
+                            <option value="8">8월</option>
+                            <option value="9">9월</option>
+                            <option value="10">10월</option>
+                            <option value="11">11월</option>
+                            <option value="12">12월</option>
+                        </select>
+                    </div>
+                    <button type="button" class="src-btn"></button>
+                </form>
+            </div>
+            <div class="subTit">
+                <p class="className">2022년 3월 잇플 코딩입문반A</p>
+            </div>
+            <div class="fullcalendar" id="calendar"></div>
+            <!--      <table id="calendar" class="calendar">-->
+            <!--        <thead class="calendar-head"></thead>-->
+            <!--        <tbody class="calendar-body"></tbody>-->
+            <!--      </table>-->
+        </div>
+        <ul class="pagination">
+            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+            <li class="page-item"><a class="page-link active" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            <li class="page-item"><a class="page-link" href="#">7</a></li>
+            <li class="page-item"><a class="page-link" href="#">8</a></li>
+            <li class="page-item"><a class="page-link" href="#">9</a></li>
+            <li class="page-item"><a class="page-link" href="#">10</a></li>
+            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+        </ul>
     </div>
-    <div class="content-in clearfix">
-      <div class="adSearch clearfix selSearch">
-        <form action="" class="adSearch-in">
-          <div class="in-box">
-            <select name="class" id="class" class="selClass">
-              <option value="1">잇플 코딩입문반A</option>
-              <option value="2">잇플 코딩입문반B</option>
-            </select>
-            <select name="year" id="year">
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-            </select>
-            <select name="month" id="month">
-              <option value="1월">1월</option>
-              <option value="2월">2월</option>
-              <option value="3월">3월</option>
-              <option value="4월">4월</option>
-              <option value="5월">5월</option>
-              <option value="6월">6월</option>
-              <option value="7월">7월</option>
-              <option value="8월">8월</option>
-              <option value="9월">9월</option>
-              <option value="10월">10월</option>
-              <option value="11월">11월</option>
-              <option value="12월">12월</option>
-            </select>
-          </div>
-          <button type="button" class="src-btn"></button>
-        </form>
-      </div>
-      <div class="subTit">
-        <p class="className">2022년 3월 잇플 코딩입문반A</p>
-      </div>
-      <div class="fullcalendar" id="calendar"></div>
-<!--      <table id="calendar" class="calendar">-->
-<!--        <thead class="calendar-head"></thead>-->
-<!--        <tbody class="calendar-body"></tbody>-->
-<!--      </table>-->
-    </div>
-    <ul class="pagination">
-      <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
-      <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
-      <li class="page-item"><a class="page-link active" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">4</a></li>
-      <li class="page-item"><a class="page-link" href="#">5</a></li>
-      <li class="page-item"><a class="page-link" href="#">6</a></li>
-      <li class="page-item"><a class="page-link" href="#">7</a></li>
-      <li class="page-item"><a class="page-link" href="#">8</a></li>
-      <li class="page-item"><a class="page-link" href="#">9</a></li>
-      <li class="page-item"><a class="page-link" href="#">10</a></li>
-      <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
-      <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
-    </ul>
-  </div>
-  <script th:src="@{/assets/js/a4/a4p1.js(v='1.0.0')}"></script>
-  <script th:inline="javascript">
-    document.addEventListener('DOMContentLoaded', function(){
-      var calendarEl = document.getElementById('calendar');
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        timeZone: 'UTC',
-        initialView: 'resourceTimelineMonth',
-        schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-        headerToolbar:{
-          left: '',
-          center:'',
-          right: ''
-        },
-        contentHeight: 600,
-        // locale: "ko",
-        editable: true,
-        resourceAreaHeaderContent: ' ',
-        default:'15%',
-        resources: [
-            {id: 'a', title: '1'},
-            {id: 'b', title: '2'},
-            {id: 'c', title: '3'},
-            {id: 'd', title: '4'}
-          ]
-      });
-      calendar.render();
-    })
-  </script>
+
+<!--    <script th:src="@{/assets/js/a4/a4p1.js(v='1.0.0')}"></script>-->
+    <script th:inline="javascript">
+        var calendar;
+        $(function() {
+            var calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                timeZone: 'UTC', //시간대
+                initialView: 'resourceTimelineMonth', //초기 뷰 형식
+                initialDate: '2022-07-01', //초기월
+                schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source', //라이선슼 키
+                headerToolbar: { //헤더 표시목록
+                    left: '',
+                    center: 'title',
+                    right: ''
+                },
+                contentHeight: 400, //높이
+                locale: "ko", //언어
+                resourceAreaHeaderContent: ' ', //빈공간 텍스트
+                slotMinWidth: 60, //열 크기
+                resourceAreaWidth: '10%', //리소스 와이드 크기
+                refetchResourcesOnNavigate: true, //리소스 재실행 여부
+                views: {
+                    timeGrid: {
+                        dayMaxEventRows: 1 //1일에 이벤트몇개까지
+                    }
+                },
+                events: function (start, callback) {
+                    console.log(1);
+                    console.log(start);
+                    callback([
+                        {"resourceId":"a","title":"O","start":"2022-07-14", "color":"#428bca", "className": "text-center"},
+                        {"resourceId":"a","title":"X","start":"2022-07-15", "color":"#dd5a43", "className": "text-center"},
+                    ]);
+                },
+                resources: function (fetchInfo, callback) {
+                    console.log(2);
+                    console.log(fetchInfo);
+                    callback([
+                        {"id":"a","title":"김잇플"},
+                        {"id":"b","title":"이플"},
+                    ]);
+                },
+            });
+            calendar.render();
+        });
+    </script>
 </th:block>
 </body>
 </html>

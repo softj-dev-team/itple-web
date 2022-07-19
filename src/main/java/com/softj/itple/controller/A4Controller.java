@@ -3,6 +3,7 @@ package com.softj.itple.controller;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.service.A1Service;
+import com.softj.itple.service.A3Service;
 import com.softj.itple.service.A4Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +24,18 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class A4Controller {
+    private final A3Service a3Service;
     private final A4Service a4Service;
     private final CommonService commonService;
 
     //목록
     @GetMapping("/p1")
     public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
-        if (Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.AcademyType.CODING);
+        if (Objects.isNull(params.getStudentStatus())) {
+            params.setStudentStatus(Types.StudentStatus.STUDENT);
         }
-//        model.addAttribute("list", aService.getBookList(params, pageable));
+        model.addAttribute("list", a3Service.getStudentList(params, pageable));
+        model.addAttribute("classList", commonService.getClassList());
         model.addAttribute("params", params);
         return "a4/a4p1";
     }
