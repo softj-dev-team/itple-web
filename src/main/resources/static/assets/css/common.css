@@ -3831,3 +3831,12 @@ textarea.textA{
         width: 100%;
     }
 }
+.fc-event {
+    line-height: 2.1 !important;
+}
+.fc-timeline-lane-frame {
+    height: 35px !important;
+}
+.fc-timeline-events.fc-scrollgrid-sync-inner {
+    height: 26px !important;
+}
