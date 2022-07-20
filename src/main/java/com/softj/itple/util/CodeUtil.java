@@ -4,6 +4,7 @@ import com.softj.itple.entity.CodeDetail;
 import com.softj.itple.repo.CodeDetailRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -21,15 +22,15 @@ public class CodeUtil {
 
     @PostConstruct
     public void init() {
-        codeList.addAll(codeRepo.findAll());
+        codeList.addAll(codeRepo.findAll(Sort.by(Sort.Direction.ASC,"sort")));
     }
 
     public List<CodeDetail> getCodeList(long masterId){
-        return codeList.stream().filter(e -> e.getMasterId() == masterId).collect(Collectors.toList());
+        return codeList.stream().filter(e -> e.getMasterId() == masterId && !e.isDeleted()).collect(Collectors.toList());
     }
 
     public List<CodeDetail> getCodeList(long masterId, String roleType){
-        return codeList.stream().filter(e -> e.getMasterId() == masterId && e.getRoleType().getName().equals(roleType)).collect(Collectors.toList());
+        return codeList.stream().filter(e -> e.getMasterId() == masterId && !e.isDeleted() && e.getRoleType().getName().equals(roleType)).collect(Collectors.toList());
     }
 
     public CodeDetail getCode(long masterId, String codeValue){
@@ -38,5 +39,10 @@ public class CodeUtil {
 
     public String getCodeName(long masterId, String codeValue){
         return getCode(masterId, codeValue).getCodeName();
+    }
+
+    public void refresh() {
+        codeList.clear();
+        this.init();
     }
 }
