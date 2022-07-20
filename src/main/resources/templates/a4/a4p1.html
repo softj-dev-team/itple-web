@@ -14,7 +14,13 @@
     <script src="/assets/plugins/fullcalendar/packages/scheduler/main.min.js"></script>
     <script src="/assets/js/popper.js"></script>
     <script src="/assets/js/tooltip.js"></script>
-
+    <style>
+        .fc-timeline-slot-lane.fc-day-sun.fc-day-future,
+        .fc-timeline-slot-lane.fc-day-sat.fc-day-future{
+            background: #e7e7e7;
+            opacity: 0.5;
+        }
+    </style>
 </head>
 <body class="adminBody">
 <th:block layout:fragment="content">
@@ -41,7 +47,7 @@
                             <option th:each="num : ${#numbers.sequence(1,12)}" th:value="${num}" th:text="|${num}월|" th:selected="${#strings.equals(#temporals.format(#temporals.createNow(),'M'), num)}"></option>
                         </select>
                     </div>
-                    <button type="button" class="src-btn" onclick="calendar.refetchResources()"></button>
+                    <button type="button" class="src-btn" onclick="calSearch()"></button>
                 </form>
             </div>
             <div class="fullcalendar" id="calendar"></div>
@@ -53,6 +59,8 @@
         var calendar;
         var resources = [];
         var events = [];
+        var schClassId = '';
+        var schStudentStatus = '';
 
         $(function() {
             var calendarEl = document.getElementById('calendar');
@@ -77,10 +85,6 @@
                         dayMaxEventRows: 1 //1일에 이벤트몇개까지
                     }
                 },
-                events: async function (info, callback) {
-                    console.log(1);
-                    callback(await getEvents(info));
-                },
                 resources: async function (fetchInfo, callback) {
                     callback(await getResources());
                     var year = $("select[name=year]").val();
@@ -91,17 +95,23 @@
                         calendar.refetchEvents();
                     }
                 },
+                events: async function (info, callback) {
+                    console.log(1);
+                    callback(await getEvents(info));
+                },
             });
             calendar.render();
         });
 
         function getResources(){
-            var formData = {
-                classId: $("select[name=academyClass]").val(),
-                studentStatus: $("select[name=studentStatus]").val(),
-            };
-
             return new Promise((resolve, reject) => {
+                var formData = {
+                    classId: $("select[name=academyClass]").val(),
+                    studentStatus: $("select[name=studentStatus]").val(),
+                };
+                schClassId = formData.classId;
+                schStudentStatus = formData.studentStatus;
+
                 $.post("/api/a4/p1/l1", formData, function (res) {
                     resources = res.data
                     resolve(resources);
@@ -147,6 +157,19 @@
                     resolve(events);
                 });
             });
+        }
+
+        function calSearch(){
+            var classId = $("select[name=academyClass]").val();
+            var studentStatus = $("select[name=studentStatus]").val();
+            if(classId == schClassId && studentStatus == schStudentStatus){
+                var year = $("select[name=year]").val();
+                var month = $("select[name=month]").val();
+                var tmpDate = new Date(`${year}-${month}-1`);
+                calendar.gotoDate(tmpDate.format('yyyy-MM-dd'));
+                return;
+            }
+            calendar.refetchResources();
         }
     </script>
 </th:block>
