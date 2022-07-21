@@ -3,141 +3,271 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout/layout">
 <head>
-  <title>잇플 수납관리</title>
+    <title>수납관리</title>
 </head>
 <body class="adminBody">
 <th:block layout:fragment="content">
-  <div class="adContent">
-    <h1 class="adH1">수납관리</h1>
-    <div class="content-in clearfix">
-      <div class="adSearch clearfix selSearch">
-        <form action="" class="adSearch-in">
-          <div class="in-box">
-            <select name="category" id="category" class="selClass">
-              <option value="">잇플 코딩입문반A</option>
-              <option value="">잇플 코딩입문반B</option>
-            </select>
-            <select name="year" id="year">
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-            </select>
-            <select name="month" id="month">
-              <option value="1월">1월</option>
-              <option value="2월">2월</option>
-              <option value="3월">3월</option>
-              <option value="4월">4월</option>
-              <option value="5월">5월</option>
-              <option value="6월">6월</option>
-              <option value="7월">7월</option>
-              <option value="8월">8월</option>
-              <option value="9월">9월</option>
-              <option value="10월">10월</option>
-              <option value="11월">11월</option>
-              <option value="12월">12월</option>
-            </select>
-          </div>
-          <button type="button" class="src-btn"></button>
-        </form>
-      </div>
-      <div class="tableBtn-box">
-        <div class="leftBox">
-          <button type="button" class="m-btn btn-line ComBtn">선택 완납처리</button>
+    <div class="adContent">
+        <h1 class="adH1">수납관리</h1>
+        <div class="content-in clearfix">
+            <div class="adSearch clearfix selSearch">
+                <form id="form1" name="form1" action="" class="adSearch-in">
+                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                    <div class="in-box">
+                        <select name="academyClassType" id="academyClassType" class="selClass">
+                            <option th:each="el : ${params.getAcademyClassList()}"
+                                    th:selected="${el.academyType} == ${params.academyClassType}" th:value="${el.academyType}"
+                                    th:text="${el.className}"></option>
+                        </select>
+                        <select name="year" id="year">
+                            <option th:each="num : ${#numbers.sequence(2022,2021)}" th:value="${num}" th:text="${num}"
+                                    th:selected="${num} == ${params.year}">2022
+                            </option>
+                        </select>
+                        <select name="month" id="month">
+                            <option th:each="num : ${#numbers.sequence(1,12)}" th:value="${num}" th:text="|${num}월|"
+                                    th:selected="${num} == ${params.month}">12월
+                            </option>
+                        </select>
+                    </div>
+                    <button type="button" class="src-btn" onClick="goSearch();"></button>
+                </form>
+            </div>
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                    <button type="button" class="m-btn btn-line ComBtn">선택 완납처리</button>
+                    <input type="hidden" name="studentIdList" id="studentIdList" />
+                    <input type="hidden" name="paymentIdList" id="paymentIdList" />
+                    <input type="hidden" name="paymentDayList" id="paymentDayList" />
+                    <input type="hidden" name="priceList" id="priceList" />
+                </div>
+                <div class="rightBox">
+                </div>
+            </div>
+
+            <input type="hidden" name="year" id="nyear" th:value="${params.year}"/>
+            <input type="hidden" name="month" id="nmonth" th:value="${params.month}"/>
+
+            <table class="adTable payTable checklist">
+                <thead class="adTable-head">
+                <tr>
+                    <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                    <th>저장</th>
+                    <th>학생</th>
+                    <th>보호자</th>
+                    <th>수강료</th>
+                    <th>납부액</th>
+                    <th>납부일</th>
+                    <th>실제납부일</th>
+                    <th>납부방법</th>
+                    <th>메모</th>
+                    <th>미납</th>
+                </tr>
+                </thead>
+                <tbody class="adTable-body ">
+                <tr th:each="el : ${list}">
+                    <td><input type="checkbox" name="seqList" th:id="|ch${elStat.count}|"><label th:for="|ch${elStat.count}|"></label>
+                        <input type="hidden" name="id" id="id" th:value="${el.payment != null ? el.payment.id : 0}"/>
+                        <input type="hidden" name="studentId" id="studentId" th:value="${el.id}"/>
+                        <input type="hidden" name="paymentDay" id="paymentDay" th:value="${el.paymentDay}"/>
+                        <input type="hidden" name="price" id="price" th:value="${el.price}"/>
+                    </td>
+                    <td>
+                        <button type="button" class="saveBtn">저장</button>
+                    </td>
+                    <td><span th:text="${el.user.userName}"></span></td>
+                    <td><span th:text="${el.parentName}"></span></td>
+                    <td><span th:text="${#numbers.formatInteger(el.price,1,'COMMA')}"></span></td>
+                    <td><input type="text" name="cost" id="cost" class="payComMoney alignR numberformat"
+                               th:value="${el.payment != null ? el.payment.cost : ''}">
+                    </td>
+                    <td><span th:text="|${el.paymentDay < 10 ? '0'+el.paymentDay : el.paymentDay}일|"></span></td>
+                    <td>
+                        <input type="text" name="paymentDate" id="paymentDate" class="payDate input-df datepicker"
+                               th:value="${el.payment != null ? el.payment.paymentDate : ''}">
+                    <td>
+                        <select name="paymentType" id="paymentType" class="payOption">
+                            <option th:each="er : ${T(com.softj.itple.domain.Types.PaymentType).values()}"
+                                    th:selected="${er}==${el.payment != null ? el.payment.paymentType : ''}"
+                                    th:value="${er}" th:text="${er.message}">카드
+                            </option>
+                        </select>
+                    </td>
+                    <td><input type="text" name="memo" id="memo"
+                               th:value="${el.payment != null ? el.payment.memo : ''}"></td>
+                    <td><span th:if="${el.payment == null}">미납</span></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="rightBox">
-        </div>
-      </div>
-      <table class="adTable payTable checklist">
-        <thead class="adTable-head">
-        <tr>
-          <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
-          <th>저장</th>
-          <th>학생</th>
-          <th>보호자</th>
-          <th>수강료</th>
-          <th>납부액</th>
-          <th>납부일</th>
-          <th>실제납부일</th>
-          <th>납부방법</th>
-          <th>메모</th>
-          <th>미납</th>
-        </tr>
-        </thead>
-        <tbody class="adTable-body ">
-        <tr>
-          <td><input type="checkbox" id="ch1"><label for="ch1"></label></td>
-          <td><button type="button" class="saveBtn">저장</button></td>
-          <td>김잇플</td>
-          <td>홍길동</td>
-          <td><input type="text" class="alignR" value="200,000"></td>
-          <td><input type="text" class="payComMoney alignR" value="200,000"></td>
-          <td>
-            <select name="day" id="day">
-              <option value="">1일</option>
-              <option value="">2일</option>
-              <option value="">3일</option>
-              <option value="">4일</option>
-              <option value="">5일</option>
-              <option value="">6일</option>
-              <option value="">7일</option>
-              <option value="">8일</option>
-            </select>
-          </td>
-          <td>
-            <input type="text" class="payDate input-df datepicker">
-          <td>
-            <select name="method" id="method" class="payOption">
-              <option value="1">카드</option>
-              <option value="2">현금</option>
-              <option value="3">계좌이체</option>
-            </select>
-          </td>
-          <td><input type="text" class=""></td>
-          <td></td>
-        </tr>
-        </tbody>
-      </table>
+        <!--페이지네이션-->
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
-    <ul class="pagination">
-      <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
-      <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
-      <li class="page-item"><a class="page-link active" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">4</a></li>
-      <li class="page-item"><a class="page-link" href="#">5</a></li>
-      <li class="page-item"><a class="page-link" href="#">6</a></li>
-      <li class="page-item"><a class="page-link" href="#">7</a></li>
-      <li class="page-item"><a class="page-link" href="#">8</a></li>
-      <li class="page-item"><a class="page-link" href="#">9</a></li>
-      <li class="page-item"><a class="page-link" href="#">10</a></li>
-      <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
-      <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
-    </ul>
-  </div>
-  <script th:src="@{/assets/js/a5/a5p1.js(v='1.0.0')}"></script>
-  <script th:inline="javascript">
-    $(document).ready(function(){
-      $(".datepicker").datepicker({
-        format: "yyyy-mm-dd",
-        language: "ko",
-        orientation: "auto"
-      });
-      $('.ComBtn').on('click', function () {
-        $('#payModal').addClass('on');
-      });
-      $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
-        $(this).parents('.modal').removeClass('on');
-      })
-      $(document).on("click", "#payCom", function(){
-        var payDate = $("#payDate").val();
-        var payOption = $("#payOption option:selected").index();
-        var isChecked = $(".payTable input[type=checkbox]:checked").parents("tr");
-        isChecked.find("input.payDate").val(payDate);
-        isChecked.find(".payOption option:eq("+payOption+")").attr('selected', 'selected');
-        isChecked.find("td:last-child").text('');
-      });
-    });
-  </script>
+    <div class="modal" id="payModal">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody payMo">
+                <label for="paymentDateModal" class="mb5">납부일</label>
+                <div class="datepickerWrap mb12">
+                    <input type="text" class="input-df datepicker" name="paymentDate" id="paymentDateModal">
+                    <i class="i-date"></i>
+                </div>
+                <label for="paymentTypeModal" class="mb5">납부방법</label>
+                <select name="paymentType" id="paymentTypeModal" class="input-df">
+                    <option th:each="er : ${T(com.softj.itple.domain.Types.PaymentType).values()}" th:value="${er}" th:text="${er.message}">카드</option>
+                </select>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-blue modalOff" id="payCom">완납처리</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/assets/js/a5/a5p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $(".datepicker").datepicker({
+                format     : "yyyy-mm-dd",
+                language   : "ko",
+                orientation: "auto"
+            });
+            $('.ComBtn').on('click', function () {
+                if($("input[name=seqList]:checked").length == 0){
+                    modal.alert("완납처리할 항목을 선택하세요.");
+                    return;
+                }
+
+                var studentIdArr = new Array();
+                var paymentIdArr = new Array();
+                var paymentDayArr = new Array();
+                var priceArr = new Array();
+
+                $("input[name=seqList]:checked").each(function(){
+                    var studentId = $(this).parent().find("#studentId").val();
+                    var paymentId = $(this).parent().find("#id").val();
+                    var paymentDay = $(this).parent().find("#paymentDay").val();
+                    var price = $(this).parent().find("#price").val();
+
+                    studentIdArr.push(studentId);
+                    paymentIdArr.push(paymentId);
+                    paymentDayArr.push(paymentDay)
+                    priceArr.push(price);
+
+                    $("#studentIdList").val(studentIdArr);
+                    $("#paymentIdList").val(paymentIdArr);
+                    $("#paymentDayList").val(paymentDayArr);
+                    $("#priceList").val(priceArr);
+
+                });
+                $('#payModal').addClass('on');
+            });
+            $(document).on("click", ".modalClose, .modalOff, .modal-bg", function () {
+                $(this).parents('.modal').removeClass('on');
+            })
+            $(document).on("click", "#payCom", function () {
+                var payDate = $("#payDate").val();
+                var payOption = $("#payOption option:selected").index();
+                var isChecked = $(".payTable input[type=checkbox]:checked").parents("tr");
+                isChecked.find("input.payDate").val(payDate);
+                isChecked.find(".payOption option:eq(" + payOption + ")").attr('selected', 'selected');
+                isChecked.find("td:last-child").text('');
+
+                var nyear = $("#nyear").val();
+                var nmonth = $("#nmonth").val();
+                var paymentDate = $("#paymentDateModal").val();
+                var paymentType = $("#paymentTypeModal").val();
+
+                goAction("S2",nyear,nmonth,paymentDate,paymentType);
+            });
+
+            $(document).on("click", ".saveBtn", function () {
+                $(".numberformat").removeText();
+                var id = $(this).parent().siblings().find("#id").val();
+                var studentId = $(this).parent().siblings().find("#studentId").val();
+                var cost = $(this).parent().siblings().find("#cost").val();
+                var paymentDate = $(this).parent().siblings().find("#paymentDate").val();
+                var paymentType = $(this).parent().siblings().find("#paymentType").val();
+                var memo = $(this).parent().siblings().find("#memo").val();
+                var paymentDay = $(this).parent().siblings().find("#paymentDay").val();
+                var price = $(this).parent().siblings().find("#price").val();
+                var nyear = $("#nyear").val();
+                var nmonth = $("#nmonth").val();
+
+                goAction("S1", id, studentId, cost, paymentDate, paymentType, memo, nyear, nmonth, paymentDay, price);
+            });
+
+            $(function () {
+                // 숫자 제외하고 모든 문자 삭제.
+                $.fn.removeText = function (_v) {
+                    //console.log("removeText: 숫자 제거 합니다.");
+                    if (typeof (_v) === "undefined") {
+                        $(this).each(function () {
+                            this.value = this.value.replace(/[^0-9]/g, '');
+                        });
+                    } else {
+                        return _v.replace(/[^0-9]/g, '');
+                    }
+                };
+                // php의 number_format과 같은 효과.
+                $.fn.numberFormat = function (_v) {
+                    this.proc = function (_v) {
+                        var tmp = '',
+                            number = '',
+                            cutlen = 3,
+                            comma = ',',
+                            i = 0,
+                            len = _v.length,
+                            mod = (len % cutlen),
+                            k = cutlen - mod;
+
+                        for (i; i < len; i++) {
+                            number = number + _v.charAt(i);
+                            if (i < len - 1) {
+                                k++;
+                                if ((k % cutlen) == 0) {
+                                    number = number + comma;
+                                    k = 0;
+                                }
+                            }
+                        }
+                        return number;
+                    };
+
+                    var proc = this.proc;
+                    if (typeof (_v) === "undefined") {
+                        $(this).each(function () {
+                            this.value = proc($(this).removeText(this.value));
+                        });
+                    } else {
+                        return proc(_v);
+                    }
+                };
+
+                $.fn.onlyNumber = function (p) {
+                    $(this).each(function (i) {
+                        $(this).attr({'style': 'text-align:left'});
+                        this.value = $(this).removeText(this.value);
+                        this.value = $(this).numberFormat(this.value);
+
+                        $(this).bind('keypress keyup', function (e) {
+                            this.value = $(this).removeText(this.value);
+                            this.value = $(this).numberFormat(this.value);
+                        });
+
+                    });
+                };
+
+                $('.numberformat').onlyNumber();
+
+            });
+        });
+    </script>
 </th:block>
 </body>
 </html>
+
+
+

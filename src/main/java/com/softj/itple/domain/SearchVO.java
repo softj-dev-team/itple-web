@@ -99,5 +99,21 @@ public class SearchVO {
 	//관리자-포트폴리오
 	private Types.VisibleStatus visibleStatus;
 	private String summary;
+
+	//관리자-수납관리
+	private Long[] paymentIdList = new Long[0];
+	private Long[] priceList = new Long[0];
+	private Integer[] paymentDayList = new Integer[0];
+	private Integer year;
+	private Integer month;
+	private long cost;
+	private List<AcademyClass> academyClassList;
+	private Types.AcademyType academyClassType;
+	private Types.PaymentType paymentType;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate paymentDate;
+
 }
+
+
 
