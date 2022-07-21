@@ -68,7 +68,7 @@ public class Types {
     @Getter
     @AllArgsConstructor
     public enum TaskStatus implements Code<String> {
-        NOT_SUBMIT("01", "미제출"),
+        NOT_SUBMIT("01", "미제출/다시제출"),
         SUBMIT("02", "제출"),
         COMPLETE("03", "확인"),
         ;

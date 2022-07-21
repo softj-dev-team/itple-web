@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
@@ -70,7 +70,7 @@
         <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
 
-    <div class="modal" id="stampModal">
+    <div class="modal" id="stampModal" th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}">
         <div class="modal-bg"></div>
         <div class="modalContent">
             <div class="modalHd">
@@ -81,9 +81,9 @@
                 <div class="moTable-con">
                     <h2>독서왕</h2>
                     <div class="stampIn">
-                        <p><i class="repCom"></i> : 통과</p>
-                        <p><i class="repEd"></i> : 수정중</p>
-                        <p><i class="repRe"></i> : 다시제출</p>
+                        <p><i class="repCom"></i> : 확인</p>
+                        <p><i class="repEd"></i> : 제출</p>
+                        <p><i class="repRe"></i> : 미제출/다시제출</p>
                     </div>
                     <table class="table modalTable">
                         <colgroup>
@@ -104,49 +104,9 @@
                                 <col style="width: 20%;">
                             </colgroup>
                             <tbody class="table-body">
-                            <tr class="noneTr">
-                                <td colspan="2">등록된 책이 없습니다.</td>
-                            </tr>
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td><div class="repCom"></div></td>
-                            </tr>
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td><div class="repCom"></div></td>
-                            </tr>
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td><div class="repEd"></div></td>
-                            </tr>
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td><div class="repRe"></div></td>
-                            </tr>
-
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td><div class="repCom"></div></td>
-                            </tr>
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td><div class="repCom"></div></td>
-                            </tr>
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td><div class="repEd"></div></td>
-                            </tr>
-                            <tr>
-                                <td>정보 sw,로봇 영재원 대비 문제집</td>
-                                <td><div class="repRe"></div></td>
+                            <tr th:each="el : ${bookReportList}">
+                                <td th:text="${el.subject}">정보 sw,로봇 영재원 대비 문제집</td>
+                                <td><div th:classappend="${el.status}"></div></td>
                             </tr>
                             </tbody>
                         </table>

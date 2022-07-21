@@ -2381,6 +2381,15 @@ div.repEd,i.repEd {
 div.repRe,i.repRe {
     background: url(../img/re.png) no-repeat center / contain;
 }
+div.COMPLETE {
+    background: url(../img/com.png) no-repeat center / contain;
+}
+div.SUBMIT {
+    background: url(../img/ed.png) no-repeat center / contain;
+}
+div.NOT_SUBMIT {
+    background: url(../img/re.png) no-repeat center / contain;
+}
 .stampIn{
     display: flex;
     margin-bottom: 10px;
@@ -3839,4 +3848,9 @@ textarea.textA{
 }
 .fc-timeline-events.fc-scrollgrid-sync-inner {
     height: 26px !important;
+}
+.fc-timeline-slot-lane.fc-day-sun.fc-day-future,
+.fc-timeline-slot-lane.fc-day-sat.fc-day-future{
+    background: #e7e7e7;
+    opacity: 0.5;
 }

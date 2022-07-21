@@ -31,6 +31,9 @@ public class C2Controller {
             params.setTaskType(Types.TaskType.TASK);
         }
         model.addAttribute("list",c2Service.getStudentTaskList(params, pageable));
+        if(params.getTaskType() == Types.TaskType.BOOK_REPORT) {
+            model.addAttribute("bookReportList", c2Service.getBookReportStampList(params));
+        }
         model.addAttribute("params",params);
         return "c2/c2p1";
     }
