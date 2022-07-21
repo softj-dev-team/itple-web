@@ -48,31 +48,31 @@
                 <a href="sub/myinfo.html" class="setting"></a>
             </div>
             <div class="ham-con">
-                <p><span class="user-name">김잇플</span> 님</p>
-                <p>포인트 : <span class="user-point">1,000</span></p>
+                <p><span class="user-name" th:text="${session.studentVO.user.userName}">김잇플</span> 님</p>
+                <p>포인트 : <span class="user-point" th:text="| ${#numbers.formatInteger(session.studentVO.coin,0,'COMMA')}|">1,000</span></p>
                 <ul class="ham-gnb">
                     <li>
-                        <button class="bot-btn"></button><a href="">잇플 커뮤니티</a>
+                        <button class="bot-btn"></button><a href="/c1/p1">잇플 커뮤니티</a>
                         <ul class="ham-lnb">
-                            <li><a href="">잇플코딩</a></li>
-                            <li><a href="">잇플영어</a></li>
+                            <li><a href="/c1/p1">잇플코딩</a></li>
+                            <li><a href="/c1/p1?boardType=ENGLISH">잇플영어</a></li>
                         </ul>
                     </li>
                     <li>
-                        <button class="bot-btn"></button><a href="">수업연계</a>
+                        <button class="bot-btn"></button><a href="/c2/p1">수업연계</a>
                         <ul class="ham-lnb">
-                            <li><a href="">과제</a></li>
-                            <li><a href="">독후감</a></li>
+                            <li><a href="/c2/p1">과제</a></li>
+                            <li><a href="/c2/p1?taskType=BOOK_REPORT">독후감</a></li>
                         </ul>
                     </li>
                     <li>
-                        <button class="bot-btn"></button><a href="sub/bookList.html">도서대여</a>
+                        <button class="bot-btn"></button><a href="/c3/p1">도서대여</a>
                         <ul class="ham-lnb">
-                            <li><a href="sub/bookList.html">전체도서</a></li>
-                            <li><a href="sub/bookRecord.html">대여기록</a></li>
+                            <li><a href="/c3/p1">전체도서</a></li>
+                            <li><a href="/c3/p2">대여기록</a></li>
                         </ul>
                     </li>
-                    <li><a href="">포트폴리오</a></li>
+                    <li><a href="/c4/p1">포트폴리오</a></li>
                 </ul>
             </div>
         </div>

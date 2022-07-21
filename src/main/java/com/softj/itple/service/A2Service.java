@@ -156,6 +156,12 @@ public class A2Service {
 
     }
 
+    public void rejectStudentTask(SearchVO params){
+        StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        find.setStatus(Types.TaskStatus.NOT_SUBMIT);
+        studentTaskRepo.save(find);
+    }
+
     @Transactional
     public void saveStudentTask(SearchVO params){
         Task save = Task.builder().build();

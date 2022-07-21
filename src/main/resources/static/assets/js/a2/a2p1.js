@@ -82,6 +82,13 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 });
             });
             break;
+        case "S3":
+            modal.confirm("다시제출 처리 하시겠습니까?",function(){
+                $.post(path+'/s3',{id: arg1},function(res){
+                    location.reload();
+                });
+            });
+            break;
         case "U1":
             $.post(`${path}/u1`,{id:arg1},function(){
                location.reload();
@@ -118,6 +125,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 $("#reportMo .fileUP").empty();
                 if(el.status == 'SUBMIT') {
                     $("#reportMo .modalBtnWrap").show();
+                    $("#rejectBtn").attr("onclick",`goAction('S3',${el.id})`);
                     $("#completeBtn").attr("onclick",`goAction('S2',${el.id})`);
                 }else{
                     $("#reportMo .modalBtnWrap").hide();

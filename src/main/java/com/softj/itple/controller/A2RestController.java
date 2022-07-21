@@ -38,4 +38,11 @@ public class A2RestController {
         return Response.builder()
                 .build();
     }
+    //다시제출
+    @PostMapping("/p1/s3")
+    public Response s3(SearchVO params){
+        a2Service.rejectStudentTask(params);
+        return Response.builder()
+                .build();
+    }
 }

@@ -7,6 +7,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.softj.itple.domain.BookReportStampDTO;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
@@ -51,6 +52,20 @@ public class C2Service {
         QStudentTask qStudentTask = QStudentTask.studentTask;
         BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(params.getTaskType())).and(qStudentTask.student.eq(AuthUtil.getStudent())));
         return studentTaskRepo.findAll(where, pageable);
+    }
+
+    public List<BookReportStampDTO> getBookReportStampList(SearchVO params){
+        QStudentTask qStudentTask = QStudentTask.studentTask;
+        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(params.getTaskType())).and(qStudentTask.student.eq(AuthUtil.getStudent())));
+        JPAQuery<BookReportStampDTO> query = jpaQueryFactory.select(Projections.fields(BookReportStampDTO.class,
+                qStudentTask.task.subject,
+                qStudentTask.status)
+                )
+                .from(qStudentTask)
+                .leftJoin(qStudentTask.task)
+                .where(where)
+                .orderBy(qStudentTask.id.desc());
+        return query.fetch();
     }
 
     public StudentTask getStudentTask(SearchVO params){
