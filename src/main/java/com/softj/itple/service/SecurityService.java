@@ -1,11 +1,8 @@
 package com.softj.itple.service;
 
 import com.softj.itple.domain.SearchVO;
-import com.softj.itple.entity.AcademyClass;
-import com.softj.itple.entity.Attendance;
-import com.softj.itple.entity.Role;
+import com.softj.itple.entity.*;
 import com.softj.itple.domain.Types;
-import com.softj.itple.entity.Student;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
@@ -45,6 +42,7 @@ public class SecurityService implements UserDetailsService{
     final private AttendanceRepo attendanceRepo;
     final private AcademyClassRepo academyClassRepo;
     final private UserRepo userRepo;
+    final private AdminRepo adminRepo;
     final private SMTPUtil smtpUtil;
 
 
@@ -185,6 +183,17 @@ public class SecurityService implements UserDetailsService{
                     .attendanceDay(params.getDayOfWeekList()[i])
                     .build());
         }
+        return save;
+    }
+
+    @Transactional
+    public Admin updateAdmin(SearchVO params){
+        Admin save = adminRepo.findByUser(AuthUtil.getUser());
+        if(StringUtils.noneEmpty(params.getUserPw())) {
+            save.getUser().setUserPw(new BCryptPasswordEncoder().encode(params.getUserPw()));
+        }
+        save.getUser().setUserName(params.getUserName());
+        userRepo.save(save.getUser());
         return save;
     }
 }

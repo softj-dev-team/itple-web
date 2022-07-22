@@ -112,24 +112,22 @@ spring:
     
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:log4jdbc:postgresql://itple-dev.ck5lcam9i9dj.ap-northeast-2.rds.amazonaws.com:5432/itple?currentSchema=public
+    url: jdbc:postgresql://itple-dev.ck5lcam9i9dj.ap-northeast-2.rds.amazonaws.com:5432/itple?currentSchema=public
     username: 'itple'
     password: 'itple123'
 
   servlet:
     multipart:
       enabled: true
-
       max-file-size: 20MB
       max-request-size: 20MB
-
   mail:
     host: smtp.gmail.com
     port: 587
     password: pass
     properties:
       mail:
-        smtp: 
+        smtp:
           auth: true
           starttls:
             enable: true

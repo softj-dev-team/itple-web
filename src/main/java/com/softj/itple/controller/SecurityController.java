@@ -4,6 +4,7 @@ import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.entity.Student;
 import com.softj.itple.entity.User;
+import com.softj.itple.repo.AdminRepo;
 import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.repo.UserRepo;
 import com.softj.itple.service.CommonService;
@@ -12,6 +13,7 @@ import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.SMTPUtil;
 import com.softj.itple.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,6 +28,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SecurityController {
 	final private StudentRepo studentRepo;
+	final private AdminRepo adminRepo;
 	final private SecurityService securityService;
 	final private CommonService commonService;
 
@@ -123,6 +126,22 @@ public class SecurityController {
 	@ResponseBody
 	public Response myInfoModify(ModelMap model, SearchVO params){
 		AuthUtil.setStudent(securityService.updateStudent(params));
+		return Response.builder()
+				.build();
+	}
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping("/adminMyInfo")
+	public String adminMyInfo(ModelMap model){
+		model.addAttribute("el",adminRepo.findByUser(AuthUtil.getUser()));
+		return "adminMyInfo";
+	}
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping("/api/adminMyInfoModify")
+	@ResponseBody
+	public Response adminMyInfoModify(ModelMap model, SearchVO params){
+		AuthUtil.setAdmin(securityService.updateAdmin(params));
 		return Response.builder()
 				.build();
 	}

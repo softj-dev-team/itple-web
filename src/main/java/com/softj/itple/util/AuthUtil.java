@@ -54,6 +54,11 @@ public class AuthUtil {
         httpSession.setAttribute("studentVO", student);
     }
 
+    public static void setAdmin(Admin admin) {
+        HttpSession httpSession = getSession();
+        httpSession.setAttribute("adminVO", admin);
+    }
+
     public boolean isRole(String reqRoles){
         String[] reqRolesArr = reqRoles.split(",",-1);
         boolean isRole = false;

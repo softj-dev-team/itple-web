@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>내 정보</title>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="responsiveWrap">
+        <h1 class="responsiveH1">내 정보</h1>
+        <div class="responsiveInner">
+            <form id="form1">
+                <div class="inputSec">
+                    <label for="userId" class="mb5">아이디</label>
+                    <input name="userId" id="userId" type="text" class="input-df mb20" required disabled th:value="${el.user.userId}"><!--<button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>-->
+                    <label for="userName" class="mb5">이름</label>
+                    <input name="userName" id="userName" type="text" class="input-df mb20" required th:value="${el.user.userName}">
+                    <label for="userPw" class="mb5">비밀번호 <span>수정시에만 입력하세요.</span></label>
+                    <input name="userPw" id="userPw" type="password" class="input-df mb20" required>
+                    <label for="userPwRe" class="mb5">비밀번호 확인 <span>수정시에만 입력하세요.</span></label>
+                    <input name="userPwRe" id="userPwRe" type="password" class="input-df mb20" required>
+                </div>
+                <div class="btn-center mt60">
+                    <button type="button" class="btn" onclick="myInfoSave()">저장하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+        function myInfoSave(){
+            var userName = $("input[name=userName]").val();
+            var userPw = $("input[name=userPw]").val();
+            var userPwRe = $("input[name=userPwRe]").val();
+
+            if(userPw != userPwRe){
+                modal.alert("비밀번호와 비밀번호 확인이 다릅니다.");
+                return;
+            }
+            if(ut.isEmpty(userName)){
+                modal.required("이름");
+                return;
+            }
+
+            $.post("/api/adminMyInfoModify",$("#form1").serialize(),function(res){
+                modal.alert("저장되었습니다.");
+            });
+        }
+    </script>
+</th:block>
+</body>
+</html>
