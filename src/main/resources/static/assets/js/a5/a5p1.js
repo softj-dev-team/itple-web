@@ -41,7 +41,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
                 $.post(url, {id:arg1, studentId:arg2, cost:arg3, paymentDate:arg4, paymentType:arg5, memo:arg6, year:arg7, month:arg8, paymentDay:arg9, price:arg10},function(){
                     loading(0);
                     modal.alert('저장되었습니다.');
-                    ut.redirect('/a5/p1');
+                    location.reload();
                 });
             });
             break;
@@ -61,7 +61,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
                 $.post(url, {studentIdList:param1, paymentIdList:param2, paymentDayList:param3, priceList:param4, year:arg1, month:arg2, paymentDate:arg3, paymentType:arg4},function(){
                     loading(0);
                     modal.alert('저장되었습니다.');
-                    ut.redirect('/a5/p1');
+                    location.reload();
                 });
             });
 
