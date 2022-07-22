@@ -14,20 +14,21 @@
                 <form id="form1" name="form1" action="" class="adSearch-in">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <div class="in-box">
-                        <select name="academyClassType" id="academyClassType" class="selClass">
-                            <option th:each="el : ${params.getAcademyClassList()}"
-                                    th:selected="${el.academyType} == ${params.academyClassType}" th:value="${el.academyType}"
-                                    th:text="${el.className}"></option>
+                        <select name="classId" class="input-df mb20">
+                            <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.id, params.classId)}">잇플코딩입문반</option>
                         </select>
                         <select name="year" id="year">
-                            <option th:each="num : ${#numbers.sequence(2022,2021)}" th:value="${num}" th:text="${num}"
-                                    th:selected="${num} == ${params.year}">2022
-                            </option>
+                            <option th:each="num : ${#numbers.sequence(0,-5)}"
+                                    th:with="year=${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}"
+                                    th:value="${year}"
+                                    th:text="|${year}년|"
+                                    th:selected="${#strings.equals(year, params.year)}">2022</option>
                         </select>
                         <select name="month" id="month">
-                            <option th:each="num : ${#numbers.sequence(1,12)}" th:value="${num}" th:text="|${num}월|"
-                                    th:selected="${num} == ${params.month}">12월
-                            </option>
+                            <option th:each="num : ${#numbers.sequence(1,12)}"
+                                    th:value="${num}"
+                                    th:text="|${num}월|"
+                                    th:selected="${#strings.equals(num, params.month)}"></option>
                         </select>
                     </div>
                     <button type="button" class="src-btn" onClick="goSearch();"></button>

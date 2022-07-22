@@ -8,6 +8,7 @@ import com.softj.itple.domain.SearchVO;
 import com.softj.itple.entity.*;
 import com.softj.itple.repo.*;
 import com.softj.itple.util.LongUtils;
+import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,26 +33,9 @@ public class A5Service {
     public Page<Student> getStudentPaymentList(SearchVO params, Pageable pageable){
         QStudent qStudent = QStudent.student;
         QPayment qPayment = QPayment.payment;
-        QAcademyClass qAcademyClass = QAcademyClass.academyClass;
 
-        BooleanBuilder where = new BooleanBuilder();
-
-        where.and(qStudent.isDeleted.eq(false));
-
-        if(com.softj.itple.util.StringUtils.noneEmpty(params.getYear())) {
-            where.and(qPayment.year.eq(params.getYear()));
-            where.or(qPayment.year.isNull());
-        }
-
-        if(com.softj.itple.util.StringUtils.noneEmpty(params.getMonth())) {
-            where.and(qPayment.month.eq(params.getMonth()));
-            where.or(qPayment.month.isNull());
-        }
-
-        if(com.softj.itple.util.StringUtils.noneEmpty(params.getAcademyClassType())) {
-            where.and(qStudent.academyClass.academyType.eq(params.getAcademyClassType()));
-        }
-
+        BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
+                .and(qStudent.academyClass.id.eq(params.getClassId()));
 
         JPAQuery<Student> query = jpaQueryFactory.select(Projections.fields(Student.class,
                         qStudent.id,
@@ -59,12 +43,15 @@ public class A5Service {
                         qStudent.parentName,
                         qStudent.paymentDay,
                         qStudent.price,
-                        qPayment.payment
+                        qPayment
                 ))
                 .from(qStudent)
                 .where(where)
-                .leftJoin(qPayment).on(qPayment.studentId.eq(qStudent.id))
-                .orderBy(qStudent.id.asc())
+                .leftJoin(qPayment)
+                .on(qPayment.student.eq(qStudent)
+                    .and(qPayment.year.eq(params.getYear()))
+                    .and(qPayment.month.eq(params.getMonth())))
+                .orderBy(qStudent.id.desc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset());
 

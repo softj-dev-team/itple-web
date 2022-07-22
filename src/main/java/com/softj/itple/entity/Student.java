@@ -42,12 +42,10 @@ public class Student extends Auditing{
     private Long price;
 
     @Convert(converter = Types.StudentStatus.Converter.class)
-    Types.StudentStatus studentStatus;
+    private Types.StudentStatus studentStatus;
 
-    @OneToOne
-    @JoinColumn(name="id")
     @Transient
-    Payment payment;
+    private Payment payment;
 
 
     @Builder

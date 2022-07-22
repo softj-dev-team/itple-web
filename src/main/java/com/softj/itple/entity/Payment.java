@@ -17,31 +17,21 @@ import java.time.LocalDateTime;
 public class Payment extends Auditing{
 
     @OneToOne
-    @JoinColumn(name="student_id")
     private Student student;
-
-    @Column(name="student_id", insertable = false, updatable = false)
-    private long studentId;
-
     private long price;
-
     private long cost;
-
-    LocalDate paymentDate;
-
-    Integer paymentDay;
-
-    Types.PaymentType paymentType;
-
-    String memo;
-
-    Integer year;
-
-    Integer month;
+    private LocalDate paymentDate;
+    private Integer paymentDay;
+    @Convert(converter = Types.PaymentType.Converter.class)
+    private Types.PaymentType paymentType;
+    private String memo;
+    private Integer year;
+    private Integer month;
 
     @Builder
-    public Payment(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, long price, long cost, LocalDate paymentDate, Integer paymentDay, Types.PaymentType paymentType, String memo, Integer year, Integer month, Student student) {
+    public Payment(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, Student student, long price, long cost, LocalDate paymentDate, Integer paymentDay, Types.PaymentType paymentType, String memo, Integer year, Integer month) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
+        this.student = student;
         this.price = price;
         this.cost = cost;
         this.paymentDate = paymentDate;
@@ -50,6 +40,5 @@ public class Payment extends Auditing{
         this.memo = memo;
         this.year = year;
         this.month = month;
-        this.student = student;
     }
 }

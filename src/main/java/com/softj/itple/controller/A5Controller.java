@@ -6,6 +6,8 @@ import com.softj.itple.entity.AcademyClass;
 import com.softj.itple.service.A1Service;
 import com.softj.itple.service.A5Service;
 import com.softj.itple.service.CommonService;
+import com.softj.itple.util.LongUtils;
+import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,27 +34,19 @@ public class A5Controller {
     //목록
     @GetMapping("/p1")
     public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
-        if (Objects.isNull(params.getAcademyClassType())) {
-            params.setAcademyClassType(Types.AcademyType.ENGLISH);
-        }
-
         List<AcademyClass> academyClassList = commonService.getClassList();
-        params.setAcademyClassList(academyClassList);
 
-        LocalDate now = LocalDate.now();
-
-        if(params.getAcademyClassType() == null){
-            params.setAcademyClassType(Types.AcademyType.CODING);
+        if(StringUtils.isEmpty(params.getYear())){
+            params.setYear(LocalDate.now().getYear());
+        }
+        if(StringUtils.isEmpty(params.getMonth())){
+            params.setMonth(LocalDate.now().getMonthValue());
+        }
+        if(LongUtils.isEmpty(params.getClassId())) {
+            params.setClassId(academyClassList.get(0).getId());
         }
 
-        if(params.getYear() == null){
-            params.setYear(now.getYear());
-        }
-
-        if(params.getMonth() == null){
-            params.setMonth(now.getMonthValue());
-        }
-
+        model.addAttribute("classList", academyClassList);
         model.addAttribute("list", a5service.getStudentPaymentList(params, pageable));
         model.addAttribute("params", params);
         return "a5/a5p1";
