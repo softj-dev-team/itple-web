@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Arrays;
 
 @Getter
 @Setter
@@ -208,6 +207,23 @@ public class Types {
         public static class Converter extends AbstractEnumConverter<StudentStatus, String> {
             public Converter() {
                 super(StudentStatus.class);
+            }
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum PaymentType implements Code<String> {
+        CARD("01", "카드"),
+        CASH("02", "현금"),
+        ACCOUNT("03", "계좌");
+
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<PaymentType, String> {
+            public Converter() {
+                super(PaymentType.class);
             }
         }
     }
