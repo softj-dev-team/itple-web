@@ -44,7 +44,7 @@ function goAction(flag, arg1, arg2) {
                     loading(0);
                     modal.alert('저장되었습니다.');
                     var page = $("#page").val();
-                    goAction("L1", page);
+                    ut.redirect("/a1/p1");
                 });
             });
             break;
@@ -65,7 +65,7 @@ function goAction(flag, arg1, arg2) {
                         loading(0);
                         modal.alert('저장되었습니다.');
                         var page = $("#page").val();
-                        goAction("L1", page);
+                        ut.redirect("/a1/p1");
                     },error : function(request,status,error){
                         loading(0);
                     }
@@ -100,8 +100,7 @@ function goAction(flag, arg1, arg2) {
                 $.post(url,formS1.serialize(),function(){
                     loading(0);
                     modal.alert('삭제되었습니다.');
-                    var page = $("#page").val();
-                    goAction("L1", page);
+                    ut.reload();
                 });
                 break;
         /*팝업*/
