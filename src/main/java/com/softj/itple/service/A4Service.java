@@ -59,13 +59,19 @@ public class A4Service {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    @Transactional
     public long saveAttendanceHistory(SearchVO params){
-        List<AcademyClass> academyClass = academyclassRepo.findByAcademyType(params.getAttendanceType());
-        Student student = studentRepo.findByAttendanceNoAndAcademyClassIn(params.getAttendanceNo(), academyClass).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+        Student student = studentRepo.findByAttendanceNo(params.getAttendanceNo()).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+        //학원체크
+        if(student.getAcademyClass().getAcademyType() != params.getAttendanceType()){
+            throw new ApiException(params.getAttendanceType().getMessage()+" 학생이 아닙니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+        //중복등원하원체크
         AttendanceHistory history = attendanceHistoryRepo.findFirstByUserAndAttendanceStatusAndCreatedAtGreaterThan(student.getUser(), params.getAttendanceStatus(), LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
         if(Objects.nonNull(history)){
             throw new ApiException("오늘 이미 "+params.getAttendanceStatus().getMessage()+" 했습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
         }
+        //등원하지않았는데 하원 체크
         if(params.getAttendanceStatus() == Types.AttendanceStatus.LEAVE){
             AttendanceHistory history2 = attendanceHistoryRepo.findFirstByUserAndAttendanceStatusAndCreatedAtGreaterThan(student.getUser(), Types.AttendanceStatus.COME, LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
             if(Objects.isNull(history2)){
@@ -73,25 +79,32 @@ public class A4Service {
             }
         }
 
-        LocalDateTime now = LocalDateTime.now();
+        //등원요일체크
+        if(params.getAttendanceStatus() == Types.AttendanceStatus.COME) {
+            LocalDateTime now = LocalDateTime.now();
+            Types.DayOfWeek tmp = Types.DayOfWeek.valueOf(now.getDayOfWeek().toString());
+            Attendance attendance = attendanceRepo.findByUserIdAndAttendanceDay(student.getUser().getId(), Types.DayOfWeek.valueOf(now.getDayOfWeek().toString()));
+            if (Objects.isNull(attendance)) {
+                throw new ApiException("학생 등원요일이 아닙니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+            }
 
-        Attendance attendance = attendanceRepo.findByUserIdAndAttendanceDay(student.getUser().getId(), Types.DayOfWeek.valueOf(now.getDayOfWeek().toString()));
+            LocalDateTime attendanceAt = LocalDateTime.of(now.toLocalDate(), attendance.getAttendanceAt());
+            //코인 증감
+            CoinHistory saveCoinHistory = CoinHistory.builder()
+                    .user(student.getUser())
+                    .build();
 
-        if(Objects.isNull(attendance)){
-            throw new ApiException("학생 등원일이 아닌 요일입니다.", ErrorCode.INTERNAL_SERVER_ERROR);
-        }
-        LocalDateTime attendanceAt = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(),attendance.getAttendanceAt().getHour(),attendance.getAttendanceAt().getMinute());
-
-        if(now.isBefore(attendanceAt)){
-            CoinHistory saveCoinHistory = CoinHistory.builder().build();
-            saveCoinHistory.setUser(student.getUser());
-            saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
-            saveCoinHistory.setMemo("등원시간 이전 등원완료");
-            saveCoinHistory.setCoin(1);
+            if (now.isBefore(attendanceAt)) {
+                saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
+                saveCoinHistory.setMemo("등원시간 이전 등원");
+                saveCoinHistory.setCoin(1L);
+            }else{
+                saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
+                saveCoinHistory.setMemo("등원시간 이후 등원");
+                saveCoinHistory.setCoin(-1L);
+            }
             coinHistoryRepo.save(saveCoinHistory);
-
-            student.setCoin(student.getCoin()+1);
-            student.setAcademyClass(student.getAcademyClass());
+            student.setCoin(student.getCoin() + saveCoinHistory.getCoin());
             studentRepo.save(student);
         }
 
@@ -104,6 +117,10 @@ public class A4Service {
 
     public AttendanceHistory getAttendanceHistory(SearchVO params){
         return attendanceHistoryRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    public CoinHistory getCoinHistory(SearchVO params){
+        return coinHistoryRepo.findFirstByUserOrderByIdDesc(User.builder().id(params.getId()).build());
     }
 
     public List<A4EventDTO> getAttendanceHistoryList(SearchVO params){
