@@ -2,6 +2,8 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
+import com.softj.itple.entity.AttendanceHistory;
+import com.softj.itple.entity.CoinHistory;
 import com.softj.itple.service.A1Service;
 import com.softj.itple.service.A3Service;
 import com.softj.itple.service.A4Service;
@@ -51,7 +53,12 @@ public class A4Controller {
     //출결 확인
     @GetMapping("/p3")
     public String a4p3(ModelMap model, SearchVO params) {
-        model.addAttribute("el", a4Service.getAttendanceHistory(params));
+        AttendanceHistory attendanceHistory = a4Service.getAttendanceHistory(params);
+        params.setId(attendanceHistory.getUser().getId());
+        CoinHistory coinHistory = a4Service.getCoinHistory(params);
+
+        model.addAttribute("el", attendanceHistory);
+        model.addAttribute("coinHistory", coinHistory);
         model.addAttribute("params", params);
         return "a4/a4p3";
     }

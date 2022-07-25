@@ -1,10 +1,16 @@
 package com.softj.itple.scheduler;
 
+import com.softj.itple.repo.CoinHistoryRepo;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
-public class TempScheduler {
+@RequiredArgsConstructor
+public class ItpleScheduler {
+    final private CoinHistoryRepo coinHistoryRepo;
 	/*
 	  	*** 스케쥴러 cron 양식***
 		초 0-59 , - * /
@@ -46,8 +52,18 @@ public class TempScheduler {
 		ms기준
 		(fixedRate = 1000) : 1초 
 	 */
-	@Scheduled(fixedRate = 10000)
+    
+    //매일 00시 00분 00초 
+    //연체로 변경
+	@Scheduled(cron = "0 0 0 * * *")
 	public void tempSchedule() {
+		System.out.println("temp Schedule");
+	}
+	
+    //매월 1일 00시 00분 00초
+    //출결체크 20코인
+	@Scheduled(cron = "0 0 0 1 * *")
+	public void tempSchedule2() {
 		System.out.println("temp Schedule");
 	}
 }
