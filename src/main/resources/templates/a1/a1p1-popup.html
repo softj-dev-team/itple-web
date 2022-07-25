@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/none-layout">
+<head>
+    <title>도서반납</title>
+</head>
+<body>
+<style>
+    #preview {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: stretch;
+        display: flex;
+        width: 100%;
+        height: 580px;
+        overflow: hidden;
+    }
+</style>
+    <div class="loginWrap">
+        <div class="loginWrapOuter check">
+            <div class="loginDivWrap" id="app">
+                <video id="preview"></video>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script th:inline="javascript">
+    function goHookQr(id){
+        $.post('/hooks/a1/p1-return/',{bookId: id},function(res){
+            window.opener.goReturnComp(id);
+            window.close();
+        }).fail(function(){
+        });
+    }
+</script>
+</body>
+</html>

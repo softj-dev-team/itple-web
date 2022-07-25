@@ -120,11 +120,15 @@
             var page = $("#page").val();
             $(location).attr("href", "/a1/p1-rental/"+id+"/"+page);
         }
+        function goReturnComp(id){
+            $(location).attr("href", "/a1/p1-recomp/"+id);
+        }
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');
         });
         $('.QRBtn').on('click', function () {
-            $('#pcQR').addClass('on');
+            //$('#pcQR').addClass('on');
+            window.open("a1/p1-popup");
         });
         $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
             $(this).parents('.modal').removeClass('on');

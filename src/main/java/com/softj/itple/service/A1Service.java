@@ -144,4 +144,27 @@ public class A1Service {
         bookRepo.save(book);
         bookRentalRepo.save(save);
     }
+
+
+    @Transactional
+    public void saveBookReturn(SearchVO params) throws ApiException {
+
+        Book book = bookRepo.findById(params.getBookId()).orElseThrow(() -> new ApiException("도서 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+
+        BookRental save = bookRentalRepo.findTopByBookOrderByCreatedAtDesc(book).orElse(BookRental.builder().build());
+
+        Types.BookRentalStatus status = Types.BookRentalStatus.AVAILABLE;;
+        LocalDate returnDate = LocalDate.now();
+
+        save.setRentalStatus(status);
+        save.setReturnDate(returnDate);
+
+        book.setBookStatus(save.getRentalStatus());
+        book.setStartDate(null);
+        book.setEndDate(null);
+        book.setRentalName("");
+
+        bookRepo.save(book);
+        bookRentalRepo.save(save);
+    }
 }

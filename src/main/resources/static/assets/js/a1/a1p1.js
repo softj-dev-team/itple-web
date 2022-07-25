@@ -101,28 +101,6 @@ function goAction(flag, arg1, arg2) {
                     ut.reload();
                 });
                 break;
-        /*팝업*/
-        case "P1":
-            $('#noticeForm textarea').each(function e(){$(this).val('');});
-            $('#noticeForm select').val(9999).change();
-            $('#noticeForm input[name=seq]').val(0);
-            if(arg1){
-                $.post(path+'/p1',{seq: arg1},function(res){
-                    var el = res.data;
-                    $("textarea[name=content]").val(el.content);
-                    $('#noticeForm select').val(el.accessDept.seq).change();
-                    $('#noticeForm input[name=seq]').val(el.seq);
-                    if(loginRole=='ROLE_1' || loginRole=='ROLE_2'){
-                        $("#p1Save").show();
-                    }else if(loginRole=='ROLE_3' && loginDeptSeq == el.accessDept.seq){
-                        $("#p1Save").show();
-                    }else{
-                        $("#p1Save").hide();
-                    }
-                });
-            }
-            modalOpen('notice-write');
-            break;
     }
 }
 
