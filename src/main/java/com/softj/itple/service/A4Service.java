@@ -45,6 +45,12 @@ import java.util.stream.Collectors;
 public class A4Service {
     private final JPAQueryFactory jpaQueryFactory;
     private final AttendanceHistoryRepo attendanceHistoryRepo;
+    private final AttendanceRepo attendanceRepo;
+
+    private final AcademyClassRepo academyclassRepo;
+
+    private final CoinHistoryRepo coinHistoryRepo;
+
     private final UserRepo userRepo;
     private final StudentRepo studentRepo;
 
@@ -54,7 +60,8 @@ public class A4Service {
     private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public long saveAttendanceHistory(SearchVO params){
-        Student student = studentRepo.findByAttendanceNo(params.getAttendanceNo()).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+        List<AcademyClass> academyClass = academyclassRepo.findByAcademyType(params.getAttendanceType());
+        Student student = studentRepo.findByAttendanceNoAndAcademyClassIn(params.getAttendanceNo(), academyClass).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
         AttendanceHistory history = attendanceHistoryRepo.findFirstByUserAndAttendanceStatusAndCreatedAtGreaterThan(student.getUser(), params.getAttendanceStatus(), LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
         if(Objects.nonNull(history)){
             throw new ApiException("오늘 이미 "+params.getAttendanceStatus().getMessage()+" 했습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
@@ -65,6 +72,29 @@ public class A4Service {
                 throw new ApiException("오늘 등원하지 않았습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
             }
         }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        Attendance attendance = attendanceRepo.findByUserIdAndAttendanceDay(student.getUser().getId(), Types.DayOfWeek.valueOf(now.getDayOfWeek().toString()));
+
+        if(Objects.isNull(attendance)){
+            throw new ApiException("학생 등원일이 아닌 요일입니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+        LocalDateTime attendanceAt = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(),attendance.getAttendanceAt().getHour(),attendance.getAttendanceAt().getMinute());
+
+        if(now.isBefore(attendanceAt)){
+            CoinHistory saveCoinHistory = CoinHistory.builder().build();
+            saveCoinHistory.setUser(student.getUser());
+            saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
+            saveCoinHistory.setMemo("등원시간 이전 등원완료");
+            saveCoinHistory.setCoin(1);
+            coinHistoryRepo.save(saveCoinHistory);
+
+            student.setCoin(student.getCoin()+1);
+            student.setAcademyClass(student.getAcademyClass());
+            studentRepo.save(student);
+        }
+
         return attendanceHistoryRepo.save(AttendanceHistory.builder()
                 .user(student.getUser())
                 .attendanceType(params.getAttendanceType())

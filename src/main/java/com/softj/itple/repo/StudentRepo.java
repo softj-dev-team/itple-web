@@ -1,5 +1,6 @@
 package com.softj.itple.repo;
 
+import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AcademyClass;
 import com.softj.itple.entity.Admin;
 import com.softj.itple.entity.Student;
@@ -18,6 +19,9 @@ import java.util.Optional;
 public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredicateExecutor<Student> {
     Student findByUser(@Param("user") User user);
     Optional<Student> findByAttendanceNo(@Param("attendanceNo")String attendanceNo);
+
+    Optional<Student> findByAttendanceNoAndAcademyClassIn(@Param("attendanceNo")String attendanceNo, List<AcademyClass> academyClass);
+
     @EntityGraph(attributePaths = {"user","academyClass"}, type = EntityGraph.EntityGraphType.LOAD)
     Student findWithUserByUser(@Param("user") User user);
     @Query("select a.user.userId from Student a where a.user.userName = :userName and a.email = :email")
