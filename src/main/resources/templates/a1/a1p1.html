@@ -4,6 +4,7 @@
       layout:decorate="layout/layout">
 <head>
     <title>출판서적</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
 </head>
 <body class="adminBody">
 <th:block layout:fragment="content">
@@ -45,6 +46,7 @@
                         <th>대여기간</th>
                         <th>대여자</th>
                         <th>상태</th>
+                        <th>반납 QR코드</th>
                     </tr>
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
@@ -66,6 +68,7 @@
                                 <button type="button" th:case="DELINQUENT" class="btn btn-yellow" th:onclick="|goRental(${el.id})|">연체</button>
                             </th:block>
                         </td>
+                        <td><a th:href="|javascript:download(${el.id},'${el.subject}')|"><img th:src="|https://api.qrserver.com/v1/create-qr-code/?size=177x177&data=${el.id}|"></a></td>
                     </tr>
                 </tbody>
             </table>
@@ -129,6 +132,24 @@
         $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
             $(this).parents('.modal').removeClass('on');
         });
+
+        function download(id, fileName) {
+            axios({
+                url: `https://api.qrserver.com/v1/create-qr-code/?size=177x177&data=${id}`,
+                method: 'GET',
+                responseType: 'blob'
+            })
+            .then((response) => {
+                const url = window.URL
+                    .createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `${fileName}.png`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+        }
     </script>
 </th:block>
 </body>
