@@ -16,46 +16,40 @@
             <form id="form1">
                 <div class="inputSec">
                     <label for="userId" class="mb5">아이디</label>
-                    <input name="userId" id="userId" type="text" class="input-df post mb20" required><button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>
+                    <input name="userId" id="userId" type="text" class="input-df post mb20" ><button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>
                     <label for="userPw" class="mb5">비밀번호</label>
-                    <input name="userPw" id="userPw" type="password" class="input-df mb20" required>
+                    <input name="userPw" id="userPw" type="password" class="input-df mb20" >
                     <label for="userPwRe" class="mb5">비밀번호 확인</label>
-                    <input name="userPwRe" id="userPwRe" type="password" class="input-df mb20" required>
+                    <input name="userPwRe" id="userPwRe" type="password" class="input-df mb20" >
                 </div>
                 <div class="inputSec">
-                    <!--<label for="" class="mb5">반</label>
-                  <select name="classId" class="input-df mb20">
-                      <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}">잇플코딩입문반</option>
-                  </select>-->
-                  <label for="userName" class="mb5">이름</label>
-                  <input name="userName" id="userName" type="text" class="input-df mb20" required>
-                    <!--<label for="attendanceNo" class="mb5">출결번호</label>
-                    <input name="attendanceNo" id="attendanceNo" type="text" class="input-df mb20" required maxlength="4">-->
+                    <label for="userName" class="mb5">이름</label>
+                    <input name="userName" id="userName" type="text" class="input-df mb20" >
                     <label for="" class="mb5">생일</label>
                     <div class="datepickerWrap">
-                        <input name="birth" type="text" class="input-df mb20 datepicker" required>
+                        <input name="birth" type="text" class="input-df mb20 datepicker" >
                         <i class="i-date"></i>
-                    </div>
+                </div>
                 </div>
                 <div class="inputSec">
                     <label for="school" class="mb5">학교</label>
-                    <input name="school" id="school" type="text" class="input-df mb20" required>
+                    <input name="school" id="school" type="text" class="input-df mb20" >
                     <label for="" class="mb5">학년</label>
-                    <select name="grade" id="" class="input-df mb20" required>
+                    <select name="grade" id="" class="input-df mb20" >
                         <option th:each="grade : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${grade}" th:text="${grade.message}">1학년</option>
                     </select>
                     <label for="email" class="mb5">이메일</label>
-                    <input name="email" id="email" type="text" class="input-df mb20" required>
+                    <input name="email" id="email" type="text" class="input-df mb20" >
                 </div>
                 <div class="inputSec">
                     <label for="zonecode" class="mb5">집주소</label>
-                    <input name="zonecode" id="zonecode" type="text" class="input-df post mb10" readonly placeholder="우편번호" required><button type="button" class="btn post-btn" onclick="oepnAddrPopup()">주소검색</button>
+                    <input name="zonecode" id="zonecode" type="text" class="input-df post mb10" readonly placeholder="우편번호" ><button type="button" class="btn post-btn" onclick="oepnAddrPopup()">주소검색</button>
                     <input name="roadAddress" type="text" class="input-df mb10" readonly placeholder="주소">
                     <input name="detailAddress" type="text" class="input-df mb20" placeholder="상세주소">
                     <label for="parentName" class="mb5">보호자 성함</label>
-                    <input name="parentName" id="parentName" type="text" class="input-df mb20" required>
+                    <input name="parentName" id="parentName" type="text" class="input-df mb20" >
                     <label for="parentTel" class="mb5">보호자 연락처</label>
-                    <input name="parentTel" id="parentTel" type="text" class="input-df mb20" required>
+                    <input name="parentTel" id="parentTel" type="text" class="input-df mb20" >
                 </div>
                 <!--<div class="inputSec timeSelectOuter">
                     <label for="" class="mb10">등원 시간</label>
@@ -107,7 +101,14 @@
                 orientation: "auto"
             });
 
-            $(document).on("click", ".btn-remove", function(){
+            $("input[name=userId]").on("input",function(){
+                checkId = "";
+                $("#idDupCheckBtn").removeClass("btn-blue");
+                $("#idDupCheckBtn").text("중복검사");
+            });
+        });
+
+            /*$(document).on("click", ".btn-remove", function(){
                 $(this).parents('.timeSelectWrap').remove();
             }).on("click", ".btn-add", function(){
                 if($(".timeSelectWrap").length > 6){
@@ -151,14 +152,9 @@
                     `;
                     $(".timeSelectOuter").append(html);
                 }
-            });
+            });*/
 
-            $("input[name=userId]").on("input",function(){
-                checkId = "";
-                $("#idDupCheckBtn").removeClass("btn-blue");
-                $("#idDupCheckBtn").text("중복검사");
-            });
-        });
+
 
         function oepnAddrPopup(){
             new daum.Postcode({
@@ -196,6 +192,9 @@
             var zonecode = $("input[name=zonecode]").val();
             var parentName = $("input[name=parentName]").val();
             var parentTel = $("input[name=parentTel]").val();
+            var grade = $("select[name=grade]").val();
+            var roadAddress = $("input[name=roadAddress]").val();
+            var detailAddress = $("input[name=detailAddress]").val();
 
             if(ut.isEmpty(userId)){
                 modal.required("아이디");
@@ -234,6 +233,10 @@
                 modal.required("학교");
                 return;
             }
+            if(ut.isEmpty(grade)){
+                modal.required("학년");
+                return;
+            }
             if(ut.isEmpty(email)){
                 modal.required("이메일");
                 return;
@@ -246,10 +249,16 @@
                 modal.required("출결번호");
                 return;
             }*/
-
-
             if(ut.isEmpty(zonecode)){
                 modal.required("주소");
+                return;
+            }
+            if(ut.isEmpty(roadAddress)){
+                modal.required("주소");
+                return;
+            }
+            if(ut.isEmpty(detailAddress)){
+                modal.required("상세주소");
                 return;
             }
             if(ut.isEmpty(parentName)){
@@ -261,7 +270,7 @@
                 return;
             }
 
-            var dayArr = [];
+            /*var dayArr = [];
             $("select[name=dayOfWeekList]").each(function(){
                 dayArr.push($(this).val());
             });
@@ -270,7 +279,7 @@
             if(dayArr.length != daySet.size){
                 modal.alert("중복된 요일은 선택 할 수 없습니다.");
                 return;
-            }
+            }*/
             $.post("/api/join",$("#form1").serialize(),function(res){
                 ut.redirect("/joinComplete")
             });

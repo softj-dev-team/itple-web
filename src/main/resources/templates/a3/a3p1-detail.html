@@ -38,7 +38,7 @@
                     </div>
                     <label for="" class="mb5">반</label>
                     <select name="classId" class="input-df mb20">
-                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.className, el.academyClass.className)}">잇플코딩입문반</option>
+                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.className, el.academyClass?.className)}">잇플코딩입문반</option>
                     </select>
                     <label for="userName" class="mb5">이름</label>
                     <input name="userName" id="userName" type="text" class="input-df mb20" required th:value="${el.user.userName}">
@@ -94,29 +94,29 @@
                     <label for="" class="mb10">등원 시간</label>
                     <div class="timeSelectWrap">
                         <select name="dayOfWeekList" class="daySel">
-                            <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}" th:selected="${day == el.user.attendanceList.get(0).attendanceDay}">월요일</option>
+                            <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}" th:selected="${not #lists.isEmpty(el.user.attendanceList) && day == el.user.attendanceList.get(0).attendanceDay}">월요일</option>
                         </select>
                         <select name="hourList">
-                            <option value="9" th:selected="${#strings.equals(9, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">9시</option>
-                            <option value="10" th:selected="${#strings.equals(10, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">10시</option>
-                            <option value="11" th:selected="${#strings.equals(11, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">11시</option>
-                            <option value="12" th:selected="${#strings.equals(12, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">12시</option>
-                            <option value="13" th:selected="${#strings.equals(13, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">13시</option>
-                            <option value="14" th:selected="${#strings.equals(14, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">14시</option>
-                            <option value="15" th:selected="${#strings.equals(15, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">15시</option>
-                            <option value="16" th:selected="${#strings.equals(16, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">16시</option>
-                            <option value="17" th:selected="${#strings.equals(17, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">17시</option>
-                            <option value="18" th:selected="${#strings.equals(18, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">18시</option>
-                            <option value="19" th:selected="${#strings.equals(19, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">19시</option>
-                            <option value="20" th:selected="${#strings.equals(20, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">20시</option>
+                            <option value="9" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(9, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">9시</option>
+                            <option value="10" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(10, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">10시</option>
+                            <option value="11" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(11, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">11시</option>
+                            <option value="12" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(12, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">12시</option>
+                            <option value="13" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(13, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">13시</option>
+                            <option value="14" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(14, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">14시</option>
+                            <option value="15" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(15, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">15시</option>
+                            <option value="16" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(16, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">16시</option>
+                            <option value="17" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(17, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">17시</option>
+                            <option value="18" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(18, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">18시</option>
+                            <option value="19" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(19, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">19시</option>
+                            <option value="20" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(20, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'H'))}">20시</option>
                         </select>
                         <select name="minList">
-                            <option value="0" th:selected="${#strings.equals(0, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">00분</option>
-                            <option value="10" th:selected="${#strings.equals(10, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">10분</option>
-                            <option value="20" th:selected="${#strings.equals(20, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">20분</option>
-                            <option value="30" th:selected="${#strings.equals(30, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">30분</option>
-                            <option value="40" th:selected="${#strings.equals(40, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">40분</option>
-                            <option value="50" th:selected="${#strings.equals(50, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">50분</option>
+                            <option value="0" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(0, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">00분</option>
+                            <option value="10" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(10, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">10분</option>
+                            <option value="20" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(20, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">20분</option>
+                            <option value="30" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(30, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">30분</option>
+                            <option value="40" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(40, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">40분</option>
+                            <option value="50" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(50, #temporals.format(el.user.attendanceList.get(0).attendanceAt,'m'))}">50분</option>
                         </select>
                         <button type="button" class="btn-add"></button>
                     </div>

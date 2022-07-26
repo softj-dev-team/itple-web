@@ -44,8 +44,7 @@
             </ul>
             <div class="adfooter-btn">
                 <button type="button" th:if="${@authUtil.isRole('ADMIN')}" class="m-btn btn-line mr5 categoryBtn">게시판 설정</button>
-                <button type="button" th:each="e : ${@codeUtil.getCodeList(2)}"
-                        th:if="${#strings.equals(e.codeValue,params.boardType.code) && (@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType))}"
+                <button type="button" th:if="${@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType)}"
                         class="m-btn" onclick="ut.redirect('/c1/p1-write/0')">글쓰기</button>
             </div>
         </div>

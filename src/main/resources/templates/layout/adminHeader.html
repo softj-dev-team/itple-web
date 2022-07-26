@@ -64,45 +64,46 @@
                 <a href="../sub/myinfo.html" class="setting"></a>
             </div>
             <div class="ham-con">
-                <p><span class="user-name">김잇플</span> 님</p>
+                <p><span class="user-name" th:text="${session.adminVO.user.userName}">김잇플</span> 님</p>
                 <ul class="ham-gnb">
-                    <li><a href="bookListAdmin.html">출판서적</a></li>
+                    <li><a href="/a1/p1">출판서적</a></li>
                     <li><button class="bot-btn"></button>
-                        <a href="taskListAdmin.html">수업연계</a>
+                        <a href="/a2/p1">수업연계</a>
                         <ul class="ham-lnb">
-                            <li><a href="taskListAdmin.html">과제</a></li>
-                            <li><a href="reportAdmin.html">독후감</a></li>
+                            <li><a href="/a2/p1">과제</a></li>
+                            <li><a href="/a2/p1?taskType=BOOK_REPORT">독후감</a></li>
                         </ul>
                     </li>
                     <li><button class="bot-btn"></button>
-                        <a href="studList.html">학생관리</a>
+                        <a href="/a3/p1">학생관리</a>
                         <ul class="ham-lnb li3">
-                            <li><a href="studList.html">재원생</a></li>
-                            <li><a href="leaveList.html">휴원생</a></li>
-                            <li><a href="dischargeList.html">퇴원생</a></li>
+                            <li><a href="/a3/p1?studentStatus=STUDENT">재원생</a></li>
+                            <li><a href="/a3/p1?studentStatus=LEAVE">휴원생</a></li>
+                            <li><a href="/a3/p1?studentStatus=DISCHARGE">퇴원생</a></li>
                         </ul>
                     </li>
                     <li><button class="bot-btn"></button>
-                        <a href="attendance.html">출결관리</a>
+                        <a href="/a4/p1">출결관리</a>
                         <ul class="ham-lnb">
-                            <li><a href="attendance.html">출결관리</a></li>
-                            <li><a href="">출석페이지</a></li>
+                            <li><a href="/a4/p1">출결관리</a></li>
+                            <li><a href="/a4/p2">잇플코딩 출석페이지</a></li>
+                            <li><a href="/a4/p2?attendanceType=ENGLISH">잇플영어 출석페이지</a></li>
                         </ul>
                     </li>
-                    <li><a href="payment.html">수납관리</a></li>
+                    <li><a href="/a5/p1">수납관리</a></li>
                     <li><button class="bot-btn"></button>
-                        <a href="portfolioList.html">포트폴리오</a>
+                        <a href="/a6/p1">포트폴리오</a>
                         <ul class="ham-lnb li3">
-                            <li><a href="portfolioList.html">재원생</a></li>
-                            <li><a href="leavePortfolio.html">휴원생</a></li>
-                            <li><a href="dischargePortfoliot.html">퇴원생</a></li>
+                            <li><a href="/a6/p1?studentStatus=STUDENT">재원생</a></li>
+                            <li><a href="/a6/p1?studentStatus=LEAVE">휴원생</a></li>
+                            <li><a href="/a6/p1?studentStatus=DISCHARGE">퇴원생</a></li>
                         </ul>
                     </li>
                     <li><button class="bot-btn"></button>
-                        <a href="communityList.html">잇플 커뮤니티</a>
+                        <a href="/c1/p1">잇플 커뮤니티</a>
                         <ul class="ham-lnb">
-                            <li><a href="communityList.html">잇플코딩</a></li>
-                            <li><a href="">잇플영어</a></li>
+                            <li><a href="/c1/p1">잇플코딩</a></li>
+                            <li><a href="/c1/p1?boardType=ENGLISH">잇플영어</a></li>
                         </ul>
                     </li>
                 </ul>

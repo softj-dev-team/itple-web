@@ -113,6 +113,7 @@ public class SecurityService implements UserDetailsService{
                 .birth(params.getBirth())
                 .school(params.getSchool())
                 .grade(params.getGrade())
+                .email(params.getEmail())
                 .zonecode(params.getZonecode())
                 .roadAddress(params.getRoadAddress())
                 .detailAddress(params.getDetailAddress())

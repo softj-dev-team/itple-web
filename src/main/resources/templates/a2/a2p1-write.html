@@ -20,11 +20,11 @@
                 <input type="hidden" id="id" name="id" th:value="${el.id}">
                 <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
                 <div class="inputSec">
-                    <label for="" class="mb5">반 선택</label>
-                    <select name="classId" class="input-df mb20" onchange="setStudentList()">
+                    <label for="classId" class="mb5">반 선택</label>
+                    <select name="classId" id="classId" class="input-df mb20" onchange="setStudentList()">
                         <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}">잇플코딩입문반</option>
                     </select>
-                    <label for="" class="mb5">학생 선택</label>
+                    <label for="studAll" class="mb5">학생 선택</label>
                     <div class="studCh">
                         <input type="checkbox" id="studAll"><label for="studAll">전체선택</label>
                         <div id="studentList">
@@ -35,10 +35,16 @@
                     <input type="text" class="input-df mb20" name="subject" id="subject" th:value="${el.subject}">
                     <label th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" for="author" class="mb5">저자</label>
                     <input th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" type="text" class="input-df mb20" id="author" name="author" th:value="${el.author}">
-                    <label for="contents" class="mb5">과제 내용</label>
+                    <th:block th:switch="${#strings.toString(params.taskType)}">
+                        <label for="contents" class="mb5" th:case="TASK">과제 내용</label>
+                        <label for="contents" class="mb5" th:case="BOOK_REPORT">독후감 내용</label>
+                    </th:block>
                     <textarea name="contents" id="contents" cols="30" rows="10" class="mb20" th:value="${el.contents}"></textarea>
                     <div class="dateBox mb20">
-                        <label class="mb5">과제 마감일</label>
+                        <th:block th:switch="${#strings.toString(params.taskType)}">
+                            <label class="mb5" th:case="TASK">과제 마감일</label>
+                            <label class="mb5" th:case="BOOK_REPORT">독후감 마감일</label>
+                        </th:block>
                         <div class="datepickerWrap">
                             <input type="text" class="input-df datepicker" name="startDate" th:value="${#temporals.format(el.startDate,'yyyy-MM-dd')}">
                             <i class="i-date"></i>

@@ -21,9 +21,10 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class User extends Auditing{
+    private String userName;
     private String userId;
     private String userPw;
-    private String userName;
+
     private boolean isApproved;
 
     @OneToOne(mappedBy = "user")
@@ -41,12 +42,11 @@ public class User extends Auditing{
     private List<Attendance> attendanceList;
 
     @Builder
-    public User(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String userId, String userPw, String userName, String userName1, Student student, Admin admin, List<Role> roleList, List<Attendance> attendanceList) {
+    public User(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String userId, String userPw, String userName, Student student, Admin admin, List<Role> roleList, List<Attendance> attendanceList) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.userId = userId;
         this.userPw = userPw;
         this.userName = userName;
-        this.userName = userName1;
         this.student = student;
         this.admin = admin;
         this.roleList = roleList;

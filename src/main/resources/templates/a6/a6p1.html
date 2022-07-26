@@ -54,7 +54,7 @@
                     <td th:text="${el.user.userName}">김잇플</td>
                     <td th:text="${el.parentName}">보호자</td>
                     <td th:text="${el.parentTel}">010-1234-5678</td>
-                    <td th:text="${el.academyClass.className}">잇플 코딩입문반A</td>
+                    <td th:text="${el.academyClass?.className}">잇플 코딩입문반A</td>
                     <td th:text="${el.memo}"></td>
                     <td th:text="${#temporals.format(el.enterDate,'yyyy.MM.dd')}">2022.03.24</td>
                     <td th:text="${el.coin}">1000</td>
