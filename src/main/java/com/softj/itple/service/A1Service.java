@@ -83,11 +83,23 @@ public class A1Service {
         Book book = bookRepo.findById(params.getBookId()).orElse(Book.builder().build());
         BookRental bookRental = BookRental.builder().build();
 
-        if(book.getBookStatus().equals(Types.BookRentalStatus.LOAN)) {
+        if(book.getBookStatus().equals(Types.BookRentalStatus.LOAN) || book.getBookStatus().equals(Types.BookRentalStatus.DELINQUENT)) {
             bookRental = bookRentalRepo.findTopByBookOrderByCreatedAtDesc(book).orElse(BookRental.builder().build());
         }
 
         bookRental.setBook(book);
+
+        return bookRental;
+    }
+
+    public Book getBookInfo(SearchVO params){
+        Book book = bookRepo.findById(params.getBookId()).orElseThrow(() -> new ApiException("도서 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+        return book;
+    }
+
+    public BookRental getBookReturn(SearchVO params){
+        Book book = bookRepo.findById(params.getBookId()).orElse(Book.builder().build());
+        BookRental bookRental = bookRentalRepo.findTopByBookOrderByCreatedAtDesc(book).orElse(BookRental.builder().build());
 
         return bookRental;
     }
@@ -102,25 +114,29 @@ public class A1Service {
 
         Types.BookRentalStatus status;
         LocalDate returnDate = null;
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = params.getStartDate();
+        LocalDate endDate = params.getEndDate();
 
         if(StringUtils.equals(params.getEvBookRental(),"LOAN")){
             if(StringUtils.equals(book.getBookStatus(),"LOAN"))
                 throw new ApiException("이미 대여중인 도서입니다.", ErrorCode.INTERNAL_SERVER_ERROR);
             if(!StringUtils.equals(student.getUser().getUserName(),params.getUserName()))
                 throw new ApiException("대여하는 학생의 출결번호가 대여자와 일치하지 않습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
-            status = Types.BookRentalStatus.LOAN;
+            if(endDate.isBefore(now)){
+                status = Types.BookRentalStatus.DELINQUENT;
+            }else {
+                status = Types.BookRentalStatus.LOAN;
+            }
         }else{
             if(!StringUtils.equals(save.getUser().getUserName(),params.getUserName()))
                 throw new ApiException("대여한 대여자와 반납하는 대여자가 일치하지 않습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
             if(save.getUser().getId() != student.getUser().getId())
                 throw new ApiException("대여한 출결번호와 반납하는 출결번호가 일치하지 않습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
 
-            status = Types.BookRentalStatus.AVAILABLE;
+            status = Types.BookRentalStatus.RETURN;
             returnDate = LocalDate.now();
         }
-
-        LocalDate startDate = params.getStartDate();
-        LocalDate endDate = params.getEndDate();
 
         save.setRentalStatus(status);
         save.setStartDate(startDate);
@@ -129,13 +145,16 @@ public class A1Service {
         save.setBook(book);
         save.setUser(student.getUser());
 
+        if(status.equals(Types.BookRentalStatus.RETURN))
+            status = Types.BookRentalStatus.AVAILABLE;
+
         if(StringUtils.equals(params.getEvBookRental(),"LOAN")) {
-            book.setBookStatus(save.getRentalStatus());
+            book.setBookStatus(status);
             book.setStartDate(save.getStartDate());
             book.setEndDate(save.getEndDate());
             book.setRentalName(save.getUser().getUserName());
         }else{
-            book.setBookStatus(save.getRentalStatus());
+            book.setBookStatus(status);
             book.setStartDate(null);
             book.setEndDate(null);
             book.setRentalName("");
@@ -147,13 +166,16 @@ public class A1Service {
 
 
     @Transactional
-    public void saveBookReturn(SearchVO params) throws ApiException {
+    public long saveBookReturn(SearchVO params) throws ApiException {
 
         Book book = bookRepo.findById(params.getBookId()).orElseThrow(() -> new ApiException("도서 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
 
         BookRental save = bookRentalRepo.findTopByBookOrderByCreatedAtDesc(book).orElse(BookRental.builder().build());
 
-        Types.BookRentalStatus status = Types.BookRentalStatus.AVAILABLE;;
+        if(StringUtils.equals(book.getBookStatus(),"AVAILABLE"))
+            throw new ApiException("이미 반납된 도서입니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+        
+        Types.BookRentalStatus status = Types.BookRentalStatus.AVAILABLE;
         LocalDate returnDate = LocalDate.now();
 
         save.setRentalStatus(status);
@@ -166,5 +188,7 @@ public class A1Service {
 
         bookRepo.save(book);
         bookRentalRepo.save(save);
+
+        return bookRepo.save(book).getId();
     }
 }

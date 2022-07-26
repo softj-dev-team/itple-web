@@ -20,7 +20,8 @@ public class A1HooksController {
     //반납
     @PostMapping("/p1-return")
     public Response p1return(SearchVO params) {
-        a1Service.saveBookReturn(params);
-        return Response.builder().build();
+        return Response.builder()
+                .data(a1Service.saveBookReturn(params))
+                .build();
     }
 }

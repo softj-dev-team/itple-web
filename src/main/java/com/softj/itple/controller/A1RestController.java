@@ -38,4 +38,13 @@ public class A1RestController {
        a1Service.saveBookRental(params);
        return Response.builder().build();
     }
+
+
+    //QR책정보 불러오기
+    @PostMapping("/p1/g1")
+    public Response p1g1(SearchVO params) throws ApiException {
+        return Response.builder()
+                .data(a1Service.getBookInfo(params))
+                .build();
+    }
 }

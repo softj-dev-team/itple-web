@@ -78,7 +78,7 @@ public class A1Controller {
     @GetMapping("/p1-recomp/{id}")
     public String p1return(@PathVariable long id, ModelMap model, SearchVO params) {
         params.setBookId(id);
-        model.addAttribute("el", a1Service.getBookRental(params));
+        model.addAttribute("el", a1Service.getBookReturn(params));
         model.addAttribute("params", params);
         return "a1/a1p1-return";
     }

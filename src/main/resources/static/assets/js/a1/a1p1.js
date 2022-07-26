@@ -70,7 +70,7 @@ function goAction(flag, arg1, arg2) {
                 });
             });
             break;
-        case "Q1":
+        case "G1":
 
             break;
         case "E1":
@@ -85,7 +85,7 @@ function goAction(flag, arg1, arg2) {
                     modal.alert("체크한 데이터가 없습니다.");
                     return;
                 }
-                loading(1);
+
                 var idList = new Array();
                 $("input[name=seqList]:checked").each(function(){
                         var numId = $(this).prop("id");
@@ -95,10 +95,11 @@ function goAction(flag, arg1, arg2) {
                 });
 
                 $("#idList").val(idList);
+                loading(1);
                 $.post(url,formS1.serialize(),function(){
                     loading(0);
                     modal.alert('삭제되었습니다.');
-                    ut.reload();
+                    location.reload();
                 });
                 break;
     }

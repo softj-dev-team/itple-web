@@ -120,8 +120,8 @@
             var page = $("#page").val();
             $(location).attr("href", "/a1/p1-rental/"+id+"/"+page);
         }
-        function goReturnComp(id){
-            $(location).attr("href", "/a1/p1-recomp/"+id);
+        function goReturn(id){
+            $(location).attr("href", "/a1/p1-rental/"+id+"/1");
         }
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');

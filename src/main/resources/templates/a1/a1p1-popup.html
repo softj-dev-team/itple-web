@@ -28,8 +28,8 @@
 <script type="text/javascript" src="/assets/js/app.js"></script>
 <script th:inline="javascript">
     function goHookQr(id){
-        $.post('/hooks/a1/p1-return/',{bookId: id},function(res){
-            window.opener.goReturnComp(id);
+        $.post('/api/a1/p1/g1',{bookId: id},function(res){
+            window.opener.goReturn(res.data.id);
             window.close();
         }).fail(function(){
         });
