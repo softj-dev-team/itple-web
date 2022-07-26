@@ -3856,3 +3856,15 @@ textarea.textA{
     background: #e7e7e7;
     opacity: 0.5;
 }
+.countBox {
+    text-align: right;
+    margin-top: 5px;
+}
+.text-count{
+    font-weight: 700;
+    color: #2D7AC0;
+}
+.count-t {
+    font-size: 14px;
+    margin-left: 5px;
+}

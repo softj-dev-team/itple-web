@@ -39,6 +39,7 @@
                 </div>
                 <div class="taskWrite">
                     <textarea id="summernote" name="contents" th:utext="${el.contents}"></textarea>
+                    <div class="countBox"><span class="text-count">0</span><span class="count-t">자</span></div>
                     <div class="fileBox">
                         <form action="">
                             <div class="fileHead">
@@ -87,6 +88,11 @@
                         for (var i = files.length - 1; i >= 0; i--) {
                             uploadSummernoteImageFile(files[i], this);
                         }
+                    },
+                    onKeyup: function(e) {
+                        var caracteres = $(".note-editable").text();
+                        var totalCaracteres = caracteres.length;
+                        $(".text-count").text(totalCaracteres);
                     },
                 },
             });
