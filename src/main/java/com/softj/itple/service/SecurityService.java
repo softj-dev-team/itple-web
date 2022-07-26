@@ -108,10 +108,8 @@ public class SecurityService implements UserDetailsService{
                         .userPw(new BCryptPasswordEncoder().encode(params.getUserPw()))
                         .userName(params.getUserName())
                         .build())
-                .academyClass(AcademyClass.builder()
-                        .id(params.getClassId())
-                        .build())
-                .attendanceNo(params.getAttendanceNo())
+                .academyClass(null)
+                .attendanceNo(null)
                 .birth(params.getBirth())
                 .school(params.getSchool())
                 .grade(params.getGrade())
@@ -135,13 +133,13 @@ public class SecurityService implements UserDetailsService{
                 .user(save.getUser())
                 .build());
 
-        for(int i=0; i < params.getDayOfWeekList().length; i++){
+        /*for(int i=0; i < params.getDayOfWeekList().length; i++){
             attendanceRepo.save(Attendance.builder()
                     .user(save.getUser())
                     .attendanceAt(LocalTime.of(params.getHourList()[i], params.getMinList()[i]))
                     .attendanceDay(params.getDayOfWeekList()[i])
                     .build());
-        }
+        }*/
     }
 
     public void dupCheck(SearchVO params){

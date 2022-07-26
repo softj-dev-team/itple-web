@@ -23,33 +23,33 @@
                     <input name="userPwRe" id="userPwRe" type="password" class="input-df mb20" required>
                 </div>
                 <div class="inputSec">
-                    <label for="" class="mb5">반</label>
-                    <select name="classId" class="input-df mb20">
-                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}">잇플코딩입문반</option>
-                    </select>
-                    <label for="userName" class="mb5">이름</label>
-                    <input name="userName" id="userName" type="text" class="input-df mb20" required>
-                    <label for="attendanceNo" class="mb5">출결번호</label>
-                    <input name="attendanceNo" id="attendanceNo" type="text" class="input-df mb20" required maxlength="4">
+                    <!--<label for="" class="mb5">반</label>
+                  <select name="classId" class="input-df mb20">
+                      <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}">잇플코딩입문반</option>
+                  </select>-->
+                  <label for="userName" class="mb5">이름</label>
+                  <input name="userName" id="userName" type="text" class="input-df mb20" required>
+                    <!--<label for="attendanceNo" class="mb5">출결번호</label>
+                    <input name="attendanceNo" id="attendanceNo" type="text" class="input-df mb20" required maxlength="4">-->
                     <label for="" class="mb5">생일</label>
                     <div class="datepickerWrap">
-                        <input name="birth" type="text" class="input-df mb20 datepicker">
+                        <input name="birth" type="text" class="input-df mb20 datepicker" required>
                         <i class="i-date"></i>
                     </div>
                 </div>
                 <div class="inputSec">
                     <label for="school" class="mb5">학교</label>
-                    <input name="school" id="school" type="text" class="input-df mb20">
+                    <input name="school" id="school" type="text" class="input-df mb20" required>
                     <label for="" class="mb5">학년</label>
-                    <select name="grade" id="" class="input-df mb20">
+                    <select name="grade" id="" class="input-df mb20" required>
                         <option th:each="grade : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${grade}" th:text="${grade.message}">1학년</option>
                     </select>
                     <label for="email" class="mb5">이메일</label>
-                    <input name="email" id="email" type="text" class="input-df mb20">
+                    <input name="email" id="email" type="text" class="input-df mb20" required>
                 </div>
                 <div class="inputSec">
                     <label for="zonecode" class="mb5">집주소</label>
-                    <input name="zonecode" id="zonecode" type="text" class="input-df post mb10" readonly placeholder="우편번호"><button type="button" class="btn post-btn" onclick="oepnAddrPopup()">주소검색</button>
+                    <input name="zonecode" id="zonecode" type="text" class="input-df post mb10" readonly placeholder="우편번호" required><button type="button" class="btn post-btn" onclick="oepnAddrPopup()">주소검색</button>
                     <input name="roadAddress" type="text" class="input-df mb10" readonly placeholder="주소">
                     <input name="detailAddress" type="text" class="input-df mb20" placeholder="상세주소">
                     <label for="parentName" class="mb5">보호자 성함</label>
@@ -57,7 +57,7 @@
                     <label for="parentTel" class="mb5">보호자 연락처</label>
                     <input name="parentTel" id="parentTel" type="text" class="input-df mb20" required>
                 </div>
-                <div class="inputSec timeSelectOuter">
+                <!--<div class="inputSec timeSelectOuter">
                     <label for="" class="mb10">등원 시간</label>
                     <div class="timeSelectWrap">
                         <select name="dayOfWeekList" class="daySel">
@@ -87,7 +87,7 @@
                         </select>
                         <button type="button" class="btn-add"></button>
                     </div>
-                </div>
+                </div>-->
                 <div class="btn-center mt60">
                     <button type="button" class="btn" onclick="join()">회원가입</button>
                 </div>
@@ -189,7 +189,7 @@
             var userPw = $("input[name=userPw]").val();
             var userPwRe = $("input[name=userPwRe]").val();
             var userName = $("input[name=userName]").val();
-            var attendanceNo = $("input[name=attendanceNo]").val();
+            //var attendanceNo = $("input[name=attendanceNo]").val();
             var birth = $("input[name=birth]").val();
             var school = $("input[name=school]").val();
             var email = $("input[name=email]").val();
@@ -197,26 +197,19 @@
             var parentName = $("input[name=parentName]").val();
             var parentTel = $("input[name=parentTel]").val();
 
-            if(checkId != userId){
-                modal.alert("중복확인을 해주세요.");
-                return;
-            }
-            if(attendanceNo.length != 4){
-                modal.alert("출결번호는 4자리 입력해주세요");
-                return;
-            }
-            if(userPw != userPwRe){
-                modal.alert("비밀번호와 비밀번호 확인이 다릅니다.");
-                return;
-            }
-            if(regExp.isNotEmail(email)){
-                modal.alert("이메일 형식이 아닙니다.")
-                return;
-            }
             if(ut.isEmpty(userId)){
                 modal.required("아이디");
                 return;
             }
+            if(checkId == "" || checkId != userId){
+                modal.alert("아이디 중복확인을 해주세요.");
+                return;
+            }
+            /*if(attendanceNo.length != 4){
+                modal.alert("출결번호는 4자리 입력해주세요");
+                return;
+            }*/
+
             if(ut.isEmpty(userPw)){
                 modal.required("비밀번호");
                 return;
@@ -225,12 +218,12 @@
                 modal.required("비밀번호 확인");
                 return;
             }
-            if(ut.isEmpty(userName)){
-                modal.required("이름");
+            if(userPw != userPwRe){
+                modal.alert("비밀번호와 비밀번호 확인이 다릅니다.");
                 return;
             }
-            if(ut.isEmpty(attendanceNo)){
-                modal.required("출결번호");
+            if(ut.isEmpty(userName)){
+                modal.required("이름");
                 return;
             }
             if(ut.isEmpty(birth)){
@@ -245,6 +238,16 @@
                 modal.required("이메일");
                 return;
             }
+            if(regExp.isNotEmail(email)){
+                modal.alert("이메일 형식이 아닙니다.")
+                return;
+            }
+            /*if(ut.isEmpty(attendanceNo)){
+                modal.required("출결번호");
+                return;
+            }*/
+
+
             if(ut.isEmpty(zonecode)){
                 modal.required("주소");
                 return;

@@ -3,14 +3,14 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout/layout">
 <head>
-    <title>출판서적</title>
+    <title>도서목록</title>
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>-->
     <script src="/assets/js/axios.min.js"></script>
 </head>
 <body class="adminBody">
 <th:block layout:fragment="content">
     <div class="adContent">
-        <h1 class="adH1">출판서적</h1>
+        <h1 class="adH1">도서목록</h1>
         <div class="content-in clearfix">
             <div class="adSearch clearfix">
                 <form id="form1" name="form1" action="" class="adSearch-in">
@@ -45,9 +45,9 @@
                         <th>책 제목</th>
                         <th>작가명</th>
                         <th>대여기간</th>
-                        <th>대여자</th>
+                        <th>저자</th>
                         <th>상태</th>
-                        <th>반납 QR코드</th>
+                        <th>QR코드</th>
                     </tr>
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
