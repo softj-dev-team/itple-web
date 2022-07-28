@@ -63,7 +63,7 @@ DOCTYPE html>
             </table>
 
             <div class="tb-btn-bt" th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}">
-                <button type="button" class="m-btn btn-line stampBtn" onclick="modalOpen('stampModal')"><span>스탬프 확인</span></button>
+                <button type="button" class="m-btn btn-line stampBtn" onclick="modalOpen('stampModal')"><span>독후감 확인</span></button>
             </div>
         </div>
 
@@ -74,12 +74,12 @@ DOCTYPE html>
         <div class="modal-bg"></div>
         <div class="modalContent">
             <div class="modalHd">
-                <h3>스탬프 확인</h3>
+                <h3>독후감 확인</h3>
                 <button class="modalClose"></button>
             </div>
             <div class="modalBody">
                 <div class="moTable-con">
-                    <h2>독서왕</h2>
+                    <h2>독후감</h2>
                     <div class="stampIn">
                         <p><i class="repCom"></i> : 확인</p>
                         <p><i class="repEd"></i> : 제출</p>
@@ -93,7 +93,7 @@ DOCTYPE html>
                         <thead class="table-head">
                         <tr>
                             <th>책 제목</th>
-                            <th>독서여부</th>
+                            <th>상태</th>
                         </tr>
                         </thead>
                     </table>

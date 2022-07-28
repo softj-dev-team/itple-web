@@ -17,11 +17,9 @@ import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.querydsl.QSort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -52,11 +50,12 @@ public class C1Service {
     private String FILE_PATH;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
-    public Page<Board> getBoardList(SearchVO params, Pageable pageable){
+    public List<Board> getBoardNoticeList(SearchVO params){
         QBoard qBoard = QBoard.board;
         QBoardComment qBoardComment = QBoardComment.boardComment;
         QBoardStar qBoardStar = QBoardStar.boardStar;
         BooleanBuilder where = new BooleanBuilder().and(qBoard.isDeleted.eq(false).and(qBoard.boardType.eq(params.getBoardType())));
+
         if(StringUtils.noneEmpty(params.getSearchValue())){
             switch (params.getSearchType()){
                 case "subject":
@@ -70,6 +69,96 @@ public class C1Service {
                     break;
             }
         }
+
+        CodeUtil codeUtil = new CodeUtil(codeDetailRepo);
+
+        int limit = 10;
+
+        if(params.getPagesize() > 0){
+            limit = params.getPagesize();
+        }
+
+        List<Board> noticeBoardList = jpaQueryFactory.select(Projections.fields(Board.class,
+                        qBoard.id,
+                        qBoard.thumbnail,
+                        qBoard.createdAt,
+                        qBoard.subject,
+                        qBoard.boardCategory,
+                        qBoard.viewCount,
+                        qBoard.user,
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBoardComment.count())
+                                        .from(qBoardComment)
+                                        .where(qBoardComment.board.eq(qBoard)),"commentCount"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBoardStar.count())
+                                        .from(qBoardStar)
+                                        .where(qBoardStar.board.eq(qBoard)),"starCount"))
+                )
+                .from(qBoard)
+                .where(where
+                        .and(qBoard.boardCategory.eq(codeUtil.getCodeValue(1,"공지"))))
+                .orderBy(qBoard.id.desc())
+                .limit(limit)
+                .fetch();
+
+        return noticeBoardList;
+    }
+    public Page<Board> getBoardList(SearchVO params, Pageable pageable){
+        QBoard qBoard = QBoard.board;
+        QBoardComment qBoardComment = QBoardComment.boardComment;
+        QBoardStar qBoardStar = QBoardStar.boardStar;
+        BooleanBuilder nwhere = new BooleanBuilder().and(qBoard.isDeleted.eq(false).and(qBoard.boardType.eq(params.getBoardType())));
+        BooleanBuilder where = new BooleanBuilder().and(qBoard.isDeleted.eq(false).and(qBoard.boardType.eq(params.getBoardType())));
+
+        if(StringUtils.noneEmpty(params.getSearchValue())){
+            switch (params.getSearchType()){
+                case "subject":
+                    where.and(qBoard.subject.contains(params.getSearchValue()));
+                    nwhere.and(qBoard.subject.contains(params.getSearchValue()));
+                    break;
+                case "contents":
+                    where.and(qBoard.contents.contains(params.getSearchValue()));
+                    nwhere.and(qBoard.contents.contains(params.getSearchValue()));
+                    break;
+                case "user":
+                    where.and(qBoard.user.userName.contains(params.getSearchValue()));
+                    nwhere.and(qBoard.user.userName.contains(params.getSearchValue()));
+                    break;
+            }
+        }
+        if(StringUtils.noneEmpty(params.getBoardCategory())){
+            where.and(qBoard.boardCategory.eq(params.getBoardCategory()));
+        }
+
+        CodeUtil codeUtil = new CodeUtil(codeDetailRepo);
+
+        nwhere.and(qBoard.boardCategory.eq(codeUtil.getCodeValue(1,"공지")));
+
+        long noticeBoardListSize = jpaQueryFactory.select(Projections.fields(Board.class,
+                        qBoard.id,
+                        qBoard.thumbnail,
+                        qBoard.createdAt,
+                        qBoard.subject,
+                        qBoard.boardCategory,
+                        qBoard.viewCount,
+                        qBoard.user,
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBoardComment.count())
+                                        .from(qBoardComment)
+                                        .where(qBoardComment.board.eq(qBoard)),"commentCount"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBoardStar.count())
+                                        .from(qBoardStar)
+                                        .where(qBoardStar.board.eq(qBoard)),"starCount"))
+                )
+                .from(qBoard)
+                .where(nwhere)
+                .orderBy(qBoard.id.desc())
+                .fetchCount();
+
+        where.and(qBoard.boardCategory.ne(codeUtil.getCodeValue(1,"공지")));
+
         JPAQuery<Board> query = jpaQueryFactory.select(Projections.fields(Board.class,
                 qBoard.id,
                 qBoard.thumbnail,
@@ -321,3 +410,4 @@ public class C1Service {
         cu.refresh();
     }
 }
+

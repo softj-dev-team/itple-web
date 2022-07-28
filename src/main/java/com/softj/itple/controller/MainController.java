@@ -30,10 +30,11 @@ public class MainController {
 	    if(authUtil.isRole("ADMIN")){
 	        return "redirect:/adminMain";
         }
-	    params.setBoardCategory("01");
-	    params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
+
+		params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
 	    params.setTaskType(Types.TaskType.TASK);
-	    model.addAttribute("noticeList", c1Service.getBoardList(params, pageable));
+		params.setPagesize(7);
+	    model.addAttribute("noticeList", c1Service.getBoardNoticeList(params));
 	    model.addAttribute("taskList", c2Service.getStudentTaskList(params, pageable));
 	    model.addAttribute("bookRentalList", c3Service.getBookRentalList(params, pageable));
 	    model.addAttribute("portfolioList", c4Service.getPortfolioList(params, pageable));

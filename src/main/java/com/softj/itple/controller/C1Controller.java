@@ -6,6 +6,7 @@ import com.softj.itple.entity.Board;
 import com.softj.itple.service.C1Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -26,16 +27,33 @@ public class C1Controller {
     private final CommonService commonService;
 
     //목록
-    @GetMapping("/p1")
-    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+    @GetMapping("/p1list")
+    public String p1list(ModelMap model, SearchVO params, Pageable pageable){
         if(Objects.isNull(params.getBoardType())) {
             params.setBoardType(Types.AcademyType.CODING);
         }
+
+        params.setMasterId(1);
+        params.setBoardCategoryList(c1Service.selectBoardCategoryList(params));
+
         params.setCodeDetail(c1Service.selectBoardWriteConfig());
+
         model.addAttribute("list",c1Service.getBoardList(params, pageable));
+        model.addAttribute("noticeList",c1Service.getBoardNoticeList(params));
         model.addAttribute("params",params);
         return "c1/c1p1";
     }
+    @GetMapping("/p1")
+    public String p1(SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC)Pageable pageable){
+        if(Objects.isNull(params.getBoardType())) {
+            params.setBoardType(Types.AcademyType.CODING);
+        }
+
+        int size = pageable.getPageSize()-c1Service.getBoardNoticeList(params).size();
+        String sort = "id,desc";
+        return "forward:/c1/p1list?size="+size+"&sort="+sort;
+    }
+
     //상세
     @GetMapping("/p1-detail/{id}")
     public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
@@ -59,3 +77,4 @@ public class C1Controller {
         return "c1/c1p1-write";
     }
 }
+

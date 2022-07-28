@@ -20,6 +20,7 @@ public class SearchVO {
 	private String searchType;
 	private String searchValue;
 	private int page;
+	private int pagesize;
 
 	//회원가입
 	private String email;
@@ -54,6 +55,7 @@ public class SearchVO {
 	private long[] updateIdList;
 	private String[] codeNameList;
 	private String[] newCodeNameList;
+	private List<CodeDetail> boardCategoryList;
 
 
 	//수업연계

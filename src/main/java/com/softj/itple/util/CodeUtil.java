@@ -32,13 +32,19 @@ public class CodeUtil {
     public List<CodeDetail> getCodeList(long masterId, String roleType){
         return codeList.stream().filter(e -> e.getMasterId() == masterId && !e.isDeleted() && e.getRoleType().getName().equals(roleType)).collect(Collectors.toList());
     }
-
+    public CodeDetail getCodeValueByName(long masterId, String codeName){
+        return codeList.stream().filter(e -> e.getMasterId() == masterId && e.getCodeName().contains(codeName)).findFirst().orElse(null);
+    }
     public CodeDetail getCode(long masterId, String codeValue){
         return codeList.stream().filter(e -> e.getMasterId() == masterId && e.getCodeValue().equals(codeValue)).findFirst().orElse(null);
     }
 
     public String getCodeName(long masterId, String codeValue){
         return getCode(masterId, codeValue).getCodeName();
+    }
+
+    public String getCodeValue(long masterId, String codeName){
+        return getCodeValueByName(masterId, codeName).getCodeValue();
     }
 
     public void refresh() {
