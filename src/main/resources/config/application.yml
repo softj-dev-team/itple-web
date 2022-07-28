@@ -13,6 +13,13 @@ spring:
 emailId: itple.softj@gmail.com
 emailPassword: jkolyxvasuhzbbdh
 
+aligo:
+  api-key: dcx8h2qdwvutbsv16wnkg2er4lja3row
+  sender-key: 884f82e7b2814cef8efffae014a3edb165bc0da1
+  sender: 010-8741-4766
+  user-id: itple333
+
+
 ---
 server:
   port: 8089

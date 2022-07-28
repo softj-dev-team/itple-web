@@ -9,6 +9,7 @@ import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.repo.UserRepo;
 import com.softj.itple.service.CommonService;
 import com.softj.itple.service.SecurityService;
+import com.softj.itple.util.AligoUtil;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.SMTPUtil;
 import com.softj.itple.util.SecurityUtil;
@@ -31,6 +32,7 @@ public class SecurityController {
 	final private AdminRepo adminRepo;
 	final private SecurityService securityService;
 	final private CommonService commonService;
+	final private AligoUtil aligoUtil;
 
 	//로그인
 	@GetMapping(value = "/login")
@@ -133,6 +135,7 @@ public class SecurityController {
     @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/adminMyInfo")
 	public String adminMyInfo(ModelMap model){
+        model.addAttribute("aligo", aligoUtil.remain().get("result"));
 		model.addAttribute("el",adminRepo.findByUser(AuthUtil.getUser()));
 		return "adminMyInfo";
 	}

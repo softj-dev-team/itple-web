@@ -17,7 +17,7 @@
                     <div class="ch-icon mb30" style="background-image: url(../assets/img/ch-icon.png)"></div>
                     <p class="mb20 text-center t32"><b th:text="${el.user.userName}">홍길동</b> 님</p>
                     <p class="mb50 text-center t28"><span th:text="${#temporals.format(el.createdAt,'a hh시 mm분')}">오후 2시 30분</span>에 <span th:text="${el.attendanceStatus.message}">하원</span>하였습니다.</p>
-                    <div class="pointWrap mb70">
+                    <div class="pointWrap mb70" th:if="${#strings.equals(el.attendanceStatus,'COME')}">
                         <table class="pointTable">
                             <tbody>
                             <tr>

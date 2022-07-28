@@ -17,6 +17,7 @@ import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
+import com.softj.itple.util.AligoUtil;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
@@ -46,13 +47,12 @@ public class A4Service {
     private final JPAQueryFactory jpaQueryFactory;
     private final AttendanceHistoryRepo attendanceHistoryRepo;
     private final AttendanceRepo attendanceRepo;
-
     private final AcademyClassRepo academyclassRepo;
-
     private final CoinHistoryRepo coinHistoryRepo;
-
     private final UserRepo userRepo;
     private final StudentRepo studentRepo;
+
+    private final AligoUtil aligoUtil;
 
     @Value("${file.uploadDir}")
     private String FILE_PATH;
@@ -107,6 +107,11 @@ public class A4Service {
             student.setCoin(student.getCoin() + saveCoinHistory.getCoin());
             studentRepo.save(student);
         }
+
+        String templateCode = params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "TJ_5055" : "TJ_5057";
+        String message = "[" + params.getAttendanceType().getMessage() + "학원 등하원 안내] "+student.getUser().getUserName() + " 학생이 " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH시 mm분")) + "에 "
+            + (params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "안전하게 등원하였습니다" : "수업이 종료되었습니다") + " (미소)";
+        aligoUtil.send(student.getParentTel(), message, templateCode, "[" + params.getAttendanceType().getMessage() + "학원 등하원 안내]", null);
 
         return attendanceHistoryRepo.save(AttendanceHistory.builder()
                 .user(student.getUser())
