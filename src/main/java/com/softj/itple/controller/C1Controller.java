@@ -27,8 +27,8 @@ public class C1Controller {
     private final CommonService commonService;
 
     //목록
-    @GetMapping("/p1list")
-    public String p1list(ModelMap model, SearchVO params, Pageable pageable){
+    @GetMapping("/p1")
+    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
         if(Objects.isNull(params.getBoardType())) {
             params.setBoardType(Types.AcademyType.CODING);
         }
@@ -42,16 +42,6 @@ public class C1Controller {
         model.addAttribute("noticeList",c1Service.getBoardNoticeList(params));
         model.addAttribute("params",params);
         return "c1/c1p1";
-    }
-    @GetMapping("/p1")
-    public String p1(SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC)Pageable pageable){
-        if(Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.AcademyType.CODING);
-        }
-
-        int size = pageable.getPageSize()-c1Service.getBoardNoticeList(params).size();
-        String sort = "id,desc";
-        return "forward:/c1/p1list?size="+size+"&sort="+sort;
     }
 
     //상세

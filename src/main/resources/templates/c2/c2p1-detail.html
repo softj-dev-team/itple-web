@@ -44,7 +44,7 @@
                         <form action="">
                             <div class="fileHead">
                                 <p>첨부파일</p>
-                                <div class="file-btn" th:if="${#strings.equals(el.status, 'SUBMIT')}">
+                                <div class="file-btn" th:if="${#strings.equals(el.status, 'SUBMIT') || #strings.equals(el.status, 'NOT_SUBMIT')}">
                                     <button type="button" class="chRemove">선택삭제</button>
                                     <input type="file" multiple="multiple" class="" id="fileInput" name="files">
                                     <label for="fileInput" class="fileBtn">파일첨부</label>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div class="btn-center Tbtn" th:if="${#strings.equals(el.status, 'SUBMIT')}">
+            <div class="btn-center Tbtn" th:if="${#strings.equals(el.status, 'SUBMIT') || #strings.equals(el.status, 'NOT_SUBMIT')}">
                 <button type="button" class="btn btn-gray mr10" th:onclick="|goAction('S1','NOT_SUBMIT')|">임시저장</button>
                 <button type="button" class="btn submitBtn" th:onclick="|goAction('S1','SUBMIT')|">제출하기</button>
             </div>

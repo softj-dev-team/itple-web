@@ -16,6 +16,7 @@ import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.data.querydsl.QSort;
@@ -46,6 +47,9 @@ public class C1Service {
     final private BoardFileRepo boardFileRepo;
     final private CodeDetailRepo codeDetailRepo;
 
+    @Autowired
+    CodeUtil codeUtil;
+
     @Value("${file.uploadDir}")
     private String FILE_PATH;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -70,12 +74,10 @@ public class C1Service {
             }
         }
 
-        CodeUtil codeUtil = new CodeUtil(codeDetailRepo);
-
         int limit = 10;
 
-        if(params.getPagesize() > 0){
-            limit = params.getPagesize();
+        if(params.getPsize() > 0){
+            limit = params.getPsize();
         }
 
         List<Board> noticeBoardList = jpaQueryFactory.select(Projections.fields(Board.class,
@@ -108,56 +110,25 @@ public class C1Service {
         QBoard qBoard = QBoard.board;
         QBoardComment qBoardComment = QBoardComment.boardComment;
         QBoardStar qBoardStar = QBoardStar.boardStar;
-        BooleanBuilder nwhere = new BooleanBuilder().and(qBoard.isDeleted.eq(false).and(qBoard.boardType.eq(params.getBoardType())));
-        BooleanBuilder where = new BooleanBuilder().and(qBoard.isDeleted.eq(false).and(qBoard.boardType.eq(params.getBoardType())));
+
+        BooleanBuilder where = new BooleanBuilder().and(qBoard.isDeleted.eq(false).and(qBoard.boardType.eq(params.getBoardType()))).and(qBoard.boardCategory.ne(codeUtil.getCodeValue(1,"공지")));
 
         if(StringUtils.noneEmpty(params.getSearchValue())){
             switch (params.getSearchType()){
                 case "subject":
                     where.and(qBoard.subject.contains(params.getSearchValue()));
-                    nwhere.and(qBoard.subject.contains(params.getSearchValue()));
                     break;
                 case "contents":
                     where.and(qBoard.contents.contains(params.getSearchValue()));
-                    nwhere.and(qBoard.contents.contains(params.getSearchValue()));
                     break;
                 case "user":
                     where.and(qBoard.user.userName.contains(params.getSearchValue()));
-                    nwhere.and(qBoard.user.userName.contains(params.getSearchValue()));
                     break;
             }
         }
         if(StringUtils.noneEmpty(params.getBoardCategory())){
             where.and(qBoard.boardCategory.eq(params.getBoardCategory()));
         }
-
-        CodeUtil codeUtil = new CodeUtil(codeDetailRepo);
-
-        nwhere.and(qBoard.boardCategory.eq(codeUtil.getCodeValue(1,"공지")));
-
-        long noticeBoardListSize = jpaQueryFactory.select(Projections.fields(Board.class,
-                        qBoard.id,
-                        qBoard.thumbnail,
-                        qBoard.createdAt,
-                        qBoard.subject,
-                        qBoard.boardCategory,
-                        qBoard.viewCount,
-                        qBoard.user,
-                        ExpressionUtils.as(
-                                JPAExpressions.select(qBoardComment.count())
-                                        .from(qBoardComment)
-                                        .where(qBoardComment.board.eq(qBoard)),"commentCount"),
-                        ExpressionUtils.as(
-                                JPAExpressions.select(qBoardStar.count())
-                                        .from(qBoardStar)
-                                        .where(qBoardStar.board.eq(qBoard)),"starCount"))
-                )
-                .from(qBoard)
-                .where(nwhere)
-                .orderBy(qBoard.id.desc())
-                .fetchCount();
-
-        where.and(qBoard.boardCategory.ne(codeUtil.getCodeValue(1,"공지")));
 
         JPAQuery<Board> query = jpaQueryFactory.select(Projections.fields(Board.class,
                 qBoard.id,
