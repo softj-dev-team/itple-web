@@ -1,6 +1,8 @@
 package com.softj.itple.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.MapUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -17,13 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.IOException;
 import java.util.*;
 
+@Slf4j
 public class RestUtil {
-    private static final String HOST="http://127.0.0.1";
-
     //Http Get요청
     @SuppressWarnings("unchecked")
     public static <T> Map<String,Object> getCall(String url, Map<String,Object> headers, Class<T> resType) throws IOException {
-        url = HOST+url;
         HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
         Map<String, Object> responseBody = new HashMap<>();
 
@@ -105,9 +105,9 @@ public class RestUtil {
     @SuppressWarnings("unchecked")
     public static <T> Map<String,Object> restCall(String url, RequestMethod type, Map<String,Object> headers, Map<String,Object> bodys, Class<T> resType) throws IOException {
         RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(5*1000)
-                .setConnectTimeout(5*1000)
-                .setConnectionRequestTimeout(5*1000)
+                .setSocketTimeout(10*1000)
+                .setConnectTimeout(10*1000)
+                .setConnectionRequestTimeout(10*1000)
                 .build();
 
         HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
@@ -148,12 +148,13 @@ public class RestUtil {
             if (response.getStatusLine().getStatusCode() == 200) {
                 ResponseHandler<String> handler = new BasicResponseHandler();
                 String body = handler.handleResponse(response);
+                log.debug("RestUtil restCall response body: {}",body);
                 responBody.put("result",new ObjectMapper().readValue(body, resType));
             } else {
                 responBody.put("status","fail");
             }
         }catch (Exception e){
-            responBody.put("status","fail");
+        	responBody.put("status","fail");
             e.printStackTrace();
         }
         return responBody;
@@ -177,8 +178,7 @@ public class RestUtil {
             }
 
             request.addHeader("Content-Type","application/json");
-
-            if(headers != null && !headers.isEmpty()) {
+            if(!MapUtils.isEmpty(headers)) {
                 Set<String> keys = headers.keySet();
                 for(String key:keys) {
                     if(!headers.get(key).equals(""))
@@ -186,20 +186,14 @@ public class RestUtil {
                 }
             }
 
-            Set<String> keys = bodys.keySet();
-            StringBuilder bodysStr = new StringBuilder("{");
-            int index = 0;
-            for(String key:keys) {
-                if(index++ == keys.size()-1)
-                    bodysStr.append("\"").append(key).append("\": \"").append(((String) bodys.get(key)).replaceAll("\r\n", "\\\\n")).append("\"");
-                else
-                    bodysStr.append("\"").append(key).append("\": \"").append(((String) bodys.get(key)).replaceAll("\r\n", "\\\\n")).append("\",");
+            if(!MapUtils.isEmpty(bodys)) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                StringEntity entity = new StringEntity(objectMapper.writeValueAsString(bodys), "UTF-8");
+                request.setEntity(entity);
             }
-            bodysStr.append("}");
-            StringEntity entity =new StringEntity(bodysStr.toString(), "UTF-8");
-            request.setEntity(entity);
 
             HttpResponse response = client.execute(request);
+            log.debug("RestUtil response: {}", response);
             if (response.getStatusLine().getStatusCode() == 200) {
                 ResponseHandler<String> handler = new BasicResponseHandler();
                 String body = handler.handleResponse(response);
@@ -209,7 +203,16 @@ public class RestUtil {
             }
         }catch (Exception e){
             e.printStackTrace();
+            responBody.put("status","fail");
         }
         return responBody;
+    }
+
+    public static String mapToQueryStr(Map<String,String> map){
+        String str = "?";
+        for(String k:map.keySet()){
+            str += k+"="+map.get(k)+"&";
+        }
+        return str;
     }
 }
