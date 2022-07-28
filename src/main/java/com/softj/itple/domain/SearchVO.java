@@ -20,7 +20,6 @@ public class SearchVO {
 	private String searchType;
 	private String searchValue;
 	private int page;
-	private int psize;
 
 	//회원가입
 	private String email;

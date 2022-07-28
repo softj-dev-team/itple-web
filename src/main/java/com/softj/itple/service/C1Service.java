@@ -46,15 +46,12 @@ public class C1Service {
     final private BoardStarRepo boardStarRepo;
     final private BoardFileRepo boardFileRepo;
     final private CodeDetailRepo codeDetailRepo;
-
-    @Autowired
-    CodeUtil codeUtil;
-
+    final private CodeUtil codeUtil;
     @Value("${file.uploadDir}")
     private String FILE_PATH;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
-    public List<Board> getBoardNoticeList(SearchVO params){
+    public List<Board> getBoardNoticeList(SearchVO params, Pageable pageable){
         QBoard qBoard = QBoard.board;
         QBoardComment qBoardComment = QBoardComment.boardComment;
         QBoardStar qBoardStar = QBoardStar.boardStar;
@@ -72,12 +69,6 @@ public class C1Service {
                     where.and(qBoard.user.userName.contains(params.getSearchValue()));
                     break;
             }
-        }
-
-        int limit = 10;
-
-        if(params.getPsize() > 0){
-            limit = params.getPsize();
         }
 
         List<Board> noticeBoardList = jpaQueryFactory.select(Projections.fields(Board.class,
@@ -101,7 +92,7 @@ public class C1Service {
                 .where(where
                         .and(qBoard.boardCategory.eq(codeUtil.getCodeValue(1,"공지"))))
                 .orderBy(qBoard.id.desc())
-                .limit(limit)
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return noticeBoardList;

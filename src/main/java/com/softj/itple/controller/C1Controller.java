@@ -39,7 +39,7 @@ public class C1Controller {
         params.setCodeDetail(c1Service.selectBoardWriteConfig());
 
         model.addAttribute("list",c1Service.getBoardList(params, pageable));
-        model.addAttribute("noticeList",c1Service.getBoardNoticeList(params));
+        model.addAttribute("noticeList",c1Service.getBoardNoticeList(params, pageable));
         model.addAttribute("params",params);
         return "c1/c1p1";
     }

@@ -33,8 +33,7 @@ public class MainController {
 
 		params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
 	    params.setTaskType(Types.TaskType.TASK);
-		params.setPsize(7);
-	    model.addAttribute("noticeList", c1Service.getBoardNoticeList(params));
+		model.addAttribute("noticeList", c1Service.getBoardNoticeList(params, pageable));
 	    model.addAttribute("taskList", c2Service.getStudentTaskList(params, pageable));
 	    model.addAttribute("bookRentalList", c3Service.getBookRentalList(params, pageable));
 	    model.addAttribute("portfolioList", c4Service.getPortfolioList(params, pageable));
