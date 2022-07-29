@@ -79,7 +79,7 @@
                     //outputData.parentElement.hidden = false;
                     //outputData.innerText = code.data;
                     //outputDataBin.innerText = hex.fromBin(code.binaryData);
-                    goHookQr(code.data);
+                    goHookQr(parseInt(code.data));
                 } else {
                     //outputMessage.hidden = false;
                     //outputData.parentElement.hidden = true;
@@ -92,7 +92,8 @@
 </script>
 <script th:inline="javascript">
     function goHookQr(id){
-        $.post('/api/a1/p1/g1',{bookId: id},function(res){
+        $.post('/api/a1/p1/g1',{id: id},function(res){
+            loading(0);
             window.opener.goReturn(res.data.id);
             window.close();
         }).fail(function(){
