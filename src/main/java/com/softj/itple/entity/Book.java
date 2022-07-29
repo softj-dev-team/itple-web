@@ -28,11 +28,11 @@ public class Book  extends Auditing {
     @Convert(converter = Types.BookRentalStatus.Converter.class)
     private Types.BookRentalStatus bookStatus;
 
-    @Transient
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<BookRental> bookRental;
 
     @Builder
-    public Book(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String bookNo, String subject, String thumbnail, String contents, String writer, String rentalName, LocalDate startDate, LocalDate endDate, Types.BookRentalStatus bookStatus, List<BookRental> bookRental) {
+    public Book(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String bookNo, String subject, String thumbnail, String contents, String writer, String rentalName, LocalDate startDate, LocalDate endDate, Types.BookRentalStatus bookStatus) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.bookNo = bookNo;
         this.subject = subject;
@@ -43,6 +43,5 @@ public class Book  extends Auditing {
         this.startDate = startDate;
         this.endDate = endDate;
         this.bookStatus = bookStatus;
-        this.bookRental = bookRental;
     }
 }

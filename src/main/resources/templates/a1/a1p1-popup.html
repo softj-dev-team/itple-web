@@ -7,25 +7,89 @@
 </head>
 <body>
 <style>
-    #preview {
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: stretch;
-        display: flex;
+    #loadingMessage {
+        text-align: center;
+        padding: 40px;
+        background-color: #eee;
+    }
+    #canvas {
         width: 100%;
-        height: 580px;
-        overflow: hidden;
+        height: 100%;
+    }
+    #outputContainer {
+        margin-top: -10px;
+        padding-bottom: 0;
+        word-break: break-all;
     }
 </style>
     <div class="loginWrap">
         <div class="loginWrapOuter check">
-            <div class="loginDivWrap" id="app">
-                <video id="preview"></video>
+            <div class="loginDivWrap">
+                <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
+                <canvas id="canvas"></canvas>
+                <div id="outputContainer"></div>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="module">
+    import { jsQR } from "/assets/js/jsQR.js";
+    import { hex } from "/assets/js/hex.js";
+
+    onload = async () => {
+        const video = document.createElement("video");
+        const g = canvas.getContext("2d");
+
+        const drawLine = (begin, end, color) => {
+            g.beginPath();
+            g.moveTo(begin.x, begin.y);
+            g.lineTo(end.x, end.y);
+            g.lineWidth = 4;
+            g.strokeStyle = color;
+            g.stroke();
+        }
+
+        // Use facingMode: environment to attemt to get the front camera on phones
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        video.srcObject = stream;
+        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+        video.play();
+
+        const tick = () => {
+            loadingMessage.innerText = "⌛ Loading video..."
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                loadingMessage.hidden = true;
+                canvas.hidden = false;
+                outputContainer.hidden = false;
+
+                canvas.height = video.videoHeight;
+                canvas.width = video.videoWidth;
+                g.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = g.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                    inversionAttempts: "dontInvert",
+                });
+                if (code) {
+                    const color = "#FF3B58";
+                    drawLine(code.location.topLeftCorner, code.location.topRightCorner, color);
+                    drawLine(code.location.topRightCorner, code.location.bottomRightCorner, color);
+                    drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, color);
+                    drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, color);
+                    //outputMessage.hidden = true;
+                    //outputData.parentElement.hidden = false;
+                    //outputData.innerText = code.data;
+                    //outputDataBin.innerText = hex.fromBin(code.binaryData);
+                    goHookQr(code.data);
+                } else {
+                    //outputMessage.hidden = false;
+                    //outputData.parentElement.hidden = true;
+                }
+            }
+            requestAnimationFrame(tick);
+        };
+        tick();
+    };
+</script>
 <script th:inline="javascript">
     function goHookQr(id){
         $.post('/api/a1/p1/g1',{bookId: id},function(res){

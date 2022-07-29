@@ -43,9 +43,9 @@
                         <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
                         <th></th>
                         <th>책 제목</th>
-                        <th>작가명</th>
-                        <th>대여기간</th>
                         <th>저자</th>
+                        <th>대여기간</th>
+                        <th>대여자</th>
                         <th>상태</th>
                         <th>QR코드</th>
                     </tr>
@@ -59,7 +59,7 @@
                         <td>
                         <div class="bookImg" th:style="|background-image: url('${el.thumbnail}');|"></div></td>
                         <td><a th:href="|/a1/p1-detail/${el.id}/${list.pageable.pageNumber}|"><span th:text="${el.subject}">책제목</span></a></td>
-                        <td><span th:text="${el.writer}">작가명</span></td>
+                        <td><span th:text="${el.writer}">저자</span></td>
                         <td><span th:if="${not #strings.isEmpty(el.startDate) and not #strings.isEmpty(el.endDate)}" th:text="${el.startDate + '~' + el.endDate}">대여기간</span></td>
                         <td><span th:if="${not #strings.isEmpty(el.rentalName)}" th:text="${el.rentalName}">대여자</span></td>
                         <td>
@@ -69,7 +69,7 @@
                                 <button type="button" th:case="DELINQUENT" class="btn btn-yellow" th:onclick="|goRental(${el.id})|">연체</button>
                             </th:block>
                         </td>
-                        <td><a th:href="|javascript:download(${el.id},'${el.subject}')|"><img th:src="|https://api.qrserver.com/v1/create-qr-code/?size=177x177&data=${el.id}|"></a></td>
+                        <td><a th:href="|javascript:download(${el.id},'${el.subject}')|"><img th:src="|https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${el.id}|"></a></td>
                     </tr>
                 </tbody>
             </table>
