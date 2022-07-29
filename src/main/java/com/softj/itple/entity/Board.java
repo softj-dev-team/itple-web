@@ -35,6 +35,10 @@ public class Board extends Auditing{
     @NotFound(action = NotFoundAction.IGNORE)
     private List<BoardComment> boardCommentList;
 
+    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private List<BoardStar> boardStarList;
+
     @Transient
     private long commentCount;
     @Transient
