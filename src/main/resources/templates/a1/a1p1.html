@@ -18,7 +18,7 @@
                     <div class="in-box">
                          <select name="searchType" id="searchType">
                             <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">책제목</option>
-                            <option value="writer" th:selected="${#strings.equals(param.searchType, 'writer')}">저자</option>
+                            <option value="rentalName" th:selected="${#strings.equals(param.searchType, 'rentalName')}">대여자</option>
                         </select>
                         <input type="text" name="searchValue" th:value="${param.searchValue}">
                     </div>

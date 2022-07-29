@@ -96,6 +96,7 @@
             window.opener.goReturn(res.data.id);
             window.close();
         }).fail(function(){
+            loading(0);
         });
     }
 </script>
