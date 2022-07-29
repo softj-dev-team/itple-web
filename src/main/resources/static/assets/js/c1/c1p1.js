@@ -84,7 +84,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
         case "D1":
             modal.confirm("삭제하시겠습니까?",function(){
                 $.post(`${path}/d1`,{id:arg1},function(){
-                    ut.redirect('/c1/p1');
+                    ut.redirect('/c1/p1', "boardType", $("#boardType").val());
                 });
             });
             break;
