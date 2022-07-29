@@ -44,7 +44,7 @@ public class A1RestController {
     @PostMapping("/p1/g1")
     public Response p1g1(SearchVO params) throws ApiException {
         return Response.builder()
-                .data(a1Service.getBookInfo(params))
+                .data(a1Service.getBook(params))
                 .build();
     }
 }

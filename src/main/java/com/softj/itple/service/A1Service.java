@@ -35,15 +35,15 @@ public class A1Service {
                 case "subject":
                     where.and(qBook.subject.contains(params.getSearchValue()));
                     break;
-                case "writer":
-                    where.and(qBook.writer.contains(params.getSearchValue()));
+                case "rentalName":
+                    where.and(qBook.rentalName.contains(params.getSearchValue()));
                     break;
             }
         }
         return bookRepo.findAll(where,pageable);
     }
     public Book getBook(SearchVO params){
-        return bookRepo.findById(params.getId()).orElse(Book.builder().build());
+        return bookRepo.findById(params.getBookId()).orElseThrow(() -> new ApiException("도서 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     @Transactional
@@ -90,11 +90,6 @@ public class A1Service {
         bookRental.setBook(book);
 
         return bookRental;
-    }
-
-    public Book getBookInfo(SearchVO params){
-        Book book = bookRepo.findById(params.getBookId()).orElseThrow(() -> new ApiException("도서 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
-        return book;
     }
 
     public BookRental getBookReturn(SearchVO params){
