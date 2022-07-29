@@ -42,7 +42,6 @@ public class A1Controller {
     //상세
     @GetMapping("/p1-detail/{id}/{page}")
     public String p1detail(@PathVariable long id, @PathVariable int page, ModelMap model, SearchVO params){
-
         params.setId(id);
         params.setPage(page);
 
