@@ -42,7 +42,7 @@ public class A1Service {
         }
         return bookRepo.findAll(where,pageable);
     }
-    public Book getBook(SearchVO params){
+    public Book getBook(SearchVO params) {
         return bookRepo.findById(params.getId()).orElseThrow(() -> new ApiException("도서 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
