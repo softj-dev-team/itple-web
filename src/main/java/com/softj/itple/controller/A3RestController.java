@@ -23,4 +23,11 @@ public class A3RestController {
                 .data(a3Service.updateStudent(params))
                 .build();
     }
+
+    //삭제
+    @PostMapping("/p1/d1")
+    public Response p1d1(SearchVO params) {
+        a3Service.deleteStudent(params);
+        return Response.builder().build();
+    }
 }

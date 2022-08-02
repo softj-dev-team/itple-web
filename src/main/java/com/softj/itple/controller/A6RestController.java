@@ -23,4 +23,12 @@ public class A6RestController {
                 .data(a6Service.savePortfolio(params))
                 .build();
     }
+
+    //저장
+    @PostMapping("/p1/d1")
+    public Response p1d1(SearchVO params){
+        a6Service.deletePortfolio(params);
+        return Response.builder()
+                .build();
+    }
 }

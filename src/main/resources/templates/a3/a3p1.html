@@ -23,52 +23,92 @@
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <input type="hidden" id="studentStatus" name="studentStatus" th:value="${params.studentStatus}">
                     <div class="in-box">
+                        <select name="grade" id="grade">
+                            <option value="">전체</option>
+                            <option th:each="el : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${el}"
+                                    th:selected="${#strings.equals(el, params.grade)}" th:text="${el.message}"></option>
+                        </select>
                         <select name="searchType" id="searchType">
                             <option value="userName" th:selected="${#strings.equals(param.searchType, 'userName')}">이름</option>
                             <option value="className" th:selected="${#strings.equals(param.searchType, 'className')}">반</option>
-                            <option value="parentName" th:selected="${#strings.equals(param.searchType, 'parentName')}">부모님 성함</option>
-                            <option value="parentTel" th:selected="${#strings.equals(param.searchType, 'parentTel')}">부모님 연락처</option>
+                            <option value="school" th:selected="${#strings.equals(param.searchType, 'school')}">학교</option>
+                            <option value="parentName" th:selected="${#strings.equals(param.searchType, 'parentName')}">보호자 성함</option>
+                            <!--<option value="parentTel" th:selected="${#strings.equals(param.searchType, 'parentTel')}">부모님 연락처</option>-->
                         </select>
                         <input type="text" name="searchValue" th:value="${param.searchValue}">
                     </div>
                     <button type="button" class="src-btn" onclick="goSearch()"></button>
                 </form>
             </div>
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                    <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                </div>
+                <form id="form2" name="form2">
+                    <input type="hidden" name="idList" id="idList" />
+                </form>
+            </div>
             <table class="adTable list4">
                 <thead class="adTable-head">
                 <tr>
-                    <th>승인여부</th>
-                    <th>학생</th>
+                    <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                    <th>No</th>
+                    <th>이름</th>
+                    <th>학교</th>
+                    <th>학년</th>
+                    <th>반</th>
                     <th>보호자 성함</th>
                     <th>보호자 연락처</th>
-                    <th>반</th>
-                    <th>메모</th>
                     <th>입학일</th>
                     <th>포인트</th>
                 </tr>
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
-                <tr th:each="el : ${list}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">
-                    <td th:text="${el.user.approved ? '승인' : '미승인'}"></td>
-                    <td th:text="${el.user.userName}">김잇플</td>
-                    <td th:text="${el.parentName}">보호자</td>
-                    <td th:text="${el.parentTel}">010-1234-5678</td>
-                    <td th:text="${el.academyClass?.className}">잇플 코딩입문반A</td>
-                    <td th:text="${el.memo}"></td>
-                    <td th:text="${#temporals.format(el.enterDate,'yyyy.MM.dd')}">2022.03.24</td>
-                    <td th:text="${#numbers.formatInteger(el.coin,0,'COMMA')}">1000</td>
+                <tr th:each="el : ${list}">
+                    <td>
+                        <input type="checkbox" name="seqList" th:id="|a${elStat.count}|" ><label th:for="|a${elStat.count}|"></label>
+                        <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
+                    </td>
+                    <td th:text="${list.pageable.offset+elStat.count}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|"></td>
+                    <td th:text="${el.user.userName}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">이름</td>
+                    <td th:text="${el.school}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">학교</td>
+                    <td th:text="${el.grade.message}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">학년</td>
+                    <td th:text="${el.academyClass?.className}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">반</td>
+                    <td th:text="${el.parentName}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">보호자 성함</td>
+                    <td th:text="${el.parentTel}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">보호자 연락처</td>
+                    <td th:text="${#temporals.format(el.enterDate,'yyyy.MM.dd')}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">2022.03.24</td>
+                    <td th:text="${#numbers.formatInteger(el.coin,0,'COMMA')}" th:onclick="|ut.redirect('/a3/p1-detail/${el.id}')|">1000</td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
+    <div class="modal" id="removeMo">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="modalText">
+                    선택 학생을 정말 삭제하시겠습니까?<br>
+                    삭제한 학생은 복구할 수 없습니다.
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-red modalOff" onclick="goAction('D1')">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script th:src="@{/assets/js/a3/a3p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        /*]]>*/
+        $('.RemoveBtn').on('click', function () {
+            $('#removeMo').addClass('on');
+        });
     </script>
 </th:block>
 </body>

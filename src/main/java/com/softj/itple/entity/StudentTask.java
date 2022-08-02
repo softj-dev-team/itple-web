@@ -6,6 +6,8 @@ import com.softj.itple.domain.Types;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,6 +28,7 @@ public class StudentTask extends Auditing{
     @Convert(converter = Types.TaskStatus.Converter.class)
     private Types.TaskStatus status;
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Task task;
     private String contents;
     private LocalDate compDate;

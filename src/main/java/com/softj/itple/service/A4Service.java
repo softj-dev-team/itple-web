@@ -153,6 +153,10 @@ public class A4Service {
                 .and(qUser.student.academyClass.eq(AcademyClass.builder().id(params.getClassId()).build()))
                 .and(qUser.student.studentStatus.eq(params.getStudentStatus()));
 
+        if(StringUtils.noneEmpty(params.getUserName())){
+            where.and(qUser.userName.contains(params.getUserName()));
+        }
+
         JPAQuery<A4ResourceDTO> query = jpaQueryFactory.select(Projections.fields(A4ResourceDTO.class,
                 qUser.id,
                 qUser.userName.as("title")))

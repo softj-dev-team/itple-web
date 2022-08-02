@@ -18,7 +18,6 @@ import java.util.List;
 @ToString
 @Table(name = "tb_task")
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Task extends Auditing{
@@ -33,4 +32,19 @@ public class Task extends Auditing{
     private LocalDate endDate;
     private String contents;
     private long coin;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
+    private List<StudentTask> studentTasks;
+    @Builder
+    public Task(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, AcademyClass academyClass, Types.TaskType taskType, String subject, String author, LocalDate startDate, LocalDate endDate, String contents, long coin) {
+        super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
+        this.academyClass = academyClass;
+        this.taskType = taskType;
+        this.subject = subject;
+        this.author = author;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.contents = contents;
+        this.coin = coin;
+    }
 }

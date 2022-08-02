@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -186,4 +187,21 @@ public class A2Service {
                     .build());
         }
     }
+
+    @Transactional
+    public void deleteTask(SearchVO params){
+        for(long id : params.getIdList()){
+            taskRepo.deleteById(id);
+        }
+    }
+
+    @Transactional
+    public void deleteStudentTask(SearchVO params){
+        for(long id : params.getIdList()){
+            studentTaskRepo.deleteById(id);
+        }
+    }
+
+
+
 }

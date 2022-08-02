@@ -39,7 +39,7 @@ public class A2Controller {
     }
     //반 과제
     @GetMapping("/p1-class/{id}")
-    public String p1class(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
+    public String p1class(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
         if(Objects.isNull(params.getTaskType())) {
             params.setTaskType(Types.TaskType.TASK);
         }

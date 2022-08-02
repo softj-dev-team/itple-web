@@ -94,6 +94,11 @@
                         var totalCaracteres = caracteres.length;
                         $(".text-count").text(totalCaracteres);
                     },
+                    onInit: function(e) {
+                        var caracteres = $(".note-editable").text();
+                        var totalCaracteres = caracteres.length;
+                        $(".text-count").text(totalCaracteres);
+                    }
                 },
             });
             $('#summernote').summernote(status == 'NOT_SUBMIT' || status == 'SUBMIT' ? 'enable':'disable');

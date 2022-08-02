@@ -76,10 +76,28 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         /*삭제*/
         case "D1":
-            modal.confirm("삭제하시겠습니까?",function(){
-                $.post(`${path}/d1`,{id:arg1},function(){
-                    ut.redirect('/a6/p1');
-                });
+            var formS1 = $('#form2');
+            var url = path+'/d1';
+
+            if($("input[name=seqList]:checked").length == 0){
+                modal.alert("체크한 데이터가 없습니다.");
+                return;
+            }
+
+            var idList = new Array();
+            $("input[name=seqList]:checked").each(function(){
+                var numId = $(this).prop("id");
+                var num = numId.substring(1, numId.length);
+                var bookId = "id"+num;
+                idList.push($("#"+bookId).val());
+            });
+
+            $("#idList").val(idList);
+            loading(1);
+            $.post(url,formS1.serialize(),function(){
+                loading(0);
+                modal.alert('삭제되었습니다.');
+                location.reload();
             });
             break;
         /*댓 삭제*/

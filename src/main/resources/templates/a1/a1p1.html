@@ -41,6 +41,7 @@
                 <thead class="adTable-head">
                     <tr>
                         <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                        <th>No</th>
                         <th></th>
                         <th>책 제목</th>
                         <th>저자</th>
@@ -55,6 +56,9 @@
                         <td>
                             <input type="checkbox" name="seqList" th:id="|a${elStat.count}|" ><label th:for="|a${elStat.count}|"></label>
                             <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
+                        </td>
+                        <td>
+                            <span th:text="${list.pageable.offset+elStat.count}"></span>
                         </td>
                         <td>
                         <div class="bookImg" th:style="|background-image: url('${el.thumbnail}');|"></div></td>

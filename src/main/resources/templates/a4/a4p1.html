@@ -46,6 +46,7 @@
                         <select name="month" id="month">
                             <option th:each="num : ${#numbers.sequence(1,12)}" th:value="${num}" th:text="|${num}월|" th:selected="${#strings.equals(#temporals.format(#temporals.createNow(),'M'), num)}"></option>
                         </select>
+                        <input type="text" name="userName" th:value="${params.getUserName()}" placeholder="이름 검색">
                     </div>
                     <button type="button" class="src-btn" onclick="calSearch()"></button>
                 </form>
@@ -61,6 +62,7 @@
         var events = [];
         var schClassId = '';
         var schStudentStatus = '';
+        var schUserName = '';
 
         $(function() {
             var calendarEl = document.getElementById('calendar');
@@ -108,9 +110,11 @@
                 var formData = {
                     classId: $("select[name=academyClass]").val(),
                     studentStatus: $("select[name=studentStatus]").val(),
+                    userName : $("input[name=userName]").val()
                 };
                 schClassId = formData.classId;
                 schStudentStatus = formData.studentStatus;
+                schUserName = formData.userName;
 
                 $.post("/api/a4/p1/l1", formData, function (res) {
                     resources = res.data
@@ -162,7 +166,9 @@
         function calSearch(){
             var classId = $("select[name=academyClass]").val();
             var studentStatus = $("select[name=studentStatus]").val();
-            if(classId == schClassId && studentStatus == schStudentStatus){
+            var userName = $("input[name=userName]").val();
+
+            if(classId == schClassId && studentStatus == schStudentStatus && userName == schUserName){
                 var year = $("select[name=year]").val();
                 var month = $("select[name=month]").val();
                 var tmpDate = new Date(`${year}-${month}-1`);

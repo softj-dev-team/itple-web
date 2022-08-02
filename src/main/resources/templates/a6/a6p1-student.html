@@ -16,6 +16,10 @@
         <div class="content-in clearfix">
             <div class="tableBtn-box">
                 <div class="leftBox">
+                    <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                    <form id="form2" name="form2">
+                        <input type="hidden" name="idList" id="idList" />
+                    </form>
                 </div>
                 <div class="rightBox">
                     <a th:href="|javascript:ut.redirect('/a6/p1-write/0','userId','${student.user.id}')|" class="aBtn">포트폴리오 등록</a>
@@ -23,6 +27,8 @@
             </div>
             <ul class="book-box portfolio clearfix">
                 <li class="book-list" th:each="el : ${list}">
+                    <input type="checkbox" name="seqList" th:id="|a${elStat.count}|"><label th:for="|a${elStat.count}|" style="top:10px;left:15px;"></label>
+                    <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
                     <a th:href="|/a6/p1-detail/${el.id}|">
                         <div class="book-img" th:style="|background-image: url(${el.thumbnail});|"></div>
                         <div class="book-info">
@@ -35,12 +41,30 @@
         </div>
         <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
-
+    <div class="modal" id="removeMo">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="modalText">
+                    선택 포트폴리오를 정말 삭제하시겠습니까?<br>
+                    삭제한 포트폴리오는 복구할 수 없습니다.
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-red modalOff" onclick="goAction('D1')">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script th:src="@{/assets/js/a6/a6p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        /*]]>*/
+        $('.RemoveBtn').on('click', function () {
+            $('#removeMo').addClass('on');
+        });
     </script>
 </th:block>
 </body>

@@ -9,11 +9,13 @@
 <body>
 <th:block layout:fragment="content">
     <div class="responsiveWrap">
-        <h1 class="responsiveH1">학생관리</h1>
+        <h1 class="responsiveH1">학생관리_<span th:text="${el.user.userName}"></span></h1>
         <div class="responsiveInner">
             <form id="form1">
                 <input name="studentId" id="studentId" type="hidden" class="input-df mb20" required readonly th:value="${el.id}"><!--<button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>-->
                 <div class="inputSec">
+                    <label for="coin" class="mb5">포인트</label>
+                    <input type="text" class="input-df mb20" name="coin" id="coin" th:value="${el.coin}">
                     <label for="" class="mb5">승인/미승인</label>
                     <select name="approved" class="input-df mb20">
                         <option value="true" th:selected="${el.user.approved}">승인</option>
@@ -87,8 +89,6 @@
                 <div class="inputSec">
                     <label for="memo" class="mb5">메모</label>
                     <input type="text" class="input-df mb20" name="memo" id="memo" th:value="${el.memo}">
-                    <label for="coin" class="mb5">포인트</label>
-                    <input type="text" class="input-df mb20" name="coin" id="coin" th:value="${el.coin}">
                 </div>
                 <div class="inputSec timeSelectOuter">
                     <label for="" class="mb10">등원 시간</label>

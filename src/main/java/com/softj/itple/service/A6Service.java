@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -68,5 +69,12 @@ public class A6Service {
             save.setThumbnail(thumbnail);
         }
         return portfolioRepo.save(save).getId();
+    }
+
+    @Transactional
+    public void deletePortfolio(SearchVO params){
+        for(long id : params.getIdList()){
+            portfolioRepo.deleteById(id);
+        }
     }
 }

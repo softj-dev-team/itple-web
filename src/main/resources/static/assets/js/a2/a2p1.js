@@ -97,31 +97,72 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
         case "E1":
 
             break;
-        /*삭제*/
+        /*과제 삭제*/
         case "D1":
-            modal.confirm("삭제하시겠습니까?",function(){
-                $.post(`${path}/d1`,{id:arg1},function(){
-                    ut.redirect('/a2/p1');
-                });
+            var formS1 = $('#form2');
+            var url = path+'/d1';
+
+            if($("input[name=seqList]:checked").length == 0){
+                modal.alert("체크한 데이터가 없습니다.");
+                return;
+            }
+
+            var idList = new Array();
+            $("input[name=seqList]:checked").each(function(){
+                var numId = $(this).prop("id");
+                var num = numId.substring(1, numId.length);
+                var taskId = "id"+num;
+                idList.push($("#"+taskId).val());
+            });
+
+            $("#idList").val(idList);
+            loading(1);
+            $.post(url,formS1.serialize(),function(){
+                loading(0);
+                modal.alert('삭제되었습니다.');
+                location.reload();
             });
             break;
-        /*댓 삭제*/
+        /*학생 과제 삭제*/
         case "D2":
-            modal.confirm("삭제하시겠습니까?",function(){
-                $.post(`${path}/d2`,{id:arg1},function(){
-                    location.reload();
-                });
+            var formS1 = $('#form2');
+            var url = path+'/d2';
+
+            if($("input[name=seqList]:checked").length == 0){
+                modal.alert("체크한 데이터가 없습니다.");
+                return;
+            }
+
+            var idList = new Array();
+            $("input[name=seqList]:checked").each(function(){
+                var numId = $(this).prop("id");
+                var num = numId.substring(1, numId.length);
+                var taskId = "id"+num;
+                idList.push($("#"+taskId).val());
+            });
+
+            $("#idList").val(idList);
+            loading(1);
+            $.post(url,formS1.serialize(),function(){
+                loading(0);
+                modal.alert('삭제되었습니다.');
+                location.reload();
             });
             break;
         /*팝업*/
         case "P1":
             $.post(path+'/p1',{id: arg1},function(res){
                 var el = res.data;
-                console.log(el);
+
                 $("#reportMo .modalGroup").html(`[${el.student.academyClass.className}]`);
                 $("#reportMo .modalTit").html(el.task.subject);
                 $("#reportMo .modalName").html(el.student.user.userName);
                 $("#reportMo .modalMain").html(el.contents);
+
+                var caracteres = $("#reportMo .modalMain").text();
+                var totalCaracteres = caracteres.length;
+                $(".text-count").text(totalCaracteres);
+
                 $("#reportMo .fileUP").empty();
                 if(el.status == 'SUBMIT') {
                     $("#reportMo .modalBtnWrap").show();

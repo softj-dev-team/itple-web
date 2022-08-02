@@ -28,7 +28,7 @@
                     <div class="studCh">
                         <input type="checkbox" id="studAll"><label for="studAll">전체선택</label>
                         <div id="studentList">
-                            <input type="checkbox" id="stud1"><label for="stud1">김잇플</label>
+                            <input type="checkbox" class="chkStud" id="stud1"><label for="stud1">김잇플</label>
                         </div>
                     </div>
                     <label for="subject" class="mb5">제목</label>
@@ -81,7 +81,12 @@
                 language: "ko",
                 orientation: "auto"
             });
-        })
+        });
+        $(document).on("click","input:checkbox[name='studentIdList']",function(){
+            if(!$(this).is(":checked")){
+                $("#studAll").prop("checked",false);
+            }
+        });
     </script>
 </th:block>
 </body>

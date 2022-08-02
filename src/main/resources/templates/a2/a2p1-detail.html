@@ -34,9 +34,18 @@
             <div class="subTit">
                 <a th:href="|/a2/p1-class/${task.academyClass.id}?taskType=${params.taskType}|" class="subTit-class" th:text="${task.academyClass.className}">잇플코딩입문반A</a><span th:text="${task.subject}">EBS 강사가 추천하는 PAV 모빌리티 인기학과 진로코칭</span>
             </div>
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                    <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                </div>
+                <form id="form2" name="form2">
+                    <input type="hidden" name="idList" id="idList" />
+                </form>
+            </div>
             <table class="adTable list3">
                 <thead class="adTable-head">
                 <tr>
+                    <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
                     <th>학생</th>
                     <th>출결번호</th>
                     <th>상태</th>
@@ -45,6 +54,10 @@
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
                 <tr th:each="el : ${list}">
+                    <td>
+                        <input type="checkbox" name="seqList" th:id="|a${elStat.count}|" ><label th:for="|a${elStat.count}|"></label>
+                        <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
+                    </td>
                     <td th:text="${el.student.user.userName}">김잇플</td>
                     <td th:text="${el.student.attendanceNo}">1598</td>
                     <td th:text="${el.status.message}">완료</td>
@@ -59,7 +72,24 @@
         </div>
         <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
-
+    <div class="modal" id="removeMo">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="modalText">
+                    선택 학생 과제를 정말 삭제하시겠습니까?<br>
+                    삭제한 학생 과제는 복구할 수 없습니다.
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-red modalOff" onclick="goAction('D2')">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal " id="reportMo">
         <div class="modal-bg"></div>
         <div class="modalContent lg">
@@ -73,9 +103,8 @@
                     <p class="modalTit">EBS 강사가 추천하는 PAV 모빌리티 인기학과 진로코칭</p>
                     <p class="modalName">김잇플</p>
                 </div>
-                <div class="modalMain">
-                    독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다. 독후감 내용입니다.
-                </div>
+                <div class="modalMain"></div>
+                <div class="countBox"><span class="text-count">0</span><span class="count-t">자</span></div>
                 <div class="mo-fileBox">
                     <div class="fileHead">
                         <p>첨부파일</p>
@@ -95,8 +124,9 @@
     <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        /*]]>*/
+        $('.RemoveBtn').on('click', function () {
+            $('#removeMo').addClass('on');
+        });
     </script>
 </th:block>
 </body>

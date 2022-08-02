@@ -2054,14 +2054,14 @@ select.reportSlt{
     animation-timing-function:ease-in-out;
 }
 .portfolioSub .name{
-    width:50%;
+    width:44%;
     display:inline-block;
     text-align: left;
     font-size: 30px;
     font-weight: bold;
 }
 .portfolioSub .class{
-    width:49%;
+    width:55%;
     display:inline-block;
     text-align: right;
 }
@@ -3463,12 +3463,15 @@ input.txtRight{text-align: right;}
 .adTable.list2{
     table-layout: fixed;
 }
-.adTable.list2 tr th:nth-child(1){width: 80%;}
-.adTable.list2 tr th:nth-child(2){width: 20%;}
-.adTable.list2 tr td:nth-child(1){
+.adTable.list2 tr th:nth-child(1){width: 5%;}
+.adTable.list2 tr th:nth-child(2){width: 8%;}
+.adTable.list2 tr th:nth-child(3){width: auto;}
+.adTable.list2 tr th:nth-child(4){width: 15%;}
+.adTable.list2 tr th:nth-child(5){width: 15%;}
+.adTable.list2 tr td:nth-child(3){
     text-align: left;
 }
-.adTable.list2 tr td:nth-child(1) a{
+.adTable.list2 tr td:nth-child(2) a{
     display: block;
     white-space: nowrap;
     overflow: hidden;
@@ -3493,10 +3496,11 @@ input.txtRight{text-align: right;}
 .adTable.list3 {
     text-align: center;
 }
-.adTable.list3 tr th:nth-child(1){width: 25%;}
-.adTable.list3 tr th:nth-child(2){width: 25%;}
-.adTable.list3 tr th:nth-child(3){width: 25%;}
-.adTable.list3 tr th:nth-child(4){width: 25%;}
+.adTable.list3 tr th:nth-child(1){width: 10%;}
+.adTable.list3 tr th:nth-child(2){width: 22%;}
+.adTable.list3 tr th:nth-child(3){width: 22%;}
+.adTable.list3 tr th:nth-child(4){width: auto}
+.adTable.list3 tr th:nth-child(5){width: 22%;}
 .s-btn.s-btnCom{
     opacity: 50%;
 }
@@ -3550,14 +3554,16 @@ input.txtRight{text-align: right;}
     width: 210px;
 }
 .adTable.list4{text-align: center;}
-.adTable.list4 tr th:nth-child(1){width: 12%;}
-.adTable.list4 tr th:nth-child(2){width: 12%;}
-.adTable.list4 tr th:nth-child(3){width: 13%;}
-.adTable.list4 tr th:nth-child(4){width: 13%;}
-.adTable.list4 tr th:nth-child(5){width: 12%;}
-.adTable.list4 tr th:nth-child(6){width: 12%;}
-.adTable.list4 tr th:nth-child(7){width: 13%;}
-.adTable.list4 tr th:nth-child(8){width: 13%;}
+.adTable.list4 tr th:nth-child(1){width: 5%;}
+.adTable.list4 tr th:nth-child(2){width: 5%;}
+.adTable.list4 tr th:nth-child(3){width: 10%;}
+.adTable.list4 tr th:nth-child(4){width: 15%;}
+.adTable.list4 tr th:nth-child(5){width: 10%;}
+.adTable.list4 tr th:nth-child(6){width: 15%;}
+.adTable.list4 tr th:nth-child(7){width: 10%;}
+.adTable.list4 tr th:nth-child(8){width: 10%;}
+.adTable.list4 tr th:nth-child(9){width: 10%;}
+.adTable.list4 tr th:nth-child(10){width: 10%;}
 .list4 tbody tr {
     cursor: pointer;
 }

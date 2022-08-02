@@ -40,6 +40,8 @@
                     </select>
                     <label for="email" class="mb5">이메일</label>
                     <input name="email" id="email" type="text" class="input-df mb20" >
+                    <label for="telNo" class="mb5">연락처</label>
+                    <input name="telNo" id="telNo" type="text" class="input-df mb20" >
                 </div>
                 <div class="inputSec">
                     <label for="zonecode" class="mb5">집주소</label>
@@ -50,6 +52,8 @@
                     <input name="parentName" id="parentName" type="text" class="input-df mb20" >
                     <label for="parentTel" class="mb5">보호자 연락처</label>
                     <input name="parentTel" id="parentTel" type="text" class="input-df mb20" >
+                    <label for="relation" class="mb5">학생과의 관계</label>
+                    <input name="relation" id="relation" type="text" class="input-df mb20" >
                 </div>
                 <!--<div class="inputSec timeSelectOuter">
                     <label for="" class="mb10">등원 시간</label>
@@ -95,9 +99,10 @@
         var checkId = "";
 
         $(function(){
+
             $(".datepicker").datepicker({
                 format: "yyyy-mm-dd",
-                language: "ko",
+                language: "kr",
                 orientation: "auto"
             });
 
@@ -195,6 +200,7 @@
             var grade = $("select[name=grade]").val();
             var roadAddress = $("input[name=roadAddress]").val();
             var detailAddress = $("input[name=detailAddress]").val();
+            var relation = $("input[name=relation]").val();
 
             if(ut.isEmpty(userId)){
                 modal.required("아이디");
@@ -267,6 +273,10 @@
             }
             if(ut.isEmpty(parentTel)){
                 modal.required("보호자 연락처");
+                return;
+            }
+            if(ut.isEmpty(relation)){
+                modal.required("학생과의 관계");
                 return;
             }
 

@@ -37,6 +37,10 @@ public class A5Service {
         BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
                 .and(qStudent.academyClass.id.eq(params.getClassId()));
 
+        if(StringUtils.noneEmpty(params.getUserName())){
+            where.and(qStudent.user.userName.contains(params.getUserName()));
+        }
+
         JPAQuery<Student> query = jpaQueryFactory.select(Projections.fields(Student.class,
                         qStudent.id,
                         qStudent.user,

@@ -60,13 +60,19 @@ public class A3Service {
                 case "className":
                     where.and(qStudent.academyClass.className.contains(params.getSearchValue()));
                     break;
+                case "school":
+                    where.and(qStudent.school.contains(params.getSearchValue()));
+                    break;
                 case "parentName":
                     where.and(qStudent.parentName.contains(params.getSearchValue()));
                     break;
-                case "parentTel":
+               /* case "parentTel":
                     where.and(qStudent.parentTel.contains(params.getSearchValue()));
-                    break;
+                    break;*/
             }
+        }
+        if(StringUtils.noneEmpty(params.getGrade())) {
+            where.and(qStudent.grade.eq(params.getGrade()));
         }
         return studentRepo.findAll(where, pageable);
     }
@@ -124,5 +130,14 @@ public class A3Service {
                     .build());
         }
         return save;
+    }
+
+    @Transactional
+    public void deleteStudent(SearchVO params){
+        for(long id : params.getIdList()){
+            Student student = studentRepo.findById(id).orElse(Student.builder().build());
+            student.setDeleted(true);
+            studentRepo.save(student);
+        }
     }
 }

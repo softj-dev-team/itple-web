@@ -45,4 +45,18 @@ public class A2RestController {
         return Response.builder()
                 .build();
     }
+
+    //과제삭제
+    @PostMapping("/p1/d1")
+    public Response d1(SearchVO params){
+        a2Service.deleteTask(params);
+        return Response.builder().build();
+    }
+
+    //학생과제삭제
+    @PostMapping("/p1/d2")
+    public Response d2(SearchVO params){
+        a2Service.deleteStudentTask(params);
+        return Response.builder().build();
+    }
 }

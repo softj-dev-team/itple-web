@@ -30,6 +30,7 @@
                                     th:text="|${num}월|"
                                     th:selected="${#strings.equals(num, params.month)}"></option>
                         </select>
+                        <input type="text" name="userName" th:value="${params.getUserName()}" placeholder="이름 검색">
                     </div>
                     <button type="button" class="src-btn" onClick="goSearch();"></button>
                 </form>
