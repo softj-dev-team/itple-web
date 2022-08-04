@@ -151,8 +151,8 @@ public class A7Service {
                 .user(save.getUser())
                 .build());
 
-        Admin adminVO = adminRepo.findWithUserByUser(User.builder().id(save.getUser().getId()).build());
         HttpSession session = request.getSession(true);
+        Admin adminVO = adminRepo.findWithUserByUser(User.builder().id(Long.parseLong(session.getAttribute("userId").toString())).build());
         session.setAttribute("adminVO", adminVO);
     }
 
@@ -177,8 +177,8 @@ public class A7Service {
 
         userRepo.save(save.getUser());
 
-        Admin adminVO = adminRepo.findWithUserByUser(User.builder().id(save.getUser().getId()).build());
         HttpSession session = request.getSession(true);
+        Admin adminVO = adminRepo.findWithUserByUser(User.builder().id(Long.parseLong(session.getAttribute("userId").toString())).build());
         session.setAttribute("adminVO", adminVO);
     }
 
