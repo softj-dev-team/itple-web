@@ -945,6 +945,7 @@ i.i-date{
     margin-top: 8px;
 }
 .ham-con > p span{
+    line-height:36px;
     font-size: 16px;
     font-family: 'Pretendard-Bold';
 }
@@ -952,7 +953,7 @@ i.i-date{
     color: #2D7AC0;
 }
 .ham-gnb {
-    margin-top: 30px;
+    margin-top: 10px;
 }
 .ham-gnb > li {
     position: relative;
@@ -2604,6 +2605,7 @@ div.NOT_SUBMIT {
     }
     .modal button.btn{
         width:100%;
+        margin-top:5px;
     }
     .xs .modalBtnWrap{
         margin-top: 55px;
@@ -3526,7 +3528,7 @@ input.txtRight{text-align: right;}
 .modalMain{
     padding: 12px 10px;
     border-bottom: 1px solid #CCCCCC;
-    max-height: calc(100vh - 450px);
+    max-height: calc(100vh - 600px);
     overflow: auto;
     line-height: 150%;
 }
@@ -3636,7 +3638,7 @@ input.txtRight{text-align: right;}
     float: right;
 }
 /* 수납관리 */
-.leftBox button.ComBtn{
+.leftBox button.ComBtn, .leftBox button.NonBtn{
     height: 36px;
 }
 .payTable thead tr th:nth-child(1){width: 4%;}

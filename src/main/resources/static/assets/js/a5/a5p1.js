@@ -1,4 +1,4 @@
-var path =  '/a5/p1';
+var path =  '/api/a5/p1';
 
 $(function(){
     $("#form1 input").on("keyup",function(e){
@@ -33,7 +33,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
         /*저장*/
         case "S1":
 
-            var url = '/api'+ path+'/s1';
+            var url = path+'/s1';
 
             modal.confirm("저장하시겠습니까?",function(){
                 loading(1);
@@ -48,7 +48,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
         /*완납처리*/
         case "S2":
 
-            var url = '/api'+ path+'/s2';
+            var url = path+'/s2';
 
             modal.confirm("완납처리 하시겠습니까?",function(){
                 loading(1);
@@ -70,6 +70,19 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 
             break;
         case "D1":
+            var url = path+'/d1';
+
+            modal.confirm("미납처리 하시겠습니까?",function(){
+                loading(1);
+
+                var param1 = $("#paymentIdList").val();
+
+                $.post(url, {paymentIdList:param1},function(){
+                    loading(0);
+                    modal.alert('저장되었습니다.');
+                    location.reload();
+                });
+            });
 
             break;
         /*팝업*/

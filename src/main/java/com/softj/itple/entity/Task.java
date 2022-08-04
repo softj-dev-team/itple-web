@@ -27,7 +27,7 @@ public class Task extends Auditing{
     @Convert(converter = Types.TaskType.Converter.class)
     private Types.TaskType taskType;
     private String subject;
-    private String author;
+    private String teacher;
     private LocalDate startDate;
     private LocalDate endDate;
     private String contents;
@@ -36,12 +36,12 @@ public class Task extends Auditing{
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
     private List<StudentTask> studentTasks;
     @Builder
-    public Task(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, AcademyClass academyClass, Types.TaskType taskType, String subject, String author, LocalDate startDate, LocalDate endDate, String contents, long coin) {
+    public Task(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, AcademyClass academyClass, Types.TaskType taskType, String subject, String teacher, LocalDate startDate, LocalDate endDate, String contents, long coin) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.academyClass = academyClass;
         this.taskType = taskType;
         this.subject = subject;
-        this.author = author;
+        this.teacher = teacher;
         this.startDate = startDate;
         this.endDate = endDate;
         this.contents = contents;

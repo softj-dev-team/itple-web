@@ -48,7 +48,10 @@
                 <a href="/myInfo" class="setting"></a>
             </div>
             <div class="ham-con">
-                <p><span class="user-name" th:text="${session.studentVO.user.userName}">김잇플</span> 님</p>
+                <p>
+                    <span class="user-name" th:text="${session.studentVO.user.userName}">김잇플</span> 님
+                    <button type="button" class="logout-btn" onclick="location.href='/logout'" style="float:right">로그아웃</button>
+                </p>
                 <p>포인트 : <span class="user-point" th:text="| ${#numbers.formatInteger(session.studentVO.coin,0,'COMMA')}|">1,000</span></p>
                 <ul class="ham-gnb">
                     <li>

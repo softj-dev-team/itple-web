@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
@@ -52,6 +53,11 @@ public class A3Service {
     public Page<Student> getStudentList(SearchVO params, Pageable pageable){
         QStudent qStudent = QStudent.student;
         BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false).and(qStudent.studentStatus.eq(params.getStudentStatus())));
+
+        if(StringUtils.noneEmpty(params.getAcademyType())){
+            where.and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
+        }
+
         if(StringUtils.noneEmpty(params.getSearchValue())){
             switch (params.getSearchType()){
                 case "userName":

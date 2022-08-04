@@ -21,7 +21,7 @@
                     <select name="boardType" class="select-md">
                         <option th:each="e : ${T(com.softj.itple.domain.Types.AcademyType).values()}"
                                 th:value="${e}" th:text="${e.message}"
-                                th:selected="${el.boardType == e}">잇플 코딩 게시판</option>
+                                th:selected="${params.boardType == e || el.boardType == e}">잇플 코딩 게시판</option>
                     </select>
                     <select name="boardCategory" class="select-md">
                         <option th:each="e : ${@codeUtil.getCodeList(1)}"

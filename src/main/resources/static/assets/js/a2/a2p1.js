@@ -36,7 +36,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
         /*저장*/
         case "S1":
             var subject = $("input[name=subject]").val();
-            var author = $("input[name=author]").val();
+            var teacher = $("input[name=teacher]").val();
             var contents = $("textarea[name=contents]").val();
             var startDate = $("input[name=startDate]").val();
             var endDate = $("input[name=endDate]").val();
@@ -47,8 +47,8 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 modal.required("제목");
                 return;
             }
-            if(taskType == 'BOOK_REPORT' && ut.isEmpty(author)){
-                modal.required("저자");
+            if(taskType == 'BOOK_REPORT' && ut.isEmpty(teacher)){
+                modal.required("출제 선생님");
                 return;
             }
             if(ut.isEmpty(contents)){
@@ -84,7 +84,8 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         case "S3":
             modal.confirm("다시제출 처리 하시겠습니까?",function(){
-                $.post(path+'/s3',{id: arg1},function(res){
+                var returnMessage = $("#reportMo #returnMessage").val();
+                $.post(path+'/s3',{id: arg1, returnMessage: returnMessage},function(res){
                     location.reload();
                 });
             });
@@ -164,6 +165,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 $(".text-count").text(totalCaracteres);
 
                 $("#reportMo .fileUP").empty();
+
                 if(el.status == 'SUBMIT') {
                     $("#reportMo .modalBtnWrap").show();
                     $("#rejectBtn").attr("onclick",`goAction('S3',${el.id})`);

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class A5Service {
         QPayment qPayment = QPayment.payment;
 
         BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
-                .and(qStudent.academyClass.id.eq(params.getClassId()));
+                .and(qStudent.academyClass.academyType.eq(params.getAcademyType()));//.and(qStudent.academyClass.id.eq(params.getClassId()))
 
         if(StringUtils.noneEmpty(params.getUserName())){
             where.and(qStudent.user.userName.contains(params.getUserName()));
@@ -60,6 +61,50 @@ public class A5Service {
                 .offset(pageable.getOffset());
 
         return new PageImpl<Student>(query.fetch(), pageable, query.fetchCount());
+    }
+
+    public Student getStudentPaymentTotalYear(SearchVO params){
+        QStudent qStudent = QStudent.student;
+        QPayment qPayment = QPayment.payment;
+
+        BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
+                .and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
+
+        JPAQuery<Student> query = jpaQueryFactory.select(Projections.fields(Student.class,
+                        qPayment.cost.sum().as("payCost")
+                ))
+                .from(qStudent)
+                .where(where)
+                .leftJoin(qPayment)
+                .on(qPayment.student.eq(qStudent)
+                        .and(qPayment.year.eq(params.getYear())));
+
+        List<Student> result = query.fetch();
+
+        return result.get(0);
+    }
+
+    public Student getStudentPaymentTotalMonth(SearchVO params){
+        QStudent qStudent = QStudent.student;
+        QPayment qPayment = QPayment.payment;
+
+        BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
+                .and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
+
+        JPAQuery<Student> query = jpaQueryFactory.select(Projections.fields(Student.class,
+                        qStudent.price.sum().as("totalCost"),
+                        qPayment.cost.sum().as("payCost")
+                ))
+                .from(qStudent)
+                .where(where)
+                .leftJoin(qPayment)
+                .on(qPayment.student.eq(qStudent)
+                        .and(qPayment.year.eq(params.getYear()))
+                        .and(qPayment.month.eq(params.getMonth())));
+
+        List<Student> result = query.fetch();
+
+        return result.get(0);
     }
 
 
@@ -131,6 +176,13 @@ public class A5Service {
             paymentRepo.save(save);
 
             i++;
+        }
+    }
+
+    @Transactional
+    public void deleteNonPayment(SearchVO params) {
+        for(Long id : params.getPaymentIdList()) {
+            paymentRepo.deleteById(id);
         }
     }
 }

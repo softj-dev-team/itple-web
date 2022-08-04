@@ -33,8 +33,8 @@
                     </div>
                     <label for="subject" class="mb5">제목</label>
                     <input type="text" class="input-df mb20" name="subject" id="subject" th:value="${el.subject}">
-                    <label th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" for="author" class="mb5">저자</label>
-                    <input th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" type="text" class="input-df mb20" id="author" name="author" th:value="${el.author}">
+                    <label th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" for="teacher" class="mb5">출제 선생님</label>
+                    <input th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" type="text" class="input-df mb20" id="teacher" name="teacher" th:value="${el.teacher}">
                     <th:block th:switch="${#strings.toString(params.taskType)}">
                         <label for="contents" class="mb5" th:case="TASK">과제 내용</label>
                         <label for="contents" class="mb5" th:case="BOOK_REPORT">독후감 내용</label>

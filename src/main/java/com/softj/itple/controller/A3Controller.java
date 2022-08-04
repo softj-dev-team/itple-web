@@ -30,9 +30,15 @@ public class A3Controller {
     //목록
     @GetMapping("/p1")
     public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+
         if(Objects.isNull(params.getStudentStatus())) {
             params.setStudentStatus(Types.StudentStatus.STUDENT);
         }
+
+        if(Objects.isNull(params.getAcademyType())) {
+            params.setAcademyType(Types.AcademyType.CODING);
+        }
+
         model.addAttribute("list",a3Service.getStudentList(params, pageable));
         model.addAttribute("params",params);
         return "a3/a3p1";

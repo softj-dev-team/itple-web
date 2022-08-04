@@ -28,6 +28,7 @@ public class Payment extends Auditing{
     private Integer year;
     private Integer month;
 
+
     @Builder
     public Payment(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, Student student, long price, long cost, LocalDate paymentDate, Integer paymentDay, Types.PaymentType paymentType, String memo, Integer year, Integer month) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);

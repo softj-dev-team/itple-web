@@ -16,6 +16,9 @@
                 <div class="loginDiv_inner clearfix">
                     <div th:if="${#strings.equals(params.attendanceType,'CODING')}" class="login_logo mb50" style="background-image: url(../assets/img/logo-login1.png);"></div>
                     <div th:if="${#strings.equals(params.attendanceType,'ENGLISH')}" class="login_logo mb50" style="background-image: url(../assets/img/logo-login2.png);"></div>
+                    <div class="audio">
+                        <audio src="/assets/sound/error.mp3" id="beepAudio" style="visibility:hidden"></audio>
+                    </div>
                     <form action="">
                         <div class="left-portrait">
                             <p class="mb20 text-center">출결번호를 입력하세요.</p>
@@ -55,7 +58,6 @@
             <a href="/logout" class="aWhite">관리자 로그아웃</a>
         </div>
     </div>
-
     <script th:inline="javascript">
         /*<![CDATA[*/
         /*]]>*/
@@ -111,9 +113,13 @@
             $.post('/api/a4/p2/s1',{attendanceNo: attendanceNo, attendanceType: $("#attendanceType").val(), attendanceStatus: attendanceStatus},function(res){
                 ut.redirect('/a4/p3', 'id', res.data);
             }).fail(function(){
+                loading(0);
                 $(".input-num-wrap input").val("");
                 attendanceNo = "";
-            })
+                var beepAudio = document.getElementById("beepAudio");
+                beepAudio.play();
+                //player.play(1);
+            });
         }
     </script>
 </th:block>

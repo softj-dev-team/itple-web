@@ -1,4 +1,4 @@
-var path =  '/a1/p1';
+var path =  '/api/a1/p1';
 
 $(function(){
     $("#form1 input").on("keyup",function(e){
@@ -28,14 +28,14 @@ function goAction(flag, arg1, arg2) {
     switch (flag) {
         /*목록*/
         case "L1":
-            var url = path+"?page="+arg1;
+            var url = "/a1/p1?page="+arg1;
             location.href=url;
             break;
         /*저장*/
         case "S1":
 
             var formS1 = $('#form1');
-            var url = '/api'+ path+'/s1';
+            var url = path+'/s1';
 
             modal.confirm("저장하시겠습니까?",function(){
                 loading(1);
@@ -52,7 +52,7 @@ function goAction(flag, arg1, arg2) {
 
             var formS1 = $('#form1');
             //var formData = new FormData(formS1[0]);
-            var url = '/api'+ path+'/s2';
+            var url = path+'/s2';
 
             modal.confirm("저장하시겠습니까?",function(){
                 loading(1);
@@ -79,7 +79,7 @@ function goAction(flag, arg1, arg2) {
         /*삭제*/
         case "D1":
                 var formS1 = $('#form2');
-                var url = '/api'+ path+'/d1';
+                var url = path+'/d1';
 
                 if($("input[name=seqList]:checked").length == 0){
                     modal.alert("체크한 데이터가 없습니다.");

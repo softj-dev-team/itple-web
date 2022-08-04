@@ -27,7 +27,7 @@
                     <th:block th:if="${#strings.equals(el.task.taskType, 'BOOK_REPORT')}">
                         <select name="" id="studentTaskId" class="reportSlt">
                             <option value="">미작성 독후감 선택</option>
-                            <option th:each="e : ${notSubmitList}" th:value="${e.id}" th:text="${e.task.subject+' - '+el.task.author}">책 제목1 - 작가 이름</option>
+                            <option th:each="e : ${notSubmitList}" th:value="${e.id}" th:text="${e.task.subject+'-'+el.task.teacher}">책 제목1 - 작가 이름</option>
                         </select>
                         <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
                     </th:block>
@@ -40,6 +40,14 @@
                 <div class="taskWrite">
                     <textarea id="summernote" name="contents" th:utext="${el.contents}"></textarea>
                     <div class="countBox"><span class="text-count">0</span><span class="count-t">자</span></div>
+                    <div class="fileBox" th:if="${not #strings.isEmpty(el.returnMessage)}">
+                        <div class="fileHead">
+                            <p>반려의견</p>
+                        </div>
+                        <ul class="fileUP">
+                            <li th:text="${el.returnMessage}"></li>
+                        </ul>
+                    </div>
                     <div class="fileBox">
                         <form action="">
                             <div class="fileHead">

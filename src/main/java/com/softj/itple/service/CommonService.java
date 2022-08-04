@@ -59,6 +59,10 @@ public class CommonService {
         return academyClassRepo.findAll();
     }
 
+    public List<AcademyClass> getClassListByType(SearchVO params){
+        return academyClassRepo.findByAcademyType(params.getAcademyType());
+    }
+
     public List<Student> getClassStudentList(SearchVO params){
         return studentRepo.findAllWithUserByAcademyClass(AcademyClass.builder().id(params.getId()).build());
     }

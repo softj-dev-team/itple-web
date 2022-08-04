@@ -37,16 +37,16 @@ DOCTYPE html>
                 <tbody class="table-body" th:classappend="${#strings.equals(params.taskType,'TASK') ? 'taskBody' : 'reportBody'}">
                 <tr th:each="el : ${list}">
                     <td th:if="${#strings.equals(params.taskType,'TASK')}" th:text="${el.task.academyClass.className}">잇플코딩 입문반A</td>
-                    <td><p th:text="${el.task.subject+(#strings.equals(params.taskType,'BOOK_REPORT') ? ' - '+el.task.author : '')}">수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용</p>
+                    <td><p th:text="${el.task.subject+(#strings.equals(params.taskType,'BOOK_REPORT') ? ' - '+el.task.teacher : '')}">수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용</p>
                         <div class="moTBody">
                             <p>
                                 <span th:text="${session.studentVO.academyClass.className}">잇플코딩 입문반A</span>ㅣ
                                 <span th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd')}|">22.03.24 ~ 22.03.27</span>
                             </p>
                             <th:block th:switch="${#strings.toString(el.status)}">
-                                <button th:case="NOT_SUBMIT" type="button" class="btn btn-blue" onclick="taskList()">과제 작성</button>
-                                <button th:case="SUBMIT" type="button" class="btn btn-yellow" onclick="taskList()">확인중</button>
-                                <button th:case="COMPLETE" type="button" class="btn btn-lightGray" onclick="taskList()">과제 완료</button>
+                                <button th:case="NOT_SUBMIT" type="button" class="btn btn-blue" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">과제 작성</button>
+                                <button th:case="SUBMIT" type="button" class="btn btn-yellow" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인중</button>
+                                <button th:case="COMPLETE" type="button" class="btn btn-lightGray" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">과제 완료</button>
                             </th:block>
                         </div>
                     </td>

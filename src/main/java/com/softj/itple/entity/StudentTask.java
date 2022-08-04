@@ -32,6 +32,7 @@ public class StudentTask extends Auditing{
     private Task task;
     private String contents;
     private LocalDate compDate;
+    private String returnMessage;
 
     @OneToMany(mappedBy = "studentTask",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)

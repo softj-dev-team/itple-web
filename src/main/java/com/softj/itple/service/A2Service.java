@@ -78,7 +78,7 @@ public class A2Service {
                         qTask.subject,
                         qTask.startDate,
                         qTask.taskType,
-                        qTask.author,
+                        qTask.teacher,
                         qTask.endDate)
                     )
                     .from(qTask)
@@ -140,6 +140,7 @@ public class A2Service {
     public void completeStudentTask(SearchVO params){
         StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
         find.setStatus(Types.TaskStatus.COMPLETE);
+        find.setReturnMessage(null);
         find.setCompDate(LocalDate.now());
         studentTaskRepo.save(find);
 
@@ -160,6 +161,7 @@ public class A2Service {
     public void rejectStudentTask(SearchVO params){
         StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
         find.setStatus(Types.TaskStatus.NOT_SUBMIT);
+        find.setReturnMessage(params.getReturnMessage());
         studentTaskRepo.save(find);
     }
 
@@ -173,7 +175,7 @@ public class A2Service {
         save.setAcademyClass(AcademyClass.builder().id(params.getClassId()).build());
         save.setSubject(params.getSubject());
         save.setContents(params.getContents());
-        save.setAuthor(params.getAuthor());
+        save.setTeacher(params.getTeacher());
         save.setStartDate(params.getStartDate());
         save.setEndDate(params.getStartDate());
         save.setCoin(params.getCoin());

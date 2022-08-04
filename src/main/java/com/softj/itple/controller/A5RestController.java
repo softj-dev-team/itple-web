@@ -32,4 +32,11 @@ public class A5RestController {
         a5Service.saveCompPayment(params, request);
         return Response.builder().build();
     }
+
+    //미납처리
+    @PostMapping("/p1/d1")
+    public Response p1d1(SearchVO params) throws Exception {
+        a5Service.deleteNonPayment(params);
+        return Response.builder().build();
+    }
 }

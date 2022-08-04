@@ -9,12 +9,12 @@
 <body>
 <th:block layout:fragment="content">
     <div class="adContent">
-        <h1 class="adH1">학생관리</h1>
+        <h1 class="adH1">학생관리_<span th:text="${#strings.equals(params.academyType,'ENGLISH') ? '잇플영어' : '잇플코딩'}"></span></h1>
         <div class="tab clearfix adTab">
             <ul class="tab-ul">
-                <li th:classappend="${#strings.equals(params.studentStatus,'STUDENT') ? 'active' : ''}"><a href="/a3/p1?studentStatus=STUDENT">재원생</a></li>
-                <li th:classappend="${#strings.equals(params.studentStatus,'LEAVE') ? 'active' : ''}"><a href="/a3/p1?studentStatus=LEAVE">휴원생</a></li>
-                <li th:classappend="${#strings.equals(params.studentStatus,'DISCHARGE') ? 'active' : ''}"><a href="/a3/p1?studentStatus=DISCHARGE">퇴원생</a></li>
+                <li th:classappend="${#strings.equals(params.studentStatus,'STUDENT') ? 'active' : ''}"><a th:href="|/a3/p1?studentStatus=STUDENT&academyType=${params.academyType}|">재원생</a></li>
+                <li th:classappend="${#strings.equals(params.studentStatus,'LEAVE') ? 'active' : ''}"><a th:href="|/a3/p1?studentStatus=LEAVE&academyType=${params.academyType}|">휴원생</a></li>
+                <li th:classappend="${#strings.equals(params.studentStatus,'DISCHARGE') ? 'active' : ''}"><a th:href="|/a3/p1?studentStatus=DISCHARGE&academyType=${params.academyType}|">퇴원생</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">

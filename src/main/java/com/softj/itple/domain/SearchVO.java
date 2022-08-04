@@ -1,8 +1,6 @@
 package com.softj.itple.domain;
 
-import com.softj.itple.entity.AcademyClass;
-import com.softj.itple.entity.CodeDetail;
-import com.softj.itple.entity.Task;
+import com.softj.itple.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -62,9 +60,10 @@ public class SearchVO {
 	private Types.TaskType taskType;
 	private AcademyClass academyClass;
 	private Task task;
-	private String author;
+	private String teacher;
 	private Long[] studentIdList = new Long[0];
 	private long coin;
+	private String returnMessage;
 
 	//관리자-출판서적
 	private long bookId;
@@ -113,7 +112,9 @@ public class SearchVO {
 	private Types.PaymentType paymentType;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate paymentDate;
-
+	private Types.AcademyType academyType;
+	private Student totalYear;
+	private Student totalMonth;
 }
 
 
