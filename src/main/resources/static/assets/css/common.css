@@ -739,7 +739,7 @@ i.i-date{
 }
 .gnb > li {
     width: 10.3vw;
-    max-width: 145px;
+    max-width: 142px;
     height: 80px;
     line-height: 80px;
     float: left;
@@ -3289,12 +3289,14 @@ body.adminBody{
     margin: 0 auto;
 }
 .adTable.list1 tr th:nth-child(1){width: 5%;}
-.adTable.list1 tr th:nth-child(2){width: 10%;}
-.adTable.list1 tr th:nth-child(3){width: auto;}
-.adTable.list1 tr th:nth-child(4){width: 10%;}
-.adTable.list1 tr th:nth-child(5){width: 20%;}
-.adTable.list1 tr th:nth-child(6){width: 10%;}
+.adTable.list1 tr th:nth-child(2){width: 5%;}
+.adTable.list1 tr th:nth-child(3){width: 10%;}
+.adTable.list1 tr th:nth-child(4){width: auto;}
+.adTable.list1 tr th:nth-child(5){width: 10%;}
+.adTable.list1 tr th:nth-child(6){width: 15%;}
 .adTable.list1 tr th:nth-child(7){width: 10%;}
+.adTable.list1 tr th:nth-child(8){width: 10%;}
+.adTable.list1 tr th:nth-child(9){width: 10%;}
 .hr2{ 
     width: 100%;
     height: 1px;
@@ -3876,3 +3878,16 @@ textarea.textA{
     font-size: 14px;
     margin-left: 5px;
 }
+
+.adTable.list7{text-align: center;}
+.adTable.list7 tr th:nth-child(1){width: 8%;}
+.adTable.list7 tr th:nth-child(2){width: 12%;}
+.adTable.list7 tr th:nth-child(3){width: auto;}
+
+.adTable.list8{text-align: center;}
+.adTable.list8 tr th:nth-child(1){width: 15%;}
+.adTable.list8 tr th:nth-child(2){width: 15%;}
+.adTable.list8 tr th:nth-child(3){width: 35%;}
+.adTable.list8 tr th:nth-child(4){width: 35%;}
+
+

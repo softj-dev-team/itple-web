@@ -8,7 +8,13 @@
 <body class="adminBody">
 <th:block layout:fragment="content">
     <div class="adContent">
-        <h1 class="adH1">수납관리_<span th:text="${#strings.equals(params.academyType,'ENGLISH') ? '잇플영어' : '잇플코딩'}"></span></h1>
+        <h1 class="adH1">수납관리</h1>
+        <div class="tab clearfix">
+            <ul class="tab-ul">
+                <li th:classappend="${#strings.equals(params.academyType,'CODING') ? 'active' : ''}"><a href="/a5/p1">잇플 코딩</a></li>
+                <li th:classappend="${#strings.equals(params.academyType,'ENGLISH') ? 'active' : ''}"><a href="/a5/p1?academyType=ENGLISH">잇플 영어</a></li>
+            </ul>
+        </div>
         <div class="content-in clearfix">
             <div class="adSearch clearfix selSearch">
                 <form id="form1" name="form1" action="" class="adSearch-in">
@@ -108,7 +114,8 @@
                     <div class="totBox">
                         <div class="container">
                             <div class="chart year">
-                                <span class="center" th:with="per=${params.totalYear.payCost} / (${params.totalMonth.totalCost} * 12)" th:text="${#numbers.formatPercent(per,0,0)}"></span>
+                                <span class="center" th:if="${params.totalMonth.totalCost == 0}">0%</span>
+                                <span class="center" th:if="${params.totalMonth.totalCost != 0}" th:with="per=${params.totalYear.payCost} / (${params.totalMonth.totalCost} * 12)" th:text="${#numbers.formatPercent(per,0,0)}"></span>
                             </div>
                         </div>
                         <div class="totHead">
@@ -123,7 +130,8 @@
                     <div class="totBox">
                         <div class="container">
                             <div class="chart month">
-                                <span class="center" th:with="per=${params.totalMonth.payCost} / ${params.totalMonth.totalCost}" th:text="${#numbers.formatPercent(per,0,0)}"></span>
+                                <span class="center" th:if="${params.totalMonth.totalCost == 0}">0%</span>
+                                <span class="center" th:if="${params.totalMonth.totalCost != 0}" th:with="per=${params.totalMonth.payCost} / ${params.totalMonth.totalCost}" th:text="${#numbers.formatPercent(per,0,0)}"></span>
                             </div>
                         </div>
                         <div class="totHead">
@@ -357,9 +365,13 @@
                 classname.style.background = "conic-gradient("+color+" 0% "+i+"%, #dedede "+i+"% 100%)";
             }
             $(document).ready(function(){
+                var percentYear = 0;
+                var percentMonth = 0;
 
-                var percentYear = parseInt([[${params.totalYear.payCost}]] / ( [[${params.totalMonth.totalCost}]] * 12 ) * 100);
-                var percentMonth = parseInt([[${params.totalMonth.payCost}]] / [[${params.totalMonth.totalCost}]] * 100);
+                if([[${params.totalMonth.totalCost}]] != 0) {
+                    percentYear = parseInt([[${params.totalYear.payCost}]] / ([[${params.totalMonth.totalCost}]] * 12) * 100);
+                    percentMonth = parseInt([[${params.totalMonth.payCost}]] / [[${params.totalMonth.totalCost}]] * 100);
+                }
 
                 makeChart(percentYear, chart1, '#2D7AC0');
                 makeChart(percentMonth, chart2, '#2D7AC0');

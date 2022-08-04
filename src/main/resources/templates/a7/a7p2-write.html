@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/layout">
+<head>
+    <title>관리자 설정</title>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="responsiveWrap">
+        <h1 class="responsiveH1">관리자 관리</h1>
+        <div class="responsiveInner">
+            <form id="form1">
+                <div class="inputSec">
+                    <label for="userName" class="mb5">이름</label>
+                    <input name="userName" id="userName" type="text" class="input-df mb20">
+                    <label for="approved" class="mb5">승인/미승인</label>
+                    <select name="approved" id="approved" class="input-df mb20">
+                        <option value="true">승인</option>
+                        <option value="false">미승인</option>
+                    </select>
+                    <label for="menuAll" class="mb5">메뉴 권한 선택</label>
+                    <div class="studCh">
+                        <input type="checkbox" id="menuAll"><label for="menuAll">전체선택</label>
+                        <div id="menuList">
+                            <input type="checkbox" class="chkMenu" name="menu1" id="menu1"><label for="menu1">도서목록</label>
+                            <input type="checkbox" class="chkMenu" name="menu2" id="menu2"><label for="menu2">수업연계</label>
+                            <input type="checkbox" class="chkMenu" name="menu3" id="menu3"><label for="menu3">학생관리</label>
+                            <input type="checkbox" class="chkMenu" name="menu4" id="menu4"><label for="menu4">출결관리</label>
+                            <input type="checkbox" class="chkMenu" name="menu5" id="menu5"><label for="menu5">수납관리</label>
+                            <input type="checkbox" class="chkMenu" name="menu6" id="menu6"><label for="menu6">포트폴리오</label>
+                            <input type="checkbox" class="chkMenu" name="menu7" id="menu7"><label for="menu7">잇플 커뮤니티</label>
+                            <input type="checkbox" class="chkMenu" name="menu8" id="menu8"><label for="menu8">관리자 설정</label>
+                        </div>
+                    </div>
+                    <label for="userId" class="mb5">아이디</label>
+                    <input name="userId" id="userId" type="text" class="input-df post mb20" ><button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>
+                    <label for="userPw" class="mb5">비밀번호</label>
+                    <input name="userPw" id="userPw" type="password" class="input-df mb20">
+                    <label for="userPwRe" class="mb5">비밀번호 확인</label>
+                    <input name="userPwRe" id="userPwRe" type="password" class="input-df mb20">
+                </div>
+                <div class="btn-center mt60">
+                    <button type="button" class="btn" onclick="adminSave()">저장하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/assets/js/a3/a3p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+        var checkId = "";
+
+        $(function(){
+            var allChk = 0;
+            $("input:checkbox[class='chkMenu']").each(function(){
+                if(!$(this).is(":checked")){
+                    allChk++;
+                }
+            });
+
+            if(allChk > 0){
+                $("#menuAll").prop("checked",false);
+            }else{
+                $("#menuAll").prop("checked",true);
+            }
+
+            $(document).on("click","input:checkbox[class='chkMenu']",function(){
+                if(!$(this).is(":checked")){
+                    $("#menuAll").prop("checked",false);
+                }
+            });
+
+            $('#menuAll').click(function(){
+                var chk = $(this).is(':checked');
+                if(chk) $('.studCh input').prop('checked',true);
+                else $('.studCh input').prop('checked',false);
+            });
+
+            $("input[name=userId]").on("input",function(){
+                checkId = "";
+                $("#idDupCheckBtn").removeClass("btn-blue");
+                $("#idDupCheckBtn").text("중복검사");
+            });
+        });
+
+        function idDupCheck(){
+            var userId = $("input[name=userId]").val();
+            if(regExp.isNotId(userId)){
+                modal.alert("아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자로 설정해주세요.");
+                return;
+            }
+            $.post("/api/dupCheck",{userId: userId},function (res){
+                checkId = userId;
+                $("#idDupCheckBtn").addClass("btn-blue");
+                $("#idDupCheckBtn").text("검사완료");
+            });
+        }
+
+        function adminSave(){
+            var userId = $("input[name=userId]").val();
+            var userName = $("input[name=userName]").val();
+            var userPw = $("input[name=userPw]").val();
+            var userPwRe = $("input[name=userPwRe]").val();
+
+            if(ut.isEmpty(userId)){
+                modal.required("아이디");
+                return;
+            }
+            if(checkId == "" || checkId != userId){
+                modal.alert("아이디 중복확인을 해주세요.");
+                return;
+            }
+            if(ut.isEmpty(userName)){
+                modal.required("이름");
+                return;
+            }
+            if(ut.isEmpty(userPw)){
+                modal.required("비밀번호");
+                return;
+            }
+            if(ut.isEmpty(userPwRe)){
+                modal.required("비밀번호 확인");
+                return;
+            }
+            if(userPw != userPwRe){
+                modal.alert("비밀번호와 비밀번호 확인이 다릅니다.");
+                return;
+            }
+
+            $.post("/api/a7/p2/s1",$("#form1").serialize(),function(res){
+                modal.alert("저장되었습니다.");
+                ut.redirect("/a7/p2");
+            });
+        }
+    </script>
+</th:block>
+</body>
+</html>

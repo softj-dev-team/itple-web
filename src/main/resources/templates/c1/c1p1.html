@@ -60,7 +60,8 @@
                         onclick="goWrite();">글쓰기</button>
             </div>
         </div>
-
+        <!--페이지네이션-->
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
         <div class="modal" id="commOt">
             <div class="modal-bg"></div>
             <div class="modalContent md">
@@ -69,23 +70,23 @@
                     <button type="button" class="modalClose"></button>
                 </div>
                 <form id="form2">
-                <div class="modalBody commOption">
-                    <label for="roleType" class="mb5">쓰기 권한</label>
-                    <select name="roleType" id="roleType" class="input-df">
-                        <option th:each="er : ${T(com.softj.itple.domain.Types.RoleType).values()}" th:selected="${er} == ${params.codeDetail.roleType}" th:value="${er}" th:text="${#strings.equals('01',er.code) ? '관리자 이상' : '일반회원 이상' }">관리자 이상</option>
-                    </select>
-                    <div class="categoryBox">
-                        <label for="categoryInput" class="mb5">카테고리</label>
-                        <input type="text" id="categoryInput" class="categoryInput">
-                        <input type="hidden" id="removeId"/>
-                        <button type="button" id="categoryAddBtn" class="btn-add"></button>
-                        <div class="categoryCon">
+                    <div class="modalBody commOption">
+                        <label for="roleType" class="mb5">쓰기 권한</label>
+                        <select name="roleType" id="roleType" class="input-df">
+                            <option th:each="er : ${T(com.softj.itple.domain.Types.RoleType).values()}" th:selected="${er} == ${params.codeDetail.roleType}" th:value="${er}" th:text="${#strings.equals('01',er.code) ? '관리자 이상' : '일반회원 이상' }">관리자 이상</option>
+                        </select>
+                        <div class="categoryBox">
+                            <label for="categoryInput" class="mb5">카테고리</label>
+                            <input type="text" id="categoryInput" class="categoryInput">
+                            <input type="hidden" id="removeId"/>
+                            <button type="button" id="categoryAddBtn" class="btn-add"></button>
+                            <div class="categoryCon">
+                            </div>
+                        </div>
+                        <div class="modalBtnWrap">
+                            <button type="button" class="btn btn-blue modalOff" onclick="goAction('S3');">저장하기</button>
                         </div>
                     </div>
-                    <div class="modalBtnWrap">
-                        <button type="button" class="btn btn-blue modalOff" onclick="goAction('S3');">저장하기</button>
-                    </div>
-                </div>
                 </form>
             </div>
         </div>
@@ -108,9 +109,6 @@
                 </div>
             </div>
         </div>
-
-        <!--페이지네이션-->
-        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
 
     <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
@@ -127,7 +125,14 @@
                 return;
             }
             var lastId = $(".categorySub").last().prop("id");
-            var lastIdArr = lastId.split("_");
+            var lastIdArr = new Array();
+            var lastNum = 0;
+
+            if(lastId != undefined && lastId != "") {
+                lastIdArr = lastId.split("_");
+                lastNum = lastIdArr[1];
+            }
+
             var lastNum = lastIdArr[1];
             var newNum = parseInt(lastNum)+1;
             var newId = "cate_"+newNum;

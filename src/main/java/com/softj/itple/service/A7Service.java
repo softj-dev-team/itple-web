@@ -1,0 +1,193 @@
+package com.softj.itple.service;
+
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.softj.itple.domain.SearchVO;
+import com.softj.itple.domain.Types;
+import com.softj.itple.entity.*;
+import com.softj.itple.exception.ApiException;
+import com.softj.itple.exception.ErrorCode;
+import com.softj.itple.repo.*;
+import com.softj.itple.util.CodeUtil;
+import com.softj.itple.util.LongUtils;
+import com.softj.itple.util.StringUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class A7Service {
+
+    private final JPAQueryFactory jpaQueryFactory;
+    private final PaymentRepo paymentRepo;
+
+    private final StudentRepo studentRepo;
+    private final AcademyClassRepo academyClassRepo;
+    private final UserRepo userRepo;
+    private final AdminRepo adminRepo;
+    private final RoleRepo roleRepo;
+
+    public Page<AcademyClass> getAcademyClassList(SearchVO params, Pageable pageable){
+        QAcademyClass qAcademyClass = QAcademyClass.academyClass;
+
+        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false))
+                .and(qAcademyClass.academyClass.academyType.eq(params.getAcademyType()));
+
+        if(StringUtils.noneEmpty(params.getClassName())){
+            where.and(qAcademyClass.className.contains(params.getClassName()));
+        }
+
+        JPAQuery<AcademyClass> query = jpaQueryFactory.select(Projections.fields(AcademyClass.class,
+                        qAcademyClass.id,
+                        qAcademyClass.academyType,
+                        qAcademyClass.className
+                ))
+                .from(qAcademyClass)
+                .where(where)
+                .orderBy(qAcademyClass.id.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
+
+        return new PageImpl<AcademyClass>(query.fetch(), pageable, query.fetchCount());
+    }
+
+    public AcademyClass getAcademyClass(SearchVO params) {
+        return academyClassRepo.findById(params.getId()).orElseThrow(() -> new ApiException("반 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+    }
+
+    @Transactional
+    public void saveAcademyClass(SearchVO params, HttpServletRequest request){
+
+        HttpSession session = request.getSession();
+        LocalDateTime now = LocalDateTime.now();
+
+        AcademyClass save = academyClassRepo.findById(params.getId()).orElse(AcademyClass.builder().build());
+
+        save.setAcademyType(params.getAcademyType());
+        save.setClassName(params.getClassName());
+        save.setDeleted(false);
+
+        if(save.getId() != 0) {
+            save.setUpdatedAt(now);
+            save.setUpdatedId(session.getAttribute("userId").toString());
+        }else{
+            save.setCreatedAt(now);
+            save.setCreatedId(session.getAttribute("userId").toString());
+        }
+
+        academyClassRepo.save(save);
+    }
+
+    @Transactional
+    public void deleteAcademyClass(SearchVO params, HttpServletRequest request) {
+        for(Long id : params.getIdList()) {
+            HttpSession session = request.getSession();
+            LocalDateTime now = LocalDateTime.now();
+
+            AcademyClass save = academyClassRepo.findById(id).orElseThrow(() -> new ApiException("반 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+
+            save.setDeleted(true);
+            save.setUpdatedAt(now);
+            save.setUpdatedId(session.getAttribute("userId").toString());
+
+            academyClassRepo.save(save);
+        }
+    }
+
+    public Page<Admin> getAdminList(SearchVO params, Pageable pageable){
+        QAdmin qAdmin = QAdmin.admin;
+        BooleanBuilder where = new BooleanBuilder().and(qAdmin.isDeleted.eq(false));
+
+        if(StringUtils.noneEmpty(params.getUserName())){
+            where.and(qAdmin.user.userName.contains(params.getSearchValue()));
+        }
+
+        return adminRepo.findAll(where, pageable);
+    }
+
+    public Admin getAdmin(SearchVO params){
+        return adminRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    @Transactional
+    public void saveAdmin(SearchVO params, HttpServletRequest request){
+        Admin save = Admin.builder()
+                .user(com.softj.itple.entity.User.builder()
+                        .userId(params.getUserId())
+                        .userPw(new BCryptPasswordEncoder().encode(params.getUserPw()))
+                        .userName(params.getUserName())
+                        .isApproved(Boolean.parseBoolean(params.getApproved()))
+                        .build())
+                .menu1(params.isMenu1())
+                .menu2(params.isMenu2())
+                .menu3(params.isMenu3())
+                .menu4(params.isMenu4())
+                .menu5(params.isMenu5())
+                .menu6(params.isMenu6())
+                .menu7(params.isMenu7())
+                .menu8(params.isMenu8())
+                .build();
+
+        userRepo.save(save.getUser());
+        adminRepo.save(save);
+
+        roleRepo.save(Role.builder()
+                .roleName(Types.RoleType.ADMIN.getName())
+                .roleType(Types.RoleType.ADMIN)
+                .user(save.getUser())
+                .build());
+
+        Admin adminVO = adminRepo.findWithUserByUser(User.builder().id(save.getUser().getId()).build());
+        HttpSession session = request.getSession(true);
+        session.setAttribute("adminVO", adminVO);
+    }
+
+    @Transactional
+    public void updateAdmin(SearchVO params, HttpServletRequest request){
+
+        Admin save = adminRepo.findById(params.getAdminId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        save.setMenu1(params.isMenu1());
+        save.setMenu2(params.isMenu2());
+        save.setMenu3(params.isMenu3());
+        save.setMenu4(params.isMenu4());
+        save.setMenu5(params.isMenu5());
+        save.setMenu6(params.isMenu6());
+        save.setMenu7(params.isMenu7());
+        save.setMenu8(params.isMenu8());
+        save.getUser().setUserName(params.getUserName());
+        save.getUser().setApproved(Boolean.parseBoolean(params.getApproved()));
+
+        if(StringUtils.noneEmpty(params.getUserPw())){
+            save.getUser().setUserPw(new BCryptPasswordEncoder().encode(params.getUserPw()));
+        }
+
+        userRepo.save(save.getUser());
+
+        Admin adminVO = adminRepo.findWithUserByUser(User.builder().id(save.getUser().getId()).build());
+        HttpSession session = request.getSession(true);
+        session.setAttribute("adminVO", adminVO);
+    }
+
+    @Transactional
+    public void deleteAdmin(SearchVO params, HttpServletRequest request){
+        for(long id : params.getIdList()){
+            Admin admin = adminRepo.findById(id).orElse(Admin.builder().build());
+            admin.setDeleted(true);
+            adminRepo.save(admin);
+        }
+    }
+}

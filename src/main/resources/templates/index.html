@@ -119,8 +119,8 @@
         </div>
     </div>
 
-    <script src="/assets/js/common.js"></script>
-    <script type="text/javascript">
+    <script th:if="${@authUtil.isRole('STUDENT')}" th:src="@{/assets/js/common.js(v='1.0.0')}"></script>
+    <script th:if="${@authUtil.isRole('STUDENT')}" th:inline="javascript">
     //슬라이더
     $('.main-slide').slick({
             slidesToShow:4,

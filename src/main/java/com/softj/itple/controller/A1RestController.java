@@ -11,12 +11,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RequestMapping("/api/a1")
 @RestController
 @RequiredArgsConstructor
 public class A1RestController {
     final private A1Service a1Service;
     final private CommonService commonService;
+
+    //카테고리목록
+    @PostMapping("/p1/l1")
+    public Response p1l1(SearchVO params){
+        return Response.builder()
+                .data(a1Service.selectBookCategoryList(params))
+                .build();
+    }
 
     //삭제
     @PostMapping("/p1/d1")
@@ -37,6 +47,14 @@ public class A1RestController {
     public Response p1s2(SearchVO params) throws ApiException {
        a1Service.saveBookRental(params);
        return Response.builder().build();
+    }
+
+    //카테고리 저장
+    @PostMapping("/p1/s3")
+    public Response p1s3(SearchVO params, HttpServletRequest request){
+        a1Service.saveBookCategory(params, request);
+        return Response.builder()
+                .build();
     }
 
 

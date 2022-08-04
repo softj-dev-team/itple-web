@@ -72,6 +72,7 @@ public class SearchVO {
 	private Types.BookRentalStatus bookStatus;
 	private String writer;
 	private String rentalName;
+	private String bookCategory;
 
 	//관리자-대여
 	private String evBookRental; // 대여/반납 이벤트구분
@@ -115,6 +116,20 @@ public class SearchVO {
 	private Types.AcademyType academyType;
 	private Student totalYear;
 	private Student totalMonth;
+
+	//관리자-반관리
+	private String className;
+
+	//관리자-관리자관리
+	private Long adminId;
+	private boolean menu1;
+	private boolean menu2;
+	private boolean menu3;
+	private boolean menu4;
+	private boolean menu5;
+	private boolean menu6;
+	private boolean menu7;
+	private boolean menu8;
 }
 
 

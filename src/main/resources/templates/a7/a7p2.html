@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>관리자 설정</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="adContent">
+        <h1 class="adH1">관리자 관리</h1>
+        <div class="content-in clearfix">
+            <div class="adSearch clearfix">
+                <form id="form1" class="adSearch-in">
+                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                    <div class="in-box">
+                        <input type="text" name="userName" th:value="${param.userName}">
+                    </div>
+                    <button type="button" class="src-btn" onclick="goSearch()"></button>
+                </form>
+            </div>
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                    <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                </div>
+                <form id="form2" name="form2">
+                    <input type="hidden" name="idList" id="idList" />
+                </form>
+            </div>
+            <table class="adTable list8">
+                <thead class="adTable-head">
+                <tr>
+                    <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                    <th>No</th>
+                    <th>이름</th>
+                    <th>아이디</th>
+                </tr>
+                </thead>
+                <tbody class="adTable-body adTbody checklist">
+                <tr th:each="el : ${list}">
+                    <td>
+                        <input type="checkbox" name="seqList" th:id="|a${elStat.count}|" ><label th:for="|a${elStat.count}|"></label>
+                        <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
+                    </td>
+                    <td><span th:text="${list.pageable.offset+elStat.count}"></span></td>
+                    <td><a th:href="|/a7/p2-detail/${el.id}/${list.pageable.pageNumber}|"><span th:text="${el.user.userName}"></span></a></td>
+                    <td><a th:href="|/a7/p2-detail/${el.id}/${list.pageable.pageNumber}|"><span th:text="${el.user.userId}"></span></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="adfooter-btn">
+            <button type="button" class="m-btn" th:onclick="goWrite();">등록</button>
+        </div>
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    </div>
+    <div class="modal" id="removeMo">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="modalText">
+                    선택한 관리자를 정말 삭제하시겠습니까?<br>
+                    삭제한 관리자는 복구할 수 없습니다.
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-red modalOff" onclick="goAction('D2')">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/assets/js/a7/a7p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+        $('.RemoveBtn').on('click', function () {
+            $('#removeMo').addClass('on');
+        });
+        $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+            $(this).parents('.modal').removeClass('on');
+        });
+
+        function goWrite(){
+            location.href="/a7/p2-write";
+        }
+    </script>
+</th:block>
+</body>
+</html>

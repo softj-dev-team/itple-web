@@ -8,7 +8,10 @@ import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.BookRentalRepo;
 import com.softj.itple.repo.BookRepo;
+import com.softj.itple.repo.CodeDetailRepo;
 import com.softj.itple.repo.StudentRepo;
+import com.softj.itple.util.CodeUtil;
+import com.softj.itple.util.CustomUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +19,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.thymeleaf.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +33,8 @@ public class A1Service {
     private final BookRepo bookRepo;
     private final BookRentalRepo bookRentalRepo;
     private final StudentRepo studentRepo;
+
+    private final CodeDetailRepo codeDetailRepo;
 
     public Page<Book> getBookList(SearchVO params, Pageable pageable){
         QBook qBook = QBook.book;
@@ -40,6 +49,11 @@ public class A1Service {
                     break;
             }
         }
+
+        if(com.softj.itple.util.StringUtils.noneEmpty(params.getBookCategory())){
+            where.and(qBook.bookCategory.eq(params.getBookCategory()));
+        }
+
         return bookRepo.findAll(where,pageable);
     }
     public Book getBook(SearchVO params) {
@@ -70,6 +84,7 @@ public class A1Service {
       save.setStartDate(startDate);
       save.setEndDate(endDate);
       save.setRentalName(params.getRentalName());
+      save.setBookCategory(params.getBookCategory());
 
 
       if(ObjectUtils.isEmpty(params.getBookStatus())){
@@ -185,5 +200,90 @@ public class A1Service {
         bookRentalRepo.save(save);
 
         return bookRepo.save(book).getId();
+    }
+
+    @Transactional
+    public List<CodeDetail> selectBookCategoryList(SearchVO params){
+        CodeUtil cu = new CodeUtil(codeDetailRepo);
+        List<CodeDetail> list = cu.getCodeList(params.getMasterId());
+        return list;
+    }
+
+    @Transactional
+    public void saveBookCategory(SearchVO params, HttpServletRequest request){
+        // delete
+        HttpSession session = request.getSession();
+        LocalDateTime now = LocalDateTime.now();
+
+        if(params.getRemoveIdList() != null) {
+            for (long id : params.getRemoveIdList()) {
+                CodeDetail save = codeDetailRepo.findById(id).get();
+                save.setUpdatedAt(now);
+                save.setUpdatedId(session.getAttribute("userId").toString());
+                save.setDeleted(true);
+                codeDetailRepo.save(save);
+            }
+        }
+
+        // update
+        if(params.getUpdateIdList() != null){
+            int i=0;
+            String[] codeNameList = params.getCodeNameList();
+
+            for(long id: params.getUpdateIdList()){
+                CodeDetail save = codeDetailRepo.findById(id).get();
+                save.setCodeName(codeNameList[i]);
+                save.setUpdatedAt(now);
+                save.setUpdatedId(session.getAttribute("userId").toString());
+                codeDetailRepo.save(save);
+                i++;
+            }
+        }
+
+        // insert
+        if(params.getNewCodeNameList() != null){
+
+            long masterId = 4;
+            CodeDetail getTopCodeDetailOrderBySort = codeDetailRepo.findTopByMasterIdOrderBySortDesc(masterId).orElse(CodeDetail.builder().build());
+            CodeDetail getTopCodeDetailOrderByCodeValue = codeDetailRepo.findTopByMasterIdOrderByCodeValueDesc(masterId).orElse(CodeDetail.builder().build());
+
+            int startSort = getTopCodeDetailOrderBySort.getSort();
+            int startCodeValue = 0;
+
+            if(!StringUtils.isEmpty(getTopCodeDetailOrderByCodeValue.getCodeValue())){
+                startCodeValue = Integer.parseInt(getTopCodeDetailOrderByCodeValue.getCodeValue());
+            }
+
+            for(String codeName : params.getNewCodeNameList()){
+                CodeDetail save = codeDetailRepo.findByCodeName(codeName).orElse(CodeDetail.builder().build());
+
+                if(save.getId() != 0){
+                    save.setDeleted(false);
+                    save.setUpdatedAt(now);
+                    save.setUpdatedId(session.getAttribute("userId").toString());
+                    codeDetailRepo.save(save);
+                }else {
+                    String codeValue = "";
+                    startCodeValue = startCodeValue + 1;
+
+                    if (startCodeValue < 10) {
+                        codeValue = "0" + startCodeValue;
+                    } else {
+                        codeValue = Integer.toString(startCodeValue);
+                    }
+                    startSort += 1;
+
+                    save.setMasterId(masterId);
+                    save.setCodeName(codeName);
+                    save.setCodeValue(codeValue);
+                    save.setRoleType(Types.RoleType.STUDENT);
+                    save.setSort(startSort);
+                    codeDetailRepo.save(save);
+                }
+            }
+        }
+
+        CodeUtil cu = new CodeUtil(codeDetailRepo);
+        cu.refresh();
     }
 }

@@ -42,7 +42,7 @@ public class User extends Auditing{
     private List<Attendance> attendanceList;
 
     @Builder
-    public User(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String userId, String userPw, String userName, Student student, Admin admin, List<Role> roleList, List<Attendance> attendanceList) {
+    public User(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String userId, String userPw, String userName, Student student, Admin admin, List<Role> roleList, List<Attendance> attendanceList, boolean isApproved) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.userId = userId;
         this.userPw = userPw;
@@ -51,5 +51,6 @@ public class User extends Auditing{
         this.admin = admin;
         this.roleList = roleList;
         this.attendanceList = attendanceList;
+        this.isApproved = isApproved;
     }
 }

@@ -25,6 +25,8 @@ public class Book  extends Auditing {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    private String bookCategory;
+
     @Convert(converter = Types.BookRentalStatus.Converter.class)
     private Types.BookRentalStatus bookStatus;
 
@@ -32,7 +34,7 @@ public class Book  extends Auditing {
     private List<BookRental> bookRental;
 
     @Builder
-    public Book(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String bookNo, String subject, String thumbnail, String contents, String writer, String rentalName, LocalDate startDate, LocalDate endDate, Types.BookRentalStatus bookStatus) {
+    public Book(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, String bookNo, String subject, String thumbnail, String contents, String writer, String rentalName, LocalDate startDate, LocalDate endDate, Types.BookRentalStatus bookStatus, String bookCategory) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.bookNo = bookNo;
         this.subject = subject;
@@ -43,5 +45,6 @@ public class Book  extends Auditing {
         this.startDate = startDate;
         this.endDate = endDate;
         this.bookStatus = bookStatus;
+        this.bookCategory = bookCategory;
     }
 }

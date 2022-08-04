@@ -22,6 +22,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.querydsl.QSort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -327,9 +328,13 @@ public class C1Service {
             CodeDetail getTopCodeDetailOrderBySort = codeDetailRepo.findTopByMasterIdOrderBySortDesc(masterId).orElse(CodeDetail.builder().build());
             CodeDetail getTopCodeDetailOrderByCodeValue = codeDetailRepo.findTopByMasterIdOrderByCodeValueDesc(masterId).orElse(CodeDetail.builder().build());
 
-
             int startSort = getTopCodeDetailOrderBySort.getSort();
-            int startCodeValue = Integer.parseInt(getTopCodeDetailOrderByCodeValue.getCodeValue());
+            int startCodeValue = 0;
+
+            if(!org.thymeleaf.util.StringUtils.isEmpty(getTopCodeDetailOrderByCodeValue.getCodeValue())){
+                startCodeValue = Integer.parseInt(getTopCodeDetailOrderByCodeValue.getCodeValue());
+            }
+
             for(String codeName : params.getNewCodeNameList()){
                 CodeDetail save = codeDetailRepo.findByCodeName(codeName).orElse(CodeDetail.builder().build());
 
@@ -349,7 +354,7 @@ public class C1Service {
                     }
                     startSort += 1;
 
-                    save.setMasterId(1);
+                    save.setMasterId(masterId);
                     save.setCodeName(codeName);
                     save.setCodeValue(codeValue);
                     save.setRoleType(Types.RoleType.STUDENT);

@@ -16,6 +16,12 @@
                 <form id="form1" name="form1" action="" class="adSearch-in">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <div class="in-box">
+                        <select name="bookCategory" id="bookCategory" class="select-md">
+                            <option value="">전체</option>
+                            <option th:each="e : ${@codeUtil.getCodeList(4)}"
+                                    th:value="${e.codeValue}" th:text="${e.codeName}"
+                                    th:selected="${params.bookCategory == e.codeValue}">카테고리</option>
+                        </select>
                          <select name="searchType" id="searchType">
                             <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">책제목</option>
                             <option value="rentalName" th:selected="${#strings.equals(param.searchType, 'rentalName')}">대여자</option>
@@ -28,15 +34,15 @@
             <div class="tableBtn-box">
                 <div class="leftBox">
                     <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                    <form id="form2" name="form2">
+                        <input type="hidden" name="idList" id="idList" />
+                    </form>
                 </div>
                 <div class="rightBox">
                     <button type="button" class="m-btn btn-line" onclick="goAdd();">신규등록</button>
                     <button type="button" class="m-btn QRBtn">QR촬영</button>
                 </div>
             </div>
-            <form id="form2" name="form2">
-                <input type="hidden" name="idList" id="idList" />
-            </form>
             <table class="adTable list1">
                 <thead class="adTable-head">
                     <tr>
@@ -62,7 +68,7 @@
                         </td>
                         <td>
                         <div class="bookImg" th:style="|background-image: url('${el.thumbnail}');|"></div></td>
-                        <td><a th:href="|/a1/p1-detail/${el.id}/${list.pageable.pageNumber}|"><span th:text="${el.subject}">책제목</span></a></td>
+                        <td><a th:href="|/a1/p1-detail/${el.id}/${list.pageable.pageNumber}|"><span class="category" th:if="${not #strings.isEmpty(el.bookCategory)}" th:text="|[${@codeUtil.getCodeName('4', el.bookCategory)}]|"></span> <span th:text="${el.subject}">책제목</span></a></td>
                         <td><span th:text="${el.writer}">저자</span></td>
                         <td><span th:if="${not #strings.isEmpty(el.startDate) and not #strings.isEmpty(el.endDate)}" th:text="${el.startDate + '~' + el.endDate}">대여기간</span></td>
                         <td><span th:if="${not #strings.isEmpty(el.rentalName)}" th:text="${el.rentalName}">대여자</span></td>
@@ -78,6 +84,13 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="adfooter-btn">
+            <button type="button" class="m-btn btn-line mr5 categoryBtn">카테고리 설정</button>
+        </div>
+
+        <!--페이지네이션-->
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
         <div class="modal" id="removeMo">
             <div class="modal-bg"></div>
             <div class="modalContent xs">
@@ -114,9 +127,51 @@
                 </div>
             </div>
         </div>
+        <div class="modal" id="commOt">
+            <div class="modal-bg"></div>
+            <div class="modalContent md">
+                <div class="modalHd">
+                    <h3>도서 카테고리 설정</h3>
+                    <button type="button" class="modalClose"></button>
+                </div>
+                <form id="form3">
+                    <div class="modalBody commOption">
+                        <div class="categoryBox">
+                            <label for="categoryInput" class="mb5">카테고리 설정</label>
+                            <input type="text" id="categoryInput" class="categoryInput">
+                            <input type="hidden" id="removeId"/>
+                            <button type="button" id="categoryAddBtn" class="btn-add"></button>
+                            <div class="categoryCon">
+                            </div>
+                        </div>
+                        <div class="modalBtnWrap">
+                            <button type="button" class="btn btn-blue modalOff" onclick="goAction('S3');">저장하기</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal" id="cateDel">
+            <div class="modal-bg"></div>
+            <div class="modalContent xs">
+                <div class="modalHd">
+                    <h3></h3>
+                    <button type="button" class="modalClose"></button>
+                </div>
+                <div class="modalBody commOption">
+                    <div class="modalText">
+                        카테고리를 정말 삭제하시겠습니까?<br>
+                        삭제한 카테고리는 복구할 수 없지만<br>
+                        카테고리 내의 글은 삭제되지 않습니다.
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" id="confirmDelBtn" class="btn btn-red modalOff">삭제하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!--페이지네이션-->
-        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+
     </div>
 
     <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
@@ -164,6 +219,70 @@
                 document.body.removeChild(link);
             })
         }
+        $(document).on("click", ".categoryRemove", function(){
+            var id = $(this).parent().parent().prop("id");
+            $("#removeId").val(id);
+            $('#cateDel').addClass('on');
+        }).on("click", ".btn-add", function(){
+            let jb = $( '.categoryInput' ).val();
+            if(ut.isEmpty(jb)){
+                modal.required("카테고리명");
+                return;
+            }
+            var lastId = $(".categorySub").last().prop("id");
+            var lastIdArr = new Array();
+            var lastNum = 0;
+
+            if(lastId != undefined && lastId != "") {
+                lastIdArr = lastId.split("_");
+                lastNum = lastIdArr[1];
+            }
+
+            var newNum = parseInt(lastNum)+1;
+            var newId = "cate_"+newNum;
+            $(".categoryCon").append('<div class="categorySub" id="'+newId+'"><input type="hidden" class="codeNameList" name="newCodeNameList" id="codeName_'+newNum+'" value="'+jb+'"/><p class="categoryTit">' + jb + '</p><div class="modiBtn-box"><button type="button" class="categoryModi"></button><button type="button" class="categoryRemove"></button></div> </div>')
+            $( '.categoryInput' ).val('');
+        });
+        $(document).on("click", ".categoryModi", function (){
+            var tit = $(this).parents(".categoryCon > div").find(".categoryTit")
+            var modiform = $(this).parents('.categoryCon > div').find('.modiBox')
+            if(modiform.length >0){
+                tit.show();
+                modiform.remove();
+                $(this).parents(".categoryCon > div").removeClass('on');
+            }else{
+                var cateId = $(this).parent().parent().prop("id");
+                var cateIdArr = cateId.split("_");
+                var cateNum = cateIdArr[1];
+                tit.after('<div class="modiBox"><form action=""><input type="text" id="tmpCodeName_'+cateNum+'" value="'+tit.text()+'"><button type="button" class="categoryCom"></button></form></div>');
+                $(this).parents(".categoryCon > div").addClass('on');
+                tit.hide();
+            }
+        });
+        $(document).on("click", ".categoryCom", function (){
+            var rp = $(this).parents(".categoryCon > div").find(".categoryTit")
+            var modirp = $(this).siblings("input").val();
+            rp.text(modirp).show();
+            $(this).parents(".categoryCon > div").find("input.codeNameList").val(modirp);
+            $(this).parents(".modiBox").remove();
+
+            $(".categoryCon > div").removeClass('on');
+        });
+        $(document).on("click", ".categoryBtn", function(){
+            goAction("L2");
+        });
+
+        $(document).on("click", "#confirmDelBtn", function(){
+            var removeId = "#"+$("#removeId").val();
+            var id = "#id_"+removeId.split("_")[1];
+            $(".categoryCon").append('<input type="hidden" name="removeIdList" value="'+$(id).val()+'" />');
+            $(removeId).remove();
+        });
+
+        $(document).on("click", ".modalClose, .modal-bg", function(){
+            $(".categoryCon div").remove();
+            $(this).parents('.modal').removeClass('on');
+        });
     </script>
 </th:block>
 </body>

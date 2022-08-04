@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout/layout">
 <head>
-    <title>출판서적</title>
+    <title>도서목록</title>
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -25,6 +25,13 @@
             <input type="file"  name="files" class="uploadBtn"  id="image"  accept="image/*"  multiple="multiple" style="display: none;">
         </div>
         <div class="detailsBox inputSec">
+            <label for="bookCategory" class="mb5">책 카테고리</label>
+            <select name="bookCategory" id="bookCategory" class="select-md">
+                <option value="">선택</option>
+                <option th:each="e : ${@codeUtil.getCodeList(4)}"
+                        th:value="${e.codeValue}" th:text="${e.codeName}"
+                        th:selected="${el.bookCategory == e.codeValue}">카테고리</option>
+            </select>
             <label for="subject" class="mb5">책 제목</label>
             <input type="text" name="subject" id="subject" th:value="${el.subject}" class="input-df mb20" >
             <label for="writer" class="mb5">작가명</label>

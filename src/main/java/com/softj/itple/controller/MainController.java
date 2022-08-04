@@ -2,11 +2,16 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
+import com.softj.itple.entity.Student;
+import com.softj.itple.entity.User;
+import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.service.C1Service;
 import com.softj.itple.service.C2Service;
 import com.softj.itple.service.C3Service;
 import com.softj.itple.service.C4Service;
 import com.softj.itple.util.AuthUtil;
+import com.softj.itple.util.LongUtils;
+import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +20,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,11 +33,19 @@ public class MainController {
     final private C4Service c4Service;
     final private AuthUtil authUtil;
 
+	final private StudentRepo studentRepo;
+
 	@RequestMapping("/")
-	public String index(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 7) Pageable pageable) {
+	public String index(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 7) Pageable pageable, HttpServletRequest request) {
 	    if(authUtil.isRole("ADMIN")){
 	        return "redirect:/adminMain";
         }
+
+		if(authUtil.isRole("STUDENT")) {
+			HttpSession session = request.getSession(true);
+			Student studentVO = studentRepo.findWithUserByUser(User.builder().id(Long.parseLong(session.getAttribute("userId").toString())).build());
+			session.setAttribute("studentVO", studentVO);
+		}
 
 		params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
 	    params.setTaskType(Types.TaskType.TASK);

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/layout">
+<head>
+    <title>관리자 설정</title>
+</head>
+<body class="adminBody">
+<th:block layout:fragment="content">
+    <div class="adContent">
+        <h1 class="adH1">반관리</h1>
+        <div class="tab clearfix">
+            <ul class="tab-ul">
+                <li th:classappend="${#strings.equals(params.academyType,'CODING') ? 'active' : ''}"><a href="/a7/p1">잇플 코딩</a></li>
+                <li th:classappend="${#strings.equals(params.academyType,'ENGLISH') ? 'active' : ''}"><a href="/a7/p1?academyType=ENGLISH">잇플 영어</a></li>
+            </ul>
+        </div>
+        <div class="content-in clearfix">
+            <div class="adSearch clearfix selSearch">
+                <form id="form1" name="form1" action="" class="adSearch-in">
+                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                    <div class="in-box">
+                        <input type="text" name="className" th:value="${params.getClassName()}" placeholder="반이름 검색">
+                    </div>
+                    <button type="button" class="src-btn" onClick="goSearch();"></button>
+                </form>
+            </div>
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                    <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                    <form id="form2" name="form2">
+                        <input type="hidden" name="idList" id="idList" />
+                    </form>
+                </div>
+                <div class="rightBox">
+                </div>
+            </div>
+
+            <table class="adTable payTable list7">
+                <thead class="adTable-head">
+                <tr>
+                    <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                    <th>No</th>
+                    <th>반이름</th>
+                </tr>
+                </thead>
+                <tbody class="adTable-body ">
+                <tr th:each="el : ${list}">
+                    <td><input type="checkbox" name="seqList" th:id="|a${elStat.count}|"><label th:for="|a${elStat.count}|"></label>
+                        <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}" />
+                    </td>
+                    <td>
+                        <span th:text="${list.pageable.offset + elStat.count}"></span>
+                    </td>
+                    <td>
+                        <a th:href="|/a7/p1-detail/${el.id}/${list.pageable.pageNumber}?academyType=${params.getAcademyType()}|"><span th:text="${el.className}"></span></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="adfooter-btn">
+            <button type="button" class="m-btn" th:onclick="goWrite();">등록</button>
+        </div>
+        <!--페이지네이션-->
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    </div>
+    <div class="modal" id="removeMo">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="modalText">
+                    선택 반을 정말 삭제하시겠습니까?<br>
+                    삭제한 반은 복구할 수 없습니다.
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-red modalOff" onclick="goAction('D1')">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/assets/js/a7/a7p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+        $('.RemoveBtn').on('click', function () {
+            $('#removeMo').addClass('on');
+        });
+        $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+            $(this).parents('.modal').removeClass('on');
+        });
+
+        function goWrite(){
+            location.href="/a7/p1-write?academyType="+[[${params.academyType}]];
+        }
+    </script>
+</th:block>
+</body>
+</html>
+
+
+
