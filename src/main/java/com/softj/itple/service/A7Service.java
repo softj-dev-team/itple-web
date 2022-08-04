@@ -113,7 +113,7 @@ public class A7Service {
         BooleanBuilder where = new BooleanBuilder().and(qAdmin.isDeleted.eq(false));
 
         if(StringUtils.noneEmpty(params.getUserName())){
-            where.and(qAdmin.user.userName.contains(params.getSearchValue()));
+            where.and(qAdmin.user.userName.contains(params.getUserName()));
         }
 
         return adminRepo.findAll(where, pageable);
