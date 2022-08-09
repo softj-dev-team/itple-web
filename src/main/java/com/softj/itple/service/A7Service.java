@@ -58,7 +58,7 @@ public class A7Service {
                 ))
                 .from(qAcademyClass)
                 .where(where)
-                .orderBy(qAcademyClass.id.desc())
+                .orderBy(qAcademyClass.id.asc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset());
 

@@ -23,11 +23,15 @@
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <input type="hidden" id="studentStatus" name="studentStatus" th:value="${params.studentStatus}">
                     <div class="in-box">
+                        <select name="grade" id="grade">
+                            <option value="">전체</option>
+                            <option th:each="el : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${el}" th:text="${el.message}"
+                                    th:selected="${#strings.equals(el, params.grade)}"></option>
+                        </select>
                         <select name="searchType" id="searchType">
                             <option value="userName" th:selected="${#strings.equals(param.searchType, 'userName')}">이름</option>
                             <option value="className" th:selected="${#strings.equals(param.searchType, 'className')}">반</option>
-                            <option value="parentName" th:selected="${#strings.equals(param.searchType, 'parentName')}">부모님 성함</option>
-                            <option value="parentTel" th:selected="${#strings.equals(param.searchType, 'parentTel')}">부모님 연락처</option>
+                            <option value="school" th:selected="${#strings.equals(param.searchType, 'school')}">학교</option>
                         </select>
                         <input type="text" name="searchValue" th:value="${param.searchValue}">
                     </div>
@@ -37,28 +41,26 @@
             <table class="adTable">
                 <thead class="adTable-head">
                 <tr>
-                    <th>승인여부</th>
-                    <th>학생</th>
-                    <th>보호자 성함</th>
-                    <th>보호자 연락처</th>
+                    <th>No</th>
+                    <th>이름</th>
+                    <th>학교</th>
+                    <th>학년</th>
                     <th>반</th>
                     <th>메모</th>
                     <th>입학일</th>
-                    <th>포인트</th>
                     <th>포트폴리오</th>
                 </tr>
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
                 <tr th:each="el : ${list}">
-                    <td th:text="${el.user.approved ? '승인' : '미승인'}"></td>
+                    <td th:text="${list.pageable.offset+elStat.count}"></td>
                     <td th:text="${el.user.userName}">김잇플</td>
-                    <td th:text="${el.parentName}">보호자</td>
-                    <td th:text="${el.parentTel}">010-1234-5678</td>
+                    <td th:text="${el.school}" style="text-align: center">학교</td>
+                    <td th:text="${el.grade.message}">학년</td>
                     <td th:text="${el.academyClass?.className}">잇플 코딩입문반A</td>
                     <td th:text="${el.memo}"></td>
                     <td th:text="${#temporals.format(el.enterDate,'yyyy.MM.dd')}">2022.03.24</td>
-                    <td th:text="${el.coin}">1000</td>
-                    <td><button type="button" class="s-btn" th:onclick="|ut.redirect('/a6/p1-student/${el.id}')|">포트폴리오</button></td>
+                    <td><button type="button" class="s-btn" th:onclick="|ut.redirect('/a6/p1-student/${el.id}')|">열람</button></td>
                 </tr>
                 </tbody>
             </table>

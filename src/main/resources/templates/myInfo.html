@@ -16,12 +16,12 @@
                 <div class="inputSec">
                     <label for="userId" class="mb5">아이디</label>
                     <input name="userId" id="userId" type="text" class="input-df mb20" required disabled th:value="${el.user.userId}"><!--<button id="idDupCheckBtn" type="button" class="btn post-btn" onclick="idDupCheck()">중복검사</button>-->
-                    <label for="userPw" class="mb5">비밀번호 <span>수정시에만 입력하세요.</span></label>
+                    <label for="userPw" class="mb5">비밀번호  <span>( 수정시에만 입력하세요. )</span></label>
                     <input name="userPw" id="userPw" type="password" class="input-df mb20" required>
-                    <label for="userPwRe" class="mb5">비밀번호 확인 <span>수정시에만 입력하세요.</span></label>
+                    <label for="userPwRe" class="mb5">비밀번호 확인  <span>( 수정시에만 입력하세요. )</span></label>
                     <input name="userPwRe" id="userPwRe" type="password" class="input-df mb20" required>
                 </div>
-                <div class="inputSec">
+               <!-- <div class="inputSec">
                     <label for="" class="mb5">반</label>
                     <select name="classId" class="input-df mb20" disabled>
                         <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.className, el.academyClass.className)}">잇플코딩입문반</option>
@@ -115,7 +115,7 @@
                         </select>
                         <button type="button" class="btn-remove"></button>
                     </div>
-                </div>
+                </div>-->
                 <div class="btn-center mt60">
                     <button type="button" class="btn" onclick="myInfoSave()">저장하기</button>
                 </div>
@@ -126,7 +126,7 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         /*]]>*/
-        $(function(){
+        /*$(function(){
             $(".datepicker").datepicker({
                 format: "yyyy-mm-dd",
                 language: "ko",
@@ -208,12 +208,14 @@
                 $("#idDupCheckBtn").addClass("btn-blue");
                 $("#idDupCheckBtn").text("검사완료");
             });
-        }
+        }*/
 
         function myInfoSave(){
-            var userId = $("input[name=userId]").val();
+
             var userPw = $("input[name=userPw]").val();
             var userPwRe = $("input[name=userPwRe]").val();
+           /*
+            var userId = $("input[name=userId]").val();
             var userName = $("input[name=userName]").val();
             var attendanceNo = $("input[name=attendanceNo]").val();
             var birth = $("input[name=birth]").val();
@@ -221,17 +223,17 @@
             var email = $("input[name=email]").val();
             var zonecode = $("input[name=zonecode]").val();
             var parentName = $("input[name=parentName]").val();
-            var parentTel = $("input[name=parentTel]").val();
+            var parentTel = $("input[name=parentTel]").val();*/
 
-            if(attendanceNo.length != 4){
+            /*if(attendanceNo.length != 4){
                 modal.alert("출결번호는 4자리 입력해주세요");
                 return;
-            }
+            }*/
             if(userPw != userPwRe){
                 modal.alert("비밀번호와 비밀번호 확인이 다릅니다.");
                 return;
             }
-            if(regExp.isNotEmail(email)){
+            /*if(regExp.isNotEmail(email)){
                 modal.alert("이메일 형식이 아닙니다.")
                 return;
             }
@@ -270,7 +272,6 @@
             if(ut.isEmpty(parentTel)){
                 modal.required("보호자 연락처");
                 return;
-            }
 
             var dayArr = [];
             $("select[name=dayOfWeekList]").each(function(){
@@ -281,7 +282,8 @@
             if(dayArr.length != daySet.size){
                 modal.alert("중복된 요일은 선택 할 수 없습니다.");
                 return;
-            }
+            }            }*/
+
 
             $.post("/api/myInfoModify",$("#form1").serialize(),function(res){
                 modal.alert("저장되었습니다.");

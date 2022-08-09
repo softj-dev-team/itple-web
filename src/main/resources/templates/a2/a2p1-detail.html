@@ -63,7 +63,7 @@
                     <td th:text="${el.status.message}">완료</td>
                     <td th:switch="${#strings.toString(el.status)}">
                         <button th:case="NOT_SUBMIT" type="button" class="s-btn reportBtn s-btnDsb" disabled="disabled">미제출</button>
-                        <button th:case="SUBMIT" type="button" class="s-btn reportBtn" th:onclick="|goAction('P1',${el.id})|">독후감 보기</button>
+                        <button th:case="SUBMIT" type="button" class="s-btn reportBtn" th:onclick="|goAction('P1',${el.id})|"><span th:text="|${task.taskType.message} 보기|"></span></button>
                         <button th:case="COMPLETE" type="button" class="s-btn reportBtn" th:onclick="|goAction('P1',${el.id})|">확인완료</button>
                     </td>
                 </tr>
@@ -115,7 +115,7 @@
                 </div>
                 <div class="inputSec mo-fileBox">
                     <div class="fileHead">
-                        <p>반려의견</p>
+                        <p>반려사유</p>
                     </div>
                     <textarea id="returnMessage"></textarea>
                 </div>

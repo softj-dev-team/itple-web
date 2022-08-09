@@ -121,6 +121,8 @@ public class Types {
     @Getter
     @AllArgsConstructor
     public enum Grade implements Code<String> {
+        KIDS1("13", "6세"),
+        KIDS2("14", "7세"),
         EL1("01", "초등학교 1학년"),
         EL2("02", "초등학교 2학년"),
         EL3("03", "초등학교 3학년"),
@@ -132,7 +134,7 @@ public class Types {
         MID3("09", "중학교 3학년"),
         HIGH1("10", "고등학교 1학년"),
         HIGH2("11", "고등학교 2학년"),
-        HIGH3("12", "고등학교 3학년"),
+        HIGH3("12", "고등학교 3학년")
         ;
         private String code;
         private String message;
@@ -182,7 +184,7 @@ public class Types {
     @AllArgsConstructor
     public enum CoinStatus implements Code<String> {
         PLUS("01", "적립"),
-        MINUS("02", "시용"),
+        MINUS("02", "차감"),
         ;
         private String code;
         private String message;

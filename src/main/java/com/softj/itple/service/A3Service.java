@@ -115,6 +115,7 @@ public class A3Service {
         save.setPrice(params.getPrice());
         save.setMemo(params.getMemo());
         save.setCoin(reqCoin);
+        save.setTelNo(params.getTelNo());
         studentRepo.save(save);
 
         if(prevCoin != reqCoin){

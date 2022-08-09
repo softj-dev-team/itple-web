@@ -155,21 +155,44 @@ public class SecurityService implements UserDetailsService{
         if(StringUtils.noneEmpty(params.getUserPw())) {
             save.getUser().setUserPw(new BCryptPasswordEncoder().encode(params.getUserPw()));
         }
-        save.getUser().setUserName(params.getUserName());
+        if(StringUtils.noneEmpty(params.getUserName())) {
+            save.getUser().setUserName(params.getUserName());
+        }
 //        save.getUser().setUserId(params.getUserId());
         userRepo.save(save.getUser());
 
 //        save.getAcademyClass().setId(params.getClassId());
 
 //        save.setAttendanceNo(params.getAttendanceNo());
-        save.setBirth(params.getBirth());
-        save.setSchool(params.getSchool());
-        save.setGrade(params.getGrade());
-        save.setZonecode(params.getZonecode());
-        save.setRoadAddress(params.getRoadAddress());
-        save.setDetailAddress(params.getDetailAddress());
-        save.setParentName(params.getParentName());
-        save.setParentTel(params.getParentTel());
+        if(StringUtils.noneEmpty(params.getBirth())) {
+            save.setBirth(params.getBirth());
+        }
+        if(StringUtils.noneEmpty(params.getSchool())) {
+            save.setSchool(params.getSchool());
+        }
+        if(StringUtils.noneEmpty(params.getGrade())) {
+            save.setGrade(params.getGrade());
+        }
+        if(StringUtils.noneEmpty(params.getZonecode())) {
+            save.setZonecode(params.getZonecode());
+        }
+        if(StringUtils.noneEmpty(params.getRoadAddress())) {
+            save.setRoadAddress(params.getRoadAddress());
+        }
+        if(StringUtils.noneEmpty(params.getDetailAddress())) {
+            save.setDetailAddress(params.getDetailAddress());
+        }
+        if(StringUtils.noneEmpty(params.getParentName())) {
+            save.setParentName(params.getParentName());
+        }
+        if(StringUtils.noneEmpty(params.getParentTel())) {
+            save.setParentTel(params.getParentTel());
+        }
+
+        if(StringUtils.noneEmpty(params.getTelNo())) {
+            save.setTelNo(params.getTelNo());
+        }
+
         studentRepo.save(save);
 
         attendanceRepo.deleteAllByUser(save.getUser());

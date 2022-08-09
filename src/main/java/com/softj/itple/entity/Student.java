@@ -41,6 +41,7 @@ public class Student extends Auditing{
     private String memo;
     private Integer paymentDay;
     private Long price;
+    private String telNo;
 
     @Transient
     private long totalCost;
@@ -56,7 +57,7 @@ public class Student extends Auditing{
 
 
     @Builder
-    public Student(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, AcademyClass academyClass, String attendanceNo, String school, String zonecode, String roadAddress, String detailAddress, Types.Grade grade, String parentName, String parentTel, LocalDate birth, String email, long coin, LocalDate enterDate, String memo, Integer paymentDay, Long price, Types.StudentStatus studentStatus, Payment payment, long totalCost, long payCost) {
+    public Student(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, AcademyClass academyClass, String attendanceNo, String school, String zonecode, String roadAddress, String detailAddress, Types.Grade grade, String parentName, String parentTel, LocalDate birth, String email, long coin, LocalDate enterDate, String memo, Integer paymentDay, Long price, Types.StudentStatus studentStatus, Payment payment, long totalCost, long payCost, String telNo) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.user = user;
         this.academyClass = academyClass;
@@ -79,6 +80,7 @@ public class Student extends Auditing{
         this.payment = payment;
         this.totalCost = totalCost;
         this.payCost = payCost;
+        this.telNo = telNo;
 
     }
 }

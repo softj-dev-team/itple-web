@@ -1,0 +1,50 @@
+DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>포인트내역</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+    </form>
+    <div class="content">
+        <h1 class="responsiveH1">포인트내역</h1>
+        <div class="content-in clearfix">
+            <div class="pointBox">
+                <div class="pointTit">포인트</div>
+                <div class="point"><span th:text="| ${#numbers.formatInteger(session.studentVO.coin,0,'COMMA')}|">1,000</span> 포인트</div>
+            </div>
+            <table class="table">
+                <thead class="table-head">
+                <tr>
+                    <th>일자</th>
+                    <th>구분</th>
+                    <th>내역</th>
+                    <th>포인트</th>
+                </tr>
+                </thead>
+                <tbody class="table-body">
+                <tr th:each="el : ${list}">
+                    <td style="text-align: center" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">일자</td>
+                    <td style="text-align: center" th:text="${el.coinStatus.message}"></td>
+                    <td style="text-align: center" th:text="${el.memo}"></td>
+                    <td style="text-align: center" th:text="${#numbers.formatInteger(el.coin,0,'COMMA')}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</th:block>
+</body>
+</html>

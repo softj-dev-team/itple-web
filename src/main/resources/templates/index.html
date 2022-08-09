@@ -27,9 +27,8 @@
         <div class="main-cont" th:if="${@authUtil.isRole('STUDENT')}">
             <div class="sec sec1">
                 <div class="sec-in">
-                    <p class="sec-name"><span th:text="${session.studentVO.user.userName}">잇플학원</span> 님</p>
-                    <p class="sec-point">포인트 : <span th:text="| ${#numbers.formatInteger(session.studentVO.coin,0,'COMMA')}|">1,000</span></p>
-                    <!--<a href="/myInfo" class="sec-mypage">내 정보</a>-->
+                    <p class="sec-name"><span th:text="${session.studentVO.user.userName}">잇플학원</span> 학생 &nbsp;&nbsp;&nbsp; <a href="/myInfo" class="sec-mypage"></a></p>
+                    <a href="/c5/p1"><p class="sec-point">포인트 : <span th:text="| ${#numbers.formatInteger(session.studentVO.coin,0,'COMMA')}|">1,000</span></p></a>
                 </div>
             </div>
             <div class="sec sec2">

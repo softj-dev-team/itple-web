@@ -37,6 +37,7 @@ public class SearchVO {
 	private Types.DayOfWeek[] dayOfWeekList = new Types.DayOfWeek[0];
 	private Integer[] hourList = new Integer[0];
 	private Integer[] minList = new Integer[0];
+	private String telNo;
 
 	//게시판
 	private Types.AcademyType boardType;

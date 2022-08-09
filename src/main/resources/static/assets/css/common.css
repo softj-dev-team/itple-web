@@ -1102,7 +1102,7 @@ i.i-date{
     float: right;
     color: #ffffff;
 }
-.sec1 .sec-in a::before {
+.sec1 .sec-in a.sec-mypage::before {
     content: "";
     display:inline-block;
     width: 24px;

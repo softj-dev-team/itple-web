@@ -6,7 +6,7 @@
 <head>
     <title>잇플 커뮤니티</title>
 </head>
-<body>
+<body onscroll="setDivPosition();">
 <th:block layout:fragment="content">
     <form id="form1">
         <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
@@ -54,7 +54,7 @@
             <div class="detailReply">
                 <form action="">
                     <div class="replyInputbox">
-                        <input type="text" placeholder="댓글을 입력해주세요."><button type="button" th:onclick="|goAction('S2',${el.id}, 0, 0, this)|">입력</button>
+                        <input type="text" placeholder="댓글을 입력해주세요." th:onkeypress="|enterKey(${el.id}, this, 'enter')|"><button type="button" th:onclick="|goAction('S2',${el.id}, 0, 0, this)|">입력</button>
                     </div>
                 </form>
                 <th:block th:each="comment : ${list}">
@@ -98,6 +98,48 @@
         var boardId = /*[[${el.id}]]*/0;
         /*]]>*/
 
+        $(document).ready(function(){
+            var strPos = getCookie("scrollTop");
+
+            if(strPos != null) {
+                $("html,body").animate({scrollTop:parseInt(strPos)}, 100);
+            }
+
+        });
+
+
+        function setCookie(cName, cValue, cDay){
+            var expire = new Date();
+            expire.setDate(expire.getDate() + cDay);
+            cookies = cName + '=' + escape(cValue) + '; path=/ '; // 한글 깨짐을 막기위해 escape(cValue)를 합니다.
+            if(typeof cDay != 'undefined') cookies += ';expires=' + expire.toGMTString() + ';';
+            document.cookie = cookies;
+        }
+
+        function getCookie(cName) {
+            cName = cName + '=';
+            var cookieData = document.cookie;
+            var start = cookieData.indexOf(cName);
+            var cValue = '';
+            if(start != -1){
+                start += cName.length;
+                var end = cookieData.indexOf(';', start);
+                if(end == -1)end = cookieData.length;
+                cValue = cookieData.substring(start, end);
+            }
+            return unescape(cValue);
+        }
+
+        function setDivPosition(){
+            var intY = $(window).scrollTop();
+            setCookie("scrollTop", intY, "1");
+        }
+
+       function enterKey(id, obj, flag){
+           if(window.event.keyCode == 13){
+               goAction('S2',id, 0, 0, obj, flag);
+            }
+        }
 
         $(document).on("click", ".rpBtn", function (){
             var parentId = $(this).data("id");

@@ -18,7 +18,7 @@ function goReset(flag){
     goSearch();
 }
 
-function goAction(flag, arg1, arg2, arg3, arg4) {
+function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
     var form = $('#form1');
 
     switch (flag) {
@@ -54,11 +54,19 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         /*댓 저장*/
         case "S2":
-            if(ut.isEmpty($(arg4).siblings('input').val())){
+            var contents = "";
+
+            if(arg5 == "enter"){
+                contents = $(arg4).val();
+            }else{
+                contents = $(arg4).siblings('input').val()
+            }
+
+            if(ut.isEmpty(contents)){
                 modal.required("내용");
                 return;
             }
-            $.post(path+'/s2',{id: arg1, upperId: arg2, commentId: arg3, contents: $(arg4).siblings('input').val()},function(res){
+            $.post(path+'/s2',{id: arg1, upperId: arg2, commentId: arg3, contents: contents},function(res){
                 location.reload();
             });
             break;

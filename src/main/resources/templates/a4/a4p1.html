@@ -47,8 +47,8 @@
                             <option th:each="num : ${#numbers.sequence(1,12)}" th:value="${num}" th:text="|${num}월|" th:selected="${#strings.equals(#temporals.format(#temporals.createNow(),'M'), num)}"></option>
                         </select>
                         <input type="text" name="userName" th:value="${params.getUserName()}" placeholder="이름 검색">
+                        <button type="button" class="src-btn" onclick="calSearch()"></button>
                     </div>
-                    <button type="button" class="src-btn" onclick="calSearch()"></button>
                 </form>
             </div>
             <div class="fullcalendar" id="calendar"></div>
