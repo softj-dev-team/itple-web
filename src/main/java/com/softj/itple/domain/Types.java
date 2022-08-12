@@ -53,7 +53,8 @@ public class Types {
     @AllArgsConstructor
     public enum AttendanceStatus implements Code<String> {
         COME("01", "등원"),
-        LEAVE("02", "하원");
+        LEAVE("02", "하원"),
+        ABSENT("03", "결석");
         private String code;
         private String message;
 

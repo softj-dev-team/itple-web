@@ -65,7 +65,7 @@ public class A7Controller {
 
     //관리자관리
     @GetMapping("/p2")
-    public String p2(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+    public String p2(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
 
         model.addAttribute("list",a7Service.getAdminList(params, pageable));
         model.addAttribute("params",params);

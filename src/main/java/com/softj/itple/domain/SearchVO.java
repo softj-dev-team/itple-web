@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -97,6 +98,8 @@ public class SearchVO {
 	private String attendanceNo;
 	private Types.AcademyType attendanceType;
 	private Types.AttendanceStatus attendanceStatus;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate attendanceDate;
 
 	//관리자-포트폴리오
 	private Types.VisibleStatus visibleStatus;

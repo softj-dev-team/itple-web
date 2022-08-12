@@ -35,6 +35,31 @@ public class A4RestController {
                 .data(a4Service.getAttendanceHistoryList(params))
                 .build();
     }
+
+    //출석,결석 확인
+    @PostMapping("/p1/l3")
+    public Response p1l3(SearchVO params){
+        return Response.builder()
+                .data(a4Service.getAttendanceHistoryByUserId(params))
+                .build();
+    }
+
+    //결석 취소
+    @PostMapping("/p1/d1")
+    public Response p1d1(SearchVO params){
+        a4Service.deleteAttendanceHistoryById(params);
+        return Response.builder()
+                .build();
+    }
+
+    //결석 등록
+    @PostMapping("/p1/s1")
+    public Response p1s1(SearchVO params){
+        a4Service.saveAbsentAttendanceHistory(params);
+        return Response.builder()
+                .build();
+    }
+
     //등하원
     @PostMapping("/p2/s1")
     public Response p1p1(SearchVO params){

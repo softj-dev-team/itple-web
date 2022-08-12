@@ -81,14 +81,6 @@ public class A7Service {
         save.setClassName(params.getClassName());
         save.setDeleted(false);
 
-        if(save.getId() != 0) {
-            save.setUpdatedAt(now);
-            save.setUpdatedId(session.getAttribute("userId").toString());
-        }else{
-            save.setCreatedAt(now);
-            save.setCreatedId(session.getAttribute("userId").toString());
-        }
-
         academyClassRepo.save(save);
     }
 

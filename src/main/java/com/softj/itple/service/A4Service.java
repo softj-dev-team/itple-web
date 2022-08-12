@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -82,7 +83,7 @@ public class A4Service {
         //등원요일체크
         if(params.getAttendanceStatus() == Types.AttendanceStatus.COME) {
             LocalDateTime now = LocalDateTime.now();
-            Types.DayOfWeek tmp = Types.DayOfWeek.valueOf(now.getDayOfWeek().toString());
+
             Attendance attendance = attendanceRepo.findByUserIdAndAttendanceDay(student.getUser().getId(), Types.DayOfWeek.valueOf(now.getDayOfWeek().toString()));
             if (Objects.isNull(attendance)) {
                 throw new ApiException("학생 등원요일이 아닙니다.", ErrorCode.INTERNAL_SERVER_ERROR);
@@ -120,8 +121,21 @@ public class A4Service {
                 .build()).getId();
     }
 
+    public void saveAbsentAttendanceHistory(SearchVO params){
+        User user = userRepo.findById(params.getId()).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+        Student student = studentRepo.findByUser(user);
+        LocalDateTime createdAt = LocalDateTime.of(params.getAttendanceDate(),LocalTime.MIDNIGHT);
+        String createdId = AuthUtil.getPrincipal().getUsername();
+
+        attendanceHistoryRepo.insertAbsentDay(user.getId(), Types.AttendanceStatus.ABSENT.getCode(), student.getAcademyClass().getAcademyType().getCode(), createdAt, createdId, false);
+    }
+
     public AttendanceHistory getAttendanceHistory(SearchVO params){
         return attendanceHistoryRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    public AttendanceHistory getAttendanceHistoryByUserId(SearchVO params){
+        return attendanceHistoryRepo.findTopByUserAndCreatedAtOrderByCreatedAtDesc(params.getId(), params.getAttendanceDate());
     }
 
     public CoinHistory getCoinHistory(SearchVO params){
@@ -132,14 +146,20 @@ public class A4Service {
         QAttendanceHistory qAttendanceHistory = QAttendanceHistory.attendanceHistory;
         BooleanBuilder where = new BooleanBuilder()
                 .and(qAttendanceHistory.user.id.in(params.getIdList()))
-                .and(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME))
+                .and((qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME)).or(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.ABSENT)))
                 .and(qAttendanceHistory.createdAt.year().eq(params.getStartDate().getYear()))
                 .and(qAttendanceHistory.createdAt.month().eq(params.getStartDate().getMonthValue()));
 
         return jpaQueryFactory.select(Projections.fields(A4EventDTO.class,
                 qAttendanceHistory.user.id.as("resourceId"),
-                ExpressionUtils.as(Expressions.constant("O"), "title"),
-                ExpressionUtils.as(Expressions.constant("#428bca"), "color"),
+                new CaseBuilder()
+                .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME))
+                .then(Expressions.constant("O"))
+                .otherwise(Expressions.constant("●")).as("title"),
+                new CaseBuilder()
+                        .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME))
+                        .then(Expressions.constant("#428bca"))
+                        .otherwise(Expressions.constant("#FFCC00")).as("color"),
                 ExpressionUtils.as(Expressions.constant("text-center"), "className"),
                 Expressions.stringTemplate( "to_char({0},'YYYY-MM-DD')", qAttendanceHistory.createdAt).as("start")))
                 .from(qAttendanceHistory)
@@ -185,5 +205,14 @@ public class A4Service {
                                                 .where(new BooleanBuilder(qAttendance.user.id.eq(e.getId()))).fetch())
                 )
                 .collect(Collectors.toList());
+    }
+    public void deleteAttendanceHistoryById(SearchVO params){
+        AttendanceHistory delete = attendanceHistoryRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+
+        if(!delete.getAttendanceStatus().equals("03")){
+                new ApiException("결석 상태가 아니므로 취소할 수 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+
+        attendanceHistoryRepo.deleteById(params.getId());
     }
 }

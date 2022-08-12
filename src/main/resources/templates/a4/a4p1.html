@@ -98,9 +98,50 @@
                     }
                 },
                 events: async function (info, callback) {
-                    console.log(1);
                     callback(await getEvents(info));
                 },
+                dateClick: function(info) {
+                    modal.alert("학생 등원요일이 아닙니다.");
+                },
+                eventClick: function(info) {
+                    var formData = {
+                        id: info.event._def.resourceIds[0],
+                        attendanceDate: info.event.start.format("yyyy-MM-dd")
+                    };
+
+                    $.post("/api/a4/p1/l3", formData, function (res) {
+                        loading(0);
+                        if(ut.isEmpty(res.data)){
+                            var selDate = info.event.start.getFullYear().toString()+info.event.start.getMonth().toString()+info.event.start.getDate().toString();
+                            var now = new Date(Date.now()).getFullYear().toString()+new Date(Date.now()).getMonth().toString()+new Date(Date.now()).getDate().toString();
+                            if(selDate <= now){
+                                modal.alert("등원하지 않은 날입니다.");
+                            }else{
+                                modal.confirm("결석으로 체크하시겠습니까?",function(){
+                                    console.log(formData);
+                                    $.post("/api/a4/p1/s1", formData, function (res) {
+                                        modal.alert("결석처리가 완료되었습니다.");
+                                        calendar.refetchEvents();
+                                    });
+                                });
+                            }
+                        }else {
+                            var attendanceStatus = res.data.attendanceStatus;
+                            if (attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).COME}]] || attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).LEAVE}]]) {
+                                modal.alert("등원한 날입니다.");
+                            } else if (attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).ABSENT}]]) {
+                                var frmData = {id: res.data.id};
+
+                                modal.confirm("이미 결석처리 되어 있습니다. 결석 처리를 삭제하시겠습니까?",function(){
+                                    $.post("/api/a4/p1/d1", frmData, function (res) {
+                                        modal.alert("결석처리가 취소되었습니다.");
+                                        calendar.refetchEvents();
+                                    });
+                                });
+                            }
+                        }
+                    });
+                }
             });
             calendar.render();
         });
@@ -134,28 +175,53 @@
                     resources.forEach(el => {
                        var atDays = el.attendanceList;
                        var start = new Date(info.start);
-                       var end = info.end;
+                       var end = new Date(info.end);
+                       var now = new Date(Date.now());
+
+                       /*if(end.getFullYear() == now.getFullYear() && (end.getMonth()-1) == now.getMonth()){
+                           end = now;
+                       }*/
                        while (start < end){
                            if(!atDays.includes(start.getDay().toString())){
                                start.plusDate(1);
                                continue;
                            }
-                           events.push({
-                               "resourceId": el.id,
-                               "title":"X",
-                               "start": start.format('yyyy-MM-dd'),
-                               "color":"#dd5a43",
-                               "className": "text-center"
-                           });
+                           if(end.getFullYear() == now.getFullYear() && (end.getMonth()-1) == now.getMonth() && start < now) {
+                               events.push({
+                                   "resourceId": el.id,
+                                   "title": "X",
+                                   "start": start.format('yyyy-MM-dd'),
+                                   "color": "#dd5a43",
+                                   "className": "text-center"
+                               });
+                           }
+                           if(end.getFullYear() == now.getFullYear() && (end.getMonth()-1) == now.getMonth() && start >= now) {
+                               console.log('1');
+                               events.push({
+                                   "resourceId": el.id,
+                                   "start": start.format('yyyy-MM-dd'),
+                                   "color": "#FFFFFF",
+                                   "className": "text-center"
+                               });
+                           }else{
+                                events.push({
+                                   "resourceId": el.id,
+                                   "title": "X",
+                                   "start": start.format('yyyy-MM-dd'),
+                                   "color": "#dd5a43",
+                                   "className": "text-center"
+                               });
+                           }
                            start.plusDate(1);
                        }
                     });
 
                     res.data.forEach(el => {
                         events.push(el);
+
                         var idx = events.findIndex(el2 => el2.resourceId == el.resourceId && el.start == el2.start);
                         if(idx != -1){
-                            events.splice(idx, 1);
+                           events.splice(idx, 1);
                         }
                     });
                     resolve(events);
