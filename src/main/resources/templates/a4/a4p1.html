@@ -178,15 +178,12 @@
                        var end = new Date(info.end);
                        var now = new Date(Date.now());
 
-                       /*if(end.getFullYear() == now.getFullYear() && (end.getMonth()-1) == now.getMonth()){
-                           end = now;
-                       }*/
                        while (start < end){
                            if(!atDays.includes(start.getDay().toString())){
                                start.plusDate(1);
                                continue;
                            }
-                           if(end.getFullYear() == now.getFullYear() && (end.getMonth()-1) == now.getMonth() && start < now) {
+                           if(start < now) {
                                events.push({
                                    "resourceId": el.id,
                                    "title": "X",
@@ -195,7 +192,7 @@
                                    "className": "text-center"
                                });
                            }
-                           if(end.getFullYear() == now.getFullYear() && (end.getMonth()-1) == now.getMonth() && start >= now) {
+                           if(start >= now) {
                                console.log('1');
                                events.push({
                                    "resourceId": el.id,
