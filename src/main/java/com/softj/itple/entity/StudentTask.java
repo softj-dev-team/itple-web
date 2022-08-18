@@ -23,18 +23,26 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class StudentTask extends Auditing{
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Student student;
+
     @Convert(converter = Types.TaskStatus.Converter.class)
     private Types.TaskStatus status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Task task;
+
     private String contents;
+
     private LocalDate compDate;
+
     private String returnMessage;
 
     @OneToMany(mappedBy = "studentTask",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     private List<StudentTaskFile> studentTaskFileList;
+
 }

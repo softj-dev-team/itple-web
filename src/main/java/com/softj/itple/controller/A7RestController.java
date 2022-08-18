@@ -23,8 +23,9 @@ public class A7RestController {
 
     //삭제
     @PostMapping("/p1/d1")
-    public Response p1d1(SearchVO params, HttpServletRequest request) {
-        a7Service.deleteAcademyClass(params, request);
+    public Response p1d1(SearchVO params) {
+        a7Service.deleteFkClassId(params);
+        a7Service.deleteAcademyClass(params);
         return Response.builder().build();
     }
 

@@ -45,6 +45,7 @@
                     </div>
                     <label for="" class="mb5">반</label>
                     <select name="classId" class="input-df mb20">
+                        <option value="">-- 선택 --</option>
                         <option th:each="class : ${classList}" th:value="${class.id}" th:text="|[${class.academyType.message}] ${class.className}|" th:selected="${#strings.equals(class.className, el.academyClass?.className)}">잇플코딩입문반</option>
                     </select>
                     <label for="userName" class="mb5">이름</label>

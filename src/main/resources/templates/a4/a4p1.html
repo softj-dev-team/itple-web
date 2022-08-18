@@ -127,9 +127,9 @@
                             }
                         }else {
                             var attendanceStatus = res.data.attendanceStatus;
-                            if (attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).COME}]] || attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).LEAVE}]]) {
+                            if (attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).COME}]] || attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).LEAVE}]]){
                                 modal.alert("등원한 날입니다.");
-                            } else if (attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).ABSENT}]]) {
+                            }else if (attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).ABSENT}]]) {
                                 var frmData = {id: res.data.id};
 
                                 modal.confirm("이미 결석처리 되어 있습니다. 결석 처리를 삭제하시겠습니까?",function(){
@@ -191,9 +191,7 @@
                                    "color": "#dd5a43",
                                    "className": "text-center"
                                });
-                           }
-                           if(start >= now) {
-                               console.log('1');
+                           }else if(start >= now) {
                                events.push({
                                    "resourceId": el.id,
                                    "start": start.format('yyyy-MM-dd'),

@@ -85,16 +85,24 @@ public class A7Service {
     }
 
     @Transactional
-    public void deleteAcademyClass(SearchVO params, HttpServletRequest request) {
+    public void deleteFkClassId(SearchVO params) {
         for(Long id : params.getIdList()) {
-            HttpSession session = request.getSession();
-            LocalDateTime now = LocalDateTime.now();
+            AcademyClass delete = academyClassRepo.findById(id).orElseThrow(() -> new ApiException("반 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+            List<Student> students = studentRepo.findAllWithUserByAcademyClass(delete);
+
+            for(Student student : students){
+                student.setAcademyClass(null);
+                studentRepo.save(student);
+            }
+        }
+    }
+    @Transactional
+    public void deleteAcademyClass(SearchVO params) {
+        for(Long id : params.getIdList()) {
 
             AcademyClass save = academyClassRepo.findById(id).orElseThrow(() -> new ApiException("반 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
 
             save.setDeleted(true);
-            save.setUpdatedAt(now);
-            save.setUpdatedId(session.getAttribute("userId").toString());
 
             academyClassRepo.save(save);
         }
@@ -177,9 +185,7 @@ public class A7Service {
     @Transactional
     public void deleteAdmin(SearchVO params, HttpServletRequest request){
         for(long id : params.getIdList()){
-            Admin admin = adminRepo.findById(id).orElse(Admin.builder().build());
-            admin.setDeleted(true);
-            adminRepo.save(admin);
+            adminRepo.deleteById(id);
         }
     }
 }

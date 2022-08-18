@@ -54,7 +54,10 @@
             <div class="detailReply">
                 <form action="">
                     <div class="replyInputbox">
-                        <input type="text" placeholder="댓글을 입력해주세요." th:onkeypress="|enterKey(${el.id}, this, 'enter')|"><button type="button" th:onclick="|goAction('S2',${el.id}, 0, 0, this)|">입력</button>
+                        <form id="form2" onsubmit="return false;">
+                            <input type="text" style="display:none;"/>
+                            <input type="text" placeholder="댓글을 입력해주세요." th:onkeypress="|if( event.keyCode == 13 ){enterKey(${el.id},this);}|"><button type="button" th:onclick="|goAction('S2',${el.id}, 0, 0, this)|">입력</button>
+                        </form>
                     </div>
                 </form>
                 <th:block th:each="comment : ${list}">
@@ -135,10 +138,8 @@
             setCookie("scrollTop", intY, "1");
         }
 
-       function enterKey(id, obj, flag){
-           if(window.event.keyCode == 13){
-               goAction('S2',id, 0, 0, obj, flag);
-            }
+       function enterKey(id, obj){
+            goAction('S2',id, 0, 0, obj, "enter");
         }
 
         $(document).on("click", ".rpBtn", function (){

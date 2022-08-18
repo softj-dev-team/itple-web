@@ -13,4 +13,6 @@ import java.util.List;
 public interface AcademyClassRepo extends JpaRepository<AcademyClass, Long>, QuerydslPredicateExecutor<AcademyClass> {
 
     List<AcademyClass> findByAcademyType(Types.AcademyType academyType);
+
+    List<AcademyClass> findAllByIsDeleted(Boolean isDeleted);
 }

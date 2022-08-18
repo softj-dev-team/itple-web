@@ -22,7 +22,7 @@
                 <div class="inputSec">
                     <label for="classId" class="mb5">반 선택</label>
                     <select name="classId" id="classId" class="input-df mb20" onchange="setStudentList()">
-                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}">잇플코딩입문반</option>
+                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="|[${class.academyType.message}] ${class.className}|">잇플코딩입문반</option>
                     </select>
                     <label for="studAll" class="mb5">학생 선택</label>
                     <div class="studCh">

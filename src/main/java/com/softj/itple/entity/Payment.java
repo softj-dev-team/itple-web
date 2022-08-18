@@ -2,6 +2,8 @@ package com.softj.itple.entity;
 
 import com.softj.itple.domain.Types;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
 public class Payment extends Auditing{
 
     @OneToOne
+    @JoinColumn(name="student_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Student student;
     private long price;
     private long cost;

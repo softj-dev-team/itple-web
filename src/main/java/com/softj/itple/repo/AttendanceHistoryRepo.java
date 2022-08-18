@@ -21,7 +21,7 @@ import java.util.Optional;
 @Repository
 public interface AttendanceHistoryRepo extends JpaRepository<AttendanceHistory, Long>, QuerydslPredicateExecutor<AttendanceHistory> {
     AttendanceHistory findFirstByUserAndAttendanceStatusAndCreatedAtGreaterThan(@Param("user")User user, @Param("attendanceStatus") Types.AttendanceStatus attendanceStatus, @Param("createdAt") LocalDateTime createdAt);
-    @Query(value = "select a.* from tb_attendance_history a where a.user_id = :userId and CAST(a.created_at AS DATE) = :createdAt ", nativeQuery = true)
+    @Query(value = "select a.* from tb_attendance_history a where a.user_id = :userId and CAST(a.created_at AS DATE) = :createdAt limit 1", nativeQuery = true)
     AttendanceHistory findTopByUserAndCreatedAtOrderByCreatedAtDesc(@Param("userId") Long userId, @Param("createdAt") LocalDate createdAt);
 
     @Modifying

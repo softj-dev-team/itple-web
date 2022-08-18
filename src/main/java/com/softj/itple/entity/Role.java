@@ -2,6 +2,8 @@ package com.softj.itple.entity;
 
 import com.softj.itple.domain.Types;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -20,5 +22,6 @@ public class Role extends Auditing{
     Types.RoleType roleType;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 }

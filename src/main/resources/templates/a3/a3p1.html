@@ -9,8 +9,12 @@
 <body>
 <th:block layout:fragment="content">
     <div class="adContent">
-        <h1 class="adH1">학생관리_<span th:text="${#strings.equals(params.academyType,'ENGLISH') ? '잇플영어' : '잇플코딩'}"></span></h1>
-        <div class="tab clearfix adTab">
+        <h1 class="adH1">학생관리_
+            <span th:if="${#strings.isEmpty(params.academyType)}">미승인</span>
+            <span th:if="${#strings.equals(params.academyType,'CODING')}">잇플코딩</span>
+            <span th:if="${#strings.equals(params.academyType,'ENGLISH')}">잇플영어</span>
+        </h1>
+        <div class="tab clearfix adTab" th:if="${#strings.equals(params.academyType,'CODING') || #strings.equals(params.academyType,'ENGLISH')}">
             <ul class="tab-ul">
                 <li th:classappend="${#strings.equals(params.studentStatus,'STUDENT') ? 'active' : ''}"><a th:href="|/a3/p1?studentStatus=STUDENT&academyType=${params.academyType}|">재원생</a></li>
                 <li th:classappend="${#strings.equals(params.studentStatus,'LEAVE') ? 'active' : ''}"><a th:href="|/a3/p1?studentStatus=LEAVE&academyType=${params.academyType}|">휴원생</a></li>

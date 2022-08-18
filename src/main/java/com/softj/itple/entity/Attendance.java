@@ -2,6 +2,8 @@ package com.softj.itple.entity;
 
 import com.softj.itple.domain.Types;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Attendance extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Convert(converter = Types.DayOfWeek.Converter.class)

@@ -54,10 +54,19 @@ public class A3Service {
 
     public Page<Student> getStudentList(SearchVO params, Pageable pageable){
         QStudent qStudent = QStudent.student;
-        BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false).and(qStudent.studentStatus.eq(params.getStudentStatus())));
+        BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false));
 
-        if(StringUtils.noneEmpty(params.getAcademyType())){
+        if(!ObjectUtils.isEmpty(params.getStudentStatus())){
+            where.and(qStudent.studentStatus.eq(params.getStudentStatus()));
+        }
+
+        if(!ObjectUtils.isEmpty(params.getAcademyType())){
             where.and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
+        }else {
+            if (ObjectUtils.isEmpty(params.getStudentStatus()))
+                where.and(qStudent.academyClass.isNull());
+            else
+                where.and(qStudent.academyClass.isNotNull());
         }
 
         if(StringUtils.noneEmpty(params.getSearchValue())){
@@ -142,11 +151,18 @@ public class A3Service {
     }
 
     @Transactional
-    public void deleteStudent(SearchVO params){
+    public void deleteFkStudentClassId(SearchVO params){
         for(long id : params.getIdList()){
-            Student student = studentRepo.findById(id).orElse(Student.builder().build());
-            student.setDeleted(true);
-            studentRepo.save(student);
+            Student delete = studentRepo.findById(id).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+            delete.setAcademyClass(null);
+            studentRepo.save(delete);
+        }
+    }
+
+    @Transactional
+    public void deleteStudent(SearchVO params){
+        for(long id : params.getIdList()) {
+            studentRepo.deleteById(id);
         }
     }
 }
