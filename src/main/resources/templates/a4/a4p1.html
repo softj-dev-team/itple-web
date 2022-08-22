@@ -112,13 +112,35 @@
                     $.post("/api/a4/p1/l3", formData, function (res) {
                         loading(0);
                         if(ut.isEmpty(res.data)){
-                            var selDate = info.event.start.getFullYear().toString()+info.event.start.getMonth().toString()+info.event.start.getDate().toString();
-                            var now = new Date(Date.now()).getFullYear().toString()+new Date(Date.now()).getMonth().toString()+new Date(Date.now()).getDate().toString();
+                            var infoYear = info.event.start.getFullYear().toString();
+                            var infoMonth = info.event.start.getMonth();
+                            if(infoMonth < 10){
+                                infoMonth = '0'+infoMonth;
+                            }
+                            infoMonth = infoMonth.toString();
+                            var infoDay = info.event.start.getDate().toString();
+                            if(infoDay < 10){
+                                infoDay = '0'+infoDay;
+                            }
+                            infoDay = infoDay.toString();
+                            var nowYear = new Date(Date.now()).getFullYear().toString();
+                            var nowMonth = new Date(Date.now()).getMonth();
+                            if(nowMonth < 10){
+                                nowMonth = '0'+nowMonth;
+                            }
+                            nowMonth = nowMonth.toString();
+                            var nowDay = new Date(Date.now()).getDate();
+                            if(nowDay < 10){
+                                nowDay = '0'+nowDay;
+                            }
+                            nowDay = nowDay.toString();
+                            var selDate = infoYear+infoMonth+infoDay;
+                            var now = nowYear+nowMonth+nowDay;
+
                             if(selDate <= now){
                                 modal.alert("등원하지 않은 날입니다.");
                             }else{
                                 modal.confirm("결석으로 체크하시겠습니까?",function(){
-                                    console.log(formData);
                                     $.post("/api/a4/p1/s1", formData, function (res) {
                                         modal.alert("결석처리가 완료되었습니다.");
                                         calendar.refetchEvents();

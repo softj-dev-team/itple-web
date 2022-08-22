@@ -109,7 +109,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             });
 
             $("#idList").val(idList);
-            loading(1);
+
             $.post(url,formS1.serialize(),function(){
                 loading(0);
                 modal.alert('삭제되었습니다.');

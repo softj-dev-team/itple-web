@@ -101,15 +101,25 @@ public class A3Service {
     @Transactional
     public Student updateStudent(SearchVO params){
         Student save = studentRepo.findById(params.getStudentId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
-//        save.getUser().setUserId(params.getUserId());
+        Student attendSudent = studentRepo.findByAttendanceNo(params.getAttendanceNo()).orElse(Student.builder().build());
+
+        if(!LongUtils.isEmpty(attendSudent.getId()) && save.getId() != attendSudent.getId()){
+            throw new ApiException("동일한 출결번호가 존재합니다. 출결번호를 변경해주세요.", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+
         save.getUser().setUserName(params.getUserName());
         save.getUser().setApproved(Boolean.parseBoolean(params.getApproved()));
+        //        save.getUser().setUserId(params.getUserId());
         userRepo.save(save.getUser());
 
         long prevCoin = save.getCoin();
         long reqCoin = params.getCoin();
         save.setStudentStatus(params.getStudentStatus());
-        save.setAcademyClass(AcademyClass.builder().id(params.getClassId()).build());
+        if(LongUtils.noneEmpty(params.getClassId())) {
+            save.setAcademyClass(AcademyClass.builder().id(params.getClassId()).build());
+        }else{
+            save.setAcademyClass(null);
+        }
         save.setEnterDate(params.getEnterDate());
         save.setAttendanceNo(params.getAttendanceNo());
         save.setBirth(params.getBirth());

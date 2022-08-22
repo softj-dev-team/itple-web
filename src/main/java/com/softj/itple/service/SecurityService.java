@@ -119,6 +119,7 @@ public class SecurityService implements UserDetailsService{
                 .detailAddress(params.getDetailAddress())
                 .parentName(params.getParentName())
                 .parentTel(params.getParentTel())
+                .telNo(params.getTelNo())
                 .paymentDay(1)
                 .price(0L)
                 .coin(0L)

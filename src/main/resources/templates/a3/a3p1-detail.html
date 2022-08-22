@@ -325,17 +325,17 @@
 
 
             if(telNo != "") {
-                var regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
-                if (regPhone.test(telNo) !== true) {
-                    modal.alert('핸드폰 번호 형식이 아닙니다. (010-0000-0000)');
+                var regPhone = /^\d{3}-\d{3,4}-\d{4}$/;
+                if (!regPhone.test(telNo)) {
+                    modal.alert('학생 연락처가 핸드폰 번호 형식이 아닙니다. (010-0000-0000)');
                     return;
                 }
             }
 
             if(parentTel != "") {
-                var regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
-                if (regPhone.test(parentTel) !== true) {
-                    modal.alert('핸드폰 번호 형식이 아닙니다. (010-0000-0000)');
+                var regPhone = /^\d{3}-\d{3,4}-\d{4}$/;
+                if (!regPhone.test(parentTel)) {
+                    modal.alert('보호자 연락처가 핸드폰 번호 형식이 아닙니다. (010-0000-0000)');
                     return;
                 }
             }
