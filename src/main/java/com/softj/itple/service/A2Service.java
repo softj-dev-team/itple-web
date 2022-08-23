@@ -177,7 +177,7 @@ public class A2Service {
         save.setContents(params.getContents());
         save.setTeacher(params.getTeacher());
         save.setStartDate(params.getStartDate());
-        save.setEndDate(params.getStartDate());
+        save.setEndDate(params.getEndDate());
         save.setCoin(params.getCoin());
         taskRepo.save(save);
 
