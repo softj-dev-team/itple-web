@@ -100,7 +100,7 @@ public class A4Service {
                 saveCoinHistory.setMemo("등원시간 이전 등원");
                 saveCoinHistory.setCoin(1L);
             }else{
-                saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
+                saveCoinHistory.setCoinStatus(Types.CoinStatus.MINUS);
                 saveCoinHistory.setMemo("등원시간 이후 등원");
                 saveCoinHistory.setCoin(-1L);
             }

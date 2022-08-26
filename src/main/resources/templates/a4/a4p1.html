@@ -113,7 +113,7 @@
                         loading(0);
                         if(ut.isEmpty(res.data)){
                             var infoYear = info.event.start.getFullYear().toString();
-                            var infoMonth = info.event.start.getMonth();
+                            var infoMonth = info.event.start.getMonth()+1;
                             if(infoMonth < 10){
                                 infoMonth = '0'+infoMonth;
                             }
@@ -124,7 +124,7 @@
                             }
                             infoDay = infoDay.toString();
                             var nowYear = new Date(Date.now()).getFullYear().toString();
-                            var nowMonth = new Date(Date.now()).getMonth();
+                            var nowMonth = new Date(Date.now()).getMonth()+1;
                             if(nowMonth < 10){
                                 nowMonth = '0'+nowMonth;
                             }
