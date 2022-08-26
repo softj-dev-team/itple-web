@@ -70,11 +70,13 @@
                         <div class="bookImg" th:style="|background-image: url('${el.thumbnail}');|"></div></td>
                         <td><a th:href="|/a1/p1-detail/${el.id}/${list.pageable.pageNumber}|"><span class="category" th:if="${not #strings.isEmpty(el.bookCategory)}" th:text="|[${@codeUtil.getCodeName('4', el.bookCategory)}]|"></span> <span th:text="${el.subject}">책제목</span></a></td>
                         <td><span th:text="${el.writer}">저자</span></td>
-                        <td><span th:if="${not #strings.isEmpty(el.startDate) and not #strings.isEmpty(el.endDate)}" th:text="${el.startDate + '~' + el.endDate}">대여기간</span></td>
-                        <td><span th:if="${not #strings.isEmpty(el.rentalName)}" th:text="${el.rentalName}">대여자</span></td>
+                        <td><span th:if="${not #strings.isEmpty(el.bookStatus) and (#strings.equals(el.bookStatus,'LOAN') or #strings.equals(el.bookStatus,'DELINQUENT')) and not #strings.isEmpty(el.startDate) and not #strings.isEmpty(el.endDate)}" th:text="${el.startDate + '~' + el.endDate}">대여기간</span></td>
+                        <td><span th:if="${not #strings.isEmpty(el.bookStatus) and (#strings.equals(el.bookStatus,'LOAN') or #strings.equals(el.bookStatus,'DELINQUENT')) and not #strings.isEmpty(el.rentalName)}" th:text="${el.rentalName}">대여자</span></td>
                         <td>
                             <th:block th:switch="${#strings.toString(el.bookStatus)}">
+                                <button type="button" th:case="null" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
                                 <button type="button" th:case="AVAILABLE" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
+                                <button type="button" th:case="RETURN" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
                                 <button type="button" th:case="LOAN" class="btn btn-red" th:onclick="|goRental(${el.id})|">대여중</button>
                                 <button type="button" th:case="DELINQUENT" class="btn btn-yellow" th:onclick="|goRental(${el.id})|">연체</button>
                             </th:block>
@@ -177,7 +179,7 @@
     <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
         function goAdd() {
-            $(location).attr("href", "/a1/p1-write");
+            $(location).attr("href", "/a1/p1-write?page=[[${list.pageable.pageNumber}]]");
         }
         function goRental(id){
             var page = $("#page").val();

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.softj.itple.domain.Types;
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -22,9 +24,10 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Student extends Auditing{
     @OneToOne(cascade=CascadeType.REMOVE)
+    @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id")
+    @JoinColumn(name="class_id")
     private AcademyClass academyClass;
 
     private String attendanceNo;
@@ -48,7 +51,6 @@ public class Student extends Auditing{
     @Transient
     private long totalCost;
 
-
     @Convert(converter = Types.StudentStatus.Converter.class)
     private Types.StudentStatus studentStatus;
 
@@ -56,7 +58,6 @@ public class Student extends Auditing{
     private Payment payment;
     @Transient
     private long payCost;
-
 
     @Builder
     public Student(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, AcademyClass academyClass, String attendanceNo, String school, String zonecode, String roadAddress, String detailAddress, Types.Grade grade, String parentName, String parentTel, LocalDate birth, String email, long coin, LocalDate enterDate, String memo, Integer paymentDay, Long price, Types.StudentStatus studentStatus, Payment payment, long totalCost, long payCost, String telNo) {

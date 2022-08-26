@@ -52,7 +52,8 @@ public class A1Controller {
 
     //작성
     @GetMapping("/p1-write")
-    public String p1write(){
+    public String p1write(ModelMap model, SearchVO params){
+        model.addAttribute("params",params);
         return "a1/a1p1-write";
     }
 

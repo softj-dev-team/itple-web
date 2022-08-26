@@ -8,6 +8,9 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface BoardRepo extends JpaRepository<Board, Long>, QuerydslPredicateExecutor<Board> {
+    List<Board> findByUser(User user);
 }

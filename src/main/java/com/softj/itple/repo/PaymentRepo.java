@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface PaymentRepo extends JpaRepository<Payment, Long>, QuerydslPredicateExecutor<Payment> {
     Optional<Payment> findById(long id);
+
+    List<Payment> findByStudent(Student student);
 }

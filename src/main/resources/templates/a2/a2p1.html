@@ -34,7 +34,7 @@
                         <h3 th:classappend="${#strings.equals(el.academyType,'CODING') ? 'codClass' : 'engClass'}" th:utext="|${el.className} <span>${el.studentCount}</span>|">잇플 영어입문반A<span class="">10</span></h3>
                         <p th:each="task : ${el.taskList}">
                             <span th:text="${task.subject}">사람은 무엇으로 사는가</span>
-                            <span th:if="${#strings.equals(task.taskType,'BOOK_REPORT')}" th:text="| - ${task.author} |"> - 톨스토이</span>
+                            <span th:if="${#strings.equals(task.taskType,'BOOK_REPORT')}" th:text="| - ${task.teacher} |"> - 톨스토이</span>
                             <span class="ml10" th:text="| ${#temporals.format(task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(task.endDate,'yyyy.MM.dd')}|">~22.04.08</span>
                         </p>
                     </a>

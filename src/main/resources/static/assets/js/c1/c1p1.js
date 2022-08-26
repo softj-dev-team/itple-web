@@ -59,7 +59,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
             if(arg5 == "enter"){
                 contents = $(arg4).val();
             }else{
-                contents = $(arg4).siblings('input').val()
+                contents = $(arg4).siblings('input[name="recontent"]').val();
             }
 
             if(ut.isEmpty(contents)){

@@ -21,10 +21,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class AttendanceHistory extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
     @Convert(converter = Types.AttendanceStatus.Converter.class)
     private Types.AttendanceStatus attendanceStatus;
+
     @Convert(converter = Types.AcademyType.Converter.class)
     private Types.AcademyType attendanceType;
 }

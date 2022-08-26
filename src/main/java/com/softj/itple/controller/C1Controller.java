@@ -4,9 +4,7 @@ import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.Board;
 import com.softj.itple.service.C1Service;
-import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 @Controller
@@ -24,7 +21,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class C1Controller {
     private final C1Service c1Service;
-    private final CommonService commonService;
 
     //목록
     @GetMapping("/p1")

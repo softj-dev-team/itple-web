@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Admin extends Auditing{
     @OneToOne(cascade= CascadeType.REMOVE)
+    @JoinColumn(name = "user_id")
     private User user;
 
     private boolean menu1;

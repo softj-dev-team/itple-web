@@ -52,12 +52,10 @@
                 </div>
             </div>
             <div class="detailReply">
-                <form action="">
+                <form action="" onsubmit="return false;">
                     <div class="replyInputbox">
-                        <form id="form2" onsubmit="return false;">
-                            <input type="text" style="display:none;"/>
-                            <input type="text" placeholder="댓글을 입력해주세요." th:onkeypress="|if( event.keyCode == 13 ){enterKey(${el.id},this);}|"><button type="button" th:onclick="|goAction('S2',${el.id}, 0, 0, this)|">입력</button>
-                        </form>
+                        <input type="text" style="display:none;"/>
+                        <input type="text" name="recontent" placeholder="댓글을 입력해주세요." th:onkeypress="|if( event.keyCode == 13 ){enterKey(${el.id}, 0, 0, this);}|"><button type="button" th:onclick="|goAction('S2',${el.id}, 0, 0, this)|">입력</button>
                     </div>
                 </form>
                 <th:block th:each="comment : ${list}">
@@ -110,37 +108,23 @@
 
         });
 
-
-        function setCookie(cName, cValue, cDay){
-            var expire = new Date();
-            expire.setDate(expire.getDate() + cDay);
-            cookies = cName + '=' + escape(cValue) + '; path=/ '; // 한글 깨짐을 막기위해 escape(cValue)를 합니다.
-            if(typeof cDay != 'undefined') cookies += ';expires=' + expire.toGMTString() + ';';
-            document.cookie = cookies;
+        function enterKey(id, parentId, commentId, obj){
+            goAction('S2',id, parentId, commentId, obj, "enter");
         }
 
-        function getCookie(cName) {
-            cName = cName + '=';
-            var cookieData = document.cookie;
-            var start = cookieData.indexOf(cName);
-            var cValue = '';
-            if(start != -1){
-                start += cName.length;
-                var end = cookieData.indexOf(';', start);
-                if(end == -1)end = cookieData.length;
-                cValue = cookieData.substring(start, end);
+        $(document).on("keypress",".recontwrite", function(event){
+            if( event.which == 13 ){
+                var parentId = $(this).siblings('button').data("id");
+                enterKey(boardId, parentId, 0, this);
             }
-            return unescape(cValue);
-        }
+        });
 
-        function setDivPosition(){
-            var intY = $(window).scrollTop();
-            setCookie("scrollTop", intY, "1");
-        }
-
-       function enterKey(id, obj){
-            goAction('S2',id, 0, 0, obj, "enter");
-        }
+        $(document).on("keypress",".recontmodify", function(event){
+            if( event.which == 13 ){
+                var commentId = $(this).siblings('button').data("id");
+                enterKey(boardId, 0, commentId, this);
+            }
+        });
 
         $(document).on("click", ".rpBtn", function (){
             var parentId = $(this).data("id");
@@ -148,9 +132,10 @@
             if(re.hasClass('input')){
                 re.remove();
             }else{
-                $(this).parents(".replyWrap").after(`<div class="replyWrap input"><div class="replyInputbox"><form action=""><input type="text" placeholder="댓글을 입력해주세요."><button type="button" onclick="goAction('S2', ${boardId}, ${parentId}, 0, this)">입력</button></form></div></div>`)
+                $(this).parents(".replyWrap").after(`<div class="replyWrap input"><div class="replyInputbox"><form action="" onsubmit="return false;"><input type="text" class="recontwrite" name="recontent" placeholder="댓글을 입력해주세요."><button type="button" data-id="${parentId}" onclick="goAction('S2', ${boardId}, ${parentId}, 0, this)">입력</button></form></div></div>`)
             }
         });
+
         $(document).on("click", ".modiBtn", function (){
             var commentId = $(this).data("id");
             var rp = $(this).parents(".replyWrap").find(".replyText")
@@ -160,7 +145,7 @@
                 rp.show();
                 modiform.remove();
             }else{
-                rp.after(`<div class="replyInputbox"><form action=""><input type="text" value="${rp.text()}"><button type="button" class="modiCom" onclick="goAction('S2', ${boardId}, 0, ${commentId}, this)">수정</button></form></div>`);
+                rp.after(`<div class="replyInputbox"><form action="" onsubmit="return false;"><input type="text" class="recontmodify" name="recontent" value="${rp.text()}"><button type="button" data-id="${commentId}" class="modiCom" onclick="goAction('S2', ${boardId}, 0, ${commentId}, this)">수정</button></form></div>`);
                 rp.hide();
             }
         });

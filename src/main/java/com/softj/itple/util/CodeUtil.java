@@ -4,6 +4,7 @@ import com.softj.itple.entity.CodeDetail;
 import com.softj.itple.repo.CodeDetailRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class CodeUtil {
+    @Autowired
     private final CodeDetailRepo codeRepo;
 
     private static final List<CodeDetail> codeList = new ArrayList<>();

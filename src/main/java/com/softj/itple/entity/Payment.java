@@ -18,9 +18,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Payment extends Auditing{
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="student_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Student student;
     private long price;
     private long cost;

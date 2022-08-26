@@ -20,7 +20,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class BoardComment extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;

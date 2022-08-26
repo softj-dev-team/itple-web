@@ -18,8 +18,8 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Attendance extends Auditing{
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Convert(converter = Types.DayOfWeek.Converter.class)

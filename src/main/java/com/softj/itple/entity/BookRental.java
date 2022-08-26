@@ -23,11 +23,9 @@ public class BookRental extends Auditing {
     private LocalDate endDate;
     private LocalDate returnDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
 
     @Builder

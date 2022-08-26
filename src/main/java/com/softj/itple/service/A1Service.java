@@ -1,6 +1,11 @@
 package com.softj.itple.service;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
@@ -14,6 +19,7 @@ import com.softj.itple.util.CodeUtil;
 import com.softj.itple.util.CustomUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -36,9 +42,15 @@ public class A1Service {
 
     private final CodeDetailRepo codeDetailRepo;
 
+    private final JPAQueryFactory jpaQueryFactory;
+
     public Page<Book> getBookList(SearchVO params, Pageable pageable){
+
         QBook qBook = QBook.book;
+        QBookRental qBookRental = QBookRental.bookRental;
+
         BooleanBuilder where = new BooleanBuilder().and(qBook.isDeleted.eq(false));
+
         if(com.softj.itple.util.StringUtils.noneEmpty(params.getSearchValue())){
             switch (params.getSearchType()){
                 case "subject":
@@ -54,7 +66,63 @@ public class A1Service {
             where.and(qBook.bookCategory.eq(params.getBookCategory()));
         }
 
-        return bookRepo.findAll(where,pageable);
+        JPAQuery<Book> query = jpaQueryFactory.select(Projections.fields(Book.class,
+                        qBook.id,
+                        qBook.thumbnail,
+                        qBook.createdAt,
+                        qBook.subject,
+                        qBook.writer,
+                        qBook.bookNo,
+                        qBook.contents,
+                        qBook.bookCategory,
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBookRental.rentalStatus)
+                                        .from(qBookRental)
+                                        .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
+                                                .and(
+                                                        qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
+                                                                            .from(qBookRental)
+                                                                            .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false)))
+                                                )))
+                                        ,"bookStatus"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBookRental.user.userName)
+                                        .from(qBookRental)
+                                        .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
+                                                .and(
+                                                        qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
+                                                                .from(qBookRental)
+                                                                .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false)))
+                                                        )))
+                                ,"rentalName"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBookRental.startDate)
+                                        .from(qBookRental)
+                                        .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
+                                                .and(
+                                                        qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
+                                                                .from(qBookRental)
+                                                                .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false)))
+                                                        )))
+                                ,"startDate"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBookRental.endDate)
+                                        .from(qBookRental)
+                                        .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
+                                                .and(
+                                                        qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
+                                                                .from(qBookRental)
+                                                                .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false)))
+                                                        )))
+                                ,"endDate"))
+                )
+                .from(qBook)
+                .where(where)
+                .orderBy(qBook.id.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
+
+        return new PageImpl<Book>(query.fetch(), pageable, query.fetchCount());
     }
     public Book getBook(SearchVO params) {
         return bookRepo.findById(params.getId()).orElseThrow(() -> new ApiException("도서 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));

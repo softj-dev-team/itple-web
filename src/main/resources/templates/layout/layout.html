@@ -43,6 +43,35 @@
     <link href="/assets/css/reset.css" rel="stylesheet" type="text/css">
     <link href="/assets/css/common.css" rel="stylesheet" type="text/css">
 
+    <script type="text/javascript">
+        function setDivPosition(){
+            var intY = $(window).scrollTop();
+            setCookie("scrollTop", intY, "1");
+        }
+
+        function setCookie(cName, cValue, cDay){
+            var expire = new Date();
+            expire.setDate(expire.getDate() + cDay);
+            cookies = cName + '=' + escape(cValue) + '; path=/ '; // 한글 깨짐을 막기위해 escape(cValue)를 합니다.
+            if(typeof cDay != 'undefined') cookies += ';expires=' + expire.toGMTString() + ';';
+            document.cookie = cookies;
+        }
+
+        function getCookie(cName) {
+            cName = cName + '=';
+            var cookieData = document.cookie;
+            var start = cookieData.indexOf(cName);
+            var cValue = '';
+            if(start != -1){
+                start += cName.length;
+                var end = cookieData.indexOf(';', start);
+                if(end == -1)end = cookieData.length;
+                cValue = cookieData.substring(start, end);
+            }
+            return unescape(cValue);
+        }
+    </script>
+
     <!--[if lte ie 9]>
     <p style="font-size: 18px; color: #333; background: #fff; padding:5px 0; margin: 0; text-align: center; position: absolute; width: 100%; z-index: 9999">
         사용하고 계신 브라우저는 최신 웹 브라우저가 아닙니다. 업그레이드를 하거나 다른 최신 브라우저 사용을 권장합니다.
@@ -74,5 +103,6 @@
     <script type="text/javascript" th:src="@{/assets/js/prototype-number.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/prototype-string.js}"></script>
     <!-- JS end -->
+
 </body>
 </html>

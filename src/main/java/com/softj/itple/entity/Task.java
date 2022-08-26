@@ -33,7 +33,7 @@ public class Task extends Auditing{
     private String contents;
     private long coin;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<StudentTask> studentTasks;
     @Builder
     public Task(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, AcademyClass academyClass, Types.TaskType taskType, String subject, String teacher, LocalDate startDate, LocalDate endDate, String contents, long coin) {

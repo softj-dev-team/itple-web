@@ -104,8 +104,8 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             $("input[name=seqList]:checked").each(function(){
                 var numId = $(this).prop("id");
                 var num = numId.substring(1, numId.length);
-                var bookId = "id"+num;
-                idList.push($("#"+bookId).val());
+                var userId = "id"+num;
+                idList.push($("#"+userId).val());
             });
 
             $("#idList").val(idList);

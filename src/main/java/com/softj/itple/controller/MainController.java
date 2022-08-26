@@ -4,6 +4,8 @@ import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.Student;
 import com.softj.itple.entity.User;
+import com.softj.itple.exception.ApiException;
+import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.service.C1Service;
 import com.softj.itple.service.C2Service;
@@ -19,6 +21,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,17 +39,20 @@ public class MainController {
 	final private StudentRepo studentRepo;
 
 	@RequestMapping("/")
-	public String index(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 7) Pageable pageable, HttpServletRequest request) {
+	public String index(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 7) Pageable pageable, HttpServletRequest request){
 	    if(authUtil.isRole("ADMIN")){
 	        return "redirect:/adminMain";
         }
+
 
 		if(authUtil.isRole("STUDENT")) {
 			HttpSession session = request.getSession(true);
 			Student studentVO = studentRepo.findWithUserByUser(User.builder().id(Long.parseLong(session.getAttribute("userId").toString())).build());
 			session.setAttribute("studentVO", studentVO);
 		}
-
+		if(ObjectUtils.isEmpty(AuthUtil.getStudent().getAcademyClass())){
+			return "redirect:/logout";
+		}
 		params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
 	    params.setTaskType(Types.TaskType.TASK);
 		model.addAttribute("noticeList", c1Service.getBoardNoticeList(params, pageable));

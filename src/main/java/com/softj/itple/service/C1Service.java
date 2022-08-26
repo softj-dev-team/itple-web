@@ -42,12 +42,13 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class C1Service {
     private final JPAQueryFactory jpaQueryFactory;
-    final private BoardRepo boardRepo;
-    final private BoardCommentRepo boardCommentRepo;
-    final private BoardStarRepo boardStarRepo;
-    final private BoardFileRepo boardFileRepo;
-    final private CodeDetailRepo codeDetailRepo;
-    final private CodeUtil codeUtil;
+    private final BoardRepo boardRepo;
+    private final BoardCommentRepo boardCommentRepo;
+    private final BoardStarRepo boardStarRepo;
+    private final BoardFileRepo boardFileRepo;
+    private final CodeUtil codeUtil;
+    private final CodeDetailRepo codeDetailRepo;
+
     @Value("${file.uploadDir}")
     private String FILE_PATH;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");

@@ -41,10 +41,15 @@ public class A3Service {
     private final TaskRepo taskRepo;
     private final UserRepo userRepo;
     private final AttendanceRepo attendanceRepo;
-    private final StudentTaskFileRepo studentTaskFileRepo;
     private final StudentTaskRepo studentTaskRepo;
-    private final StudentRepo studentRepo;
+    private final AttendanceHistoryRepo attendanceHistoryRepo;
+    private final BoardRepo boardRepo;
+    private final BookRentalRepo bookRentalRepo;
     private final CoinHistoryRepo coinHistoryRepo;
+    private final PortfolioRepo portfolioRepo;
+
+    private final PaymentRepo paymentRepo;
+    private final StudentRepo studentRepo;
 
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -161,11 +166,46 @@ public class A3Service {
     }
 
     @Transactional
-    public void deleteFkStudentClassId(SearchVO params){
+    public void deleteFkStudent(SearchVO params){
         for(long id : params.getIdList()){
-            Student delete = studentRepo.findById(id).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
-            delete.setAcademyClass(null);
-            studentRepo.save(delete);
+            Student delete1 = studentRepo.findById(id).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+            delete1.setAcademyClass(null);
+            studentRepo.save(delete1);
+
+            List<StudentTask> delete2 = studentTaskRepo.findByStudent(delete1);
+            for(StudentTask studentTask : delete2){
+                studentTaskRepo.delete(studentTask);
+            }
+
+            List<Payment> delete3 = paymentRepo.findByStudent(delete1);
+            for(Payment payment : delete3){
+                paymentRepo.delete(payment);
+            }
+
+            List<AttendanceHistory> delete4 = attendanceHistoryRepo.findByUser(delete1.getUser());
+            for(AttendanceHistory attendanceHistory : delete4){
+                attendanceHistoryRepo.delete(attendanceHistory);
+            }
+
+            List<Board> delete5 = boardRepo.findByUser(delete1.getUser());
+            for(Board board : delete5){
+                boardRepo.delete(board);
+            }
+
+            List<BookRental> delete6 = bookRentalRepo.findByUser(delete1.getUser());
+            for(BookRental bookRental : delete6){
+                bookRentalRepo.delete(bookRental);
+            }
+
+            List<CoinHistory> delete7 = coinHistoryRepo.findByUser(delete1.getUser());
+            for(CoinHistory coinHistory : delete7){
+                coinHistoryRepo.delete(coinHistory);
+            }
+
+            List<Portfolio> delete8 = portfolioRepo.findByUser(delete1.getUser());
+            for(Portfolio portfolio : delete8){
+                portfolioRepo.delete(portfolio);
+            }
         }
     }
 

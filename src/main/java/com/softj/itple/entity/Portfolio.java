@@ -22,7 +22,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Portfolio extends Auditing {
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     private String subject;
     private String summary;

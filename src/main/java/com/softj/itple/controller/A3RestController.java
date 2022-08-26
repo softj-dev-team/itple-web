@@ -29,7 +29,7 @@ public class A3RestController {
     //삭제
     @PostMapping("/p1/d1")
     public Response p1d1(SearchVO params) {
-        a3Service.deleteFkStudentClassId(params);
+        a3Service.deleteFkStudent(params);
         a3Service.deleteStudent(params);
         return Response.builder().build();
     }
