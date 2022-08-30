@@ -19,6 +19,7 @@
             <div class="adSearch clearfix selSearch">
                 <form id="form1" name="form1" action="" class="adSearch-in">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                    <input type="hidden" id="page" name="academyType" th:value="${params.academyType}">
                     <div class="in-box">
                         <!--<select name="classId" class="input-df mb20">
                             <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.id, params.classId)}">잇플코딩입문반</option>
