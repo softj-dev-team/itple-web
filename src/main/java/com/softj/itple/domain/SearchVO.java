@@ -111,13 +111,14 @@ public class SearchVO {
 	private Integer[] paymentDayList = new Integer[0];
 	private Integer year;
 	private Integer month;
-	private long cost;
+	private Long cost;
 	private List<AcademyClass> academyClassList;
 	private Types.AcademyType academyClassType;
 	private Types.PaymentType paymentType;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate paymentDate;
 	private Types.AcademyType academyType;
+	private Types.PaymentStatus paymentStatus;
 	private Student totalYear;
 	private Student totalMonth;
 

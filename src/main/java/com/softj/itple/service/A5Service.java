@@ -5,6 +5,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
+import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
 import com.softj.itple.repo.*;
 import com.softj.itple.util.LongUtils;
@@ -111,9 +112,6 @@ public class A5Service {
     @Transactional
     public void savePayment(SearchVO params, HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-        LocalDateTime now = LocalDateTime.now();
-
         Student student = studentRepo.findById(params.getStudentId()).get();
 
         Payment save = Payment.builder().build();
@@ -122,8 +120,6 @@ public class A5Service {
 
         if(LongUtils.noneEmpty(params.getId())) {
             save = paymentRepo.findById(params.getId()).get();
-            save.setUpdatedId(session.getAttribute("userId").toString());
-            save.setUpdatedAt(now);
         }
 
         save.setYear(params.getYear());
@@ -134,6 +130,7 @@ public class A5Service {
         save.setPaymentDate(params.getPaymentDate());
         save.setPaymentType(params.getPaymentType());
         save.setMemo(params.getMemo());
+        save.setStatus(params.getPaymentStatus());
 
         paymentRepo.save(save);
     }
@@ -172,6 +169,7 @@ public class A5Service {
             save.setPaymentDate(params.getPaymentDate());
             save.setPaymentType(params.getPaymentType());
             save.setMemo("");
+            save.setStatus(Types.PaymentStatus.COMP);
 
             paymentRepo.save(save);
 

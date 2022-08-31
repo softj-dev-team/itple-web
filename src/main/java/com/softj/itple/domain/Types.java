@@ -230,4 +230,20 @@ public class Types {
             }
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum PaymentStatus implements Code<String> {
+        NONE("01", "미납"),
+        COMP("02", "완납");
+        
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<PaymentType, String> {
+            public Converter() {
+                super(PaymentType.class);
+            }
+        }
+    }
 }

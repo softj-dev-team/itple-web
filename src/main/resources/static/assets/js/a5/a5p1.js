@@ -22,7 +22,7 @@ function reload(){
     window.location.reload();
 }
 
-function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) {
+function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11) {
     var form = $('#form1');
 
     switch (flag) {
@@ -36,9 +36,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
             var url = path+'/s1';
 
             modal.confirm("저장하시겠습니까?",function(){
-                loading(1);
-
-                $.post(url, {id:arg1, studentId:arg2, cost:arg3, paymentDate:arg4, paymentType:arg5, memo:arg6, year:arg7, month:arg8, paymentDay:arg9, price:arg10},function(){
+                $.post(url, {id:arg1, studentId:arg2, cost:arg3, paymentDate:arg4, paymentType:arg5, memo:arg6, year:arg7, month:arg8, paymentDay:arg9, price:arg10, paymentStatus:arg11},function(){
                     loading(0);
                     modal.alert('저장되었습니다.');
                     location.reload();
@@ -51,8 +49,6 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
             var url = path+'/s2';
 
             modal.confirm("완납처리 하시겠습니까?",function(){
-                loading(1);
-
                 var param1 = $("#studentIdList").val();
                 var param2 = $("#paymentIdList").val();
                 var param3 = $("#paymentDayList").val();
@@ -73,7 +69,6 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
             var url = path+'/d1';
 
             modal.confirm("미납처리 하시겠습니까?",function(){
-                loading(1);
 
                 var param1 = $("#paymentIdList").val();
 
@@ -92,6 +87,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
             $('#noticeForm input[name=seq]').val(0);
             if(arg1){
                 $.post(path+'/p1',{seq: arg1},function(res){
+                    loading(0);
                     var el = res.data;
                     $("textarea[name=content]").val(el.content);
                     $('#noticeForm select').val(el.accessDept.seq).change();

@@ -19,11 +19,8 @@
             <div class="adSearch clearfix selSearch">
                 <form id="form1" name="form1" action="" class="adSearch-in">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
-                    <input type="hidden" id="page" name="academyType" th:value="${params.academyType}">
+                    <input type="hidden" id="academyType" name="academyType" th:value="${params.academyType}">
                     <div class="in-box">
-                        <!--<select name="classId" class="input-df mb20">
-                            <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.id, params.classId)}">잇플코딩입문반</option>
-                        </select>-->
                         <select name="year" id="year">
                             <option th:each="num : ${#numbers.sequence(2,-5)}"
                                     th:with="year=${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}"
@@ -123,9 +120,9 @@
                             <p>Total<span th:text="|(${params.year})|"></span></p>
                         </div>
                         <ul>
-                            <li>총액 : <span class="numberformat" th:text="${params.totalMonth.totalCost * 12}"></span></li>
-                            <li>납부 : <span class="numberformat" th:text="${params.totalYear.payCost}"></span></li>
-                            <li>미납 : <span class="numberformat" th:text="${( params.totalMonth.totalCost * 12 ) - params.totalYear.payCost}"></span></li>
+                            <li>총액 : <span th:text="${#numbers.formatInteger(params.totalMonth.totalCost * 12,0,'COMMA')}"></span></li>
+                            <li>납부 : <span th:text="${#numbers.formatInteger(params.totalYear.payCost,0,'COMMA')}"></span></li>
+                            <li>미납 : <span th:text="${#numbers.formatInteger(( params.totalMonth.totalCost * 12 ) - params.totalYear.payCost,0,'COMMA')}"></span></li>
                         </ul>
                     </div>
                     <div class="totBox">
@@ -139,9 +136,9 @@
                             <p th:text="|${params.year}-${params.month < 10 ? '0'+params.month : params.month}|"></p>
                         </div>
                         <ul>
-                            <li>총액 : <span class="numberformat" th:text="${params.totalMonth.totalCost}"></span></li>
-                            <li>납부 : <span class="numberformat" th:text="${params.totalMonth.payCost}"></span></li>
-                            <li>미납 : <span class="numberformat" th:text="${params.totalMonth.totalCost - params.totalMonth.payCost}"></span></li>
+                            <li>총액 : <span th:text="${#numbers.formatInteger(params.totalMonth.totalCost,0,'COMMA')}"></span></li>
+                            <li>납부 : <span th:text="${#numbers.formatInteger(params.totalMonth.payCost,0,'COMMA')}"></span></li>
+                            <li>미납 : <span th:text="${#numbers.formatInteger(params.totalMonth.totalCost - params.totalMonth.payCost,0,'COMMA')}"></span></li>
                         </ul>
                     </div>
                 </div>
@@ -169,26 +166,26 @@
                 <tbody class="adTable-body ">
                 <tr th:each="el : ${list}">
                     <td><input type="checkbox" name="seqList" th:id="|ch${elStat.count}|"><label th:for="|ch${elStat.count}|"></label>
-                        <input type="hidden" name="id" id="id" th:value="${el.payment != null ? el.payment.id : 0}"/>
-                        <input type="hidden" name="studentId" id="studentId" th:value="${el.id}"/>
-                        <input type="hidden" name="paymentDay" id="paymentDay" th:value="${el.paymentDay}"/>
-                        <input type="hidden" name="price" id="price" th:value="${el.price}"/>
+                        <input type="hidden" name="id" class="id" th:value="${el.payment != null ? el.payment.id : 0}"/>
+                        <input type="hidden" name="studentId" class="studentId" th:value="${el.id}"/>
+                        <input type="hidden" name="paymentDay" class="paymentDay" th:value="${el.paymentDay}"/>
+                        <input type="hidden" name="price" class="price" th:value="${el.price}"/>
                     </td>
                     <td>
                         <button type="button" class="saveBtn">저장</button>
                     </td>
                     <td><span th:text="${el.user.userName}"></span></td>
                     <td><span th:text="${el.parentName}"></span></td>
-                    <td><span th:text="${#numbers.formatInteger(el.price,1,'COMMA')}"></span></td>
-                    <td><input type="text" name="cost" id="cost" class="payComMoney alignR numberformat"
-                               th:value="${el.payment != null ? el.payment.cost : ''}">
+                    <td><span th:text="${#numbers.formatInteger(el.price,0,'COMMA')}"></span></td>
+                    <td><input type="text" name="cost" class="cost payComMoney alignR"
+                               th:value="${el.payment != null ? #numbers.formatInteger(el.payment.cost,0,'COMMA') : ''}">
                     </td>
                     <td><span th:text="|${el.paymentDay < 10 ? '0'+el.paymentDay : el.paymentDay}일|"></span></td>
                     <td>
-                        <input type="text" name="paymentDate" id="paymentDate" class="payDate input-df datepicker"
+                        <input type="text" name="paymentDate" class="paymentDate payDate input-df datepicker"
                                th:value="${el.payment != null ? el.payment.paymentDate : ''}">
                     <td>
-                        <select name="paymentType" id="paymentType" class="payOption">
+                        <select name="paymentType" class="paymentType payOption">
                             <option th:each="er : ${T(com.softj.itple.domain.Types.PaymentType).values()}"
                                     th:selected="${er}==${el.payment != null ? el.payment.paymentType : ''}"
                                     th:value="${er}" th:text="${er.message}">카드
@@ -197,7 +194,26 @@
                     </td>
                     <td><input type="text" name="memo" id="memo"
                                th:value="${el.payment != null ? el.payment.memo : ''}"></td>
-                    <td><span class="compYn" th:if="${el.payment == null}">미납</span></td>
+                    <td>
+                        <select name="paymentStatus" th:id="|paymentStatus_${elStat.count}|" class="paymentStatus">
+                            <option th:each="er : ${T(com.softj.itple.domain.Types.PaymentStatus).values()}"
+                                    th:value="${er}" th:text="${er.message}">미납
+                            </option>
+                        </select>
+                        <script th:inline="javascript">
+                            var el = [[${el.payment != null ? 'EXIST' : null}]];
+                            var status = [[${ el.payment != null ? el.payment.status : ''}]];
+                            var idx = [[${elStat.count}]];
+
+                            if(el == null) {
+                                $("#paymentStatus_" + idx + " option:eq(0)").prop("selected", true);
+                            }else if(el != null && (status == '' || status == 'null')){
+                                $("#paymentStatus_" + idx + " option:eq(0)").prop("selected", true);
+                            }else if(el != null && status != '' && status != 'null'){
+                                $("#paymentStatus_" + idx).val( status ).prop("selected", true);
+                            }
+                        </script>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -245,7 +261,9 @@
     </div>
     <script th:src="@{/assets/js/a5/a5p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
+
         $(document).ready(function () {
+
             $(".datepicker").datepicker({
                 format     : "yyyy-mm-dd",
                 language   : "ko",
@@ -263,10 +281,10 @@
                 var priceArr = new Array();
 
                 $("input[name=seqList]:checked").each(function(){
-                    var studentId = $(this).parent().find("#studentId").val();
-                    var paymentId = $(this).parent().find("#id").val();
-                    var paymentDay = $(this).parent().find("#paymentDay").val();
-                    var price = $(this).parent().find("#price").val();
+                    var studentId = $(this).parent().find(".studentId").val();
+                    var paymentId = $(this).parent().find(".id").val();
+                    var paymentDay = $(this).parent().find(".paymentDay").val();
+                    var price = $(this).parent().find(".price").val();
 
                     studentIdArr.push(studentId);
                     paymentIdArr.push(paymentId);
@@ -308,10 +326,11 @@
 
                 goAction("D1");
             });
+
             $(document).on("click", ".modalClose, .modalOff, .modal-bg", function () {
-                $('.numberformat').onlyNumber();
                 $(this).parents('.modal').removeClass('on');
-            })
+            });
+
             $(document).on("click", "#payCom", function () {
                 var payDate = $("#paymentDateModal").val();
                 var payOption = $("#paymentTypeModal option:selected").index();
@@ -331,20 +350,19 @@
             });
 
             $(document).on("click", ".saveBtn", function () {
-                $(".numberformat").removeText();
-
-                var id = $(this).parent().siblings().find("#id").val();
-                var studentId = $(this).parent().siblings().find("#studentId").val();
-                var cost = $(this).parent().siblings().find("#cost").val();
-                var paymentDate = $(this).parent().siblings().find("#paymentDate").val();
-                var paymentType = $(this).parent().siblings().find("#paymentType").val();
-                var memo = $(this).parent().siblings().find("#memo").val();
-                var paymentDay = $(this).parent().siblings().find("#paymentDay").val();
-                var price = $(this).parent().siblings().find("#price").val();
+                var id = $(this).parent().siblings().find(".id").val();
+                var studentId = $(this).parent().siblings().find(".studentId").val();
+                var cost = $(this).parent().siblings().find(".cost").val();
+                var paymentDate = $(this).parent().siblings().find(".paymentDate").val();
+                var paymentType = $(this).parent().siblings().find(".paymentType").val();
+                var memo = $(this).parent().siblings().find(".memo").val();
+                var paymentDay = $(this).parent().siblings().find(".paymentDay").val();
+                var price = $(this).parent().siblings().find(".price").val();
+                var paymentStatus = $(this).parent().siblings().find(".paymentStatus").val();
                 var nyear = $("#nyear").val();
                 var nmonth = $("#nmonth").val();
 
-                goAction("S1", id, studentId, cost, paymentDate, paymentType, memo, nyear, nmonth, paymentDay, price);
+                goAction("S1", id, studentId, cost, paymentDate, paymentType, memo, nyear, nmonth, paymentDay, price, paymentStatus);
             });
 
             const chart1 = document.querySelector(".totBox .container .year");
@@ -376,85 +394,6 @@
 
                 makeChart(percentYear, chart1, '#2D7AC0');
                 makeChart(percentMonth, chart2, '#2D7AC0');
-            });
-
-
-
-            $(function () {
-                // 숫자 제외하고 모든 문자 삭제.
-                $.fn.removeText = function (_v) {
-                    //console.log("removeText: 숫자 제거 합니다.");
-                    if (typeof (_v) === "undefined") {
-                        $(this).each(function () {
-                            if(this.value != undefined) {
-                                this.value = this.value.replace(/[^0-9]/g, '');
-                            }
-                            if($(this).text() != "") {
-                                $(this).text($(this).numberFormat($(this).text().replace(/[^0-9]/g, '')));
-                            }
-                        });
-                    } else {
-                        return _v.replace(/[^0-9]/g, '');
-                    }
-                };
-                // php의 number_format과 같은 효과.
-                $.fn.numberFormat = function (_v) {
-                    this.proc = function (_v) {
-                        var tmp = '',
-                            number = '',
-                            cutlen = 3,
-                            comma = ',',
-                            i = 0,
-                            len = _v.length,
-                            mod = (len % cutlen),
-                            k = cutlen - mod;
-
-                        for (i; i < len; i++) {
-                            number = number + _v.charAt(i);
-                            if (i < len - 1) {
-                                k++;
-                                if ((k % cutlen) == 0) {
-                                    number = number + comma;
-                                    k = 0;
-                                }
-                            }
-                        }
-                        return number;
-                    };
-
-                    var proc = this.proc;
-                    if (typeof (_v) === "undefined") {
-                        $(this).each(function () {
-                            this.value = proc($(this).removeText(this.value));
-                        });
-                    } else {
-                        return proc(_v);
-                    }
-                };
-
-                $.fn.onlyNumber = function (p) {
-                    $(this).each(function (i) {
-                        $(this).attr({'style': 'text-align:left'});
-                        if(this.value != undefined) {
-                            this.value = $(this).removeText(this.value);
-                            this.value = $(this).numberFormat(this.value);
-                        }
-
-                        if($(this).text() != "") {
-                            $(this).text($(this).removeText($(this).text()));
-                            $(this).text($(this).numberFormat($(this).text()));
-                        }
-
-                        $(this).bind('keypress keyup', function (e) {
-                            this.value = $(this).removeText(this.value);
-                            this.value = $(this).numberFormat(this.value);
-                        });
-
-                    });
-                };
-
-                $('.numberformat').onlyNumber();
-
             });
         });
     </script>
