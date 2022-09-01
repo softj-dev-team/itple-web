@@ -192,7 +192,7 @@
                             </option>
                         </select>
                     </td>
-                    <td><input type="text" name="memo" id="memo"
+                    <td><input type="text" name="memo" class="memo"
                                th:value="${el.payment != null ? el.payment.memo : ''}"></td>
                     <td>
                         <select name="paymentStatus" th:id="|paymentStatus_${elStat.count}|" class="paymentStatus">
@@ -308,7 +308,7 @@
                 var paymentIdArr = new Array();
                 var nonCnt = 0;
                 $("input[name=seqList]:checked").each(function(){
-                    var paymentId = $(this).parent().find("#id").val();
+                    var paymentId = $(this).parent().find(".id").val();
                     paymentIdArr.push(paymentId);
 
                     $("#paymentIdList").val(paymentIdArr);
@@ -350,9 +350,12 @@
             });
 
             $(document).on("click", ".saveBtn", function () {
+
+
                 var id = $(this).parent().siblings().find(".id").val();
                 var studentId = $(this).parent().siblings().find(".studentId").val();
                 var cost = $(this).parent().siblings().find(".cost").val();
+                cost = cost.replace(/[^0-9]/g, '');
                 var paymentDate = $(this).parent().siblings().find(".paymentDate").val();
                 var paymentType = $(this).parent().siblings().find(".paymentType").val();
                 var memo = $(this).parent().siblings().find(".memo").val();
@@ -361,6 +364,8 @@
                 var paymentStatus = $(this).parent().siblings().find(".paymentStatus").val();
                 var nyear = $("#nyear").val();
                 var nmonth = $("#nmonth").val();
+
+
 
                 goAction("S1", id, studentId, cost, paymentDate, paymentType, memo, nyear, nmonth, paymentDay, price, paymentStatus);
             });

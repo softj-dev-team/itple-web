@@ -168,7 +168,6 @@ public class A5Service {
             save.setPrice(priceList[i]);
             save.setPaymentDate(params.getPaymentDate());
             save.setPaymentType(params.getPaymentType());
-            save.setMemo("");
             save.setStatus(Types.PaymentStatus.COMP);
 
             paymentRepo.save(save);
