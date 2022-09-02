@@ -7,6 +7,7 @@
     <!-- 썸머노트 -->
     <link href="/assets/plugins/summernote-0.8.18-dist/summernote-lite.css" rel="stylesheet" type="text/css">
     <script src="/assets/plugins/summernote-0.8.18-dist/summernote-lite.js"></script>
+    <script src="/assets/plugins/summernote-0.8.18-dist/lang/summernote-ko-KR.js"></script>
     <title>잇플 커뮤니티</title>
 </head>
 <body>
@@ -78,6 +79,14 @@
                         }
                     },
                 },
+                toolbar: [
+                    ['style', ['fontname']],
+                    ['style', ['fontsize','bold', 'underline', 'italic','strikethrough','color', 'clear']],
+                    ['font', [ 'superscript', 'subscript']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture', 'video']],
+                ]
             });
         });
         /**
