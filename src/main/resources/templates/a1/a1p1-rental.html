@@ -8,7 +8,7 @@
 <body>
 <th:block layout:fragment="content">
     <form id="form1">
-        <input type="hidden" name="id" th:value="${el.id}"/>
+        <input type="hidden" name="id" th:value="${el != null ? el?.id : 0}"/>
         <input type="hidden" name="bookId" th:value="${el.book.id}"/>
         <input type="hidden" name="evBookRental" id="evBookRental" />
         <input type="hidden" name="page" id="page" th:value="${params.page}"/>
@@ -25,11 +25,11 @@
                 <div class="inputBox2 mb20">
                     <div>
                         <label for="userName" class="mb5">대여자</label>
-                        <input type="text" name="userName" id="userName" class="input-df" th:value="${el.user?.userName}" >
+                        <input type="text" name="userName" id="userName" class="input-df" th:value="${#strings.equals(el?.rentalStatus,'LOAN') || #strings.equals(el?.rentalStatus,'DELINQUENT') ? el?.user?.userName : ''}" >
                     </div>
                     <div>
                         <label for="attendanceNo" class="mb5">출결번호</label>
-                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df" th:value="${el.user?.student?.attendanceNo}">
+                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df" th:value="${#strings.equals(el.rentalStatus,'LOAN') || #strings.equals(el?.rentalStatus,'DELINQUENT') ? el?.user?.student?.attendanceNo :  ''}">
                     </div>
                 </div>
                 <div class="inputBox2">
@@ -37,6 +37,8 @@
                         <label class="mb5">대여 현황</label>
                         <div th:if="${#objects.nullSafe(el.rentalStatus,'') != ''}">
                         <th:block th:switch="${#strings.toString(el.rentalStatus)}">
+                            <input type="text" name="status" class="input-df" th:case="RETURN2" value="대여가능" disabled>
+                            <input type="text" name="status" class="input-df" th:case="RETURN" value="대여가능" disabled>
                             <input type="text" name="status" class="input-df" th:case="AVAILABLE" value="대여가능" disabled>
                             <input type="text" name="status" class="input-df" th:case="LOAN" value="대여중" disabled>
                             <input type="text" name="status" class="input-df" th:case="DELINQUENT" value="연체" disabled>
@@ -46,12 +48,12 @@
                 </div>
                 <div class="dateBox">
                     <div class="datepickerWrap">
-                        <input type="text" name="startDate" id="startDate" th:value="${el.startDate}" class="input-df mb20 datepicker">
+                        <input type="text" name="startDate" id="startDate" th:value="${#strings.equals(el?.rentalStatus,'LOAN') || #strings.equals(el?.rentalStatus,'DELINQUENT') ? el?.startDate : ''}" class="input-df mb20 datepicker">
                         <i class="i-date"></i>
                     </div>
                     <span>-</span>
                     <div class="datepickerWrap">
-                        <input type="text" name="endDate" id="endDate" th:value="${el.endDate}" class="input-df mb20 datepicker">
+                        <input type="text" name="endDate" id="endDate" th:value="${#strings.equals(el?.rentalStatus,'LOAN') || #strings.equals(el?.rentalStatus,'DELINQUENT') ? el?.endDate : ''}" class="input-df mb20 datepicker">
                         <i class="i-date"></i>
                     </div>
                 </div>

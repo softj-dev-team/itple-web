@@ -3,6 +3,7 @@ package com.softj.itple.repo;
 import com.softj.itple.entity.AcademyClass;
 import com.softj.itple.entity.Student;
 import com.softj.itple.entity.StudentTask;
+import com.softj.itple.entity.Task;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -16,6 +17,8 @@ import java.util.Optional;
 public interface StudentTaskRepo extends JpaRepository<StudentTask, Long>, QuerydslPredicateExecutor<StudentTask> {
     @EntityGraph(attributePaths = {"student","task","studentTaskFileList"}, type = EntityGraph.EntityGraphType.LOAD)
     Optional<StudentTask> findWithStudentById(@Param("id")long id);
-
     List<StudentTask> findByStudent(Student student);
+    Optional<StudentTask> findByTaskAndStudent(Task task, Student student);
+
+    List<StudentTask> findByTask(Task task);
 }

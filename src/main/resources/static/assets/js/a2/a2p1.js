@@ -70,8 +70,14 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             var formS1 = $('#form1');
             modal.confirm("저장하시겠습니까?",function(){
                 $.post(path+'/s1',formS1.serialize(),function(res){
+
                     modal.alert('저장되었습니다.');
-                    ut.redirect("/a2/p1","taskType", $("input[name=taskType]").val());
+                    var id = $("#id").val();
+                    if(id > 0){
+                        location.reload();
+                    }else {
+                        ut.redirect("/a2/p1", "taskType", $("input[name=taskType]").val());
+                    }
                 });
             });
             break;
@@ -204,5 +210,23 @@ function setStudentList(){
             html += `<input type="checkbox" id="stud${el.id}" name="studentIdList" value="${el.id}"><label for="stud${el.id}">${el.user.userName}</label>`;
         });
         $("#studentList").html(html);
+
+        var taskId = $("#id").val();
+        if(taskId != 0){
+
+            $.post("/api/a2/p1/l1", {id: taskId}, function(res) {
+                var list = res.data;
+
+                list.forEach(function(el){
+                   $("input[name=studentIdList]").each(function(){
+                       $(this).prop("disabled",true);
+                       if($(this).val() == el.student.id){
+                           $(this).prop("checked",true);
+                       }
+                   });
+                });
+            });
+
+        }
     });
 }

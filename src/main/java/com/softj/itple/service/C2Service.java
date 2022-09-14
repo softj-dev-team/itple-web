@@ -42,6 +42,10 @@ public class C2Service {
     private final StudentTaskRepo studentTaskRepo;
     private final StudentTaskFileRepo studentTaskFileRepo;
 
+    private final StudentRepo studentRepo;
+
+    private final CoinHistoryRepo coinHistoryRepo;
+
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Value("${file.uploadDir}")

@@ -22,14 +22,14 @@ public class BookRental extends Auditing {
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate returnDate;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Book book;
 
     @Builder
-    public BookRental(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, Book book, LocalDate returnDate, LocalDate startDate, LocalDate endDate, Types.BookRentalStatus rentalStatus) {
+    public BookRental(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, LocalDate returnDate, LocalDate startDate, LocalDate endDate, Types.BookRentalStatus rentalStatus, Book book) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.startDate = startDate;
         this.endDate = endDate;

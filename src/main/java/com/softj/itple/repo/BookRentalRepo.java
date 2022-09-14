@@ -19,5 +19,7 @@ public interface BookRentalRepo extends JpaRepository<BookRental, Long>, Queryds
     List<BookRental> findAllByEndDateAndRentalStatus(@Param("endDate") LocalDate endDate, @Param("rentalStatus")Types.BookRentalStatus rentalStatus);
     Optional<BookRental> findTopByBookOrderByCreatedAtDesc(Book book);
 
-    List<BookRental> findByUser(User user);
+    Optional<BookRental> findTopByBookAndRentalStatusOrderByCreatedAtDesc(Book book, Types.BookRentalStatus bookRentalStatus);
+    List<BookRental> findByUserId(Long userId);
+    List<BookRental> findAllByBook(Book book);
 }

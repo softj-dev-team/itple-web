@@ -26,6 +26,14 @@ server:
   servlet:
     session:
       timeout: 180m
+ssl:
+  key-store-type : PKCS12
+  key-store: file:src/main/resources/config/.keystore
+  key-store-password: thdud
+  key-alias: tomcat
+
+security:
+  require-ssl: true
 
 spring:
   profiles: dev

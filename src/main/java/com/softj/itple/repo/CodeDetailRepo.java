@@ -18,6 +18,5 @@ public interface CodeDetailRepo extends JpaRepository<CodeDetail, Long>, Queryds
     Optional<CodeDetail> findByMasterId(long marsterId);
     Optional<CodeDetail> findTopByMasterIdOrderBySortDesc(long marsterId);
     Optional<CodeDetail> findTopByMasterIdOrderByCodeValueDesc(long marsterId);
-
-    Optional<CodeDetail> findByCodeName(String codeName);
+    Optional<CodeDetail> findByMasterIdAndCodeName(Long masterId, String codeName);
 }

@@ -30,8 +30,8 @@ public class A1Controller {
     //목록
     @GetMapping("/p1")
     public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
-        if(Objects.isNull(params.getBoardType())) {
-            params.setBoardType(Types.AcademyType.CODING);
+        if(Objects.isNull(params.getAcademyType())) {
+            params.setAcademyType(Types.AcademyType.CODING);
         }
 
         model.addAttribute("list",a1Service.getBookList(params, pageable));

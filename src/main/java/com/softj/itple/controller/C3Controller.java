@@ -2,6 +2,7 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
+import com.softj.itple.entity.Book;
 import com.softj.itple.entity.StudentTask;
 import com.softj.itple.service.C2Service;
 import com.softj.itple.service.C3Service;
@@ -35,7 +36,9 @@ public class C3Controller {
     //상세
     @GetMapping("/p1-detail/{id}")
     public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
-        model.addAttribute("el", c3Service.getBook(params));
+        Book book = c3Service.getBook(params);
+        model.addAttribute("el", book);
+        model.addAttribute("rel", c3Service.getBookRentalOne(book));
         model.addAttribute("params",params);
         return "c3/c3p1-detail";
     }

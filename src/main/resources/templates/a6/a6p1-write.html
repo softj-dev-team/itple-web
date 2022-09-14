@@ -27,6 +27,22 @@
                     <textarea name="summary" id="summary" cols="30" rows="10" class="textA mt10" placeholder="포트폴리오에 대한 설명을 입력해주세요." th:utext="${el.summary}"></textarea>
                 </div>
                 <textarea id="summernote" placeholder="내용을 입력해주세요." th:utext="${el.contents}" name="contents"></textarea>
+                <div class="fileBox">
+                    <div class="fileHead">
+                        <p>첨부파일</p>
+                        <div class="file-btn">
+                            <button type="button" class="chRemove">선택삭제</button>
+                            <input type="file" multiple="multiple" class="" id="fileInput" name="files">
+                            <label for="fileInput" class="fileBtn">파일첨부</label>
+                        </div>
+                    </div>
+                    <ul class="fileUP" id="articlefileChange">
+                        <li th:each="file : ${el.portfolioFileList}">
+                            <input th:id="|file-ch${file.id}|" type="checkbox" name="idList" th:value="${file.id}">
+                            <label th:for="|file-ch${file.id}|"><span th:text="${file.orgFileName}"></span></label>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="btn-center Tbtn">
                 <button type="button" class="btn submitBtn" onclick="goAction('S1')">작성하기</button>

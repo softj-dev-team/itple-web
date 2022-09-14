@@ -33,14 +33,17 @@ function goAction(flag, arg1, arg2) {
             break;
         /*카테고리 목록*/
         case "L2":
-            $.post(path+'/l1',{masterId : 4},function(res){
+            $.post(path+'/l1',{masterId:4, academyType:arg1},function(res){
                 var data = res.data;
                 var idx = 1;
+
+                $(".categoryCon").html("");
 
                 data.forEach(function(ec){
                     $(".categoryCon").append('<div class="categorySub" id="cate_'+idx+'"><input type="hidden" name="updateIdList" id="id_'+idx+'" value="'+ec.id+'"/><input type="hidden" name="codeNameList" class="codeNameList" id="codeName_'+idx+'" value="'+ec.codeName+'"/><p class="categoryTit">'+ec.codeName+'</p><div class="modiBtn-box"><button type="button" class="categoryModi"></button><button type="button" class="categoryRemove"></button></div></div>');
                     idx++;
                 });
+
                 $('#commOt').addClass('on');
 
             });
@@ -53,8 +56,6 @@ function goAction(flag, arg1, arg2) {
             var url = path+'/s1';
 
             modal.confirm("저장하시겠습니까?",function(){
-                loading(1);
-
                 $.post(url,formS1.serialize(),function(){
                     loading(0);
                     modal.alert('저장되었습니다.');
@@ -70,7 +71,6 @@ function goAction(flag, arg1, arg2) {
             var url = path+'/s2';
 
             modal.confirm("저장하시겠습니까?",function(){
-                loading(1);
                 $.ajax({
                     data : formS1.serialize(),
                     type : "POST",

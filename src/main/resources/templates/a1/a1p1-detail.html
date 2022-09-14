@@ -10,9 +10,9 @@
 <form id="form1">
     <input type="hidden" name="id" th:value="${el.id}" />
     <input type="hidden" name="thumbnail" id="thumbnail" th:value="${el.thumbnail}" />
-    <input type="hidden" name="startDate" id="startDate" th:value="${el.startDate}" />
-    <input type="hidden" name="endDate" id="endDate" th:value="${el.endDate}" />
-    <input type="hidden" name="rentalName" th:value="${el.rentalName}"/>
+    <input type="hidden" name="startDate" id="startDate" th:value="${el.bookRental?.startDate}" />
+    <input type="hidden" name="endDate" id="endDate" th:value="${el.bookRental?.endDate}" />
+    <input type="hidden" name="rentalName" th:value="${el.bookRental?.user?.userName}"/>
     <input type="hidden" name="bookStatus" th:value="${el.bookStatus}"/>
     <input type="hidden" name="page" id="page" th:value="${params.page}"/>
 <div class="responsiveWrap">

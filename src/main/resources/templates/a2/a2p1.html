@@ -8,10 +8,6 @@
 </head>
 <body>
 <th:block layout:fragment="content">
-    <form id="form1">
-        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
-        <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
-    </form>
     <div class="adContent">
         <h1 class="adH1">수업연계</h1>
         <div class="tab clearfix adTab">
@@ -23,9 +19,22 @@
         <div class="content-in clearfix">
             <div class="tableBtn-box">
                 <div class="leftBox">
+                    <a th:href="|/a2/p1-write/0?taskType=${params.taskType}|" class="aBtn" th:text="|${params.taskType.message} 등록|">독후감 등록</a>
                 </div>
                 <div class="rightBox">
-                    <a th:href="|/a2/p1-write/0?taskType=${params.taskType}|" class="aBtn" th:text="|${params.taskType.message} 등록|">독후감 등록</a>
+                    <div class="adSearch clearfix">
+                        <form id="form1" class="adSearch-in">
+                            <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                            <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
+                            <div class="in-box">
+                                <select name="searchType" id="searchType">
+                                    <option value="className" th:selected="${#strings.equals(params.searchType, 'className')}">반이름</option>
+                                </select>
+                                <input type="text" name="searchValue" th:value="${params.searchValue}">
+                            </div>
+                            <button type="button" class="src-btn" onclick="goSearch()"></button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <ul class="adTask-list">
@@ -35,7 +44,7 @@
                         <p th:each="task : ${el.taskList}">
                             <span th:text="${task.subject}">사람은 무엇으로 사는가</span>
                             <span th:if="${#strings.equals(task.taskType,'BOOK_REPORT')}" th:text="| - ${task.teacher} |"> - 톨스토이</span>
-                            <span class="ml10" th:text="| ${#temporals.format(task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(task.endDate,'yyyy.MM.dd')}|">~22.04.08</span>
+                            <span class="ml10" th:text="| ${#temporals.format(task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(task.endDate,'yyyy.MM.dd HH:mm')}|">~22.04.08</span>
                         </p>
                     </a>
                 </li>
@@ -47,8 +56,7 @@
     <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        /*]]>*/
+
     </script>
 </th:block>
 </body>
