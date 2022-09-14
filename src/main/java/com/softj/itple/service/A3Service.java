@@ -42,11 +42,21 @@ public class A3Service {
     private final UserRepo userRepo;
     private final AttendanceRepo attendanceRepo;
     private final StudentTaskRepo studentTaskRepo;
+
+    private final StudentTaskFileRepo studentTaskFileRepo;
     private final AttendanceHistoryRepo attendanceHistoryRepo;
     private final BoardRepo boardRepo;
+
+    private final BoardFileRepo boardFileRepo;
+
+    private final BoardCommentRepo boardCommentRepo;
+
+    private final BoardStarRepo boardStarRepo;
     private final BookRentalRepo bookRentalRepo;
     private final CoinHistoryRepo coinHistoryRepo;
     private final PortfolioRepo portfolioRepo;
+
+    private final PortfolioFileRepo portfolioFileRepo;
 
     private final PaymentRepo paymentRepo;
     private final StudentRepo studentRepo;
@@ -176,6 +186,10 @@ public class A3Service {
             List<StudentTask> delete2 = studentTaskRepo.findByStudent(delete1);
             for(StudentTask studentTask : delete2){
                 studentTaskRepo.delete(studentTask);
+                List<StudentTaskFile> studentTaskFileList = studentTaskFileRepo.findByStudentTask(studentTask);
+                for(StudentTaskFile studentTaskFile : studentTaskFileList){
+                    studentTaskFileRepo.delete(studentTaskFile);
+                }
             }
 
             List<Payment> delete3 = paymentRepo.findByStudent(delete1);
@@ -191,6 +205,20 @@ public class A3Service {
             List<Board> delete5 = boardRepo.findByUser(delete1.getUser());
             for(Board board : delete5){
                 boardRepo.delete(board);
+                List<BoardFile> boardFileList = boardFileRepo.findByBoard(board);
+                for(BoardFile boardFile : boardFileList){
+                    boardFileRepo.delete(boardFile);
+                }
+            }
+
+            List<BoardComment> delete9 = boardCommentRepo.findByUser(delete1.getUser());
+            for(BoardComment boardComment : delete9){
+                boardCommentRepo.delete(boardComment);
+            }
+
+            List<BoardStar> delete10 = boardStarRepo.findByUser(delete1.getUser());
+            for(BoardStar boardStar : delete10){
+                boardStarRepo.delete(boardStar);
             }
 
             List<BookRental> delete6 = bookRentalRepo.findByUserId(delete1.getUser().getId());
@@ -206,6 +234,10 @@ public class A3Service {
             List<Portfolio> delete8 = portfolioRepo.findByUser(delete1.getUser());
             for(Portfolio portfolio : delete8){
                 portfolioRepo.delete(portfolio);
+                List<PortfolioFile> portfolioFileList = portfolioFileRepo.findByPortfolio(portfolio);
+                for(PortfolioFile portfolioFile : portfolioFileList){
+                    portfolioFileRepo.delete(portfolioFile);
+                }
             }
         }
     }
