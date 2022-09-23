@@ -33,8 +33,18 @@
                         </select>
                         <input type="text" name="searchValue" th:value="${params.searchValue}">
                     </div>
-                    <button type="button" class="src-btn" onclick="goSearch();"></button>
+                    <button type="button" class="src-btn" id="search1" style="display:none"></button>
+                    <button type="button" class="src-btn active" id="search2" onclick="goSearch();"></button>
                 </form>
+            </div>il.getCodeList(2)}" th:if="${@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType)}" class="m-btn"
+            onclick="goWrite();">글쓰기</button>
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                </div>
+                <div class="rightBox">
+                    <button type="button" th:each="e : ${@codeUt
+                </div>
+                </div>
             </div>
             <ul class="commuListUl">
                 <li th:each="el : ${noticeList}">
@@ -56,8 +66,6 @@
             </ul>
             <div class="adfooter-btn">
                 <button type="button" th:if="${@authUtil.isRole('ADMIN')}" class="m-btn btn-line mr5 categoryBtn">게시판 설정</button>
-                <button type="button" th:each="e : ${@codeUtil.getCodeList(2)}" th:if="${@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType)}" class="m-btn"
-                        onclick="goWrite();">글쓰기</button>
             </div>
         </div>
         <!--페이지네이션-->
@@ -114,6 +122,28 @@
     <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
+        $(document).ready(function(){
+            var isMobile = navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i) ? true : false;
+
+            if(isMobile){
+                $("#search2").css("display","none");
+                $("#search1").css("display","block");
+
+                $("#search1").on("click",function(){
+                    if($("#search1").hasClass("active")){
+                        $("#search1").css("display","none");
+                        $("#search2").css("display","block");
+                    }else{
+                        $("#search2").css("display","none");
+                        $("#search1").css("display","block");
+                    }
+                });
+
+            }else{
+                $("#search1").css("display","none");
+                $("#search2").css("display","block");
+            }
+        });
         $(document).on("click", ".categoryRemove", function(){
             var id = $(this).parent().parent().prop("id");
             $("#removeId").val(id);

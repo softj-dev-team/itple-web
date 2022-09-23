@@ -37,7 +37,7 @@ public class A5Service {
         QPayment qPayment = QPayment.payment;
 
         BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
-                .and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
+                .and(qStudent.academyClass.academyType.eq(params.getAcademyType())).and(qStudent.studentStatus.eq(Types.StudentStatus.STUDENT));
 
         if(StringUtils.noneEmpty(params.getUserName())){
             where.and(qStudent.user.userName.contains(params.getUserName()));
