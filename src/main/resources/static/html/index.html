@@ -9,11 +9,11 @@
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <link href="/assets/css/reset.css" rel="stylesheet" type="text/css">
-    <link href="/assets/css/common.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/common.css" rel="stylesheet" type="text/css">
 
     <!--    slick slider-->
-    <link href="/assets/plugins/slick-theme.css" rel="stylesheet" type="text/css">
+    <link href="../assets/plugins/slick-theme.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
@@ -455,6 +455,21 @@
                 </div>
             </div>
         </div>
+        <div class="pop-up on">
+            <div class="popBg"></div>
+            <div class="popContent">
+                <div class="popBody">
+                    <div class="popin">
+                        공지사항
+                        <img src="../assets/img/book1.jpg" alt="">
+                    </div>
+                    <div class="popBtnWrap">
+                        <button type="button" class="popBtn-non">다시 안 보기</button>
+                        <button type="button" class="popBtn popOff">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
          <footer class="footer">
              <div class="footer-in clearfix">
                 <div class="f-info">
@@ -581,7 +596,11 @@
 
         $('.po-slide').slick('setPosition');
     });
+    $(document).on("click", ".popOff", function(){
+        // $(this).parents('.pop-up').removeClass('on');
 
+        $('.pop-up').removeClass('on');
+    });
     </script>
 </body>
 </html>

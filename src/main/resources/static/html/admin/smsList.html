@@ -8,9 +8,14 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.kr.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.standalone.min.css">
     <link href="../../assets/css/reset.css" rel="stylesheet" type="text/css">
     <link href="../../assets/css/common.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 </head>
 <body class="adminBody">
     <div class="wrap">
@@ -119,144 +124,131 @@
             </div>
         </div>
         <div class="adContent">
-            <h1 class="adH1">학생관리</h1>
-            <div class="tab clearfix adTab">
-                <ul class="tab-ul">
-                    <li class="active"><a href="studList.html">재원생</a></li>
-                    <li><a href="leaveList.html">휴원생</a></li>
-                    <li><a href="dischargeList.html">퇴원생</a></li>
-                </ul>
-            </div>
+            <h1 class="adH1">SMS관리</h1>
             <div class="content-in clearfix">
-                <div class="adSearch clearfix">
-                    <form action="" class="adSearch-in">
+                <div class="search clearfix">
+                    <form action="" class="search-in">
                         <div class="in-box">
-                            <select name="" id="">
-                                <option value="">전체</option>
-                                <option value="">학생</option>
-                                <option value="">반</option>
-                                <option value="">입학일</option>
-                                <option value="">포인트</option>
+                             <select name="" id="">
+                                <option value="all">전체</option>
+                                <option value="title">제목</option>
+                                <option value="text">내용</option>
                             </select>
                             <input type="text">
                         </div>
                         <button type="button" class="src-btn"></button>
                     </form>
                 </div>
-                <table class="adTable list4">
+                <div class="tableBtn-box">
+                    <div class="leftBox">
+                        <button type="button" class="m-btn btn-line ComBtn">선택삭제</button>
+                    </div>
+                    <div class="rightBox">
+                        <a href="smsWrite.html" class="a-btn">메시지 전송</a>
+                    </div>
+                </div>
+                <table class="adTable smsTable checklist">
                     <thead class="adTable-head">
                         <tr>
-                            <th>학생</th>
-                            <th>보호자 성함</th>
-                            <th>보호자 연락처</th>
-                            <th>반</th>
-                            <th>표시1</th>
-                            <th>표시2</th>
-                            <th>입학일</th>
-                            <th>포인트</th>
+                            <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                            <th>번호</th>
+                            <th>이름</th>
+                            <th>내용</th>
+                            <th>발송건수</th>
+                            <th>수신번호</th>
+                            <th>발송일자</th>
                         </tr>
                     </thead>
-                    <tbody class="adTable-body adTbody checklist">
+                    <tbody class="adTable-body sms-body">
                         <tr>
+                            <td><input type="checkbox" id="ch1"><label for="ch1"></label></td>
+                            <td>10</td>
                             <td>김잇플</td>
-                            <td>보호자</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                            <td>3</td>
                             <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>-1000</td>
-                        </tr>
-                        
-                        <tr>
-                            <td>김잇플</td>
-                            <td>보호자</td>
-                            <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>-1000</td>
+                            <td>2022.09.16</td>
                         </tr>
                         <tr>
+                            <td><input type="checkbox" id="ch2"><label for="ch2"></label></td>
+                            <td>9</td>
                             <td>김잇플</td>
-                            <td>보호자</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용이 길어지면 말줄임표가 나옵니다.</td>
+                            <td>3</td>
                             <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>1000</td>
+                            <td>2022.09.16</td>
                         </tr>
                         <tr>
+                            <td><input type="checkbox" id="ch3"><label for="ch3"></label></td>
+                            <td>8</td>
                             <td>김잇플</td>
-                            <td>보호자</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                            <td>3</td>
                             <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>1000</td>
+                            <td>2022.09.16</td>
                         </tr>
                         <tr>
+                            <td><input type="checkbox" id="ch4"><label for="ch4"></label></td>
+                            <td>7</td>
                             <td>김잇플</td>
-                            <td>보호자</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                            <td>3</td>
                             <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>1000</td>
+                            <td>2022.09.16</td>
                         </tr>
                         <tr>
+                            <td><input type="checkbox" id="ch5"><label for="ch5"></label></td>
+                            <td>6</td>
                             <td>김잇플</td>
-                            <td>보호자</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                            <td>3</td>
                             <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>1000</td>
+                            <td>2022.09.16</td>
                         </tr>
                         <tr>
+                            <td><input type="checkbox" id="ch6"><label for="ch6"></label></td>
+                            <td>5</td>
                             <td>김잇플</td>
-                            <td>보호자</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                            <td>3</td>
                             <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>-1000</td>
+                            <td>2022.09.16</td>
                         </tr>
                         <tr>
+                            <td><input type="checkbox" id="ch7"><label for="ch7"></label></td>
+                            <td>4</td>
                             <td>김잇플</td>
-                            <td>보호자</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                            <td>3</td>
                             <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>-1000</td>
+                            <td>2022.09.16</td>
                         </tr>
                         <tr>
+                            <td><input type="checkbox" id="ch8"><label for="ch8"></label></td>
+                            <td>3</td>
                             <td>김잇플</td>
-                            <td>보호자</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                            <td>3</td>
                             <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>-1000</td>
+                            <td>2022.09.16</td>
                         </tr>
                         <tr>
+                            <td><input type="checkbox" id="ch9"><label for="ch9"></label></td>
+                            <td>2</td>
                             <td>김잇플</td>
-                            <td>보호자</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                            <td>3</td>
                             <td>010-1234-5678</td>
-                            <td>잇플 코딩입문반A</td>
-                            <td></td>
-                            <td></td>
-                            <td>2022.03.24</td>
-                            <td>-1000</td>
+                            <td>2022.09.16</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="ch10"><label for="ch10"></label></td>
+                            <td>1</td>
+                            <td>김잇플</td>
+                            <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                            <td>3</td>
+                            <td>010-1234-5678</td>
+                            <td>2022.09.16</td>
                         </tr>
                     </tbody>
                 </table>
@@ -277,6 +269,28 @@
                 <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
                 <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
             </ul>
+        </div>
+        <div class="modal" id="smsModal">
+            <div class="modal-bg"></div>
+            <div class="modalContent xs sms-modal">
+                <div class="modalHd">
+                    <h3></h3>
+                    <button class="modalClose"></button>
+                </div>
+                <div class="modalBody payMo">
+                    <label for="" class="mb5">이름</label>
+                    <p>김잇플</p>
+                    <label for="" class="mb5">수신번호</label>
+                    <p>010-1234-5678</p>
+                    <label for="" class="mb5">내용</label>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium iusto aspernatur, culpa optio debitis voluptatem saepe corrupti sint explicabo velit minus veritatis nemo at magnam, accusamus tenetur laboriosam placeat officia.
+                    </p>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-blue modalOff">확인</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <footer class="footer">
             <div class="footer-in clearfix">
@@ -308,11 +322,21 @@
             </div>
         </footer>
     </div>
-    <script src="/assets/js/common.js"></script>
+    <script src="../assets/js/common.js"></script>
     <script>
-        $('.list4 tbody tr').on('click', function () {
-            $(location).attr("href", "studInfo.html");
+         $(document).ready(function(){
+            $(".datepicker").datepicker({
+                format: "yyyy-mm-dd",
+                language: "ko",
+                orientation: "auto"
+            });
+            $('.smsTable tbody tr').on('click', function () {
+                $('#smsModal').addClass('on');
+            });
+            $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+                $(this).parents('.modal').removeClass('on');
+            })
         });
-    </script> 
+    </script>
 </body>
 </html>
