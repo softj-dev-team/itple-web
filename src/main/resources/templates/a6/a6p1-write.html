@@ -115,7 +115,7 @@
             $.ajax({
                 data : formData,
                 type : "POST",
-                url : "/api/c2/p1/f1",
+                url : "/api/a6/p1/f1",
                 contentType : false,
                 processData : false,
                 success : function(res) {
@@ -125,7 +125,7 @@
 
                     res.data.forEach(function(el){
                         $('#articlefileChange').append(
-                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span onclick="studentTaskFileDownload('${el.uploadFileName}')">${el.orgFileName}</span></label></li>`
+                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span>${el.orgFileName}</span></label></li>`
                         );
                     });
                     $("#fileInput").val("");
@@ -147,7 +147,7 @@
             });
 
             modal.confirm("체크한 데이터를 삭제하시겠습니까?", function(){
-                $.post('api/c2/p1/d9', formData, function(){
+                $.post('api/a6/p1/d9', formData, function(){
                     modal.alert('삭제되었습니다.');
                     $("input[name=idList]:checked").each(function(){
                         $(this).closest("li").remove();
