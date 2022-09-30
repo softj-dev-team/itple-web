@@ -27,6 +27,22 @@
                     <textarea name="summary" id="summary" cols="30" rows="10" class="textA mt10" placeholder="포트폴리오에 대한 설명을 입력해주세요." th:utext="${el.summary}"></textarea>
                 </div>
                 <textarea id="summernote" placeholder="내용을 입력해주세요." th:utext="${el.contents}" name="contents"></textarea>
+                <div class="fileBox">
+                    <div class="fileHead">
+                        <p>첨부파일</p>
+                        <div class="file-btn">
+                            <button type="button" class="chRemove">선택삭제</button>
+                            <input type="file" multiple="multiple" class="" id="fileInput" name="files">
+                            <label for="fileInput" class="fileBtn">파일첨부</label>
+                        </div>
+                    </div>
+                    <ul class="fileUP" id="articlefileChange">
+                        <li th:each="file : ${el.portfolioFileList}">
+                            <input th:id="|file-ch${file.id}|" type="checkbox" name="idList" th:value="${file.id}">
+                            <label th:for="|file-ch${file.id}|"><span th:text="${file.orgFileName}"></span></label>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="btn-center Tbtn">
                 <button type="button" class="btn submitBtn" onclick="goAction('S1')">작성하기</button>
@@ -99,7 +115,7 @@
             $.ajax({
                 data : formData,
                 type : "POST",
-                url : "/api/c2/p1/f1",
+                url : "/api/a6/p1/f1",
                 contentType : false,
                 processData : false,
                 success : function(res) {
@@ -109,7 +125,7 @@
 
                     res.data.forEach(function(el){
                         $('#articlefileChange').append(
-                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span onclick="studentTaskFileDownload('${el.uploadFileName}')">${el.orgFileName}</span></label></li>`
+                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span>${el.orgFileName}</span></label></li>`
                         );
                     });
                     $("#fileInput").val("");
@@ -131,7 +147,7 @@
             });
 
             modal.confirm("체크한 데이터를 삭제하시겠습니까?", function(){
-                $.post('api/c2/p1/d9', formData, function(){
+                $.post('api/a6/p1/d9', formData, function(){
                     modal.alert('삭제되었습니다.');
                     $("input[name=idList]:checked").each(function(){
                         $(this).closest("li").remove();

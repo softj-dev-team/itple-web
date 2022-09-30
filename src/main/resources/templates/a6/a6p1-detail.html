@@ -21,6 +21,12 @@
         <div class="content-in clearfix">
             <div th:utext="${el.contents}"></div>
         </div>
+        <div class="fileV" th:if="${el.portfolioFileList != null && el.portfolioFileList.size() != 0}">
+            <p class="fileT">첨부파일</p>
+            <ul class="file-li">
+                <li th:each="file : ${el.portfolioFileList}"><a th:href="|/portfolioFileDownload/${file.uploadFileName}|" th:text="${file.orgFileName}">첨부파일.jpg</a></li>
+            </ul>
+        </div>
         <div class="btn-center">
             <button class="btn" th:onclick="|ut.redirect('/a6/p1-write/${el.id}','userId','${el.user.id}')|">포트폴리오 수정</button>
         </div>

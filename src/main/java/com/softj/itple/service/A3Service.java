@@ -135,11 +135,13 @@ public class A3Service {
         }else{
             save.setAcademyClass(null);
         }
+        save.setCoin(reqCoin);
         save.setEnterDate(params.getEnterDate());
         save.setAttendanceNo(params.getAttendanceNo());
         save.setBirth(params.getBirth());
         save.setGrade(params.getGrade());
         save.setSchool(params.getSchool());
+        save.setEmail(params.getEmail());
         save.setZonecode(params.getZonecode());
         save.setRoadAddress(params.getRoadAddress());
         save.setDetailAddress(params.getDetailAddress());
@@ -148,7 +150,6 @@ public class A3Service {
         save.setPaymentDay(params.getPaymentDay());
         save.setPrice(params.getPrice());
         save.setMemo(params.getMemo());
-        save.setCoin(reqCoin);
         save.setTelNo(params.getTelNo());
         studentRepo.save(save);
 
@@ -220,7 +221,7 @@ public class A3Service {
                 boardStarRepo.delete(boardStar);
             }
 
-            List<BookRental> delete6 = bookRentalRepo.findByUser(delete1.getUser());
+            List<BookRental> delete6 = bookRentalRepo.findByUserId(delete1.getUser().getId());
             for(BookRental bookRental : delete6){
                 bookRentalRepo.delete(bookRental);
             }

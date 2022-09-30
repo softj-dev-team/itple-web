@@ -51,8 +51,8 @@ public class A1RestController {
 
     //카테고리 저장
     @PostMapping("/p1/s3")
-    public Response p1s3(SearchVO params, HttpServletRequest request){
-        a1Service.saveBookCategory(params, request);
+    public Response p1s3(SearchVO params){
+        a1Service.saveBookCategory(params);
         return Response.builder()
                 .build();
     }

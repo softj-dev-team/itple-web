@@ -1865,10 +1865,10 @@ button.t18{
     font-size: 14px;
 }
 /* 과제 */
-.taskTalbe tr th:nth-child(1){width: 15%;min-width: 110px;}
+.taskTalbe tr th:nth-child(1){width: 20%;min-width: 110px;}
 .taskTalbe tr th:nth-child(2){width: 50%;}
-.taskTalbe tr th:nth-child(3){width: 20%;min-width: 120px;}
-.taskTalbe tr th:nth-child(4){width: 15%;min-width: 110px;}
+.taskTalbe tr th:nth-child(3){width: 25%;min-width: 120px;}
+.taskTalbe tr th:nth-child(4){width: 10%;min-width: 110px;}
 .taskBody tr td:not(:nth-child(2)) {
     text-align: center;
 }
@@ -1936,6 +1936,8 @@ button.t18{
     line-height: 140%;
 }
 .pointCom{
+    width: 40%;
+    float: right;
     height: 45px;
     line-height: 45px;
     border: 1px solid #2D7AC0;
@@ -1943,7 +1945,6 @@ button.t18{
     padding: 0 20px;
     font-size: 14px;
     margin-top: 30px;
-    float: left;
 }
 .pointCom > span{vertical-align: 2px;}
 .pointCom p{
@@ -3721,11 +3722,12 @@ input.txtRight{text-align: right;}
 .adTable.list2{
     table-layout: fixed;
 }
-.adTable.list2 tr th:nth-child(1){width: 5%;}
-.adTable.list2 tr th:nth-child(2){width: 8%;}
+.adTable.list2 tr th:nth-child(1){width: 3%;}
+.adTable.list2 tr th:nth-child(2){width: 5%;}
 .adTable.list2 tr th:nth-child(3){width: auto;}
-.adTable.list2 tr th:nth-child(4){width: 15%;}
-.adTable.list2 tr th:nth-child(5){width: 15%;}
+.adTable.list2 tr th:nth-child(4){width: 20%;}
+.adTable.list2 tr th:nth-child(5){width: 10%;}
+.adTable.list2 tr th:nth-child(6){width: 10%;}
 .adTable.list2 tr td:nth-child(3){
     text-align: left;
 }

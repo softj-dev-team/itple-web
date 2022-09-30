@@ -3,6 +3,8 @@ package com.softj.itple.controller;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AcademyClass;
+import com.softj.itple.entity.Student;
+import com.softj.itple.entity.StudentTask;
 import com.softj.itple.entity.Task;
 import com.softj.itple.service.A2Service;
 import com.softj.itple.service.CommonService;
@@ -13,10 +15,14 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -66,15 +72,35 @@ public class A2Controller {
         return "a2/a2p1-detail";
     }
     //반 과제 유저
-    @GetMapping("/p1-write/{id}")
-    public String p1write(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
+    @GetMapping("/p1-write/{id}/{page}")
+    public String p1write(@PathVariable long id, @PathVariable int page, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.ASC) Pageable pageable){
         if(Objects.isNull(params.getTaskType())) {
             params.setTaskType(Types.TaskType.TASK);
         }
-        params.setId(id);
-        model.addAttribute("el", Task.builder().build());
+
+        params.setPage(page);
+
+        Task task = null;
+
+        if(id > 0) {
+            params.setId(id);
+            task = a2Service.getTask(params);
+            params.setTask(task);
+            LocalDateTime endTimeDate = task.getEndDate();
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("HH");
+            DateTimeFormatter df2 = DateTimeFormatter.ofPattern("mm");
+
+            String hh = endTimeDate.format(df);
+            String mm = endTimeDate.format(df2);
+
+            params.setEndTimeHour(Integer.parseInt(hh));
+            params.setEndTimeMin(Integer.parseInt(mm));
+        }
+
+        model.addAttribute("el", task);
         model.addAttribute("classList", commonService.getClassList());
         model.addAttribute("params",params);
+
         return "a2/a2p1-write";
     }
 }

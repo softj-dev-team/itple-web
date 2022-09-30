@@ -22,6 +22,8 @@
             </select>
             <label for="className" class="mb5">반 이름</label>
             <input type="text" name="className" id="className" th:value="${el.className}" class="input-df mb20" >
+            <input type="checkbox" name="isInvisible" id="isInvisible" th:checked="${el.isInvisible == true}">
+            <label for="isInvisible" class="mb5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;과제/독후감 목록에서 삭제</label>
         </div>
         <div class="btn-center mt60">
             <button type="button" class="btn" onclick="goSave();">저장하기</button>

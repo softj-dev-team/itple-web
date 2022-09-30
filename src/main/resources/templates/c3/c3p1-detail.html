@@ -17,7 +17,7 @@
                 <p class="detwriter" th:text="${el.writer}">잇플ITPLE</p>
                 <div class="tagBox">
                     <span th:classappend="${#strings.toLowerCase(el.bookStatus)}" th:text="${el.bookStatus.message}">대여중</span>
-                    <span th:unless="${#strings.equals(el.bookStatus,'AVAILABLE')}" class="period" th:text="|${#temporals.format(el.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.endDate,'yyyy.MM.dd')}|">2022.02.10~2022.02.17</span><!--대여가능일때는 기간 안보이게-->
+                    <span th:unless="${#strings.equals(el.bookStatus,'AVAILABLE')}" class="period" th:text="|${#temporals.format(rel.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(rel.endDate,'yyyy.MM.dd')}|">2022.02.10~2022.02.17</span><!--대여가능일때는 기간 안보이게-->
                 </div>
                 <div class="hr"></div>
                 <p class="detInfo" th:utext="${el.contents}">정보(SW, 로봇) 영재원은 그 특성상 알고리즘적 사고, 이산수학적 사고, 컴퓨팅 사고력을 바탕으로 영재를 선발합니다. 이런 특성을 잘 파악해 영재선발을 위한 시험을 잘 대비할 수 있도록 본 교재를 편찬하게 되었습니다.

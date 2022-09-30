@@ -23,17 +23,21 @@ public class AcademyClass extends Auditing{
     private Types.AcademyType academyType;
     private String className;
 
+
+    private Boolean isInvisible;
+
     @Transient
     private long studentCount;
     @Transient
     private List<Task> taskList;
 
     @Builder
-    public AcademyClass(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, Types.AcademyType academyType, String className, long studentCount, List<Task> taskList) {
+    public AcademyClass(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, Types.AcademyType academyType, String className, long studentCount, List<Task> taskList, Boolean isInvisible) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.academyType = academyType;
         this.className = className;
         this.studentCount = studentCount;
         this.taskList = taskList;
+        this.isInvisible = isInvisible;
     }
 }

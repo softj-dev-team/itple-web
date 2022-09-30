@@ -58,6 +58,10 @@ public class C3Service {
         return bookRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
     }
 
+    public BookRental getBookRentalOne(Book book){
+        return bookRentalRepo.findTopByBookAndRentalStatusOrderByCreatedAtDesc(book, book.getBookStatus()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
     public Page<BookRental> getBookRentalList(SearchVO params, Pageable pageable){
         QBookRental qBookRental = QBookRental.bookRental;
         BooleanBuilder where = new BooleanBuilder().and(qBookRental.isDeleted.eq(false).and(qBookRental.user.eq(AuthUtil.getUser())));
