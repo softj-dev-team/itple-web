@@ -3560,10 +3560,10 @@ input.txtRight{text-align: right;}
 .adTable.list4{text-align: center;}
 .adTable.list4 tr th:nth-child(1){width: 5%;}
 .adTable.list4 tr th:nth-child(2){width: 5%;}
-.adTable.list4 tr th:nth-child(3){width: 10%;}
-.adTable.list4 tr th:nth-child(4){width: 15%;}
-.adTable.list4 tr th:nth-child(5){width: 10%;}
-.adTable.list4 tr th:nth-child(6){width: 15%;}
+.adTable.list4 tr th:nth-child(3){width: 5%;}
+.adTable.list4 tr th:nth-child(4){width: 10%;}
+.adTable.list4 tr th:nth-child(5){width: 5%;}
+.adTable.list4 tr th:nth-child(6){width: auto;}
 .adTable.list4 tr th:nth-child(7){width: 10%;}
 .adTable.list4 tr th:nth-child(8){width: 10%;}
 .adTable.list4 tr th:nth-child(9){width: 10%;}
@@ -3878,6 +3878,16 @@ textarea.textA{
     font-size: 14px;
     margin-left: 5px;
 }
+
+.adTable.list6{text-align: center;}
+.adTable.list6 tr th:nth-child(1){width: 5%;}
+.adTable.list6 tr th:nth-child(2){width: 5%;}
+.adTable.list6 tr th:nth-child(3){width: 10%;}
+.adTable.list6 tr th:nth-child(4){width: 5%;}
+.adTable.list6 tr th:nth-child(5){width: auto;}
+.adTable.list6 tr th:nth-child(6){width: 15%;}
+.adTable.list6 tr th:nth-child(7){width: 10%;}
+.adTable.list6 tr th:nth-child(8){width: 10%;}
 
 .adTable.list7{text-align: center;}
 .adTable.list7 tr th:nth-child(1){width: 8%;}

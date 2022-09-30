@@ -4,36 +4,33 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.softj.itple.domain.A4EventDTO;
-import com.softj.itple.domain.A4ResourceDTO;
-import com.softj.itple.domain.SearchVO;
-import com.softj.itple.domain.Types;
+import com.softj.itple.domain.*;
 import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
 import com.softj.itple.util.AligoUtil;
 import com.softj.itple.util.AuthUtil;
-import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import javax.transaction.Transactional;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,6 +59,7 @@ public class A4Service {
 
     @Transactional
     public long saveAttendanceHistory(SearchVO params){
+        String attendanceDay = "";
         Student student = studentRepo.findByAttendanceNo(params.getAttendanceNo()).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
         //학원체크
         if(student.getAcademyClass().getAcademyType() != params.getAttendanceType()){
@@ -80,33 +78,63 @@ public class A4Service {
             }
         }
 
+        LocalDateTime now = LocalDateTime.now();
         //등원요일체크
+
         if(params.getAttendanceStatus() == Types.AttendanceStatus.COME) {
-            LocalDateTime now = LocalDateTime.now();
 
             Attendance attendance = attendanceRepo.findByUserIdAndAttendanceDay(student.getUser().getId(), Types.DayOfWeek.valueOf(now.getDayOfWeek().toString()));
-            if (Objects.isNull(attendance)) {
-                throw new ApiException("학생 등원요일이 아닙니다.", ErrorCode.INTERNAL_SERVER_ERROR);
-            }
-
-            LocalDateTime attendanceAt = LocalDateTime.of(now.toLocalDate(), attendance.getAttendanceAt());
-            //코인 증감
             CoinHistory saveCoinHistory = CoinHistory.builder()
                     .user(student.getUser())
                     .build();
 
-            if (now.isBefore(attendanceAt)) {
+            if (Objects.isNull(attendance)) {
+                //코인 증감
                 saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
-                saveCoinHistory.setMemo("등원시간 이전 등원");
-                saveCoinHistory.setCoin(1L);
-            }else{
-                saveCoinHistory.setCoinStatus(Types.CoinStatus.MINUS);
-                saveCoinHistory.setMemo("등원시간 이후 등원");
-                saveCoinHistory.setCoin(-1L);
+                saveCoinHistory.setMemo("등원일 아닌 날 등원");
+                saveCoinHistory.setCoin(0);
+            }else {
+                LocalDateTime attendanceAt = LocalDateTime.of(now.toLocalDate(), attendance.getAttendanceAt());
+                //코인 증감
+                if (now.isBefore(attendanceAt)) {
+                    saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
+                    saveCoinHistory.setMemo("등원시간 이전 등원");
+                    saveCoinHistory.setCoin(1L);
+                } else {
+                    saveCoinHistory.setCoinStatus(Types.CoinStatus.MINUS);
+                    saveCoinHistory.setMemo("등원시간 이후 등원");
+                    saveCoinHistory.setCoin(-1L);
+                }
             }
             coinHistoryRepo.save(saveCoinHistory);
             student.setCoin(student.getCoin() + saveCoinHistory.getCoin());
             studentRepo.save(student);
+        }
+
+        int dayofweekNum = now.getDayOfWeek().getValue();
+
+        switch (dayofweekNum){
+            case 1:
+                attendanceDay = "01";
+                break;
+            case 2:
+                attendanceDay = "02";
+                break;
+            case 3:
+                attendanceDay = "03";
+                break;
+            case 4:
+                attendanceDay = "04";
+                break;
+            case 5:
+                attendanceDay = "05";
+                break;
+            case 6:
+                attendanceDay = "06";
+                break;
+            case 7:
+                attendanceDay = "07";
+                break;
         }
 
         String templateCode = params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "TJ_5055" : "TJ_5057";
@@ -118,6 +146,7 @@ public class A4Service {
                 .user(student.getUser())
                 .attendanceType(params.getAttendanceType())
                 .attendanceStatus(params.getAttendanceStatus())
+                .attendanceDay(attendanceDay)
                 .build()).getId();
     }
 
@@ -169,6 +198,7 @@ public class A4Service {
     public List<A4ResourceDTO> getUserList(SearchVO params){
         QUser qUser = QUser.user;
         QAttendance qAttendance = QAttendance.attendance;
+
         BooleanBuilder where = new BooleanBuilder()
                 .and(qUser.student.academyClass.eq(AcademyClass.builder().id(params.getClassId()).build()))
                 .and(qUser.student.studentStatus.eq(params.getStudentStatus()));
@@ -183,28 +213,35 @@ public class A4Service {
         .from(qUser)
         .where(where);
 
-        return query.fetch().stream()
-                .peek(e -> e.setAttendanceList(jpaQueryFactory.select(
-                                                        new CaseBuilder()
-                                                            .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.SUNDAY))
-                                                            .then("0")
-                                                            .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.MONDAY))
-                                                            .then("1")
-                                                            .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.TUESDAY))
-                                                            .then("2")
-                                                            .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.WEDNESDAY))
-                                                            .then("3")
-                                                            .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.THURSDAY))
-                                                            .then("4")
-                                                            .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.FRIDAY))
-                                                            .then("5")
-                                                            .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.SATURDAY))
-                                                            .then("6")
-                                                            .otherwise(""))
-                                                .from(qAttendance)
-                                                .where(new BooleanBuilder(qAttendance.user.id.eq(e.getId()))).fetch())
-                )
-                .collect(Collectors.toList());
+        List<A4ResourceDTO> attendanceList = query.fetch();
+
+        for(A4ResourceDTO dto : attendanceList){
+            List<A4StrDTO> dayList = attendanceRepo.getAttendanceDayList(dto.getId());
+            dto.setAttendanceList(dayList);
+            BooleanBuilder where2 = new BooleanBuilder()
+                    .and(qAttendance.user.id.eq(dto.getId()));
+            List<String> dayOrgList = jpaQueryFactory.select(
+                            new CaseBuilder()
+                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.SUNDAY))
+                                    .then("0")
+                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.MONDAY))
+                                    .then("1")
+                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.TUESDAY))
+                                    .then("2")
+                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.WEDNESDAY))
+                                    .then("3")
+                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.THURSDAY))
+                                    .then("4")
+                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.FRIDAY))
+                                    .then("5")
+                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.SATURDAY))
+                                    .then("6")
+                                    .otherwise(""))
+                    .from(qAttendance)
+                    .where(where2).fetch();
+            dto.setAttendanceOrgList(dayOrgList);
+        }
+        return attendanceList;
     }
     public void deleteAttendanceHistoryById(SearchVO params){
         AttendanceHistory delete = attendanceHistoryRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));

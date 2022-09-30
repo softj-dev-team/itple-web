@@ -4,6 +4,7 @@ import com.softj.itple.entity.Attendance;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -15,5 +16,6 @@ import java.util.List;
 public class A4ResourceDTO implements Serializable {
     private long id;
     private String title;
-    private List<String> attendanceList;
+    private List<A4StrDTO> attendanceList;
+    private List<String> attendanceOrgList;
 }

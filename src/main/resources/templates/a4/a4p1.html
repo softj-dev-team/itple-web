@@ -180,7 +180,8 @@
                 schUserName = formData.userName;
 
                 $.post("/api/a4/p1/l1", formData, function (res) {
-                    resources = res.data
+                    resources = res.data;
+
                     resolve(resources);
                 });
             });
@@ -195,16 +196,39 @@
             return new Promise((resolve, reject) => {
                 $.post("/api/a4/p1/l2", resources.reduce((prev, cur) => prev + `idList=${cur.id}&`, "") + `startDate=${info.start.format('yyyy-MM-dd')}`, function (res) {
                     resources.forEach(el => {
-                       var atDays = el.attendanceList;
+                       var atList = el.attendanceList;
+                       var atOrgDays = el.attendanceOrgList;
                        var start = new Date(info.start);
                        var end = new Date(info.end);
                        var now = new Date(Date.now());
+                       var atDays = new Array();
+
+                       atList.forEach(el => {
+                           atDays.push(el.attendanceStr);
+                       });
 
                        while (start < end){
-                           if(!atDays.includes(start.getDay().toString())){
-                               start.plusDate(1);
-                               continue;
+                           var startMonth = (start.getMonth()+1) < 10 ? '0'+(start.getMonth()+1) : (start.getMonth()+1);
+                           var startDay = start.getDate() < 10 ? '0'+start.getDate() : start.getDate();
+                           var startDate = start.getFullYear()+'-'+startMonth+'-'+startDay;
+
+                           if(!atOrgDays.includes(start.getDay().toString())){// && el1.attendanceDate != startDate && el1.attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).COME.code}]]
+                               if(!atDays.includes(start.getDay().toString())){
+                                   start.plusDate(1);
+                                   continue;
+                               }else {
+                                   var flag = false;
+                                   for(var i=0; i<atList.length; i++){
+                                       var el1 = atList[i];
+                                       if (el1.attendanceDate != '' && el1.attendanceDate != startDate) {
+                                           start.plusDate(1);
+                                           flag = true;
+                                       }
+                                   }
+                                   if(flag) continue;
+                               }
                            }
+
                            if(start < now) {
                                events.push({
                                    "resourceId": el.id,
@@ -212,8 +236,7 @@
                                    "start": start.format('yyyy-MM-dd'),
                                    "color": "#dd5a43",
                                    "className": "text-center"
-                               });
-                           }else if(start >= now) {
+                               });                           }else if(start >= now) {
                                events.push({
                                    "resourceId": el.id,
                                    "start": start.format('yyyy-MM-dd'),
