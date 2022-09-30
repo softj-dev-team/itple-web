@@ -17,56 +17,30 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class A2RestController {
     final private A2Service a2Service;
 
-
-    //학생리스트(과제등록)
-    @PostMapping("/p1/l1")
-    public Response p1l1(SearchVO params){
-        return Response.builder()
-                .data(a2Service.getStudentList(params))
-                .build();
-    }
-
     //팝업
     @PostMapping("/p1/p1")
-    public Response p1p1(SearchVO params){
+    public Response p1(SearchVO params){
         return Response.builder()
                 .data(a2Service.getStudentTaskFetch(params))
                 .build();
     }
     //저장
     @PostMapping("/p1/s1")
-    public Response p1s1(SearchVO params){
+    public Response s1(SearchVO params){
         a2Service.saveStudentTask(params);
         return Response.builder()
                 .build();
     }
-
-    //파일업로드
-    @PostMapping("/p1/f1")
-    public Response p1f1(MultipartHttpServletRequest request) throws Exception{
-        return Response.builder()
-                .data(a2Service.taskFileUpload(request))
-                .build();
-    }
-
-    //파일 삭제
-    @PostMapping("/p1/d9")
-    public Response p1d9(SearchVO params) throws Exception{
-        a2Service.deleteTaskFile(params);
-        return Response.builder()
-                .build();
-    }
-
     //확인
     @PostMapping("/p1/s2")
-    public Response p1s2(SearchVO params){
+    public Response s2(SearchVO params){
         a2Service.completeStudentTask(params);
         return Response.builder()
                 .build();
     }
     //다시제출
     @PostMapping("/p1/s3")
-    public Response p1s3(SearchVO params){
+    public Response s3(SearchVO params){
         a2Service.rejectStudentTask(params);
         return Response.builder()
                 .build();
@@ -74,14 +48,14 @@ public class A2RestController {
 
     //과제삭제
     @PostMapping("/p1/d1")
-    public Response p1d1(SearchVO params){
+    public Response d1(SearchVO params){
         a2Service.deleteTask(params);
         return Response.builder().build();
     }
 
     //학생과제삭제
     @PostMapping("/p1/d2")
-    public Response p1d2(SearchVO params){
+    public Response d2(SearchVO params){
         a2Service.deleteStudentTask(params);
         return Response.builder().build();
     }

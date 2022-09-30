@@ -17,80 +17,48 @@
         </h1>
         <div class="responsiveInner">
             <form id="form1">
-                <input type="hidden" id="id" name="id" th:value="${el == null ? 0 : el?.id}">
+                <input type="hidden" id="id" name="id" th:value="${el.id}">
                 <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
-                <input type="hidden" name="page" id="page" th:value="${params.page}" />
                 <div class="inputSec">
                     <label for="classId" class="mb5">반 선택</label>
                     <select name="classId" id="classId" class="input-df mb20" onchange="setStudentList()">
-                        <option th:each="class : ${classList}" th:selected="${el != null && class.id == el?.academyClass.id}" th:value="${class.id}" th:text="|[${class.academyType.message}] ${class.className}|">잇플코딩입문반</option>
+                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="|[${class.academyType.message}] ${class.className}|">잇플코딩입문반</option>
                     </select>
                     <label for="studAll" class="mb5">학생 선택</label>
                     <div class="studCh">
-                        <input type="checkbox" id="studAll" th:disabled="${el != null && el?.id != 0}"><label for="studAll">전체선택</label>
+                        <input type="checkbox" id="studAll"><label for="studAll">전체선택</label>
                         <div id="studentList">
                             <input type="checkbox" class="chkStud" id="stud1"><label for="stud1">김잇플</label>
                         </div>
                     </div>
                     <label for="subject" class="mb5">제목</label>
-                    <input type="text" class="input-df mb20" name="subject" id="subject" th:value="${el?.subject}">
+                    <input type="text" class="input-df mb20" name="subject" id="subject" th:value="${el.subject}">
                     <label th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" for="teacher" class="mb5">출제 선생님</label>
-                    <input th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" type="text" class="input-df mb20" id="teacher" name="teacher" th:value="${el?.teacher}">
+                    <input th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" type="text" class="input-df mb20" id="teacher" name="teacher" th:value="${el.teacher}">
                     <th:block th:switch="${#strings.toString(params.taskType)}">
                         <label for="contents" class="mb5" th:case="TASK">과제 내용</label>
                         <label for="contents" class="mb5" th:case="BOOK_REPORT">독후감 내용</label>
                     </th:block>
-                    <textarea name="contents" id="contents" cols="30" rows="10" class="mb20" th:value="${el?.contents}" th:utext="${el?.contents}"></textarea>
-                    <div class="fileBox">
-                        <div class="fileHead">
-                            <p>첨부파일</p>
-                            <div class="file-btn">
-                                <button type="button" class="chRemove">선택삭제</button>
-                                <input type="file" multiple="multiple" class="" id="fileInput" name="files">
-                                <label for="fileInput" class="fileBtn">파일첨부</label>
-                            </div>
-                        </div>
-                        <ul class="fileUP" id="articlefileChange">
-                            <li th:each="file : ${el?.taskFileList}">
-                                <input th:id="|file-ch${file.id}|" type="checkbox" name="idList" th:value="${file.id}">
-                                <label th:for="|file-ch${file.id}|"><span th:text="${file.orgFileName}"></span></label>
-                            </li>
-                        </ul>
-                    </div>
+                    <textarea name="contents" id="contents" cols="30" rows="10" class="mb20" th:value="${el.contents}"></textarea>
                     <div class="dateBox mb20">
                         <th:block th:switch="${#strings.toString(params.taskType)}">
                             <label class="mb5" th:case="TASK">과제 마감일</label>
                             <label class="mb5" th:case="BOOK_REPORT">독후감 마감일</label>
                         </th:block>
                         <div class="datepickerWrap">
-                            <input type="text" class="input-df datepicker" name="startDate" th:value="${#temporals.format(el?.startDate,'yyyy-MM-dd')}">
+                            <input type="text" class="input-df datepicker" name="startDate" th:value="${#temporals.format(el.startDate,'yyyy-MM-dd')}">
                             <i class="i-date"></i>
                         </div>
                         <span>-</span>
                         <div class="datepickerWrap">
-                            <input type="text" class="input-df datepicker" name="endDate" th:value="${#temporals.format(el?.endDate,'yyyy-MM-dd')}">
+                            <input type="text" class="input-df datepicker" name="endDate" th:value="${#temporals.format(el.endDate,'yyyy-MM-dd')}">
                             <i class="i-date"></i>
-                        </div>
-                    </div>
-                    <div class="dateBox mb20">
-                        <div class="datepickerWrap">
-                            <select name="endTimeHour" id="endTimeHour" class="input-df mb20">
-                                <option th:each="num : ${#numbers.sequence(0,23)}" th:value="${num}"
-                                        th:text="|${num < 10 ? '0'+num : num} 시|" th:selected="${num == params.endTimeHour}"></option>
-                            </select>
-                        </div>
-                        <span>&nbsp;</span>
-                        <div class="datepickerWrap">
-                            <select name="endTimeMin" id="endTimeMin" class="input-df mb20">
-                                <option th:each="num : ${#numbers.sequence(0,59)}" th:value="${num}"
-                                        th:text="|${num < 10 ? '0'+num : num} 분|" th:selected="${num == params.endTimeMin}"></option>
-                            </select>
                         </div>
                     </div>
                     <div class="dateBox">
                         <label for="coin" class="mb5">지급포인트</label>
                         <div class="datepickerWrap">
-                            <input type="text" class="input-df mb20 txtRight" th:value="${el?.coin}" name="coin" id="coin">
+                            <input type="text" class="input-df mb20 txtRight" th:value="${el.coin}" name="coin" id="coin">
                         </div>
                     </div>
                 </div>
@@ -119,62 +87,6 @@
                 $("#studAll").prop("checked",false);
             }
         });
-
-        //파일첨부
-        $(document).ready(function() {
-            $("#fileInput").on("change", fileUpload);
-        });
-
-        function fileUpload(e) {
-            var files = e.target.files;
-            var formData = new FormData($("#form1")[0]);
-            $.ajax({
-                data : formData,
-                type : "POST",
-                url : "/api/a2/p1/f1",
-                contentType : false,
-                processData : false,
-                success : function(res) {
-                    if(ut.isEmpty(res.data)){
-                        return;
-                    }
-
-                    res.data.forEach(function(el){
-                        $('#articlefileChange').append(
-                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span onclick="taskFileDownload('${el.uploadFileName}')">${el.orgFileName}</span></label></li>`
-                        );
-                    });
-                    $("#fileInput").val("");
-                }
-            });
-        }
-
-        // 파일 부분 삭제 함수
-        $('.chRemove').click(function(){
-            if($("input[name=idList]:checked").length == 0){
-                modal.alert("체크한 데이터가 없습니다.");
-                return;
-            }
-
-            var formData = "";
-            $("input[name=idList]:checked").each(function(){
-                var id = $(this).val();
-                formData += `idList=${id}&`;
-            });
-
-            modal.confirm("체크한 데이터를 삭제하시겠습니까?", function(){
-                $.post('api/a2/p1/d9', formData, function(){
-                    modal.alert('삭제되었습니다.');
-                    $("input[name=idList]:checked").each(function(){
-                        $(this).closest("li").remove();
-                    });
-                });
-            });
-        });
-
-        function taskFileDownload(path){
-            location.href = '/taskFileDownload/'+path;
-        }
     </script>
 </th:block>
 </body>

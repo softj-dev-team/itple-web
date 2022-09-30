@@ -11,12 +11,6 @@
 <th:block layout:fragment="content">
     <div class="adContent">
         <h1 class="adH1">도서목록</h1>
-        <div class="tab clearfix">
-            <ul class="tab-ul">
-                <li th:classappend="${#strings.equals(params.academyType,'CODING') ? 'active' : ''}"><a href="/a1/p1">잇플 코딩</a></li>
-                <li th:classappend="${#strings.equals(params.academyType,'ENGLISH') ? 'active' : ''}"><a href="/a1/p1?academyType=ENGLISH">잇플 영어</a></li>
-            </ul>
-        </div>
         <div class="content-in clearfix">
             <div class="adSearch clearfix">
                 <form id="form1" name="form1" action="" class="adSearch-in">
@@ -76,14 +70,13 @@
                         <div class="bookImg" th:style="|background-image: url('${el.thumbnail}');|"></div></td>
                         <td><a th:href="|/a1/p1-detail/${el.id}/${list.pageable.pageNumber}|"><span class="category" th:if="${not #strings.isEmpty(el.bookCategory)}" th:text="|[${@codeUtil.getCodeName('4', el.bookCategory)}]|"></span> <span th:text="${el.subject}">책제목</span></a></td>
                         <td><span th:text="${el.writer}">저자</span></td>
-                        <td><span th:if="${#strings.equals(el.bookRental?.rentalStatus,'LOAN') || #strings.equals(el.bookRental?.rentalStatus,'DELINQUENT')}" th:text="${el.bookRental?.startDate + '~' + el.bookRental?.endDate}">대여기간</span></td>
-                        <td><span th:if="${#strings.equals(el.bookRental?.rentalStatus,'LOAN') || #strings.equals(el.bookRental?.rentalStatus,'DELINQUENT')}" th:text="${el.bookRental?.user?.userName}">대여자</span></td>
+                        <td><span th:if="${not #strings.isEmpty(el.bookStatus) and (#strings.equals(el.bookStatus,'LOAN') or #strings.equals(el.bookStatus,'DELINQUENT')) and not #strings.isEmpty(el.startDate) and not #strings.isEmpty(el.endDate)}" th:text="${el.startDate + '~' + el.endDate}">대여기간</span></td>
+                        <td><span th:if="${not #strings.isEmpty(el.bookStatus) and (#strings.equals(el.bookStatus,'LOAN') or #strings.equals(el.bookStatus,'DELINQUENT')) and not #strings.isEmpty(el.rentalName)}" th:text="${el.rentalName}">대여자</span></td>
                         <td>
-                            <th:block th:switch="${#strings.toString(el.bookRental?.rentalStatus)}">
+                            <th:block th:switch="${#strings.toString(el.bookStatus)}">
                                 <button type="button" th:case="null" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
                                 <button type="button" th:case="AVAILABLE" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
                                 <button type="button" th:case="RETURN" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
-                                <button type="button" th:case="RETURN2" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
                                 <button type="button" th:case="LOAN" class="btn btn-red" th:onclick="|goRental(${el.id})|">대여중</button>
                                 <button type="button" th:case="DELINQUENT" class="btn btn-yellow" th:onclick="|goRental(${el.id})|">연체</button>
                             </th:block>
@@ -145,10 +138,6 @@
                 </div>
                 <form id="form3">
                     <div class="modalBody commOption">
-                        <label for="academyType" class="mb5">학원 구분</label>
-                        <select name="academyType" id="academyType" class="input-df" onchange='goAction("L2",this.value);'>
-                            <option th:each="el : ${T(com.softj.itple.domain.Types.AcademyType).values()}" th:selected="${el} == ${params.academyType}" th:value="${el}" th:text="${el.message}">잇플 코딩</option>
-                        </select>
                         <div class="categoryBox">
                             <label for="categoryInput" class="mb5">카테고리 설정</label>
                             <input type="text" id="categoryInput" class="categoryInput">
@@ -282,7 +271,7 @@
             $(".categoryCon > div").removeClass('on');
         });
         $(document).on("click", ".categoryBtn", function(){
-            goAction("L2", [[${params.academyType}]]);
+            goAction("L2");
         });
 
         $(document).on("click", "#confirmDelBtn", function(){

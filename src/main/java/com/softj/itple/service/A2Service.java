@@ -29,11 +29,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.transaction.Transactional;
 import java.io.File;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -47,7 +44,6 @@ public class A2Service {
     private final StudentTaskRepo studentTaskRepo;
     private final StudentRepo studentRepo;
     private final CoinHistoryRepo coinHistoryRepo;
-    private final TaskFileRepo taskFileRepo;
 
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -59,13 +55,7 @@ public class A2Service {
         QAcademyClass qAcademyClass = QAcademyClass.academyClass;
         QTask qTask = QTask.task;
         QStudent qStudent = QStudent.student;
-        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false)).and(qAcademyClass.isInvisible.eq(false));
-        
-        //반이름 검색
-        if(StringUtils.noneEmpty(params.getSearchValue())){
-            where.and(qAcademyClass.className.contains(params.getSearchValue()));
-        }
-        
+        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false));
         JPAQuery<AcademyClass> query = jpaQueryFactory.select(Projections.fields(AcademyClass.class,
                 qAcademyClass.id,
                 qAcademyClass.className,
@@ -126,12 +116,6 @@ public class A2Service {
         return studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
     }
 
-    public List<StudentTask> getStudentList(SearchVO params){
-        Task task = taskRepo.getOne(params.getId());
-        List<StudentTask> studentTaskList = studentTaskRepo.findByTask(task);
-        return studentTaskList;
-    }
-
     public StudentTask getStudentTaskFetch(SearchVO params){
         return studentTaskRepo.findWithStudentById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
     }
@@ -159,23 +143,9 @@ public class A2Service {
         find.setReturnMessage(null);
         find.setCompDate(LocalDate.now());
         studentTaskRepo.save(find);
-    }
-
-    public void rejectStudentTask(SearchVO params){
-        StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
-        find.setStatus(Types.TaskStatus.NOT_SUBMIT);
-        find.setReturnMessage(params.getReturnMessage());
-        studentTaskRepo.save(find);
-    }
-
-    @Transactional
-    public void coinHistoryStudentTask(SearchVO params){
-
-        StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
 
         Task task = find.getTask();
         Student student = find.getStudent();
-
         student.setCoin(student.getCoin()+ task.getCoin());
         studentRepo.save(student);
 
@@ -188,32 +158,35 @@ public class A2Service {
 
     }
 
+    public void rejectStudentTask(SearchVO params){
+        StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        find.setStatus(Types.TaskStatus.NOT_SUBMIT);
+        find.setReturnMessage(params.getReturnMessage());
+        studentTaskRepo.save(find);
+    }
+
     @Transactional
     public void saveStudentTask(SearchVO params){
         Task save = Task.builder().build();
         if(LongUtils.noneEmpty(params.getId())){
-            save = taskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+            save = taskRepo.findById(params.getCommentId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
         }
         save.setTaskType(params.getTaskType());
         save.setAcademyClass(AcademyClass.builder().id(params.getClassId()).build());
         save.setSubject(params.getSubject());
-
         save.setContents(params.getContents());
         save.setTeacher(params.getTeacher());
         save.setStartDate(params.getStartDate());
-
-        LocalDateTime endTimeDate = LocalDateTime.of(params.getEndDate(), LocalTime.of(params.getEndTimeHour(),params.getEndTimeMin()));
-        save.setEndDate(endTimeDate);
+        save.setEndDate(params.getEndDate());
         save.setCoin(params.getCoin());
         taskRepo.save(save);
 
         for(long studentId : params.getStudentIdList()){
-            Student studentSave = studentRepo.getOne(studentId);
-            StudentTask studentTaskSave = studentTaskRepo.findByTaskAndStudent(save, studentSave).orElse(StudentTask.builder().build());
-            studentTaskSave.setStudent(studentSave);
-            studentTaskSave.setTask(save);
-            studentTaskSave.setStatus(Types.TaskStatus.NOT_SUBMIT);
-            studentTaskRepo.save(studentTaskSave);
+            studentTaskRepo.save(StudentTask.builder()
+                    .task(save)
+                    .student(Student.builder().id(studentId).build())
+                    .status(Types.TaskStatus.NOT_SUBMIT)
+                    .build());
         }
     }
 
@@ -228,48 +201,6 @@ public class A2Service {
     public void deleteStudentTask(SearchVO params){
         for(long id : params.getIdList()){
             studentTaskRepo.deleteById(id);
-        }
-    }
-
-    @Transactional
-    public List<TaskFile> taskFileUpload(MultipartHttpServletRequest request) throws Exception{
-        List<TaskFile> result = new ArrayList<>();
-        Task task = taskRepo.findById(Long.parseLong(request.getParameter("id"))).orElse(Task.builder().build());
-        List<MultipartFile> imgList = request.getFiles("files");
-        for(MultipartFile img : imgList) {
-            if (!Objects.isNull(img) && StringUtils.noneEmpty(img.getOriginalFilename())) {
-                String imagePath = null;
-                String realFileName = img.getOriginalFilename();
-                String ext = realFileName.substring(realFileName.lastIndexOf(".") + 1);
-                String systemFileName = UUID.randomUUID().toString().toUpperCase() + "." + ext;
-
-                String targetPath = FILE_PATH + "/" + sdf.format(new Date()) + "/";
-                File targetDir = new File(targetPath);
-
-                //폴더 생성
-                if (!targetDir.exists()) {
-                    targetDir.mkdirs();
-                }
-
-                FileUtils.writeByteArrayToFile(new File(targetPath + systemFileName), img.getBytes());
-
-                imagePath = targetPath + systemFileName;
-                imagePath = imagePath.replace("/", "_");
-                result.add(taskFileRepo.save(TaskFile.builder()
-                        .task(task)
-                        .orgFileName(realFileName)
-                        .uploadFileName(imagePath)
-                        .build()));
-            }
-        }
-
-        return result;
-    }
-
-    @Transactional
-    public void deleteTaskFile(SearchVO params){
-        for(long id:params.getIdList()){
-            studentTaskFileRepo.deleteById(id);
         }
     }
 

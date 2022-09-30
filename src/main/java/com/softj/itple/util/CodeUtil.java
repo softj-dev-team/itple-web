@@ -32,13 +32,8 @@ public class CodeUtil {
     }
 
     public List<CodeDetail> getCodeList(long masterId, String roleType){
-        return codeList.stream().filter(e -> e.getMasterId() == masterId && !e.isDeleted() && e.getRoleType().name().equals(roleType)).collect(Collectors.toList());
+        return codeList.stream().filter(e -> e.getMasterId() == masterId && !e.isDeleted() && e.getRoleType().getName().equals(roleType)).collect(Collectors.toList());
     }
-
-    public List<CodeDetail> getBookCodeList(long masterId, String academyType){
-        return codeList.stream().filter(e -> e.getMasterId() == masterId && !e.isDeleted() && e.getAcademyType().name().equals(academyType)).collect(Collectors.toList());
-    }
-
     public CodeDetail getCodeValueByName(long masterId, String codeName){
         return codeList.stream().filter(e -> e.getMasterId() == masterId && e.getCodeName().contains(codeName)).findFirst().orElse(null);
     }

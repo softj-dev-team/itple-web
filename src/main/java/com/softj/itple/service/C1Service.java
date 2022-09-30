@@ -372,7 +372,7 @@ public class C1Service {
             }
 
             for(String codeName : params.getNewCodeNameList()){
-                CodeDetail save = codeDetailRepo.findByMasterIdAndCodeName(1L,codeName).orElse(CodeDetail.builder().build());
+                CodeDetail save = codeDetailRepo.findByCodeName(codeName).orElse(CodeDetail.builder().build());
 
                 if(save.getId() != 0){
                     save.setDeleted(false);

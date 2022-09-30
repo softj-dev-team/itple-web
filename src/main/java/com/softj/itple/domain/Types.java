@@ -150,16 +150,11 @@ public class Types {
     @Getter
     @AllArgsConstructor
     public enum BookRentalStatus implements Code<String> {
-        RETURN("00", "반납완료"),
         AVAILABLE("01", "대여가능"),
         LOAN("02", "대여중"),
-
         DELINQUENT("03", "연체"),
-
-        RETURN2("04", "반납완료");
-
-
-
+        RETURN("04", "반납완료"),
+        ;
         private String code;
         private String message;
 
