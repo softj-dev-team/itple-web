@@ -15,24 +15,40 @@
     <form id="form1">
         <input type="hidden" name="id" th:value="${el.id}"/>
         <input type="hidden" name="userId" th:value="${param.userId}"/>
-    <div class="content">
-        <h1 class="responsiveH1 subH1">포트폴리오 쓰기</h1>
-        <div class="content-in clearfix">
-            <div class="writeCon porWrit">
-                <div class="writeHead2">
-                    <select name="visibleStatus" id="" class="select-md">
-                        <option th:each="visibleStatus : ${T(com.softj.itple.domain.Types.VisibleStatus).values()}" th:value="${visibleStatus}" th:text="${visibleStatus.message}" th:selected="${visibleStatus == el.visibleStatus}"></option>
-                    </select>
-                    <input type="text" placeholder="제목을 입력해주세요." class="input-df" th:value="${el.subject}" name="subject">
-                    <textarea name="summary" id="summary" cols="30" rows="10" class="textA mt10" placeholder="포트폴리오에 대한 설명을 입력해주세요." th:utext="${el.summary}"></textarea>
+        <div class="content">
+            <h1 class="responsiveH1 subH1">포트폴리오 쓰기</h1>
+            <div class="content-in clearfix">
+                <div class="writeCon porWrit">
+                    <div class="writeHead2">
+                        <select name="visibleStatus" id="" class="select-md">
+                            <option th:each="visibleStatus : ${T(com.softj.itple.domain.Types.VisibleStatus).values()}" th:value="${visibleStatus}" th:text="${visibleStatus.message}" th:selected="${visibleStatus == el.visibleStatus}"></option>
+                        </select>
+                        <input type="text" placeholder="제목을 입력해주세요." class="input-df" th:value="${el.subject}" name="subject">
+                        <textarea name="summary" id="summary" cols="30" rows="10" class="textA mt10" placeholder="포트폴리오에 대한 설명을 입력해주세요." th:utext="${el.summary}"></textarea>
+                    </div>
+                    <textarea id="summernote" placeholder="내용을 입력해주세요." th:utext="${el.contents}" name="contents"></textarea>
+                    <div class="fileBox">
+                        <div class="fileHead">
+                            <p>첨부파일</p>
+                            <div class="file-btn">
+                                <button type="button" class="chRemove">선택삭제</button>
+                                <input type="file" multiple="multiple" class="" id="fileInput" name="files">
+                                <label for="fileInput" class="fileBtn">파일첨부</label>
+                            </div>
+                        </div>
+                        <ul class="fileUP" id="articlefileChange">
+                            <li th:each="file : ${el.portfolioFileList}">
+                                <input th:id="|file-ch${file.id}|" type="checkbox" name="idList" th:value="${file.id}">
+                                <label th:for="|file-ch${file.id}|"><span th:text="${file.orgFileName}"></span></label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <textarea id="summernote" placeholder="내용을 입력해주세요." th:utext="${el.contents}" name="contents"></textarea>
-            </div>
-            <div class="btn-center Tbtn">
-                <button type="button" class="btn submitBtn" onclick="goAction('S1')">작성하기</button>
+                <div class="btn-center Tbtn">
+                    <button type="button" class="btn submitBtn" onclick="goAction('S1')">작성하기</button>
+                </div>
             </div>
         </div>
-    </div>
     </form>
 
     <script th:src="@{/assets/js/a6/a6p1.js(v='1.0.0')}"></script>
