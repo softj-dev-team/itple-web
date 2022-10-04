@@ -8,6 +8,10 @@
 </head>
 <body>
 <th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+        <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
+    </form>
     <div class="adContent">
         <h1 class="adH1">수업연계</h1>
         <div class="tab clearfix adTab">
@@ -19,22 +23,9 @@
         <div class="content-in clearfix">
             <div class="tableBtn-box">
                 <div class="leftBox">
-                    <a th:href="|/a2/p1-write/0?taskType=${params.taskType}|" class="aBtn" th:text="|${params.taskType.message} 등록|">독후감 등록</a>
                 </div>
                 <div class="rightBox">
-                    <div class="adSearch clearfix">
-                        <form id="form1" class="adSearch-in">
-                            <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
-                            <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
-                            <div class="in-box">
-                                <select name="searchType" id="searchType">
-                                    <option value="className" th:selected="${#strings.equals(params.searchType, 'className')}">반이름</option>
-                                </select>
-                                <input type="text" name="searchValue" th:value="${params.searchValue}">
-                            </div>
-                            <button type="button" class="src-btn" onclick="goSearch()"></button>
-                        </form>
-                    </div>
+                    <a th:href="|/a2/p1-write/0/${list.pageable.pageNumber}?taskType=${params.taskType}|" class="aBtn" th:text="|${params.taskType.message} 등록|">독후감 등록</a>
                 </div>
             </div>
             <ul class="adTask-list">

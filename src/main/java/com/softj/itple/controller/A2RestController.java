@@ -5,6 +5,7 @@ import com.softj.itple.domain.SearchVO;
 import com.softj.itple.service.A2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,6 +69,18 @@ public class A2RestController {
     @PostMapping("/p1/s3")
     public Response p1s3(SearchVO params){
         a2Service.rejectStudentTask(params);
+        return Response.builder()
+                .build();
+    }
+
+    //포인트 지급 또는 차감
+    @PostMapping("/p1/s4/{type}")
+    public Response p1s3(@PathVariable String type, SearchVO params){
+        if("plus".equals(type)) {
+            a2Service.plusCoinStudentTask(params);
+        }else if("minus".equals(type)){
+            a2Service.minusCoinStudentTask(params);
+        }
         return Response.builder()
                 .build();
     }

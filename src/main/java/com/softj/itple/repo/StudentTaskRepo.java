@@ -1,5 +1,6 @@
 package com.softj.itple.repo;
 
+import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AcademyClass;
 import com.softj.itple.entity.Student;
 import com.softj.itple.entity.StudentTask;
@@ -21,4 +22,7 @@ public interface StudentTaskRepo extends JpaRepository<StudentTask, Long>, Query
     Optional<StudentTask> findByTaskAndStudent(Task task, Student student);
 
     List<StudentTask> findByTask(Task task);
+
+    List<StudentTask> findByTaskAndStatus(Task task, Types.TaskStatus status);
 }
+

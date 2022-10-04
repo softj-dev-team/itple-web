@@ -54,6 +54,14 @@ public class A2Controller {
         params.setAcademyClass(academyClass);
         model.addAttribute("academyClass", academyClass);
         model.addAttribute("list",a2Service.getTaskList(params, pageable));
+        model.addAttribute("notSubmitNumList", a2Service.getStudentTaskNotSubmit(a2Service.getTaskList(params, pageable)));
+        model.addAttribute("notSubmitList", a2Service.getStudentTaskListNotSubmit(a2Service.getTaskList(params, pageable)));
+        model.addAttribute("submitNumList", a2Service.getStudentTaskSubmit(a2Service.getTaskList(params, pageable)));
+        model.addAttribute("submitList", a2Service.getStudentTaskListSubmit(a2Service.getTaskList(params, pageable)));
+        model.addAttribute("completeNumList", a2Service.getStudentTaskComplete(a2Service.getTaskList(params, pageable)));
+        model.addAttribute("completeList", a2Service.getStudentTaskListComplete(a2Service.getTaskList(params, pageable)));
+        model.addAttribute("totalNumList", a2Service.getStudentTaskTotal(a2Service.getTaskList(params, pageable)));
+        model.addAttribute("totalList", a2Service.getStudentTaskListTotal(a2Service.getTaskList(params, pageable)));
         model.addAttribute("params",params);
         return "a2/a2p1-class";
     }

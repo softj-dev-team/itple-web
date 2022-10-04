@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
@@ -95,45 +95,78 @@
         <div class="modalContent lg">
             <div class="modalHd">
                 <h3 th:text="|${task.taskType.message} 확인|">독후감 확인</h3>
+                <input type="hidden" name="studentTaskId" id="studentTaskId"/>
                 <button class="modalClose"></button>
             </div>
             <div class="modalBody">
                 <div class="modalHead">
-                    <p class="modalGroup">[잇플코딩 기초입문반A]</p>
-                    <p class="modalTit">EBS 강사가 추천하는 PAV 모빌리티 인기학과 진로코칭</p>
-                    <p class="modalName">김잇플</p>
-                </div>
-                <div class="modalMain"></div>
-                <div class="countBox"><span class="text-count">0</span><span class="count-t">자</span></div>
-                <div class="mo-fileBox">
-                    <div class="fileHead">
-                        <p>첨부파일</p>
+                    <div class="tableBtn-box">
+                        <div class="leftBox">
+                            <p class="modalGroup">[잇플코딩 기초입문반A]</p>
+                            <p class="modalTit">EBS 강사가 추천하는 PAV 모빌리티 인기학과 진로코칭</p>
+                            <p class="modalName">김잇플</p>
+                        </div>
+                        <div class="rightBox">
+                            <div>
+                                <div class="pointCom" style="width: 100%;"><span>과제완료 포인트</span><p><span th:text="${#numbers.formatInteger(task.coin,0,'COMMA')}">1,000</span> 포인트</p></div>
+                            </div>
+                        </div>
                     </div>
-                    <ul class="fileUP" style="height:60px">
-                        <li>첨부파일_1.jpg</li>
-                    </ul>
-                </div>
-                <div class="inputSec mo-fileBox">
-                    <div class="fileHead">
-                        <p>반려사유</p>
+                    <div class="modalMain"></div>
+                    <div class="countBox"><span class="text-count">0</span><span class="count-t">자</span></div>
+                    <div class="mo-fileBox">
+                        <div class="fileHead">
+                            <p>첨부파일</p>
+                        </div>
+                        <ul class="fileUP" style="height:60px">
+                            <li>첨부파일_1.jpg</li>
+                        </ul>
                     </div>
-                    <textarea id="returnMessage" style="height:60px"></textarea>
-                </div>
-                <div class="modalBtnWrap">
-                    <button type="button" class="btn btn-red" id="rejectBtn">다시제출 처리</button>
-                    <button type="button" class="btn btn-blue" id="completeBtn">확인 처리</button>
+                    <div class="inputSec mo-fileBox">
+                        <div class="fileHead">
+                            <p>반려사유</p>
+                        </div>
+                        <textarea id="returnMessage" style="height:60px"></textarea>
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-red" id="rejectBtn">다시제출 처리</button>
+                        <button type="button" class="btn btn-blue" id="completeBtn">확인 처리</button>
+                        <button type="button" class="btn btn-blue" id="plusBtn">포인트 지급</button>
+                        <button type="button" class="btn btn-red" id="minusBtn">포인트 차감</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
+        <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
 
-    <script th:inline="javascript">
-        $('.RemoveBtn').on('click', function () {
-            $('#removeMo').addClass('on');
-        });
-    </script>
+        <script th:inline="javascript">
+            $('.RemoveBtn').on('click', function () {
+                $('#removeMo').addClass('on');
+            });
+            $("#plusBtn").on("click", function(){
+                var formData = {"id":$("#reportMo #studentTaskId").val()};
+                $.post("/api/a2/p1/s4/plus", formData, function (res) {
+                    loading(0);
+                    modal.alert("포인트를 지급했습니다.");
+                    $("#plusBtn").removeClass("btn-blue");
+                    $("#minusBtn").removeClass("btn-red");
+                    $("#plusBtn, #minusBtn").addClass("btn-gray");
+                    $("#plusBtn, #minusBtn").prop("disabled", true);
+                });
+            });
+            $("#minusBtn").on("click", function(){
+                var formData = {"id":$("#reportMo #studentTaskId").val()};
+                $.post("/api/a2/p1/s4/minus", formData, function (res) {
+                    loading(0);
+                    modal.alert("포인트를 차감했습니다.");
+                    $("#plusBtn").removeClass("btn-blue");
+                    $("#minusBtn").removeClass("btn-red");
+                    $("#plusBtn, #minusBtn").addClass("btn-gray");
+                    $("#plusBtn, #minusBtn").prop("disabled", true);
+                });
+            });
+        </script>
 </th:block>
 </body>
 </html>

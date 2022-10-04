@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.transaction.Transactional;
 import java.io.File;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,11 +42,12 @@ public class A2Service {
     private final JPAQueryFactory jpaQueryFactory;
     private final AcademyClassRepo academyClassRepo;
     private final TaskRepo taskRepo;
+
+    private final TaskFileRepo taskFileRepo;
     private final StudentTaskFileRepo studentTaskFileRepo;
     private final StudentTaskRepo studentTaskRepo;
     private final StudentRepo studentRepo;
     private final CoinHistoryRepo coinHistoryRepo;
-    private final TaskFileRepo taskFileRepo;
 
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -60,20 +60,20 @@ public class A2Service {
         QTask qTask = QTask.task;
         QStudent qStudent = QStudent.student;
         BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false)).and(qAcademyClass.isInvisible.eq(false));
-        
+
         //반이름 검색
         if(StringUtils.noneEmpty(params.getSearchValue())){
             where.and(qAcademyClass.className.contains(params.getSearchValue()));
         }
-        
+
         JPAQuery<AcademyClass> query = jpaQueryFactory.select(Projections.fields(AcademyClass.class,
-                qAcademyClass.id,
-                qAcademyClass.className,
-                qAcademyClass.academyType,
-                ExpressionUtils.as(
-                        JPAExpressions.select(qStudent.count())
-                                .from(qStudent)
-                                .where(qStudent.academyClass.eq(qAcademyClass)),"studentCount"))
+                        qAcademyClass.id,
+                        qAcademyClass.className,
+                        qAcademyClass.academyType,
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qStudent.count())
+                                        .from(qStudent)
+                                        .where(qStudent.academyClass.eq(qAcademyClass)),"studentCount"))
                 )
                 .from(qAcademyClass)
                 .where(where)
@@ -84,17 +84,17 @@ public class A2Service {
         for(AcademyClass el : list){
             el.setTaskList(
                     jpaQueryFactory.select(
-                        Projections.fields(Task.class,
-                        qTask.subject,
-                        qTask.startDate,
-                        qTask.taskType,
-                        qTask.teacher,
-                        qTask.endDate)
-                    )
-                    .from(qTask)
-                    .where(new BooleanBuilder().and(qTask.taskType.eq(params.getTaskType()).and(qTask.academyClass.eq(el))))
-                    .orderBy(qTask.id.desc())
-                    .limit(2).fetch()
+                                    Projections.fields(Task.class,
+                                            qTask.subject,
+                                            qTask.startDate,
+                                            qTask.taskType,
+                                            qTask.teacher,
+                                            qTask.endDate)
+                            )
+                            .from(qTask)
+                            .where(new BooleanBuilder().and(qTask.taskType.eq(params.getTaskType()).and(qTask.academyClass.eq(el))))
+                            .orderBy(qTask.id.desc())
+                            .limit(2).fetch()
             );
         }
 
@@ -120,6 +120,90 @@ public class A2Service {
             }
         }
         return taskRepo.findAll(where, pageable);
+    }
+
+
+    public List<Integer> getStudentTaskNotSubmit(Page<Task> list){
+
+        List<Integer> notSubmitList = new ArrayList<>();
+
+        for(Task task : list){
+            int notSubmit = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.NOT_SUBMIT).size();
+            notSubmitList.add(notSubmit);
+        }
+        return notSubmitList;
+    }
+
+    public List<StudentTask> getStudentTaskListNotSubmit(Page<Task> list){
+
+        List<StudentTask> notSubmitList = new ArrayList<>();
+
+        for(Task task : list){
+            notSubmitList = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.NOT_SUBMIT);
+        }
+        return notSubmitList;
+    }
+
+    public List<Integer> getStudentTaskSubmit(Page<Task> list){
+
+        List<Integer> submitList = new ArrayList<>();
+        for(Task task : list){
+            int submit = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.SUBMIT).size();
+            submitList.add(submit);
+        }
+        return submitList;
+    }
+
+    public List<StudentTask> getStudentTaskListSubmit(Page<Task> list){
+
+        List<StudentTask> submitList = new ArrayList<>();
+
+        for(Task task : list){
+            submitList = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.SUBMIT);
+        }
+        return submitList;
+    }
+
+    public List<Integer> getStudentTaskComplete(Page<Task> list){
+
+        List<Integer> completeList = new ArrayList<>();
+        for(Task task : list){
+            int complete = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.COMPLETE).size();
+            completeList.add(complete);
+        }
+
+        return completeList;
+    }
+
+    public List<StudentTask> getStudentTaskListComplete(Page<Task> list){
+
+        List<StudentTask> completeList = new ArrayList<>();
+
+        for(Task task : list){
+            completeList = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.COMPLETE);
+        }
+        return completeList;
+    }
+
+    public List<Integer> getStudentTaskTotal(Page<Task> list){
+
+        List<Integer> totalList = new ArrayList<>();
+        for(Task task : list){
+            int total = studentTaskRepo.findByTask(task).size();
+            totalList.add(total);
+        }
+
+        return totalList;
+    }
+
+    public List<StudentTask> getStudentTaskListTotal(Page<Task> list){
+
+        List<StudentTask> totalList = new ArrayList<>();
+
+        for(Task task : list){
+            totalList = studentTaskRepo.findByTask(task);
+        }
+        return totalList;
     }
 
     public StudentTask getStudentTask(SearchVO params){
@@ -168,14 +252,16 @@ public class A2Service {
         studentTaskRepo.save(find);
     }
 
-    @Transactional
-    public void coinHistoryStudentTask(SearchVO params){
 
+    @Transactional
+    public void plusCoinStudentTask(SearchVO params){
         StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+
+        find.setCoinComp(true);
+        studentTaskRepo.save(find); // 코인 증감 확인
 
         Task task = find.getTask();
         Student student = find.getStudent();
-
         student.setCoin(student.getCoin()+ task.getCoin());
         studentRepo.save(student);
 
@@ -186,6 +272,27 @@ public class A2Service {
                 .memo("과제/독후감 확인")
                 .build());
 
+    }
+
+    @Transactional
+    public void minusCoinStudentTask(SearchVO params){
+        StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+
+        find.setCoinComp(true);
+        studentTaskRepo.save(find); // 코인 증감 확인
+
+        Task task = find.getTask();
+        Student student = find.getStudent();
+
+        student.setCoin(student.getCoin() - task.getCoin());
+        studentRepo.save(student);
+
+        coinHistoryRepo.save(CoinHistory.builder()
+                .user(student.getUser())
+                .coinStatus(Types.CoinStatus.MINUS)
+                .coin(task.getCoin())
+                .memo("과제/독후감 확인 포인트 차감")
+                .build());
     }
 
     @Transactional
@@ -215,6 +322,12 @@ public class A2Service {
             studentTaskSave.setStatus(Types.TaskStatus.NOT_SUBMIT);
             studentTaskRepo.save(studentTaskSave);
         }
+
+        List<TaskFile> fileList = taskFileRepo.findAllById(Arrays.asList(params.getIdList()));
+        for(TaskFile f:fileList){
+            f.setTask(save);
+        }
+        taskFileRepo.saveAll(fileList);
     }
 
     @Transactional
@@ -234,7 +347,6 @@ public class A2Service {
     @Transactional
     public List<TaskFile> taskFileUpload(MultipartHttpServletRequest request) throws Exception{
         List<TaskFile> result = new ArrayList<>();
-        Task task = taskRepo.findById(Long.parseLong(request.getParameter("id"))).orElse(Task.builder().build());
         List<MultipartFile> imgList = request.getFiles("files");
         for(MultipartFile img : imgList) {
             if (!Objects.isNull(img) && StringUtils.noneEmpty(img.getOriginalFilename())) {
@@ -256,7 +368,7 @@ public class A2Service {
                 imagePath = targetPath + systemFileName;
                 imagePath = imagePath.replace("/", "_");
                 result.add(taskFileRepo.save(TaskFile.builder()
-                        .task(task)
+                        .task(null)
                         .orgFileName(realFileName)
                         .uploadFileName(imagePath)
                         .build()));
