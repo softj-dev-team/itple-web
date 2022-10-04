@@ -3900,4 +3900,36 @@ textarea.textA{
 .adTable.list8 tr th:nth-child(3){width: 35%;}
 .adTable.list8 tr th:nth-child(4){width: 35%;}
 
-
+/*툴팁*/
+.tooltip {
+    display: inline-block;
+}
+.tooltipTxt{
+    display: none;
+    position: absolute;
+    max-width: 200px;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 12px;
+    color: #fff;
+    background: #333;
+    margin-right: 5%;
+    transform: translate(-5px , 5px);
+}
+.tooltip:hover .tooltipTxt {
+    display: block;
+    cursor: pointer;
+}
+.tooltip .tooltipTxt::after {
+    content: " ";
+    position: absolute;
+    border-style: solid;
+    border-width: 5px;
+    bottom: 100%;
+    left: 10px;
+    margin-left: -5px;
+    border-color: transparent transparent #333 transparent;
+}
+.tooltip:hover .tooltipTxt p {
+    margin-bottom: 3px;
+}
