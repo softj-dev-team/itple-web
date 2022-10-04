@@ -9,9 +9,9 @@ $(function(){
 
     $("#studentTaskId").on("change",function(){
         var studentTaskId = $(this).val();
-       if(studentTaskId != ''){
-           ut.redirect(`/a6/p1-detail/${studentTaskId}`);
-       }
+        if(studentTaskId != ''){
+            ut.redirect(`/a6/p1-detail/${studentTaskId}`);
+        }
     });
 })
 
@@ -53,6 +53,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             }
             var formS1 = $('#form1');
             modal.confirm("저장하시겠습니까?",function(){
+                $("input[name=idList]").prop("checked",true);
                 $.post(path+'/s1',formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
                     ut.redirect(`/a6/p1-detail/${res.data}`);
@@ -68,7 +69,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         case "U1":
             $.post(`${path}/u1`,{id:arg1},function(){
-               location.reload();
+                location.reload();
             });
             break;
         case "E1":

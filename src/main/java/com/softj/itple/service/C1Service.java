@@ -241,7 +241,7 @@ public class C1Service {
                 .from(qBoardLog)
                 .join(qUser).on(qUser.eq(qBoardLog.user))
                 .where(where);
-        Types.Grade.valueOf("EL1");
+
         return query.fetch();
     }
 

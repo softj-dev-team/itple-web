@@ -3,11 +3,13 @@ package com.softj.itple.controller;
 import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.entity.BoardFile;
+import com.softj.itple.entity.PortfolioFile;
 import com.softj.itple.entity.StudentTaskFile;
 import com.softj.itple.entity.TaskFile;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.BoardFileRepo;
+import com.softj.itple.repo.PortfolioFileRepo;
 import com.softj.itple.repo.StudentTaskFileRepo;
 import com.softj.itple.repo.TaskFileRepo;
 import com.softj.itple.service.CommonService;
@@ -15,7 +17,6 @@ import com.softj.itple.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -32,6 +33,8 @@ public class ComController {
     final private StudentTaskFileRepo studentTaskFileRepo;
     final private TaskFileRepo taskFileRepo;
 
+    final private PortfolioFileRepo portfolioFileRepo;
+
     @GetMapping("/comFileDownload/{path}")
     public void fileDownload(@PathVariable("path") String path,
                              HttpServletRequest request,
@@ -45,10 +48,24 @@ public class ComController {
         IOUtils.write(data, response.getOutputStream());
     }
 
+    @GetMapping("/portfolioFileDownload/{path}")
+    public void portfolioFileDownload(@PathVariable("path") String path,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response, @RequestParam HashMap<String,String> search) throws Exception {
+        PortfolioFile file = portfolioFileRepo.findByUploadFileName(path).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        path = path.replace("_","/");
+        CommonUtil.setDisposition(file.getOrgFileName(), request, response);
+        byte[] data = null;
+
+        data = FileUtils.readFileToByteArray(new File(path));
+
+        IOUtils.write(data, response.getOutputStream());
+    }
+
     @GetMapping("/boardFileDownload/{path}")
     public void boardFileDownload(@PathVariable("path") String path,
-                             HttpServletRequest request,
-                             HttpServletResponse response, @RequestParam HashMap<String,String> search) throws Exception {
+                                  HttpServletRequest request,
+                                  HttpServletResponse response, @RequestParam HashMap<String,String> search) throws Exception {
         BoardFile file = boardFileRepo.findByUploadFileName(path).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
         path = path.replace("_","/");
         CommonUtil.setDisposition(file.getOrgFileName(), request, response);
@@ -61,8 +78,8 @@ public class ComController {
 
     @GetMapping("/studentTaskFileDownload/{path}")
     public void studentTaskFileDownload(@PathVariable("path") String path,
-                             HttpServletRequest request,
-                             HttpServletResponse response, @RequestParam HashMap<String,String> search) throws Exception {
+                                        HttpServletRequest request,
+                                        HttpServletResponse response, @RequestParam HashMap<String,String> search) throws Exception {
         StudentTaskFile file = studentTaskFileRepo.findByUploadFileName(path).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
         path = path.replace("_","/");
         CommonUtil.setDisposition(file.getOrgFileName(), request, response);
@@ -75,8 +92,8 @@ public class ComController {
 
     @GetMapping("/taskFileDownload/{path}")
     public void taskFileDownload(@PathVariable("path") String path,
-                                        HttpServletRequest request,
-                                        HttpServletResponse response, @RequestParam HashMap<String,String> search) throws Exception {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response, @RequestParam HashMap<String,String> search) throws Exception {
         TaskFile file = taskFileRepo.findByUploadFileName(path).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
         path = path.replace("_","/");
         CommonUtil.setDisposition(file.getOrgFileName(), request, response);
