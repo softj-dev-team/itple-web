@@ -48,8 +48,10 @@
                     <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
                     <th>No</th>
                     <th>제목</th>
+                    <th>제출/미제출/확인완료/총인원</th>
                     <th>기간</th>
                     <th>포인트</th>
+                    <th>수정</th>
                 </tr>
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
@@ -60,8 +62,10 @@
                     </td>
                     <td th:text="${list.pageable.offset+elStat.count}"></td>
                     <td><a th:href="|/a2/p1-detail/${el.id}?taskType=${params.taskType}|" th:text="${el.subject}">사람은 무엇으로 사는가</a></td>
-                    <td th:text="| ${#temporals.format(el.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.endDate,'yyyy.MM.dd')}|">2022.06.01 ~ 2022.06.07</td>
+                    <td th:text="|${submitNumList.get(elStat.index)}/${notSubmitNumList.get(elStat.index)}/${completeNumList.get(elStat.index)}/${totalNumList.get(elStat.index)}|"></td>
+                    <td th:text="| ${#temporals.format(el.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.endDate,'yyyy.MM.dd HH:mm')}|">2022.06.01 ~ 2022.06.07</td>
                     <td th:text="${el.coin}"></td>
+                    <td><button type="button" class="s-btn" th:onclick="|goEdit(${el.id})|">수정</button></td>
                 </tr>
                 </tbody>
             </table>
@@ -94,6 +98,9 @@
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');
         });
+        function goEdit(id){
+            location.href = "/a2/p1-write/"+id+"/[[${list.pageable.pageNumber}]]?taskType="+[[${params.taskType}]];
+        }
     </script>
 </th:block>
 </body>

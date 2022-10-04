@@ -20,6 +20,7 @@
         <div class="content-in clearfix">
             <div class="writeCon">
                 <div class="writeHead">
+                    <div style="text-align: left; display: inline-block; width:50%">
                     <th:block th:if="${#strings.equals(el.task.taskType, 'TASK')}">
                         <p class="writeGroup" th:text="|[${el.task.academyClass.className}]|">[잇플코딩 기초입문반A]</p>
                         <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
@@ -27,15 +28,24 @@
                     <th:block th:if="${#strings.equals(el.task.taskType, 'BOOK_REPORT')}">
                         <select name="" id="studentTaskId" class="reportSlt">
                             <option value="">미작성 독후감 선택</option>
-                            <option th:each="e : ${notSubmitList}" th:value="${e.id}" th:text="${e.task.subject+'-'+el.task.teacher}">책 제목1 - 작가 이름</option>
+                            <option th:each="e : ${notSubmitList}" th:value="${e.id}" th:selected="${e.id == el.id}" th:text="${e.task.subject+'-'+el.task.teacher}">책 제목1 - 작가 이름</option>
                         </select>
                         <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
                     </th:block>
-                    <p class="writePeriod" th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd')}|">2022.04.23 ~ 2022.04.30</p>
+                    <p class="writePeriod" th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd HH:mm')}|">2022.04.23 ~ 2022.04.30</p>
+                    </div>
+                    <div style="text-align: right; display: inline-block; width:49%">
+                        <div class="pointCom"><span>과제완료 포인트</span><p><span th:text="${#numbers.formatInteger(el.task.coin,0,'COMMA')}">1,000</span> 포인트</p></div>
+                    </div>
                 </div>
                 <div class="writeMain">
-                    <th:block th:utext="${el.task.contents}"></th:block>
-                    <div class="pointCom"><span>과제완료 포인트</span><p><span th:text="${#numbers.formatInteger(el.task.coin,0,'COMMA')}">1,000</span> 포인트</p></div>
+                    <th:block th:utext="${#strings.replace(el.task.contents, T(System).getProperty('line.separator'), '&lt;br /&gt;')}"></th:block>
+                    <div class="fileV" th:if="${el.task.taskFileList != null && el.task.taskFileList.size() != 0}">
+                        <p class="fileT">첨부파일</p>
+                        <ul class="file-li">
+                            <li th:each="file : ${el.task.taskFileList}"><a th:href="|/taskFileDownload/${file.uploadFileName}|" th:text="${file.orgFileName}">첨부파일.jpg</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="taskWrite">
                     <textarea id="summernote" name="contents" th:utext="${el.contents}"></textarea>

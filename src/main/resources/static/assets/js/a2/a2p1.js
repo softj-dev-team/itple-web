@@ -69,6 +69,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             }
             var formS1 = $('#form1');
             modal.confirm("저장하시겠습니까?",function(){
+                $("input[name=idList]").prop("checked",true);
                 $.post(path+'/s1',formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
                     ut.redirect("/a2/p1","taskType", $("input[name=taskType]").val());
@@ -159,12 +160,25 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 $("#reportMo .modalTit").html(el.task.subject);
                 $("#reportMo .modalName").html(el.student.user.userName);
                 $("#reportMo .modalMain").html(el.contents);
+                $("#reportMo #studentTaskId").val(el.id);
 
                 var caracteres = $("#reportMo .modalMain").text();
                 var totalCaracteres = caracteres.length;
                 $(".text-count").text(totalCaracteres);
 
                 $("#reportMo .fileUP").empty();
+
+                if(el.coinComp){
+                    $("#plusBtn").removeClass("btn-blue");
+                    $("#minusBtn").removeClass("btn-red");
+                    $("#plusBtn, #minusBtn").addClass("btn-gray");
+                    $("#plusBtn, #minusBtn").prop("disabled", true);
+                }else{
+                    $("#plusBtn").addClass("btn-blue");
+                    $("#minusBtn").addClass("btn-red");
+                    $("#plusBtn, #minusBtn").removeClass("btn-gray");
+                    $("#plusBtn, #minusBtn").prop("disabled", false);
+                }
 
                 if(el.status == 'SUBMIT') {
                     $("#reportMo .modalBtnWrap").show();
