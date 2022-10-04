@@ -36,184 +36,184 @@
                     <button type="button" class="src-btn" id="search1" style="display:none"></button>
                     <button type="button" class="src-btn active" id="search2" onclick="goSearch();"></button>
                 </form>
-            </div>il.getCodeList(2)}" th:if="${@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType)}" class="m-btn"
-            onclick="goWrite();">글쓰기</button>
+            </div>
             <div class="tableBtn-box">
                 <div class="leftBox">
                 </div>
                 <div class="rightBox">
-                    <button type="button" th:each="e : ${@codeUt
-                </div>
-                </div>
-            </div>
-            <ul class="commuListUl">
-                    <li th:each="el : ${noticeList}">
-                        <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
-                        <div class="rightwrap">
-                            <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|"></p>
-                            <p class="titlewrap"><a th:href="|/c1/p1-detail/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
-                            <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
-                        </div>
-                    </li>
-                    <li th:each="el : ${list}">
-                        <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
-                        <div class="rightwrap">
-                            <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|"></p>
-                            <p class="titlewrap"><a th:href="|/c1/p1-detail/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
-                            <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
-                        </div>
-                    </li>
-                    </ul>
-                    <div class="adfooter-btn">
-                        <button type="button" th:if="${@authUtil.isRole('ADMIN')}" class="m-btn btn-line mr5 categoryBtn">게시판 설정</button>
-                    </div>
-                </div>
-                <!--페이지네이션-->
-                <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
-                <div class="modal" id="commOt">
-                    <div class="modal-bg"></div>
-                    <div class="modalContent md">
-                        <div class="modalHd">
-                            <h3>게시판 설정</h3>
-                            <button type="button" class="modalClose"></button>
-                        </div>
-                        <form id="form2">
-                            <div class="modalBody commOption">
-                                <label for="roleType" class="mb5">쓰기 권한</label>
-                                <select name="roleType" id="roleType" class="input-df">
-                                    <option th:each="er : ${T(com.softj.itple.domain.Types.RoleType).values()}" th:selected="${er} == ${params.codeDetail.roleType}" th:value="${er}" th:text="${#strings.equals('01',er.code) ? '관리자 이상' : '일반회원 이상' }">관리자 이상</option>
-                                </select>
-                                <div class="categoryBox">
-                                    <label for="categoryInput" class="mb5">카테고리</label>
-                                    <input type="text" id="categoryInput" class="categoryInput">
-                                    <input type="hidden" id="removeId"/>
-                                    <button type="button" id="categoryAddBtn" class="btn-add"></button>
-                                    <div class="categoryCon">
-                                    </div>
-                                </div>
-                                <div class="modalBtnWrap">
-                                    <button type="button" class="btn btn-blue modalOff" onclick="goAction('S3');">저장하기</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal" id="cateDel">
-                    <div class="modal-bg"></div>
-                    <div class="modalContent xs">
-                        <div class="modalHd">
-                            <h3></h3>
-                            <button type="button" class="modalClose"></button>
-                        </div>
-                        <div class="modalBody commOption">
-                            <div class="modalText">
-                                카테고리를 정말 삭제하시겠습니까?<br>
-                                삭제한 카테고리는 복구할 수 없지만<br>
-                                카테고리 내의 글은 삭제되지 않습니다.
-                            </div>
-                            <div class="modalBtnWrap">
-                                <button type="button" id="confirmDelBtn" class="btn btn-red modalOff">삭제하기</button>
-                            </div>
-                        </div>
-                    </div>
+                    <button type="button" th:each="e : ${@codeUtil.getCodeList(2)}" th:if="${@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType)}" class="m-btn"
+                            onclick="goWrite();">글쓰기</button>
                 </div>
             </div>
+        </div>
+        <ul class="commuListUl">
+            <li th:each="el : ${noticeList}">
+                <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
+                <div class="rightwrap">
+                    <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|"></p>
+                    <p class="titlewrap"><a th:href="|/c1/p1-detail/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
+                    <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
+                </div>
+            </li>
+            <li th:each="el : ${list}">
+                <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
+                <div class="rightwrap">
+                    <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|"></p>
+                    <p class="titlewrap"><a th:href="|/c1/p1-detail/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
+                    <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
+                </div>
+            </li>
+        </ul>
+        <div class="adfooter-btn">
+            <button type="button" th:if="${@authUtil.isRole('ADMIN')}" class="m-btn btn-line mr5 categoryBtn">게시판 설정</button>
+        </div>
+    </div>
+    <!--페이지네이션-->
+    <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    <div class="modal" id="commOt">
+        <div class="modal-bg"></div>
+        <div class="modalContent md">
+            <div class="modalHd">
+                <h3>게시판 설정</h3>
+                <button type="button" class="modalClose"></button>
+            </div>
+            <form id="form2">
+                <div class="modalBody commOption">
+                    <label for="roleType" class="mb5">쓰기 권한</label>
+                    <select name="roleType" id="roleType" class="input-df">
+                        <option th:each="er : ${T(com.softj.itple.domain.Types.RoleType).values()}" th:selected="${er} == ${params.codeDetail.roleType}" th:value="${er}" th:text="${#strings.equals('01',er.code) ? '관리자 이상' : '일반회원 이상' }">관리자 이상</option>
+                    </select>
+                    <div class="categoryBox">
+                        <label for="categoryInput" class="mb5">카테고리</label>
+                        <input type="text" id="categoryInput" class="categoryInput">
+                        <input type="hidden" id="removeId"/>
+                        <button type="button" id="categoryAddBtn" class="btn-add"></button>
+                        <div class="categoryCon">
+                        </div>
+                    </div>
+                    <div class="modalBtnWrap">
+                        <button type="button" class="btn btn-blue modalOff" onclick="goAction('S3');">저장하기</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="cateDel">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button type="button" class="modalClose"></button>
+            </div>
+            <div class="modalBody commOption">
+                <div class="modalText">
+                    카테고리를 정말 삭제하시겠습니까?<br>
+                    삭제한 카테고리는 복구할 수 없지만<br>
+                    카테고리 내의 글은 삭제되지 않습니다.
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" id="confirmDelBtn" class="btn btn-red modalOff">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
-            <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
+    <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
 
-            <script th:inline="javascript">
-                $(document).ready(function(){
-                    var isMobile = navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i) ? true : false;
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            var isMobile = navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i) ? true : false;
 
-                    if(isMobile){
-                        $("#search2").css("display","none");
-                        $("#search1").css("display","block");
+            if(isMobile){
+                $("#search2").css("display","none");
+                $("#search1").css("display","block");
 
-                        $("#search1").on("click",function(){
-                            if($("#search1").hasClass("active")){
-                                $("#search1").css("display","none");
-                                $("#search2").css("display","block");
-                            }else{
-                                $("#search2").css("display","none");
-                                $("#search1").css("display","block");
-                            }
-                        });
-
-                    }else{
+                $("#search1").on("click",function(){
+                    if($("#search1").hasClass("active")){
                         $("#search1").css("display","none");
                         $("#search2").css("display","block");
-                    }
-                });
-                $(document).on("click", ".categoryRemove", function(){
-                    var id = $(this).parent().parent().prop("id");
-                    $("#removeId").val(id);
-                    $('#cateDel').addClass('on');
-                }).on("click", ".btn-add", function(){
-                    let jb = $( '.categoryInput' ).val();
-                    if(ut.isEmpty(jb)){
-                        modal.required("카테고리명");
-                        return;
-                    }
-                    var lastId = $(".categorySub").last().prop("id");
-                    var lastIdArr = new Array();
-                    var lastNum = 0;
-
-                    if(lastId != undefined && lastId != "") {
-                        lastIdArr = lastId.split("_");
-                        lastNum = lastIdArr[1];
-                    }
-
-                    var lastNum = lastIdArr[1];
-                    var newNum = parseInt(lastNum)+1;
-                    var newId = "cate_"+newNum;
-                    $(".categoryCon").append('<div class="categorySub" id="'+newId+'"><input type="hidden" class="codeNameList" name="newCodeNameList" id="codeName_'+newNum+'" value="'+jb+'"/><p class="categoryTit">' + jb + '</p><div class="modiBtn-box"><button type="button" class="categoryModi"></button><button type="button" class="categoryRemove"></button></div> </div>')
-                    $( '.categoryInput' ).val('');
-                });
-                $(document).on("click", ".categoryModi", function (){
-                    var tit = $(this).parents(".categoryCon > div").find(".categoryTit")
-                    var modiform = $(this).parents('.categoryCon > div').find('.modiBox')
-                    if(modiform.length >0){
-                        tit.show();
-                        modiform.remove();
-                        $(this).parents(".categoryCon > div").removeClass('on');
                     }else{
-                        var cateId = $(this).parent().parent().prop("id");
-                        var cateIdArr = cateId.split("_");
-                        var cateNum = cateIdArr[1];
-                        tit.after('<div class="modiBox"><form action=""><input type="text" id="tmpCodeName_'+cateNum+'" value="'+tit.text()+'"><button type="button" class="categoryCom"></button></form></div>');
-                        $(this).parents(".categoryCon > div").addClass('on');
-                        tit.hide();
+                        $("#search2").css("display","none");
+                        $("#search1").css("display","block");
                     }
                 });
-                $(document).on("click", ".categoryCom", function (){
-                    var rp = $(this).parents(".categoryCon > div").find(".categoryTit")
-                    var modirp = $(this).siblings("input").val();
-                    rp.text(modirp).show();
-                    $(this).parents(".categoryCon > div").find("input.codeNameList").val(modirp);
-                    $(this).parents(".modiBox").remove();
 
-                    $(".categoryCon > div").removeClass('on');
-                });
-                $(document).on("click", ".categoryBtn", function(){
-                    goAction("L2");
-                });
+            }else{
+                $("#search1").css("display","none");
+                $("#search2").css("display","block");
+            }
+        });
+        $(document).on("click", ".categoryRemove", function(){
+            var id = $(this).parent().parent().prop("id");
+            $("#removeId").val(id);
+            $('#cateDel').addClass('on');
+        }).on("click", ".btn-add", function(){
+            let jb = $( '.categoryInput' ).val();
+            if(ut.isEmpty(jb)){
+                modal.required("카테고리명");
+                return;
+            }
+            var lastId = $(".categorySub").last().prop("id");
+            var lastIdArr = new Array();
+            var lastNum = 0;
 
-                $(document).on("click", "#confirmDelBtn", function(){
-                    var removeId = "#"+$("#removeId").val();
-                    var id = "#id_"+removeId.split("_")[1];
-                    $(".categoryCon").append('<input type="hidden" name="removeIdList" value="'+$(id).val()+'" />');
-                    $(removeId).remove();
-                });
+            if(lastId != undefined && lastId != "") {
+                lastIdArr = lastId.split("_");
+                lastNum = lastIdArr[1];
+            }
 
-                $(document).on("click", ".modalClose, .modal-bg", function(){
-                    $(".categoryCon div").remove();
-                    $(this).parents('.modal').removeClass('on');
-                });
+            var lastNum = lastIdArr[1];
+            var newNum = parseInt(lastNum)+1;
+            var newId = "cate_"+newNum;
+            $(".categoryCon").append('<div class="categorySub" id="'+newId+'"><input type="hidden" class="codeNameList" name="newCodeNameList" id="codeName_'+newNum+'" value="'+jb+'"/><p class="categoryTit">' + jb + '</p><div class="modiBtn-box"><button type="button" class="categoryModi"></button><button type="button" class="categoryRemove"></button></div> </div>')
+            $( '.categoryInput' ).val('');
+        });
+        $(document).on("click", ".categoryModi", function (){
+            var tit = $(this).parents(".categoryCon > div").find(".categoryTit")
+            var modiform = $(this).parents('.categoryCon > div').find('.modiBox')
+            if(modiform.length >0){
+                tit.show();
+                modiform.remove();
+                $(this).parents(".categoryCon > div").removeClass('on');
+            }else{
+                var cateId = $(this).parent().parent().prop("id");
+                var cateIdArr = cateId.split("_");
+                var cateNum = cateIdArr[1];
+                tit.after('<div class="modiBox"><form action=""><input type="text" id="tmpCodeName_'+cateNum+'" value="'+tit.text()+'"><button type="button" class="categoryCom"></button></form></div>');
+                $(this).parents(".categoryCon > div").addClass('on');
+                tit.hide();
+            }
+        });
+        $(document).on("click", ".categoryCom", function (){
+            var rp = $(this).parents(".categoryCon > div").find(".categoryTit")
+            var modirp = $(this).siblings("input").val();
+            rp.text(modirp).show();
+            $(this).parents(".categoryCon > div").find("input.codeNameList").val(modirp);
+            $(this).parents(".modiBox").remove();
 
-                function goWrite(){
-                    location.href='/c1/p1-write/0?boardType='+[[${params.boardType}]];
-                }
-            </script>
+            $(".categoryCon > div").removeClass('on');
+        });
+        $(document).on("click", ".categoryBtn", function(){
+            goAction("L2");
+        });
+
+        $(document).on("click", "#confirmDelBtn", function(){
+            var removeId = "#"+$("#removeId").val();
+            var id = "#id_"+removeId.split("_")[1];
+            $(".categoryCon").append('<input type="hidden" name="removeIdList" value="'+$(id).val()+'" />');
+            $(removeId).remove();
+        });
+
+        $(document).on("click", ".modalClose, .modal-bg", function(){
+            $(".categoryCon div").remove();
+            $(this).parents('.modal').removeClass('on');
+        });
+
+        function goWrite(){
+            location.href='/c1/p1-write/0?boardType='+[[${params.boardType}]];
+        }
+    </script>
 </th:block>
 </body>
 </html>

@@ -1,13 +1,16 @@
 package com.softj.itple.repo;
 
+import com.softj.itple.domain.A4StrDTO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.Attendance;
 import com.softj.itple.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -15,4 +18,38 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Long>, Queryds
     long deleteAllByUser(@Param("user")User user);
 
     Attendance findByUserIdAndAttendanceDay(long userId, Types.DayOfWeek today);
+
+
+    @Query(value="SELECT " +
+            "CASE " +
+            "WHEN A.attendance_day='07' THEN '0' " +
+            "WHEN A.attendance_day='01' THEN '1' " +
+            "WHEN A.attendance_day='02' THEN '2' " +
+            "WHEN A.attendance_day='03' THEN '3' " +
+            "WHEN A.attendance_day='04' THEN '4' " +
+            "WHEN A.attendance_day='05' THEN '5' " +
+            "WHEN A.attendance_day='06' THEN '6' " +
+            "ELSE ''" +
+            "END AS attendanceStr, " +
+            "'' as attendanceDate " +
+            "FROM tb_attendance A " +
+            "JOIN tb_user B ON B.id = A.user_id " +
+            "WHERE A.user_id = :userId " +
+            "UNION     " +
+            "SELECT DISTINCT " +
+            "CASE " +
+            "WHEN A.attendance_day ='07' THEN '0' " +
+            "WHEN A.attendance_day ='01' THEN '1' " +
+            "WHEN A.attendance_day ='02' THEN '2' " +
+            "WHEN A.attendance_day ='03' THEN '3' " +
+            "WHEN A.attendance_day ='04' THEN '4' " +
+            "WHEN A.attendance_day ='05' THEN '5' " +
+            "WHEN A.attendance_day ='06' THEN '6' " +
+            "ELSE ''" +
+            "END AS attendanceStr, " +
+            "SUBSTRING(CAST(A.created_at as VARCHAR),0,11) as attendanceDate " +
+            "FROM tb_attendance_history A " +
+            "JOIN tb_user B ON B.id = A.user_id " +
+            "WHERE A.user_id = :userId AND A.attendance_day IS NOT NULL", nativeQuery = true)
+    List<A4StrDTO> getAttendanceDayList(@Param(value = "userId") long userId);
 }

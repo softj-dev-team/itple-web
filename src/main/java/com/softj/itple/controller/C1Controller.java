@@ -3,6 +3,7 @@ package com.softj.itple.controller;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.Board;
+import com.softj.itple.entity.BoardLog;
 import com.softj.itple.service.C1Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -46,9 +48,11 @@ public class C1Controller {
         params.setId(id);
         Board el = c1Service.getBoard(params);
         params.setBoardType(el.getBoardType());
+        c1Service.viewBoardMember(params);
         model.addAttribute("el", el);
         model.addAttribute("list",c1Service.getBoardCommentList(params, pageable));
         model.addAttribute("isStar",c1Service.isStar(params));
+        model.addAttribute("boardLog",c1Service.getViewBoard(params));
         model.addAttribute("params",params);
         c1Service.viewBoard(params);
         return "c1/c1p1-detail";

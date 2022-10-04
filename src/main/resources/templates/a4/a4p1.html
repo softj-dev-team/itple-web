@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout/layout">
 <head>
-<title>잇플 출결관리</title>
+    <title>잇플 출결관리</title>
     <!--풀캘린더-->
     <link href="/assets/plugins/fullcalendar/packages/core/main.css" rel="stylesheet" />
     <link href="/assets/plugins/fullcalendar/packages/scheduler/main.min.css" rel="stylesheet" />
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-<!--    <script th:src="@{/assets/js/a4/a4p1.js(v='1.0.0')}"></script>-->
+    <!--    <script th:src="@{/assets/js/a4/a4p1.js(v='1.0.0')}"></script>-->
     <script th:inline="javascript">
         var calendar;
         var resources = [];
@@ -180,7 +180,8 @@
                 schUserName = formData.userName;
 
                 $.post("/api/a4/p1/l1", formData, function (res) {
-                    resources = res.data
+                    resources = res.data;
+
                     resolve(resources);
                 });
             });
@@ -195,42 +196,64 @@
             return new Promise((resolve, reject) => {
                 $.post("/api/a4/p1/l2", resources.reduce((prev, cur) => prev + `idList=${cur.id}&`, "") + `startDate=${info.start.format('yyyy-MM-dd')}`, function (res) {
                     resources.forEach(el => {
-                       var atDays = el.attendanceList;
-                       var start = new Date(info.start);
-                       var end = new Date(info.end);
-                       var now = new Date(Date.now());
+                        var atList = el.attendanceList;
+                        var atOrgDays = el.attendanceOrgList;
+                        var start = new Date(info.start);
+                        var end = new Date(info.end);
+                        var now = new Date(Date.now());
+                        var atDays = new Array();
 
-                       while (start < end){
-                           if(!atDays.includes(start.getDay().toString())){
-                               start.plusDate(1);
-                               continue;
-                           }
-                           if(start < now) {
-                               events.push({
-                                   "resourceId": el.id,
-                                   "title": "X",
-                                   "start": start.format('yyyy-MM-dd'),
-                                   "color": "#dd5a43",
-                                   "className": "text-center"
-                               });
-                           }else if(start >= now) {
-                               events.push({
-                                   "resourceId": el.id,
-                                   "start": start.format('yyyy-MM-dd'),
-                                   "color": "#FFFFFF",
-                                   "className": "text-center"
-                               });
-                           }else{
+                        atList.forEach(el => {
+                            atDays.push(el.attendanceStr);
+                        });
+
+                        while (start < end){
+                            var startMonth = (start.getMonth()+1) < 10 ? '0'+(start.getMonth()+1) : (start.getMonth()+1);
+                            var startDay = start.getDate() < 10 ? '0'+start.getDate() : start.getDate();
+                            var startDate = start.getFullYear()+'-'+startMonth+'-'+startDay;
+
+                            if(!atOrgDays.includes(start.getDay().toString())){// && el1.attendanceDate != startDate && el1.attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).COME.code}]]
+                                if(!atDays.includes(start.getDay().toString())){
+                                    start.plusDate(1);
+                                    continue;
+                                }else {
+                                    var flag = false;
+                                    for(var i=0; i<atList.length; i++){
+                                        var el1 = atList[i];
+                                        if (el1.attendanceDate != '' && el1.attendanceDate != startDate) {
+                                            start.plusDate(1);
+                                            flag = true;
+                                        }
+                                    }
+                                    if(flag) continue;
+                                }
+                            }
+
+                            if(start < now) {
                                 events.push({
-                                   "resourceId": el.id,
-                                   "title": "X",
-                                   "start": start.format('yyyy-MM-dd'),
-                                   "color": "#dd5a43",
-                                   "className": "text-center"
-                               });
-                           }
-                           start.plusDate(1);
-                       }
+                                    "resourceId": el.id,
+                                    "title": "X",
+                                    "start": start.format('yyyy-MM-dd'),
+                                    "color": "#dd5a43",
+                                    "className": "text-center"
+                                });                           }else if(start >= now) {
+                                events.push({
+                                    "resourceId": el.id,
+                                    "start": start.format('yyyy-MM-dd'),
+                                    "color": "#FFFFFF",
+                                    "className": "text-center"
+                                });
+                            }else{
+                                events.push({
+                                    "resourceId": el.id,
+                                    "title": "X",
+                                    "start": start.format('yyyy-MM-dd'),
+                                    "color": "#dd5a43",
+                                    "className": "text-center"
+                                });
+                            }
+                            start.plusDate(1);
+                        }
                     });
 
                     res.data.forEach(el => {
@@ -238,7 +261,7 @@
 
                         var idx = events.findIndex(el2 => el2.resourceId == el.resourceId && el.start == el2.start);
                         if(idx != -1){
-                           events.splice(idx, 1);
+                            events.splice(idx, 1);
                         }
                     });
                     resolve(events);

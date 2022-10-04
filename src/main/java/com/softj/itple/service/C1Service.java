@@ -46,8 +46,12 @@ public class C1Service {
     private final BoardCommentRepo boardCommentRepo;
     private final BoardStarRepo boardStarRepo;
     private final BoardFileRepo boardFileRepo;
+
+    private final BoardLogRepo boardLogRepo;
     private final CodeUtil codeUtil;
     private final CodeDetailRepo codeDetailRepo;
+
+    private final UserRepo userRepo;
 
     @Value("${file.uploadDir}")
     private String FILE_PATH;
@@ -124,27 +128,27 @@ public class C1Service {
         }
 
         JPAQuery<Board> query = jpaQueryFactory.select(Projections.fields(Board.class,
-                qBoard.id,
-                qBoard.thumbnail,
-                qBoard.createdAt,
-                qBoard.subject,
-                qBoard.boardCategory,
-                qBoard.viewCount,
-                qBoard.user,
-                ExpressionUtils.as(
-                        JPAExpressions.select(qBoardComment.count())
-                                .from(qBoardComment)
-                                .where(qBoardComment.board.eq(qBoard)),"commentCount"),
-                ExpressionUtils.as(
-                        JPAExpressions.select(qBoardStar.count())
-                                .from(qBoardStar)
-                                .where(qBoardStar.board.eq(qBoard)),"starCount"))
-        )
-        .from(qBoard)
-        .where(where)
-        .orderBy(qBoard.id.desc())
-        .limit(pageable.getPageSize())
-        .offset(pageable.getOffset());
+                        qBoard.id,
+                        qBoard.thumbnail,
+                        qBoard.createdAt,
+                        qBoard.subject,
+                        qBoard.boardCategory,
+                        qBoard.viewCount,
+                        qBoard.user,
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBoardComment.count())
+                                        .from(qBoardComment)
+                                        .where(qBoardComment.board.eq(qBoard)),"commentCount"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBoardStar.count())
+                                        .from(qBoardStar)
+                                        .where(qBoardStar.board.eq(qBoard)),"starCount"))
+                )
+                .from(qBoard)
+                .where(where)
+                .orderBy(qBoard.id.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
 
         return new PageImpl<Board>(query.fetch(), pageable, query.fetchCount());
     }
@@ -203,11 +207,42 @@ public class C1Service {
         save.setUser(AuthUtil.getUser());
         boardCommentRepo.save(save);
     }
+    public void viewBoardMember(SearchVO params){
+        Board save = boardRepo.findById(params.getId()).get();
+
+        BoardLog save2 = BoardLog.builder().build();
+        save2.setBoard(save);
+        save2.setUser(AuthUtil.getUser());
+        boardLogRepo.save(save2);
+    }
 
     public void viewBoard(SearchVO params){
         Board save = boardRepo.findById(params.getId()).get();
         save.setViewCount(save.getViewCount()+1L);
         boardRepo.save(save);
+
+        BoardLog save2 = BoardLog.builder().build();
+        save2.setBoard(save);
+        save2.setUser(AuthUtil.getUser());
+        boardLogRepo.save(save2);
+    }
+
+    public List<BoardLog> getViewBoard(SearchVO params){
+        QBoardLog qBoardLog = QBoardLog.boardLog;
+        QUser qUser = QUser.user;
+
+        Board board = boardRepo.findById(params.getId()).get();
+
+        BooleanBuilder where = new BooleanBuilder().and(qBoardLog.isDeleted.eq(false).and(qBoardLog.board.eq(board)));
+
+        JPAQuery<BoardLog> query = jpaQueryFactory.select(Projections.fields(BoardLog.class,
+                        qUser
+                )).distinct()
+                .from(qBoardLog)
+                .join(qUser).on(qUser.eq(qBoardLog.user))
+                .where(where);
+        Types.Grade.valueOf("EL1");
+        return query.fetch();
     }
 
     @Transactional

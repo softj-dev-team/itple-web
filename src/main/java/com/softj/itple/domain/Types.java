@@ -124,18 +124,18 @@ public class Types {
     public enum Grade implements Code<String> {
         KIDS1("13", "6세"),
         KIDS2("14", "7세"),
-        EL1("01", "초등학교 1학년"),
-        EL2("02", "초등학교 2학년"),
-        EL3("03", "초등학교 3학년"),
-        EL4("04", "초등학교 4학년"),
-        EL5("05", "초등학교 5학년"),
-        EL6("06", "초등학교 6학년"),
-        MID1("07", "중학교 1학년"),
-        MID2("08", "중학교 2학년"),
-        MID3("09", "중학교 3학년"),
-        HIGH1("10", "고등학교 1학년"),
-        HIGH2("11", "고등학교 2학년"),
-        HIGH3("12", "고등학교 3학년")
+        EL1("01", "초1"),
+        EL2("02", "초2"),
+        EL3("03", "초3"),
+        EL4("04", "초4"),
+        EL5("05", "초5"),
+        EL6("06", "초6"),
+        MID1("07", "중1"),
+        MID2("08", "중2"),
+        MID3("09", "중3"),
+        HIGH1("10", "고1"),
+        HIGH2("11", "고2"),
+        HIGH3("12", "고3")
         ;
         private String code;
         private String message;
@@ -150,16 +150,11 @@ public class Types {
     @Getter
     @AllArgsConstructor
     public enum BookRentalStatus implements Code<String> {
-        RETURN("00", "반납완료"),
         AVAILABLE("01", "대여가능"),
         LOAN("02", "대여중"),
-
         DELINQUENT("03", "연체"),
-
-        RETURN2("04", "반납완료");
-
-
-
+        RETURN("04", "반납완료"),
+        ;
         private String code;
         private String message;
 
@@ -241,7 +236,7 @@ public class Types {
     public enum PaymentStatus implements Code<String> {
         NONE("01", "미납"),
         COMP("02", "완납");
-        
+
         private String code;
         private String message;
 

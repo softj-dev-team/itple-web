@@ -28,4 +28,6 @@ public class AttendanceHistory extends Auditing{
 
     @Convert(converter = Types.AcademyType.Converter.class)
     private Types.AcademyType attendanceType;
+
+    private String attendanceDay;
 }
