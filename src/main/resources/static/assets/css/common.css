@@ -250,15 +250,15 @@ h2{
 .t32{font-size: 32px;}
 .text-blue{color:#2D7AC0}
 .text-gray{color:#A1A1A1;}
-select { 
+select {
     -webkit-appearance: none;
-    -moz-appearance: none; 
-    appearance: none; 
+    -moz-appearance: none;
+    appearance: none;
     background: url(../img/bottom.png) no-repeat center right 10px / 15px;
 }
 select::-ms-expand {
     display: none;
- }
+}
 input, select{
     font-family: 'Pretendard-regular';
     font-size: 18px;
@@ -648,14 +648,14 @@ i.i-date{
     color: #2D7AC0;
 }
 .hasTab .responsiveH1{
-   border-bottom: none;
-   padding-bottom: 0;
-   margin-bottom: 40px;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 40px;
 }
 .responsiveWrap .tab{
-   width: 600px;
-   margin: 0 auto;
-   margin-bottom: 60px;
+    width: 600px;
+    margin: 0 auto;
+    margin-bottom: 60px;
 }
 /* pagination */
 .pagination{
@@ -676,17 +676,17 @@ i.i-date{
     height: 100%;
 }
 .page-arrow .page-link.p-L1::before{
-   background: url(../img/page-L1.png) no-repeat center / 12px;
+    background: url(../img/page-L1.png) no-repeat center / 12px;
 }
 .page-arrow .page-link.p-L2::before{
     background: url(../img/page-L2.png) no-repeat center / 16px;
- }
- .page-arrow .page-link.p-R1::before{
+}
+.page-arrow .page-link.p-R1::before{
     background: url(../img/page-R1.png) no-repeat center / 12px;
- }
- .page-arrow .page-link.p-R2::before{
+}
+.page-arrow .page-link.p-R2::before{
     background: url(../img/page-R2.png) no-repeat center / 16px;
- }
+}
 .page-link{
     display: inline-block;
     width: 26px;
@@ -1203,11 +1203,11 @@ i.i-date{
     padding: 0 100px;
 }
 .sec2 .slider .assignment p:nth-child(2){
-   margin: 8px 0 16px 0;
-   font-size: 18px;
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
+    margin: 8px 0 16px 0;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .sec2 .slider .assignment p:nth-child(3){
     font-size: 14px;
@@ -1218,7 +1218,7 @@ i.i-date{
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
- }
+}
 
 .slick-track{
     margin: 10px 8px!important;
@@ -1235,7 +1235,7 @@ i.i-date{
 }
 .book-list .book-img{
     width: 100%;
-    padding-top:135%;
+    padding-top:100%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1555,7 +1555,7 @@ button.t18{
     .loginDivWrap, .loginWrapOuter{
         width:calc(100vw - 20px);
         height:auto;
-        max-height: 100vh 
+        max-height: 100vh
     }
     .loginDiv_inner{
         width:100%;
@@ -1865,10 +1865,10 @@ button.t18{
     font-size: 14px;
 }
 /* 과제 */
-.taskTalbe tr th:nth-child(1){width: 20%;min-width: 110px;}
+.taskTalbe tr th:nth-child(1){width: 15%;min-width: 110px;}
 .taskTalbe tr th:nth-child(2){width: 50%;}
-.taskTalbe tr th:nth-child(3){width: 25%;min-width: 120px;}
-.taskTalbe tr th:nth-child(4){width: 10%;min-width: 110px;}
+.taskTalbe tr th:nth-child(3){width: 20%;min-width: 120px;}
+.taskTalbe tr th:nth-child(4){width: 15%;min-width: 110px;}
 .taskBody tr td:not(:nth-child(2)) {
     text-align: center;
 }
@@ -1936,8 +1936,6 @@ button.t18{
     line-height: 140%;
 }
 .pointCom{
-    width: 40%;
-    float: right;
     height: 45px;
     line-height: 45px;
     border: 1px solid #2D7AC0;
@@ -1945,6 +1943,7 @@ button.t18{
     padding: 0 20px;
     font-size: 14px;
     margin-top: 30px;
+    float: left;
 }
 .pointCom > span{vertical-align: 2px;}
 .pointCom p{
@@ -2410,6 +2409,212 @@ div.NOT_SUBMIT {
     height: 15px;
     margin-right: 5px;
 }
+/* 이용약관 */
+.tos {
+    width: 100%;
+}
+.tos-b{
+    margin-left: 25px;
+}
+.tos-txt {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+.tos-txt p{display: flex; margin-bottom: 5px;}
+.tos-txt p:nth-child(1) {
+    margin-bottom: 15px;
+}
+.tos-txt p::before{
+    display: block;
+    margin-right: 5px;
+    padding-left: 15px;
+}
+.tos-txt p:nth-child(2)::before {
+    content: "1.";
+}
+.tos-txt p:nth-child(3)::before {
+    content: "2.";
+}
+.tos-txt p:nth-child(4)::before {
+    content: "3.";
+}
+.tos-txt p:nth-child(5)::before {
+    content: "4.";
+}
+.tos-txt p:nth-child(6){margin-top: 15px;}
+.tos-txt p:nth-child(6)::before {
+    content: "-";
+    padding: 0;
+}
+/* 팝업 */
+.pop-up.on{display: block;}
+.popBg{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 0.5;
+}
+.pop-up{
+    display: none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    border-radius: 10px;
+    z-index: 999;
+}
+.popContent{
+    position: fixed;
+    width: 400px;
+    z-index: 999;
+    background: #ffffff;
+    top: 20%;
+    left: 50%;
+    transform: translatex(-50%);
+    border-radius: 10px;
+}
+.popBody{
+    display: flex;
+    flex-direction: column;
+}
+.popin{
+    padding: 16px;
+    padding-bottom: 0;
+}
+.popin img{
+    width: 100%;
+}
+.popBtnWrap{
+    width: 100%;
+    height: 45px;
+    display: flex;
+}
+.popBtnWrap button{
+    width: 50%;
+    color: #333333;
+}
+.popBtnWrap button:first-child{
+    border-right: 1px solid #f3f3f3;
+}
+/* ~220906 */
+/* 문자발송 */
+.sms-body tr td:nth-child(4){
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    min-width: 20px;
+    white-space: nowrap;
+}
+.smsTable tr th:nth-child(1){width: 5%;}
+.smsTable tr th:nth-child(2){width: 7%;}
+.smsTable tr th:nth-child(3){width: 11%;}
+.smsTable tr th:nth-child(4){width: auto;}
+.smsTable tr th:nth-child(5){width: 10%;}
+.smsTable tr th:nth-child(6){width: 15%;}
+.smsTable tr th:nth-child(7){width: 12%;}
+.smsTable tr td{cursor: pointer;}
+.smsTable tr td:not(:nth-child(4)){text-align: center;}
+a.a-btn{
+    display: block;
+    height:40px;
+    line-height: 40px;
+    width: 120px;
+    text-align: center;
+    background-color: #002C50;
+    color:#ffffff;
+    font-size:16px;
+    border: none;
+    border-radius: 5px;
+    transition: .3s ease-out, -webkit- .3s ease-out;
+}
+.sms-modal .modalBody{text-align: left;}
+.sms-modal .modalBody label{font-weight: bold;}
+.sms-modal .modalBody label:not(:nth-child(1)){
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid #cccccc;
+}
+.sms-modal .modalBody p {padding-left: 10px;}
+.smsAll{margin-bottom: 10px; text-align: right;}
+.smsBox{
+    display: flex;
+}
+.smsBox .smsLeft{
+    width: 50%;
+}
+.smsBox .smsRight{
+    width: 50%;
+    margin-left: 16px;
+    display: flex;
+    flex-direction: column;
+}
+.smsN {
+    display: flex;
+}
+.smsN div.smsN1{
+    width: 40%; margin-right: 16px;
+}
+.smsN div.smsN1 select{width: 100%;}
+.smsN div.smsN2{ width: 60%;}
+.smsN div.smsN2 button{
+    height: 45px;
+    margin-left: 5px;
+}
+.smsN > div > label,.smsRight label{
+    display: block;
+    margin-bottom: 5px;
+}
+.smsList-h{margin: 16px 0 5px;align-items: center;}
+.smsList-h button.m-btn {
+    height: 40px;
+    width: 90px;
+    font-size: 14px;
+}
+.smsList-n .smsTable thead tr {height: 35px;}
+.smsList-n .smsTable tbody tr{height: 40px;}
+.smsList-n .smsTable tr th:nth-child(1) {width: 10%;}
+.smsList-n .smsTable tr th:nth-child(2) {width: 23%;}
+.smsList-n .smsTable tr th:nth-child(3) {width: auto;}
+.smsList-n .smsTable tr th:nth-child(4) {width: 15%;}
+.smsList-n .smsTable tbody tr td:nth-child(3) {text-align: left;}
+.adTable button.delBtn {
+    background: url(../img/delete.png) no-repeat center / contain;
+    width: 15px;
+    height: 15px;
+    margin: 0 auto;
+    display: block;
+    color: transparent !important;
+}
+.smsList-n .pagination {
+    margin: 20px 0 0px;
+    font-size: 16px;
+}
+.txt-B{color: #2D7AC0; font-weight: bold;}
+
+.smsRight textarea{
+    border-radius: 5px 5px 0 0;
+    padding: 16px;
+    width: 100%;
+    border: 1px solid #9E9E9E;
+    height: 100%;
+}
+.smsRight .smsbyte{
+    height: 45px;
+    line-height: 45px;
+    padding: 0 16px;
+    border: 1px solid #9E9E9E;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
 /*header ~1280p*/
 @media screen and (min-width: 1280px){
     .header{padding-right: calc((100% - 1280px)/2 + 23.5px)!important;}
@@ -2548,6 +2753,12 @@ div.NOT_SUBMIT {
     .content-in .book-box .book-list:nth-child(3n){
         margin-right: 0;
     }
+    /* 문자전송 */
+    .smsN {flex-direction: column;}
+    .smsN div.smsN1{
+        width: 100%; margin-right: 0px;
+    }
+    .smsN div.smsN2{ width: 100%; margin-top: 10px;}
 }
 @media screen and (max-width: 768px){
     /*default setting*/
@@ -3136,6 +3347,48 @@ div.NOT_SUBMIT {
     .stampIn > p{
         font-size: 14px;
     }
+    .popContent{
+        width: 90%;
+        top: 10%;
+        left: 50%;
+        transform: translatex(-50%);
+    }
+    .popin{
+        padding: 10px;
+        padding-bottom: 0;
+    }
+    .popBtnWrap{
+        height: 35px;
+        line-height: 35px;
+    }
+
+    /* 문자전송 */
+    .smsAll{
+        margin-bottom: 0;
+        margin-top: 30px;
+        border-bottom: 2px solid #2D7AC0;
+        padding-bottom: 16px;
+    }
+    .smsBox{flex-direction: column;}
+    .smsBox .smsLeft{width: 100%;}
+    .smsBox .smsRight{
+        width: 100%;
+        margin-left: 0px;
+        margin-top: 30px;
+        border-top: 1px solid #f2f2f2;
+        padding-top: 16px;
+    }
+    .smsList-h{margin: 16px 0 8px;}
+    .smsList-h button.m-btn { height: 35px;}
+    .smsRight textarea{min-height: 120px;}
+    .smsRight .smsbyte{
+        height: 45px;
+        line-height: 45px;
+        padding: 0 16px;
+        border: 1px solid #9E9E9E;
+        border-top: none;
+        border-radius: 0 0 5px 5px;
+    }
 }
 @media screen and (max-width: 476px){
 
@@ -3298,7 +3551,7 @@ body.adminBody{
 .adTable.list1 tr th:nth-child(7){width: 10%;}
 .adTable.list1 tr th:nth-child(8){width: 10%;}
 .adTable.list1 tr th:nth-child(9){width: 10%;}
-.hr2{ 
+.hr2{
     width: 100%;
     height: 1px;
     background-color: #CCCCCC;
@@ -3350,8 +3603,8 @@ body.adminBody{
     font-size: 18px;
     font-family: 'Pretendard-regular';
 }
-.inputSec textarea:focus-visible { 
-    outline:  1px solid #2D7AC0;; 
+.inputSec textarea:focus-visible {
+    outline:  1px solid #2D7AC0;;
 }
 .detailsIgm.upFile {
     position: relative;
@@ -3468,12 +3721,11 @@ input.txtRight{text-align: right;}
 .adTable.list2{
     table-layout: fixed;
 }
-.adTable.list2 tr th:nth-child(1){width: 3%;}
-.adTable.list2 tr th:nth-child(2){width: 5%;}
+.adTable.list2 tr th:nth-child(1){width: 5%;}
+.adTable.list2 tr th:nth-child(2){width: 8%;}
 .adTable.list2 tr th:nth-child(3){width: auto;}
-.adTable.list2 tr th:nth-child(4){width: 20%;}
-.adTable.list2 tr th:nth-child(5){width: 10%;}
-.adTable.list2 tr th:nth-child(6){width: 10%;}
+.adTable.list2 tr th:nth-child(4){width: 15%;}
+.adTable.list2 tr th:nth-child(5){width: 15%;}
 .adTable.list2 tr td:nth-child(3){
     text-align: left;
 }

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>잇플ITPLE</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <!-- 썸머노트 -->
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
+  <script src="http://jamesallardice.github.io/Placeholders.js/assets/js/placeholders.jquery.min.js"></script>
+  <script src="../../assets/plugins/summernote-0.8.18-dist/lang/summernote-ko-KR.js"></script>
+  <link href="../../assets/css/reset.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/common.css" rel="stylesheet" type="text/css">
+</head>
+<body class="">
+<div class="wrap">
+  <header class="header clearfix">
+    <h1 class="logo"><a href="indexAdmin.html">잇플</a></h1>
+    <div class="nav-out">
+      <ul class="gnb clearfix">
+        <li class="lnbBgN"><a href="bookListAdmin.html">출판서적</a></li>
+        <li>
+          <a href="taskListAdmin.html">수업연계</a>
+          <ul class="lnb">
+            <li><a href="taskListAdmin.html">과제</a></li>
+            <li><a href="reportAdmin.html">독후감</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="studList.html">학생관리</a>
+          <ul class="lnb">
+            <li><a href="studList.html">재원생</a></li>
+            <li><a href="leaveList.html">휴원생</a></li>
+            <li><a href="dischargeList.html">퇴원생</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="attendance.html">출결관리</a>
+          <ul class="lnb">
+            <li><a href="attendance.html">출결관리</a></li>
+            <li><a href="">출석페이지</a></li>
+          </ul>
+        </li>
+        <li class="lnbBgN"><a href="payment.html">수납관리</a></li>
+        <li><a href="portfolioList.html">포트폴리오</a>
+          <ul class="lnb">
+            <li><a href="portfolioList.html">재원생</a></li>
+            <li><a href="leavePortfolio.html">휴원생</a></li>
+            <li><a href="dischargePortfoliot.html">퇴원생</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="communityList.html">잇플 커뮤니티</a>
+          <ul class="lnb">
+            <li><a href="communityList.html">잇플코딩</a></li>
+            <li><a href="">잇플영어</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="hd-logout">
+        <button type="button" class="logout-btn">로그아웃</button>
+      </div>
+    </div>
+    <div class="right-btn-box">
+      <button class="ham-btn"></button>
+    </div>
+  </header>
+  <div class="ham">
+    <div class="right-bg"></div>
+    <div class="ham-nav">
+      <div class="ham-hd">
+        <button class="ham-close"></button>
+        <a href="../sub/myinfo.html" class="setting"></a>
+      </div>
+      <div class="ham-con">
+        <p><span class="user-name">김잇플</span> 님</p>
+        <ul class="ham-gnb">
+          <li><a href="bookListAdmin.html">출판서적</a></li>
+          <li><button class="bot-btn"></button>
+            <a href="taskListAdmin.html">수업연계</a>
+            <ul class="ham-lnb">
+              <li><a href="taskListAdmin.html">과제</a></li>
+              <li><a href="reportAdmin.html">독후감</a></li>
+            </ul>
+          </li>
+          <li><button class="bot-btn"></button>
+            <a href="studList.html">학생관리</a>
+            <ul class="ham-lnb li3">
+              <li><a href="studList.html">재원생</a></li>
+              <li><a href="leaveList.html">휴원생</a></li>
+              <li><a href="dischargeList.html">퇴원생</a></li>
+            </ul>
+          </li>
+          <li><button class="bot-btn"></button>
+            <a href="attendance.html">출결관리</a>
+            <ul class="ham-lnb">
+              <li><a href="attendance.html">출결관리</a></li>
+              <li><a href="">출석페이지</a></li>
+            </ul>
+          </li>
+          <li><a href="payment.html">수납관리</a></li>
+          <li><button class="bot-btn"></button>
+            <a href="portfolioList.html">포트폴리오</a>
+            <ul class="ham-lnb li3">
+              <li><a href="portfolioList.html">재원생</a></li>
+              <li><a href="leavePortfolio.html">휴원생</a></li>
+              <li><a href="dischargePortfoliot.html">퇴원생</a></li>
+            </ul>
+          </li>
+          <li><button class="bot-btn"></button>
+            <a href="communityList.html">잇플 커뮤니티</a>
+            <ul class="ham-lnb">
+              <li><a href="communityList.html">잇플코딩</a></li>
+              <li><a href="">잇플영어</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <h1 class="responsiveH1 subH1">메시지 전송</h1>
+    <div class="content-in clearfix">
+      <p class="smsAll">총 <span>100</span>건 / <span class="txt-B">99</span></p>
+      <div class="writeCon writeHead2 smsBox">
+        <div class="smsLeft">
+          <div class="smsN">
+            <div class="smsN1">
+              <label for="">발신번호</label>
+              <select name="" id="" class="select-md">
+                <option value="발신번호">010-5678-1234</option>
+                <option value="010-1234-5678">010-1234-5678</option>
+              </select>
+            </div>
+            <div class="smsN2">
+              <label for="">수신번호</label>
+              <div class="flexStart">
+                <input type="text" placeholder="수신번호 입력" class="input-df">
+                <button type="button" class="m-btn">추가</button>
+              </div>
+            </div>
+          </div>
+          <div class="smsList-n">
+            <div class="flexwrap smsList-h">
+              <button type="button" class="m-btn btn-line ">선택삭제</button>
+              <div>
+                <p>총 <span class="txt-B"> 10</span>명</p>
+              </div>
+            </div>
+            <table class="adTable smsTable checklist">
+              <thead class="adTable-head">
+              <tr>
+                <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                <th>이름</th>
+                <th>수신번호</th>
+                <th>삭제</th>
+              </tr>
+              </thead>
+              <tbody class="adTable-body ">
+              <tr>
+                <td><input type="checkbox" id="ch1"><label for="ch1"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="ch2"><label for="ch2"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="ch3"><label for="ch3"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="ch4"><label for="ch4"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="ch5"><label for="ch5"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="ch6"><label for="ch6"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="ch7"><label for="ch7"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="ch8"><label for="ch8"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="ch9"><label for="ch9"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="ch10"><label for="ch10"></label></td>
+                <td>김잇플</td>
+                <td>010-1234-5678</td>
+                <td><button type="button" class="delBtn">삭제</button></td>
+              </tr>
+              </tbody>
+            </table>
+            <ul class="pagination">
+              <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+              <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+              <li class="page-item"><a class="page-link active" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+              <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="smsRight">
+          <label for="">메시지 내용</label>
+          <textarea placeholder="메시지 내용 입력 "></textarea>
+          <p class="smsbyte"><span class="txt-B">0</span> byte</p>
+        </div>
+      </div>
+      <div class="btn-center Tbtn">
+        <button type="submit" class="btn submitBtn">메시지 전송</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal">
+    <div class="modal-bg"></div>
+    <div class="modalContent xs">
+      <div class="modalHd">
+        <h3></h3>
+        <button class="modalClose"></button>
+      </div>
+      <div class="modalBody">
+        <div class="modalText">
+          메시지를 보내시겠습니까?
+        </div>
+        <div class="modalBtnWrap">
+          <button type="button" class="btn btn-blue modalOff">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-in clearfix">
+      <div class="f-info">
+        <div class="foot-logo"></div>
+        <div class="info-m">
+          <p>사업자등록번호 : 366-86-01368 ㅣ 대표 : 정지숙</p>
+          <p>주소 : 서울특별시 동대문구 답십리로 264, 201호, 303호(장안동, 성신빌딩)</p>
+          <p>이메일 : (학원) itple333@naver.com , (출판사) itpleinfo@naver.com</p>
+        </div>
+        <p class="cop-p">Copyright (c) itpleinfo.com All Rights Reserved.</p>
+      </div>
+      <div class="f-cs">
+        <p>CS CENTER</p>
+        <div>
+          <p><span>학원</span>0502-600-4926</p>
+          <p><span>출판사</span>0502-600-4925</p>
+          <p><span>팩스번호</span>0502-600-4924</p>
+        </div>
+      </div>
+      <div class="f-bank">
+        <p>BANK INFO</p>
+        <div>
+          <p><span>신한은행</span>140-012-545888</p>
+          <p><span>국민은행</span>010937-04-005752</p>
+          <p><span>예금주</span>㈜잇플ITPLE</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+<script src="../assets/js/common.js"></script>
+<script>
+  //summernote
+  $(document).ready(function (){
+    $('#summernote').summernote({
+      tabsize: 2,
+      height: 350,
+      lang: 'ko-KR',
+      toolbar: [
+        ['style', ['fontname']],
+        ['style', ['fontsize','bold', 'underline', 'italic','strikethrough','color', 'clear']],
+        ['font', [ 'superscript', 'subscript']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+        ['insert', ['link', 'picture', 'video']],
+      ]
+    });
+  });
+  $('.submitBtn').on('click', function () {
+    $('.modal').addClass('on');
+  });
+  $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+    $(this).parents('.modal').removeClass('on');
+  })
+  //파일첨부
+  $(document).ready(function()
+          // input file 파일 첨부시 fileCheck 함수 실행
+  {
+    $("#fileInput").on("change", fileCheck);
+  });
+  // 파일 현재 필드 숫자 totalCount랑 비교값
+  var fileCount = 0;
+  // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+  var totalCount = 10;
+  // 파일 고유넘버
+  var fileNum = 0;
+  // 첨부파일 배열
+  var content_files = new Array();
+
+  function fileCheck(e) {
+    var files = e.target.files;
+
+    // 파일 배열 담기
+    var filesArr = Array.prototype.slice.call(files);
+
+    // 파일 개수 확인 및 제한
+    if (fileCount + filesArr.length > totalCount) {
+      alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+      return;
+    } else {
+      fileCount = fileCount + filesArr.length;
+    }
+
+    // 각각의 파일 배열담기 및 기타
+    filesArr.forEach(function (f) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        content_files.push(f);
+        $('#articlefileChange').append(
+                '<li file-value="' + fileNum + '"><input type="checkbox" id="file-ch'+fileNum+'" value="'+fileNum+'"><label for="file-ch'+fileNum+'"><span>' + f.name + '</span></label></li>'
+        );
+        fileNum ++;
+      };
+      reader.readAsDataURL(f);
+    });
+    console.log(content_files);
+    //초기화 한다.
+    $("#fileInput").val("");
+  }
+
+  // 파일 부분 삭제 함수
+
+  $('.chRemove').click(function(){
+    if(confirm("삭제하시겠습니까?")){
+      $(".fileUP input[type=checkbox]:checked").each(function(){
+        var tr_value =$(this).val();
+        var tr=$("li[file-value='"+tr_value+"']");
+        var no = tr_value.replace(/[^0-9]/g, "");
+        content_files[no].is_delete = true;
+
+        tr.remove();
+        fileCount --;
+        console.log(content_files);
+      });
+    }else{
+      return false;
+    }
+  });
+
+  /*
+   * 폼 submit 로직
+   */
+  function registerAction(){
+
+    var form = $("form")[0];
+    var formData = new FormData(form);
+    for (var x = 0; x < content_files.length; x++) {
+      // 삭제 안한것만 담아 준다.
+      if(!content_files[x].is_delete){
+        formData.append("article_file", content_files[x]);
+      }
+    }
+    /*
+    * 파일업로드 multiple ajax처리
+    */
+    $.ajax({
+      type: "POST",
+      enctype: "multipart/form-data",
+      url: "/file-upload",
+      data : formData,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+        if(JSON.parse(data)['result'] == "OK"){
+          alert("파일업로드 성공");
+        } else
+          alert("서버내 오류로 처리가 지연되고있습니다. 잠시 후 다시 시도해주세요");
+      },
+      error: function (xhr, status, error) {
+        alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+        return false;
+      }
+    });
+    return false;
+  }
+</script>
+</body>
+</html>

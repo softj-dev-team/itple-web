@@ -6,563 +6,578 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>잇플ITPLE</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <link href="/assets/css/reset.css" rel="stylesheet" type="text/css">
-    <link href="/assets/css/common.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/common.css" rel="stylesheet" type="text/css">
 
     <!--    slick slider-->
-    <link href="/assets/plugins/slick-theme.css" rel="stylesheet" type="text/css">
+    <link href="../assets/plugins/slick-theme.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 </head>
 <body>
-    <div class="wrap">
-        <header class="header clearfix">
-            <h1 class="logo"><a href="index.html">잇플</a></h1>
-            <div class="nav-out">
-                <ul class="gnb clearfix">
+<div class="wrap">
+    <header class="header clearfix">
+        <h1 class="logo"><a href="index.html">잇플</a></h1>
+        <div class="nav-out">
+            <ul class="gnb clearfix">
+                <li>
+                    <a href="">잇플 커뮤니티</a>
+                    <ul class="lnb">
+                        <li><a href="">잇플코딩</a></li>
+                        <li><a href="">잇플영어</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">수업연계</a>
+                    <ul class="lnb lnb2">
+                        <li><a href="">과제</a></li>
+                        <li><a href="">독후감</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="sub/bookList.html">도서대여</a>
+                    <ul class="lnb lnb3">
+                        <li><a href="sub/bookList.html">전체도서</a></li>
+                        <li><a href="sub/bookRecord.html">대여기록</a></li>
+                    </ul>
+                </li>
+                <li class="lnbBgN"><a href="">포트폴리오</a></li>
+            </ul>
+            <div class="hd-logout">
+                <button type="button" class="logout-btn">로그아웃</button>
+            </div>
+            <div class="lnbBg"></div>
+        </div>
+        <div class="right-btn-box">
+            <button class="ham-btn"></button>
+        </div>
+    </header>
+    <div class="ham">
+        <div class="right-bg"></div>
+        <div class="ham-nav">
+            <div class="ham-hd">
+                <button class="ham-close"></button>
+                <a href="sub/myinfo.html" class="setting"></a>
+            </div>
+            <div class="ham-con">
+                <p><span class="user-name">김잇플</span> 님</p>
+                <p>포인트 : <span class="user-point">1,000</span></p>
+                <ul class="ham-gnb">
                     <li>
-                        <a href="">잇플 커뮤니티</a>
-                        <ul class="lnb">
+                        <button class="bot-btn"></button><a href="">잇플 커뮤니티</a>
+                        <ul class="ham-lnb">
                             <li><a href="">잇플코딩</a></li>
                             <li><a href="">잇플영어</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="">수업연계</a>
-                        <ul class="lnb lnb2">
+                        <button class="bot-btn"></button><a href="">수업연계</a>
+                        <ul class="ham-lnb">
                             <li><a href="">과제</a></li>
                             <li><a href="">독후감</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="sub/bookList.html">도서대여</a>
-                        <ul class="lnb lnb3">
+                        <button class="bot-btn"></button><a href="sub/bookList.html">도서대여</a>
+                        <ul class="ham-lnb">
                             <li><a href="sub/bookList.html">전체도서</a></li>
                             <li><a href="sub/bookRecord.html">대여기록</a></li>
                         </ul>
                     </li>
-                    <li class="lnbBgN"><a href="">포트폴리오</a></li>
+                    <li><a href="">포트폴리오</a></li>
                 </ul>
-                <div class="hd-logout">
-                    <button type="button" class="logout-btn">로그아웃</button>
-                </div>
-                <div class="lnbBg"></div>
-            </div>
-            <div class="right-btn-box">
-                <button class="ham-btn"></button>
-            </div>
-        </header>
-        <div class="ham">
-            <div class="right-bg"></div>
-            <div class="ham-nav">
-                <div class="ham-hd">
-                    <button class="ham-close"></button>
-                    <a href="sub/myinfo.html" class="setting"></a>
-                </div>
-                <div class="ham-con">
-                    <p><span class="user-name">김잇플</span> 님</p>
-                    <p>포인트 : <span class="user-point">1,000</span></p>
-                    <ul class="ham-gnb">
-                        <li>
-                            <button class="bot-btn"></button><a href="">잇플 커뮤니티</a>
-                            <ul class="ham-lnb">
-                                <li><a href="">잇플코딩</a></li>
-                                <li><a href="">잇플영어</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <button class="bot-btn"></button><a href="">수업연계</a>
-                            <ul class="ham-lnb">
-                                <li><a href="">과제</a></li>
-                                <li><a href="">독후감</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <button class="bot-btn"></button><a href="sub/bookList.html">도서대여</a>
-                            <ul class="ham-lnb">
-                                <li><a href="sub/bookList.html">전체도서</a></li>
-                                <li><a href="sub/bookRecord.html">대여기록</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="">포트폴리오</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
-        <div class="main">
-            <div class="main-banner">
-                <div class="banner-in">
-                    <p>잇플교육!</p>
-                    <p><b>글로벌</b> 인재를 양성하는<br>소프트웨어 / 영어 선도학원! </p>
-                </div>
-            </div>
-            <div class="main-cont">
-                <div class="sec sec1">
-                    <div class="sec-in">
-                        <p class="sec-name"><span>잇플학원</span> 님</p>
-                        <p class="sec-point">포인트 : <span>1,000</span></p>
-                        <a href="sub/myinfo.html" class="sec-mypage">내 정보</a>
-                    </div>
-                </div>
-                <div class="sec sec2">
-                    <div class="sec-in">
-                        <div class="set-tit">
-                            <a href="">내 과제</a>
-                        </div>
-                        <div class="main-slide">
-                            <div class="slider">
-                                <div class="assignment">
-                                    <p>잇플코딩 입문</p>
-                                    <p><b>잇플코딩 과제 제목이 길어지면</b></p>
-                                    <p>수업 내용을 바탕으로 파이썬 실습내용 복습해보기수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
-                                </div>
-                                <button type="button" class="ass-write">과제작성</button>
-                            </div>
-                            <div class="slider">
-                                <div class="assignment">
-                                    <p>잇플코딩 입문</p>
-                                    <p><b>과제제목</b></p>
-                                    <p>과제 내용</p>
-                                </div>
-                                <button type="button" class="ass-write">과제작성</button>
-                            </div>
-                            <div class="slider">
-                                <div class="assignment">
-                                    <p>잇플코딩 입문</p>
-                                    <p><b>과제제목</b></p>
-                                    <p>수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
-                                </div>
-                                <button type="button" class="ass-check" disabled='disabled'>확인중</button>
-                            </div>
-                            <div class="slider">
-                                <div class="assignment">
-                                    <p>잇플코딩 입문</p>
-                                    <p><b>과제제목</b></p>
-                                    <p>수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
-                                </div>
-                                <button type="button" class="ass-complete" disabled>과제완료</button>
-                            </div>
-                            <div class="slider">
-                                <div class="assignment">
-                                    <p>잇플코딩 입문</p>
-                                    <p><b>과제제목</b></p>
-                                    <p>수업 내용을 바탕으로 파이썬 실습내용 복습해보기수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
-                                </div>
-                                <button type="button" class="ass-complete" disabled>과제완료</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-               <div class="sec sec3">
-                    <div class="sec-in flex-sec">
-                        <div class="set-tit">
-                            <a href="">도서관리</a>
-                            <p>대여한 도서를 관리하는 페이지입니다.</p>
-                        </div>
-                        <div class="book-slide book-box clearfix">
-                            <a href="" class="book-list slide">
-                                <div class="book-img" style="background-image: url(../assets/img/book1.jpg);"></div>
-                                <div class="book-info">
-                                    <span class="rental">대여중</span>
-                                    <p class="book-tit">영재를 위한 엔트리 수학 vol.3</p>
-                                    <p class="book-author">잇플ITPLE</p>
-                                </div>
-                            </a>
-                            <a href="" class="book-list slide">
-                                <div class="book-img" style="background-image: url(../assets/img/book2.jpg);"></div>
-                                <div class="book-info">
-                                    <span class="delay">연체</span>
-                                    <p class="book-tit">영재를 위한 엔트리 수학 vol.3</p>
-                                    <p class="book-author">잇플ITPLE</p>
-                                </div>
-                            </a>
-                            <a href="" class="book-list slide">
-                                <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
-                                <div class="book-info">
-                                    <span class="return">반납완료</span>
-                                    <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
-                                    <p class="book-author">잇플ITPLE</p>
-                                </div>
-                            </a>
-                            <a href="" class="book-list slide">
-                                <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
-                                <div class="book-info">
-                                    <span class="return">반납완료</span>
-                                    <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
-                                    <p class="book-author">잇플ITPLE</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="sec sec4">
-                    <div class="sec-in">
-                        <div class="set-tit">
-                            <a href="">포트폴리오</a>
-                        </div>
-                        <ul class="po-tab">
-                            <li class="active">전체</li>
-                            <li>잇플코딩A</li>
-                            <li>잇플코딩B</li>
-                            <li>잇플코딩C</li>
-                            <li>잇플코딩D</li>
-                        </ul>
-                        <div class="port-wrap">
-                            <div class="po-slide po-con active">
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio2.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="po-slide po-con">
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="po-slide po-con">
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio2.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="po-slide po-con">
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio2.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="po-slide po-con">
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio2.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slider">
-                                    <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
-                                        <div class="s-portfolio">
-                                            <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
-                                            <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
-                                            <a href="" class="read-more">자세히보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="sec sec5">
-                    <div class="sec-in flex-sec">
-                        <div class="set-tit">
-                            <a href="sub/notice.html">공지사항</a>
-                            <p>잇플 학원의 공지사항 페이지입니다.</p>
-                        </div>
-                        <div class="notice-wrap">
-                            <ul>
-                                <li>
-                                    <a href="">
-                                        <div class="notice-date">
-                                            <p class="date">14</p>
-                                            <p class="year">2022.04</p>
-                                        </div>
-                                        <p>2022년 잇플학원 공지사항입니다.</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <div class="notice-date">
-                                            <p class="date">14</p>
-                                            <p class="year">2022.04</p>
-                                        </div>
-                                        <p>2022년 잇플학원 공지사항입니다.</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <div class="notice-date">
-                                            <p class="date">14</p>
-                                            <p class="year">2022.04</p>
-                                        </div>
-                                        <p>2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <div class="notice-date">
-                                            <p class="date">14</p>
-                                            <p class="year">2022.04</p>
-                                        </div>
-                                        <p>2022년 잇플학원 공지사항입니다.</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-         <footer class="footer">
-             <div class="footer-in clearfix">
-                <div class="f-info">
-                   <div class="foot-logo"></div>
-                   <div class="info-m">
-                        <p>사업자등록번호 : 366-86-01368 ㅣ 대표 : 정지숙</p>
-                        <p>주소 : 서울특별시 동대문구 답십리로 264, 201호, 303호(장안동, 성신빌딩)</p>
-                        <p>이메일 : (학원) itple333@naver.com , (출판사) itpleinfo@naver.com</p>
-                   </div>
-                   <p class="cop-p">Copyright (c) itpleinfo.com All Rights Reserved.</p>
-                </div>
-                <div class="f-cs">
-                    <p>CS CENTER</p>
-                    <div>
-                        <p><span>학원</span>0502-600-4926</p>
-                        <p><span>출판사</span>0502-600-4925</p>
-                        <p><span>팩스번호</span>0502-600-4924</p>
-                    </div>
-                </div>
-                <div class="f-bank">
-                    <p>BANK INFO</p>
-                    <div>
-                        <p><span>신한은행</span>140-012-545888</p>
-                        <p><span>국민은행</span>010937-04-005752</p>
-                        <p><span>예금주</span>㈜잇플ITPLE</p>
-                    </div>
-                </div>
-             </div>
-         </footer>
     </div>
-    <script src="/assets/js/common.js"></script>
-    <script type="text/javascript">
+    <div class="main">
+        <div class="main-banner">
+            <div class="banner-in">
+                <p>잇플교육!</p>
+                <p><b>글로벌</b> 인재를 양성하는<br>소프트웨어 / 영어 선도학원! </p>
+            </div>
+        </div>
+        <div class="main-cont">
+            <div class="sec sec1">
+                <div class="sec-in">
+                    <p class="sec-name"><span>잇플학원</span> 님</p>
+                    <p class="sec-point">포인트 : <span>1,000</span></p>
+                    <a href="sub/myinfo.html" class="sec-mypage">내 정보</a>
+                </div>
+            </div>
+            <div class="sec sec2">
+                <div class="sec-in">
+                    <div class="set-tit">
+                        <a href="">내 과제</a>
+                    </div>
+                    <div class="main-slide">
+                        <div class="slider">
+                            <div class="assignment">
+                                <p>잇플코딩 입문</p>
+                                <p><b>잇플코딩 과제 제목이 길어지면</b></p>
+                                <p>수업 내용을 바탕으로 파이썬 실습내용 복습해보기수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                            </div>
+                            <button type="button" class="ass-write">과제작성</button>
+                        </div>
+                        <div class="slider">
+                            <div class="assignment">
+                                <p>잇플코딩 입문</p>
+                                <p><b>과제제목</b></p>
+                                <p>과제 내용</p>
+                            </div>
+                            <button type="button" class="ass-write">과제작성</button>
+                        </div>
+                        <div class="slider">
+                            <div class="assignment">
+                                <p>잇플코딩 입문</p>
+                                <p><b>과제제목</b></p>
+                                <p>수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                            </div>
+                            <button type="button" class="ass-check" disabled='disabled'>확인중</button>
+                        </div>
+                        <div class="slider">
+                            <div class="assignment">
+                                <p>잇플코딩 입문</p>
+                                <p><b>과제제목</b></p>
+                                <p>수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                            </div>
+                            <button type="button" class="ass-complete" disabled>과제완료</button>
+                        </div>
+                        <div class="slider">
+                            <div class="assignment">
+                                <p>잇플코딩 입문</p>
+                                <p><b>과제제목</b></p>
+                                <p>수업 내용을 바탕으로 파이썬 실습내용 복습해보기수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                            </div>
+                            <button type="button" class="ass-complete" disabled>과제완료</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sec sec3">
+                <div class="sec-in flex-sec">
+                    <div class="set-tit">
+                        <a href="">도서관리</a>
+                        <p>대여한 도서를 관리하는 페이지입니다.</p>
+                    </div>
+                    <div class="book-slide book-box clearfix">
+                        <a href="" class="book-list slide">
+                            <div class="book-img" style="background-image: url(../assets/img/book1.jpg);"></div>
+                            <div class="book-info">
+                                <span class="rental">대여중</span>
+                                <p class="book-tit">영재를 위한 엔트리 수학 vol.3</p>
+                                <p class="book-author">잇플ITPLE</p>
+                            </div>
+                        </a>
+                        <a href="" class="book-list slide">
+                            <div class="book-img" style="background-image: url(../assets/img/book2.jpg);"></div>
+                            <div class="book-info">
+                                <span class="delay">연체</span>
+                                <p class="book-tit">영재를 위한 엔트리 수학 vol.3</p>
+                                <p class="book-author">잇플ITPLE</p>
+                            </div>
+                        </a>
+                        <a href="" class="book-list slide">
+                            <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
+                            <div class="book-info">
+                                <span class="return">반납완료</span>
+                                <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
+                                <p class="book-author">잇플ITPLE</p>
+                            </div>
+                        </a>
+                        <a href="" class="book-list slide">
+                            <div class="book-img" style="background-image: url(../assets/img/book3.jpg);"></div>
+                            <div class="book-info">
+                                <span class="return">반납완료</span>
+                                <p class="book-tit">정보 sw,로봇 영재원 대비 문제집</p>
+                                <p class="book-author">잇플ITPLE</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="sec sec4">
+                <div class="sec-in">
+                    <div class="set-tit">
+                        <a href="">포트폴리오</a>
+                    </div>
+                    <ul class="po-tab">
+                        <li class="active">전체</li>
+                        <li>잇플코딩A</li>
+                        <li>잇플코딩B</li>
+                        <li>잇플코딩C</li>
+                        <li>잇플코딩D</li>
+                    </ul>
+                    <div class="port-wrap">
+                        <div class="po-slide po-con active">
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio2.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="po-slide po-con">
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="po-slide po-con">
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio2.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="po-slide po-con">
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio2.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="po-slide po-con">
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio1.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio2.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio3.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <div class="po-bg" style="background-image: url(../assets/img/portfolio4.jpg);">
+                                    <div class="s-portfolio">
+                                        <p class="po-tit">톨스토이의 &lt;사람은 무엇으로 사는가&gt; 독후감상문</p>
+                                        <p class="po-info"><span>잇플코딩 A반</span>ㅣ<span>김잇플</span></p>
+                                        <a href="" class="read-more">자세히보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sec sec5">
+                <div class="sec-in flex-sec">
+                    <div class="set-tit">
+                        <a href="sub/notice.html">공지사항</a>
+                        <p>잇플 학원의 공지사항 페이지입니다.</p>
+                    </div>
+                    <div class="notice-wrap">
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <div class="notice-date">
+                                        <p class="date">14</p>
+                                        <p class="year">2022.04</p>
+                                    </div>
+                                    <p>2022년 잇플학원 공지사항입니다.</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <div class="notice-date">
+                                        <p class="date">14</p>
+                                        <p class="year">2022.04</p>
+                                    </div>
+                                    <p>2022년 잇플학원 공지사항입니다.</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <div class="notice-date">
+                                        <p class="date">14</p>
+                                        <p class="year">2022.04</p>
+                                    </div>
+                                    <p>2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.2022년 잇플학원 공지사항입니다.</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <div class="notice-date">
+                                        <p class="date">14</p>
+                                        <p class="year">2022.04</p>
+                                    </div>
+                                    <p>2022년 잇플학원 공지사항입니다.</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pop-up on">
+        <div class="popBg"></div>
+        <div class="popContent">
+            <div class="popBody">
+                <div class="popin">
+                    공지사항
+                    <img src="../assets/img/book1.jpg" alt="">
+                </div>
+                <div class="popBtnWrap">
+                    <button type="button" class="popBtn-non">다시 안 보기</button>
+                    <button type="button" class="popBtn popOff">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-in clearfix">
+            <div class="f-info">
+                <div class="foot-logo"></div>
+                <div class="info-m">
+                    <p>사업자등록번호 : 366-86-01368 ㅣ 대표 : 정지숙</p>
+                    <p>주소 : 서울특별시 동대문구 답십리로 264, 201호, 303호(장안동, 성신빌딩)</p>
+                    <p>이메일 : (학원) itple333@naver.com , (출판사) itpleinfo@naver.com</p>
+                </div>
+                <p class="cop-p">Copyright (c) itpleinfo.com All Rights Reserved.</p>
+            </div>
+            <div class="f-cs">
+                <p>CS CENTER</p>
+                <div>
+                    <p><span>학원</span>0502-600-4926</p>
+                    <p><span>출판사</span>0502-600-4925</p>
+                    <p><span>팩스번호</span>0502-600-4924</p>
+                </div>
+            </div>
+            <div class="f-bank">
+                <p>BANK INFO</p>
+                <div>
+                    <p><span>신한은행</span>140-012-545888</p>
+                    <p><span>국민은행</span>010937-04-005752</p>
+                    <p><span>예금주</span>㈜잇플ITPLE</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="/assets/js/common.js"></script>
+<script type="text/javascript">
     //슬라이더
     $('.main-slide').slick({
-            slidesToShow:4,
-            infinite:true,
-            speed : 100,
-            dots : false,
-            autoplay : true,
-            autoplaySpeed : 3000,
-            pauseOnHover : true,
-            arrows : true,
-            responsive: [
-                    {
-						breakpoint: 1280,
-						settings: {
+        slidesToShow:4,
+        infinite:true,
+        speed : 100,
+        dots : false,
+        autoplay : true,
+        autoplaySpeed : 3000,
+        pauseOnHover : true,
+        arrows : true,
+        responsive: [
+            {
+                breakpoint: 1280,
+                settings: {
 
-							slidesToShow:3
-						}
-					},
-					{
-						breakpoint: 768,
-						settings: {
+                    slidesToShow:3
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
 
-							slidesToShow:2
-						}
-					},
-					{
-						breakpoint: 430,
-						settings: {
-							slidesToShow:1
-						}
-					}
-				]
+                    slidesToShow:2
+                }
+            },
+            {
+                breakpoint: 430,
+                settings: {
+                    slidesToShow:1
+                }
+            }
+        ]
     });
     $('.book-slide').slick({
-            slidesToShow:3,
-            infinite:true,
-            speed : 100,
-            dots : false,
-            autoplay : true,
-            autoplaySpeed : 3000,
-            pauseOnHover : true,
-            arrows : false,
-            responsive: [
-                {
-                    breakpoint: 430,
-                    settings: {
+        slidesToShow:3,
+        infinite:true,
+        speed : 100,
+        dots : false,
+        autoplay : true,
+        autoplaySpeed : 3000,
+        pauseOnHover : true,
+        arrows : false,
+        responsive: [
+            {
+                breakpoint: 430,
+                settings: {
 
-                        slidesToShow:2
-                    }
-                },
-            ]
+                    slidesToShow:2
+                }
+            },
+        ]
     });
     $('.po-slide').slick({
-            slidesToShow:3,
-            infinite:true,
-            speed : 100,
-            dots : false,
-            autoplay : true,
-            autoplaySpeed : 3000,
-            pauseOnHover : true,
-            arrows : true,
-            responsive: [
-                {
-                    breakpoint: 768,
-                    settings: {
+        slidesToShow:3,
+        infinite:true,
+        speed : 100,
+        dots : false,
+        autoplay : true,
+        autoplaySpeed : 3000,
+        pauseOnHover : true,
+        arrows : true,
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
 
-                        slidesToShow:2
-                    }
-                },
-                {
-                    breakpoint: 430,
-                    settings: {
-                        slidesToShow:1
-                    }
+                    slidesToShow:2
                 }
-            ]
+            },
+            {
+                breakpoint: 430,
+                settings: {
+                    slidesToShow:1
+                }
+            }
+        ]
     });
 
     $('.po-tab li').click(function(){
@@ -581,7 +596,11 @@
 
         $('.po-slide').slick('setPosition');
     });
+    $(document).on("click", ".popOff", function(){
+        // $(this).parents('.pop-up').removeClass('on');
 
-    </script>
+        $('.pop-up').removeClass('on');
+    });
+</script>
 </body>
 </html>
