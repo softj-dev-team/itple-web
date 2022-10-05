@@ -216,7 +216,7 @@ public class A4Service {
         List<A4ResourceDTO> attendanceList = query.fetch();
 
         for(A4ResourceDTO dto : attendanceList){
-            List<A4StrDTO> dayList = attendanceRepo.getAttendanceDayList(dto.getId());
+            List<A4StrDTO> dayList = attendanceRepo.getAttendanceDayList(dto.getId(), params.getYear().toString(), params.getMonth().toString());
             dto.setAttendanceList(dayList);
             BooleanBuilder where2 = new BooleanBuilder()
                     .and(qAttendance.user.id.eq(dto.getId()));

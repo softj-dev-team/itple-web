@@ -50,6 +50,9 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Long>, Queryds
             "SUBSTRING(CAST(A.created_at as VARCHAR),0,11) as attendanceDate " +
             "FROM tb_attendance_history A " +
             "JOIN tb_user B ON B.id = A.user_id " +
-            "WHERE A.user_id = :userId AND A.attendance_day IS NOT NULL", nativeQuery = true)
-    List<A4StrDTO> getAttendanceDayList(@Param(value = "userId") long userId);
+            "WHERE A.user_id = :userId AND A.attendance_day IS NOT NULL " +
+            "AND SUBSTRING(CAST(A.created_at AS VARCHAR),1,4) = :year " +
+            "AND SUBSTRING(CAST(A.created_at AS VARCHAR),6,2) = :month " +
+            "ORDER BY attendanceDate, attendanceStr", nativeQuery = true)
+    List<A4StrDTO> getAttendanceDayList(@Param(value = "userId") long userId, @Param(value = "year") String year, @Param(value = "month") String month);
 }

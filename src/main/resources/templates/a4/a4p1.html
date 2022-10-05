@@ -173,7 +173,9 @@
                 var formData = {
                     classId: $("select[name=academyClass]").val(),
                     studentStatus: $("select[name=studentStatus]").val(),
-                    userName : $("input[name=userName]").val()
+                    userName : $("input[name=userName]").val(),
+                    year : $("select[name=year]").val(),
+                    month : $("select[name=month]").val()
                 };
                 schClassId = formData.classId;
                 schStudentStatus = formData.studentStatus;
@@ -205,7 +207,13 @@
 
                        atList.forEach(el => {
                            atDays.push(el.attendanceStr);
+                           console.log("atList : "+el.attendanceStr);
                        });
+                        atOrgDays.forEach(el => {
+                            console.log("atOrgList : "+el);
+                        });
+
+
 
                        while (start < end){
                            var startMonth = (start.getMonth()+1) < 10 ? '0'+(start.getMonth()+1) : (start.getMonth()+1);
