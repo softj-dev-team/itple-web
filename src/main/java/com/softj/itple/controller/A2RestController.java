@@ -27,6 +27,13 @@ public class A2RestController {
                 .build();
     }
 
+    @PostMapping("/p1/l2")
+    public Response p1l2(SearchVO params){
+        return Response.builder()
+                .data(a2Service.getStudentTaskMemberList(params))
+                .build();
+    }
+
     //팝업
     @PostMapping("/p1/p1")
     public Response p1p1(SearchVO params){

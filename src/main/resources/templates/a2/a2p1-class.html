@@ -42,6 +42,7 @@
                     <input type="hidden" name="idList" id="idList" />
                 </form>
             </div>
+            <form id="form3" name="form3">
             <table class="adTable list2">
                 <thead class="adTable-head">
                 <tr>
@@ -58,17 +59,194 @@
                 <tr th:each="el : ${list}">
                     <td>
                         <input type="checkbox" name="seqList" th:id="|a${elStat.count}|" ><label th:for="|a${elStat.count}|"></label>
-                        <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
+                        <input type="hidden" name="idList" th:id="|id${elStat.count}|" th:value="${el.id}"/>
                     </td>
                     <td th:text="${list.pageable.offset+elStat.count}"></td>
                     <td><a th:href="|/a2/p1-detail/${el.id}?taskType=${params.taskType}|" th:text="${el.subject}">사람은 무엇으로 사는가</a></td>
-                    <td th:text="|${submitNumList.get(elStat.index)}/${notSubmitNumList.get(elStat.index)}/${completeNumList.get(elStat.index)}/${totalNumList.get(elStat.index)}|"></td>
+                    <td>
+                        <span class="tooltip" th:id="|submitTooltip${elStat.count}|"></span> /
+                        <script th:inline="javascript">
+                            var submitNum = 0;
+                            var numHtml = "";
+                            var i = 1;
+                            var SUBMIT = /*[[${T(com.softj.itple.domain.Types.TaskStatus).SUBMIT}]]*/;
+                            var totalSize = /*[[${el.studentTasks.size()}]]*/;
+                            var studentHtml = "";
+                            studentHtml += "<span class=\"tooltipTxt\">";
+                            /*[# th:each="el2 : ${el.studentTasks}" ]*/
+
+                                var status = /*[[${el2.status}]]*/;
+                                if(status == SUBMIT) {
+                                    submitNum += 1;
+                                }
+
+                                var idx = /*[[${el2Stat.count}]]*/;
+                                if(idx == totalSize) {
+                                    numHtml += submitNum;
+                                }
+
+
+                                if(status == SUBMIT) {
+                                    /*[# th:each="el3 : ${el2.student}" ]*/
+                                    studentHtml += "<p>";
+                                    /*[# th:each="el4 : ${T(com.softj.itple.domain.Types.Grade).values()}" ]*/
+                                    var grade = /*[[${el3.grade}]]*/;
+                                    var confGrade = /*[[${el4}]]*/;
+                                    if (grade == confGrade) {
+                                        var school = "[(${el3.school})]";
+                                        var gradeMsg = "[(${el4.message})]";
+                                        var userName = "[(${el3.user.userName})]";
+
+                                        studentHtml += school + "/" + gradeMsg + "/" + userName;
+                                    }
+                                    /*[/]*/
+                                    studentHtml += "</p>";
+                                    /*[/]*/
+                                }
+                                i += 1;
+                            /*[/]*/
+                            studentHtml += "</span>";
+                            $("#submitTooltip"+"[[${elStat.count}]]").html(numHtml + (studentHtml.indexOf("<p>") > -1 ? studentHtml : ""));
+                        </script>
+                        <span class="tooltip" th:id="|notSubmitTooltip${elStat.count}|"></span> /
+                        <script th:inline="javascript">
+                            var i = 1;
+                            var notSubmitNum = 0;
+                            var numHtml = "";
+                            var NOTSUBMIT = /*[[${T(com.softj.itple.domain.Types.TaskStatus).NOT_SUBMIT}]]*/;
+                            var totalSize = /*[[${el.studentTasks.size()}]]*/;
+                            var studentHtml = "";
+                            studentHtml += "<span class=\"tooltipTxt\">";
+                            /*[# th:each="el2 : ${el.studentTasks}" ]*/
+
+                            var status = /*[[${el2.status}]]*/;
+                            if(status == NOTSUBMIT) {
+                                notSubmitNum += 1;
+                            }
+
+                            var idx = /*[[${el2Stat.count}]]*/;
+                            if(idx == totalSize) {
+                                numHtml += notSubmitNum;
+                            }
+
+
+                            if(status == NOTSUBMIT) {
+
+                                /*[# th:each="el3 : ${el2.student}" ]*/
+                                studentHtml += "<p>";
+                                /*[# th:each="el4 : ${T(com.softj.itple.domain.Types.Grade).values()}" ]*/
+                                var grade = /*[[${el3.grade}]]*/;
+                                var confGrade = /*[[${el4}]]*/;
+                                if (grade == confGrade) {
+                                    var school = "[(${el3.school})]";
+                                    var gradeMsg = "[(${el4.message})]";
+                                    var userName = "[(${el3.user.userName})]";
+
+                                    studentHtml += school + "/" + gradeMsg + "/" + userName;
+                                }
+                                /*[/]*/
+                                studentHtml += "</p>";
+                                /*[/]*/
+                            }
+
+                            i += 1
+                            /*[/]*/
+                            studentHtml += "</span>";
+                            $("#notSubmitTooltip"+"[[${elStat.count}]]").html(numHtml + (studentHtml.indexOf("<p>") > -1 ? studentHtml : ""));
+                        </script>
+                        <span class="tooltip" th:id="|compTooltip${elStat.count}|"></span> /
+                        <script th:inline="javascript">
+                            var compNum = 0;
+                            var numHtml = "";
+                            var i = 1;
+                            var COMPLETE = /*[[${T(com.softj.itple.domain.Types.TaskStatus).COMPLETE}]]*/;
+                            var totalSize = /*[[${el.studentTasks.size()}]]*/;
+                            var studentHtml = "";
+                            studentHtml += "<span class=\"tooltipTxt\">";
+                            /*[# th:each="el2 : ${el.studentTasks}" ]*/
+
+                            var status = /*[[${el2.status}]]*/;
+                            if(status == COMPLETE) {
+                                compNum += 1;
+                            }
+
+                            var idx = /*[[${el2Stat.count}]]*/;
+                            if(idx == totalSize) {
+                                numHtml += compNum;
+                            }
+
+
+                            if(status == COMPLETE) {
+
+                                /*[# th:each="el3 : ${el2.student}" ]*/
+                                studentHtml += "<p>";
+                                /*[# th:each="el4 : ${T(com.softj.itple.domain.Types.Grade).values()}" ]*/
+                                var grade = /*[[${el3.grade}]]*/;
+                                var confGrade = /*[[${el4}]]*/;
+                                if (grade == confGrade) {
+                                    var school = "[(${el3.school})]";
+                                    var gradeMsg = "[(${el4.message})]";
+                                    var userName = "[(${el3.user.userName})]";
+
+                                    studentHtml += school + "/" + gradeMsg + "/" + userName;
+                                }
+                                /*[/]*/
+                                studentHtml += "</p>";
+                                /*[/]*/
+
+                            }
+
+                            i += 1;
+                            /*[/]*/
+
+                            studentHtml += "</span>";
+                            $("#compTooltip"+"[[${elStat.count}]]").html(numHtml + (studentHtml.indexOf("<p>") > -1 ? studentHtml : ""));
+                        </script>
+                        <span class="tooltip" th:id="|totalTooltip${elStat.count}|"></span>
+                        <script th:inline="javascript">
+                            var totalNum = /*[[${el.studentTasks.size()}]]*/;
+                            var numHtml = "";
+                            var i = 1;
+                            var totalSize = /*[[${el.studentTasks.size()}]]*/;
+                            var studentHtml = "<span class=\"tooltipTxt\">";
+
+                            /*[# th:each="el2 : ${el.studentTasks}" ]*/
+
+                            var idx = /*[[${el2Stat.count}]]*/;
+                            if(idx == totalSize) {
+                                numHtml += totalNum;
+                            }
+
+                            /*[# th:each="el3 : ${el2.student}" ]*/
+                            studentHtml += "<p>";
+                            var school = "[(${el3.school})]";
+                            var userName = "[(${el3.user.userName})]";
+                            var grade = /*[[${el3.grade}]]*/;
+                            var gradeMsg = "";
+                            /*[# th:each="el4 : ${T(com.softj.itple.domain.Types.Grade).values()}" ]*/
+                            var confGrade = /*[[${el4}]]*/;
+                            if (grade == confGrade) {
+                                gradeMsg = "[(${el4.message})]";
+                            }
+                            /*[/]*/
+                            studentHtml += school + "/" + gradeMsg + "/" + userName;
+                            studentHtml += "</p>";
+                            /*[/]*/
+
+                            i += 1;
+                            /*[/]*/
+                            studentHtml += "</span>";
+                            $("#totalTooltip"+"[[${elStat.count}]]").html(numHtml + (studentHtml.indexOf("<p>") > -1 ? studentHtml : ""));
+                        </script>
+
+                    </td>
                     <td th:text="| ${#temporals.format(el.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.endDate,'yyyy.MM.dd HH:mm')}|">2022.06.01 ~ 2022.06.07</td>
                     <td th:text="${el.coin}"></td>
                     <td><button type="button" class="s-btn" th:onclick="|goEdit(${el.id})|">수정</button></td>
                 </tr>
                 </tbody>
             </table>
+            </form>
         </div>
         <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
     </div>
@@ -95,6 +273,27 @@
     <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
+        $(document).ready(function(){
+
+            /*var formS3 = $('#form3');
+
+            $.post("/api/a2/p1/l2", formS3.serialize(), function (res) {
+               loading(0);
+                var data = res.data;
+                data.each(el => function(){
+                    var idList = el.idList;
+                    var numList = el.numList;
+                    var notSubmitList = el.submitList;
+                    for(var i=0; i<idList.length; i++){
+                        $("submitNum_"+idList[i]).val(numList[i]);
+                        submitList[i].each(el2 => function(){
+                            $("submitStudentList_"+idList[i]).append("<p>"+el2.student.school+"/"+el2.student.grade+"/"+el2.student.user.userName+"</p>");
+                        });
+                    }
+                });
+
+            });*/
+        });
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');
         });

@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -123,44 +124,64 @@ public class A2Service {
     }
 
 
+
+
+    public HashMap<String, List> getStudentTaskMemberList(SearchVO params){
+        HashMap<String, List> map = new HashMap<>();
+        List<Long> idList = new ArrayList<>();
+        List<Integer> numList = new ArrayList<>();
+        List<List<StudentTask>> submitStudentList = new ArrayList<>();
+        for(long taskId : params.getIdList()) {
+            params.setId(taskId);
+            int submitNum = studentTaskRepo.findByTaskIdAndStatus(params.getId(), Types.TaskStatus.SUBMIT).size();
+
+            idList.add(taskId);
+            numList.add(submitNum);
+            submitStudentList.add(getStudentTaskListSubmit(params));
+
+
+            /*getStudentTaskNotSubmit(params);
+            getStudentTaskSubmit(params);
+            getStudentTaskListSubmit(params);
+            getStudentTaskComplete(params);
+            getStudentTaskListComplete(params);
+            getStudentTaskTotal(params);
+            getStudentTaskListTotal(params);*/
+        }
+        map.put("idList", idList);
+        map.put("numList", numList);
+        map.put("submitStudentList", submitStudentList);
+        return map;
+    }
+
     public List<Integer> getStudentTaskNotSubmit(Page<Task> list){
 
         List<Integer> notSubmitList = new ArrayList<>();
 
         for(Task task : list){
-            int notSubmit = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.NOT_SUBMIT).size();
+            int notSubmit = studentTaskRepo.findByTaskIdAndStatus(task.getId(), Types.TaskStatus.NOT_SUBMIT).size();
             notSubmitList.add(notSubmit);
         }
         return notSubmitList;
     }
 
-    public List<StudentTask> getStudentTaskListNotSubmit(Page<Task> list){
-
-        List<StudentTask> notSubmitList = new ArrayList<>();
-
-        for(Task task : list){
-            notSubmitList = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.NOT_SUBMIT);
-        }
-        return notSubmitList;
+    public List<StudentTask> getStudentTaskListNotSubmit(SearchVO params){
+       List<StudentTask> notSubmitList = studentTaskRepo.findByTaskIdAndStatus(params.getId(), Types.TaskStatus.NOT_SUBMIT);
+       return notSubmitList;
     }
 
     public List<Integer> getStudentTaskSubmit(Page<Task> list){
 
         List<Integer> submitList = new ArrayList<>();
         for(Task task : list){
-            int submit = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.SUBMIT).size();
+            int submit = studentTaskRepo.findByTaskIdAndStatus(task.getId(), Types.TaskStatus.SUBMIT).size();
             submitList.add(submit);
         }
         return submitList;
     }
 
-    public List<StudentTask> getStudentTaskListSubmit(Page<Task> list){
-
-        List<StudentTask> submitList = new ArrayList<>();
-
-        for(Task task : list){
-            submitList = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.SUBMIT);
-        }
+    public List<StudentTask> getStudentTaskListSubmit(SearchVO params){
+        List<StudentTask> submitList = studentTaskRepo.findByTaskIdAndStatus(params.getId(), Types.TaskStatus.SUBMIT);
         return submitList;
     }
 
@@ -168,19 +189,20 @@ public class A2Service {
 
         List<Integer> completeList = new ArrayList<>();
         for(Task task : list){
-            int complete = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.COMPLETE).size();
+            int complete = studentTaskRepo.findByTaskIdAndStatus(task.getId(), Types.TaskStatus.COMPLETE).size();
             completeList.add(complete);
         }
 
         return completeList;
     }
 
-    public List<StudentTask> getStudentTaskListComplete(Page<Task> list){
+    public List<List<StudentTask>> getStudentTaskListComplete(Page<Task> list){
 
-        List<StudentTask> completeList = new ArrayList<>();
+        List<List<StudentTask>> completeList = new ArrayList<>();
 
         for(Task task : list){
-            completeList = studentTaskRepo.findByTaskAndStatus(task, Types.TaskStatus.COMPLETE);
+            List<StudentTask> completeTaskList = studentTaskRepo.findByTaskIdAndStatus(task.getId(), Types.TaskStatus.COMPLETE);
+            completeList.add(completeTaskList);
         }
         return completeList;
     }
@@ -196,12 +218,13 @@ public class A2Service {
         return totalList;
     }
 
-    public List<StudentTask> getStudentTaskListTotal(Page<Task> list){
+    public List<List<StudentTask>> getStudentTaskListTotal(Page<Task> list){
 
-        List<StudentTask> totalList = new ArrayList<>();
+        List<List<StudentTask>> totalList = new ArrayList<>();
 
         for(Task task : list){
-            totalList = studentTaskRepo.findByTask(task);
+            List<StudentTask> totalTaskList = studentTaskRepo.findByTask(task);
+            totalList.add(totalTaskList);
         }
         return totalList;
     }
