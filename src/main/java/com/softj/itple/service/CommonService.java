@@ -56,7 +56,7 @@ public class CommonService {
     }
 
     public List<AcademyClass> getClassList(){
-        return academyClassRepo.findAllByIsDeleted(false);
+        return academyClassRepo.getAllAcademyClassList(false);
     }
 
     public List<AcademyClass> getClassListByType(SearchVO params){

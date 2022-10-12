@@ -123,6 +123,57 @@ public class A2Service {
         return taskRepo.findAll(where, pageable);
     }
 
+    public Page<StudentTask> getTaskStudentList(SearchVO params, Pageable pageable){
+        QTask qTask = QTask.task;
+        QStudentTask qStudentTask = QStudentTask.studentTask;
+        BooleanBuilder where = new BooleanBuilder().and(qTask.isDeleted.eq(false));
+
+        if(!Objects.isNull(params.getTaskTypeList())) {
+            BooleanBuilder where2 = new BooleanBuilder();
+            for(Types.TaskType taskType : params.getTaskTypeList()) {
+                where2.or(qTask.taskType.eq(taskType));
+            }
+            where.and(where2);
+        }
+
+        if(!Objects.isNull(params.getStatus())) {
+            where.and(qStudentTask.status.eq(params.getStatus()));
+        }
+
+        if(StringUtils.noneEmpty(params.getSubject())){
+            where.and(qTask.subject.contains(params.getSubject()));
+        }
+
+        if(LongUtils.noneEmpty(params.getClassId())) {
+            params.setId(params.getClassId());
+            AcademyClass academyClass = getClass(params);
+            where.and(qTask.academyClass.eq(academyClass));
+        }
+
+        if(StringUtils.noneEmpty(params.getUserName())){
+            where.and(qStudentTask.student.user.userName.contains(params.getUserName()));
+        }
+
+        if(StringUtils.noneEmpty(params.getAttendanceNo())){
+            where.and(qStudentTask.student.attendanceNo.contains(params.getAttendanceNo()));
+        }
+
+        JPAQuery<StudentTask> query = jpaQueryFactory.select(Projections.fields(StudentTask.class,
+                        qStudentTask.id,
+                        qStudentTask.status,
+                        qStudentTask.student,
+                        qTask
+                ))
+                .from(qTask)
+                .leftJoin(qStudentTask).on(qStudentTask.task.eq(qTask))
+                .where(where)
+                .orderBy(qTask.id.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
+
+        return new PageImpl<StudentTask>(query.fetch(), pageable, query.fetchCount());
+    }
+
 
 
 

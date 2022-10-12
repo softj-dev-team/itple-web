@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>수업연계</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="adContent">
+        <h1 class="adH1">수업연계</h1>
+        <div class="tab clearfix adTab">
+            <ul class="tab-ul">
+                <li><a href="/a2/p1">과제</a></li>
+                <li><a href="/a2/p1?taskType=BOOK_REPORT">독후감</a></li>
+                <li class="active"><a href="/a2/p2">통합검색</a></li>
+            </ul>
+        </div>
+        <div class="content-in clearfix">
+            <div class="responsiveInner">
+                <div class="detailsBox inputSec clearfix">
+                    <form id="form1">
+                        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                        <input type="checkbox" name="taskTypeList" id="chkTask1" th:each="el : ${params.taskTypeList}" th:if="${params.taskTypeList != null && #strings.equals(el,T(com.softj.itple.domain.Types.TaskType).TASK)}" th:checked="${#strings.equals(el,T(com.softj.itple.domain.Types.TaskType).TASK)}" th:value="${T(com.softj.itple.domain.Types.TaskType).TASK}" >
+                        <label th:if="${params.taskTypeList != null}"  for="chkTask1" class="mb5">과제</label>
+                        <input type="checkbox" name="taskTypeList" id="chkTask2" th:if="${params.taskTypeList == null}" th:value="${T(com.softj.itple.domain.Types.TaskType).TASK}" >
+                        <label th:if="${params.taskTypeList == null}"  for="chkTask2" class="mb5">과제</label>
+                        <input type="checkbox" name="taskTypeList" id="chkBookReport1" th:each="el : ${params.taskTypeList}" th:if="${params.taskTypeList != null && #strings.equals(el,T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT)}" th:checked="${#strings.equals(el,T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT)}" th:value="${T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT}" >
+                        <label th:if="${params.taskTypeList != null}" for="chkBookReport1" class="mb5">독후감</label>
+                        <input type="checkbox" name="taskTypeList" id="chkBookReport2" th:if="${params.taskTypeList == null}" th:value="${T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT}" >
+                        <label th:if="${params.taskTypeList == null}" for="chkBookReport2" class="mb5">독후감</label>
+                        <div>
+                        <label for="subject" class="mb5" >제목</label>
+                        <input type="text" name="subject" id="subject" class="input-df mb20" th:value="${params.subject}"/>
+                        <label for="classId" class="mb5" >학생반</label>
+                            <select name="classId" id="classId" class="select-md">
+                                <option value="" th:selected="${params.academyClass == null}">전체</option>
+                                <option th:each="el : ${classList}" th:value="${el.id}" th:text="${el.className}" th:selected="${el.id == params.classId}">전체</option>
+                            </select>
+                        </div>
+                        <label for="status" class="mb5" >상태</label>
+                        <select name="status" id="status" class="select-md">
+                            <option value="" th:selected="${params.status == null}">전체</option>
+                            <option th:each="el : ${T(com.softj.itple.domain.Types.TaskStatus).values()}" th:value="${el}" th:text="${el.message}" th:selected="${el == params.status}">전체</option>
+                        </select>
+                         </div>
+                        <label for="userName" class="mb5">학생이름</label>
+                        <input type="text" name="userName" id="userName" class="input-df mb20" th:value="${params.userName}"/>
+                        <label for="attendanceNo" class="mb5">출결번호</label>
+                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df mb20" th:value="${params.attendanceNo}"/>
+
+                        <div style="text-align:center">
+                            <a href="javascript:goSearch();" class="aBtn">검색</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="subTit">
+                <p class="className">통합검색</p>
+            </div>
+
+            <form id="form3" name="form3">
+                <table class="adTable list9">
+                    <thead class="adTable-head">
+                    <tr>
+                        <th>No</th>
+                        <th>제목</th>
+                        <th>기간</th>
+                        <th>학생</th>
+                        <th>출결번호</th>
+                        <th>상태</th>
+                        <th>포인트</th>
+                    </tr>
+                    </thead>
+                    <tbody class="adTable-body adTbody checklist">
+                    <tr th:each="el : ${list}">
+                        <td th:text="${list.pageable.offset+elStat.count}"></td>
+                        <td><a th:href="|/a2/p1-detail/${el.task.id}?taskType=${el.task.taskType}|" th:text="${el.task.subject}">사람은 무엇으로 사는가</a></td>
+                        <td th:text="| ${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd HH:mm')}|">2022.06.01 ~ 2022.06.07</td>
+                        <td th:text="${el.student.user.userName}">홍길동</td>
+                        <td th:text="${el.student.attendanceNo}">8888</td>
+                        <td th:switch="${#strings.toString(el.status)}">
+                            <button th:case="NOT_SUBMIT" type="button" class="s-btn reportBtn s-btnDsb" disabled="disabled" style="cursor:default">미제출</button>
+                            <button th:case="SUBMIT" type="button" class="btn btn-yellow" style="cursor:default">제출</button>
+                            <button th:case="COMPLETE" type="button" class="s-btn reportBtn" style="cursor:default">확인완료</button>
+                        </td>
+                        <td th:text="${el.task.coin}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    </div>
+
+   <!-- <div class="modal" id="removeMo">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="modalText">
+                    선택 <span th:text="${#strings.equals(params.taskType,'TASK') ? '과제' : '독후감'}"></span>을(를) 정말 삭제하시겠습니까?<br>
+                    삭제한 <span th:text="${#strings.equals(params.taskType,'TASK') ? '과제' : '독후감'}"></span>은(는) 복구할 수 없습니다.
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-red modalOff" onclick="goAction('D1')">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+    <script th:src="@{/assets/js/a2/a2p2.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+    </script>
+</th:block>
+</body>
+</html>

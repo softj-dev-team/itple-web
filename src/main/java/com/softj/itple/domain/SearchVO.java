@@ -59,6 +59,7 @@ public class SearchVO {
 
 	//수업연계
 	private Types.TaskStatus status;
+	private List<Types.TaskType> taskTypeList;
 	private Types.TaskType taskType;
 	private AcademyClass academyClass;
 	private Task task;

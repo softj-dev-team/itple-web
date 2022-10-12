@@ -3900,6 +3900,15 @@ textarea.textA{
 .adTable.list8 tr th:nth-child(3){width: 35%;}
 .adTable.list8 tr th:nth-child(4){width: 35%;}
 
+.adTable.list9{text-align: center;}
+.adTable.list9 tr th:nth-child(1){width: 10%;}
+.adTable.list9 tr th:nth-child(2){width: auto;}
+.adTable.list9 tr th:nth-child(3){width: 20%;}
+.adTable.list9 tr th:nth-child(4){width: 10%;}
+.adTable.list9 tr th:nth-child(5){width: 10%;}
+.adTable.list9 tr th:nth-child(6){width: 10%;}
+.adTable.list9 tr th:nth-child(7){width: 10%;}
+
 /*툴팁*/
 .tooltip {
     display: inline-block;

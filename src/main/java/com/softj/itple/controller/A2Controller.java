@@ -103,4 +103,13 @@ public class A2Controller {
 
         return "a2/a2p1-write";
     }
+
+    //반 과제
+    @GetMapping("/p2")
+    public String p2(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+        model.addAttribute("classList", commonService.getClassList());
+        model.addAttribute("list",a2Service.getTaskStudentList(params, pageable));
+        model.addAttribute("params",params);
+        return "a2/a2p2";
+    }
 }

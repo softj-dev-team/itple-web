@@ -70,7 +70,7 @@ public class Types {
     public enum TaskStatus implements Code<String> {
         NOT_SUBMIT("01", "미제출/다시제출"),
         SUBMIT("02", "제출"),
-        COMPLETE("03", "확인"),
+        COMPLETE("03", "확인완료"),
         ;
         private String code;
         private String message;
