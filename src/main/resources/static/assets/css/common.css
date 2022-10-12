@@ -3942,3 +3942,43 @@ textarea.textA{
 .tooltip:hover .tooltipTxt p {
     margin-bottom: 3px;
 }
+.formWrap{
+    display: flex;
+    margin-bottom: 20px;
+}
+.formLeft{
+    width: 45%;
+    margin-right: 16px;
+}
+.formRight{
+    width: 55%;
+}
+/* .formWrap tr:nth-child(1){
+    border-bottom: 1px solid #f1f1f1;
+} */
+.formWrap tr td {
+    padding: 5px 15px;
+}
+.formWrap .formTit{
+    width: 100px;
+    font-weight:700;
+    background: #f1f1f1;
+}
+.formWrap .chTd{
+    width: 200px;
+}
+.formWrap .chTd label{
+    width: auto;
+    padding-left: 25px;
+}
+.formWrap .chTd label:nth-of-type(2){
+    margin-left: 16px;
+}
+.formWrap input{
+    height: 40px;
+}
+.formWrap select{
+    width: 100%;
+    margin-bottom: 0;
+    height: 40px;
+}

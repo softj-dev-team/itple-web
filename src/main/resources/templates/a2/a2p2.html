@@ -18,43 +18,96 @@
             </ul>
         </div>
         <div class="content-in clearfix">
-            <div class="responsiveInner">
-                <div class="detailsBox inputSec clearfix">
-                    <form id="form1">
-                        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
-                        <input type="checkbox" name="taskTypeList" id="chkTask1" th:each="el : ${params.taskTypeList}" th:if="${params.taskTypeList != null && #strings.equals(el,T(com.softj.itple.domain.Types.TaskType).TASK)}" th:checked="${#strings.equals(el,T(com.softj.itple.domain.Types.TaskType).TASK)}" th:value="${T(com.softj.itple.domain.Types.TaskType).TASK}" >
-                        <label th:if="${params.taskTypeList != null}"  for="chkTask1" class="mb5">과제</label>
-                        <input type="checkbox" name="taskTypeList" id="chkTask2" th:if="${params.taskTypeList == null}" th:value="${T(com.softj.itple.domain.Types.TaskType).TASK}" >
-                        <label th:if="${params.taskTypeList == null}"  for="chkTask2" class="mb5">과제</label>
-                        <input type="checkbox" name="taskTypeList" id="chkBookReport1" th:each="el : ${params.taskTypeList}" th:if="${params.taskTypeList != null && #strings.equals(el,T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT)}" th:checked="${#strings.equals(el,T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT)}" th:value="${T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT}" >
-                        <label th:if="${params.taskTypeList != null}" for="chkBookReport1" class="mb5">독후감</label>
-                        <input type="checkbox" name="taskTypeList" id="chkBookReport2" th:if="${params.taskTypeList == null}" th:value="${T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT}" >
-                        <label th:if="${params.taskTypeList == null}" for="chkBookReport2" class="mb5">독후감</label>
-                        <div>
-                        <label for="subject" class="mb5" >제목</label>
-                        <input type="text" name="subject" id="subject" class="input-df mb20" th:value="${params.subject}"/>
-                        <label for="classId" class="mb5" >학생반</label>
-                            <select name="classId" id="classId" class="select-md">
-                                <option value="" th:selected="${params.academyClass == null}">전체</option>
-                                <option th:each="el : ${classList}" th:value="${el.id}" th:text="${el.className}" th:selected="${el.id == params.classId}">전체</option>
-                            </select>
-                        </div>
-                        <label for="status" class="mb5" >상태</label>
-                        <select name="status" id="status" class="select-md">
-                            <option value="" th:selected="${params.status == null}">전체</option>
-                            <option th:each="el : ${T(com.softj.itple.domain.Types.TaskStatus).values()}" th:value="${el}" th:text="${el.message}" th:selected="${el == params.status}">전체</option>
-                        </select>
-                         </div>
-                        <label for="userName" class="mb5">학생이름</label>
-                        <input type="text" name="userName" id="userName" class="input-df mb20" th:value="${params.userName}"/>
-                        <label for="attendanceNo" class="mb5">출결번호</label>
-                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df mb20" th:value="${params.attendanceNo}"/>
+<!--            <div class="responsiveInner">-->
+<!--                <div class="detailsBox inputSec clearfix">-->
+<!--                    <form id="form1">-->
+<!--                        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">-->
+<!--                        <input type="checkbox" name="taskTypeList" id="chkTask1" th:each="el : ${params.taskTypeList}" th:if="${params.taskTypeList != null && #strings.equals(el,T(com.softj.itple.domain.Types.TaskType).TASK)}" th:checked="${#strings.equals(el,T(com.softj.itple.domain.Types.TaskType).TASK)}" th:value="${T(com.softj.itple.domain.Types.TaskType).TASK}" >-->
+<!--                        <label th:if="${params.taskTypeList != null}"  for="chkTask1" class="mb5">과제</label>-->
+<!--                        <input type="checkbox" name="taskTypeList" id="chkTask2" th:if="${params.taskTypeList == null}" th:value="${T(com.softj.itple.domain.Types.TaskType).TASK}" >-->
+<!--                        <label th:if="${params.taskTypeList == null}"  for="chkTask2" class="mb5">과제</label>-->
+<!--                        <input type="checkbox" name="taskTypeList" id="chkBookReport1" th:each="el : ${params.taskTypeList}" th:if="${params.taskTypeList != null && #strings.equals(el,T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT)}" th:checked="${#strings.equals(el,T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT)}" th:value="${T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT}" >-->
+<!--                        <label th:if="${params.taskTypeList != null}" for="chkBookReport1" class="mb5">독후감</label>-->
+<!--                        <input type="checkbox" name="taskTypeList" id="chkBookReport2" th:if="${params.taskTypeList == null}" th:value="${T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT}" >-->
+<!--                        <label th:if="${params.taskTypeList == null}" for="chkBookReport2" class="mb5">독후감</label>-->
+<!--                        <div>-->
+<!--                        <label for="subject" class="mb5" >제목</label>-->
+<!--                        <input type="text" name="subject" id="subject" class="input-df mb20" th:value="${params.subject}"/>-->
+<!--                        <label for="classId" class="mb5" >학생반</label>-->
+<!--                            <select name="classId" id="classId" class="select-md">-->
+<!--                                <option value="" th:selected="${params.academyClass == null}">전체</option>-->
+<!--                                <option th:each="el : ${classList}" th:value="${el.id}" th:text="${el.className}" th:selected="${el.id == params.classId}">전체</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <label for="status" class="mb5" >상태</label>-->
+<!--                        <select name="status" id="status" class="select-md">-->
+<!--                            <option value="" th:selected="${params.status == null}">전체</option>-->
+<!--                            <option th:each="el : ${T(com.softj.itple.domain.Types.TaskStatus).values()}" th:value="${el}" th:text="${el.message}" th:selected="${el == params.status}">전체</option>-->
+<!--                        </select>-->
+<!--                         </div>-->
+<!--                        <label for="userName" class="mb5">학생이름</label>-->
+<!--                        <input type="text" name="userName" id="userName" class="input-df mb20" th:value="${params.userName}"/>-->
+<!--                        <label for="attendanceNo" class="mb5">출결번호</label>-->
+<!--                        <input type="text" name="attendanceNo" id="attendanceNo" class="input-df mb20" th:value="${params.attendanceNo}"/>-->
 
-                        <div style="text-align:center">
-                            <a href="javascript:goSearch();" class="aBtn">검색</a>
-                        </div>
-                    </form>
-                </div>
+<!--                        <div style="text-align:center">-->
+<!--                            <a href="javascript:goSearch();" class="aBtn">검색</a>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="clearfix">
+                <form id="form1">
+                    <div class="formWrap">
+                        <table class="formLeft">
+                            <tbody>
+                            <tr>
+                                <td class="formTit"><label for="subject" class="" >제목</label></td>
+                                <td colspan="3"><input type="text" name="subject" id="subject" class="input-df" th:value="${params.subject}"/></td>
+                            </tr>
+                            <tr>
+                                <td class="formTit"><label for="userName" class="">학생이름</label></td>
+                                <td><input type="text" name="userName" id="userName" class="input-df" th:value="${params.userName}"/></td>
+                                <td class="formTit"><label for="attendanceNo" class="">출결번호</label></td>
+                                <td><input type="text" name="attendanceNo" id="attendanceNo" class="input-df" th:value="${params.attendanceNo}"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="formRight">
+                            <tbody>
+                            <tr>
+                                <td class="formTit"><label for="" class="">유형</label></td>
+                                <td class="chTd">
+                                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                                    <input type="checkbox" name="taskTypeList" id="chkTask1" th:each="el : ${params.taskTypeList}" th:if="${params.taskTypeList != null && #strings.equals(el,T(com.softj.itple.domain.Types.TaskType).TASK)}" th:checked="${#strings.equals(el,T(com.softj.itple.domain.Types.TaskType).TASK)}" th:value="${T(com.softj.itple.domain.Types.TaskType).TASK}" >
+                                    <label th:if="${params.taskTypeList != null}"  for="chkTask1" class="">과제</label>
+                                    <input type="checkbox" name="taskTypeList" id="chkBookReport1" th:each="el : ${params.taskTypeList}" th:if="${params.taskTypeList != null && #strings.equals(el,T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT)}" th:checked="${#strings.equals(el,T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT)}" th:value="${T(com.softj.itple.domain.Types.TaskType).BOOK_REPORT}" >
+                                    <label th:if="${params.taskTypeList != null}" for="chkBookReport1" class="">독후감</label>
+                                </td>
+                                <td class="formTit"><label for="status" class="" >상태</label></td>
+                                <td>
+                                    <select name="status" id="status" class="select-md">
+                                        <option value="" th:selected="${params.status == null}">전체</option>
+                                        <option th:each="el : ${T(com.softj.itple.domain.Types.TaskStatus).values()}" th:value="${el}" th:text="${el.message}" th:selected="${el == params.status}">전체</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="formTit"> <label for="classId" class="" >학생반</label></td>
+                                <td colspan="3">
+                                    <select name="classId" id="classId" class="select-md">
+                                        <option value="" th:selected="${params.academyClass == null}">전체</option>
+                                        <option th:each="el : ${classList}" th:value="${el.id}" th:text="${el.className}" th:selected="${el.id == params.classId}">전체</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="text-align:right;margin-right: 15px;">
+                        <a href="javascript:goSearch();" class="aBtn">검색</a>
+                    </div>
+                </form>
             </div>
             <div class="subTit">
                 <p class="className">통합검색</p>
