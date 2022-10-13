@@ -17,6 +17,7 @@ import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
 import com.softj.itple.util.AligoUtil;
 import com.softj.itple.util.AuthUtil;
+import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -200,9 +201,10 @@ public class A4Service {
         QAttendance qAttendance = QAttendance.attendance;
 
         BooleanBuilder where = new BooleanBuilder()
-                .and(qUser.student.academyClass.eq(AcademyClass.builder().id(params.getClassId()).build()))
                 .and(qUser.student.studentStatus.eq(params.getStudentStatus()));
-
+        if(LongUtils.noneEmpty(params.getClassId())){
+            where.and(qUser.student.academyClass.eq(AcademyClass.builder().id(params.getClassId()).build()));
+        }
         if(StringUtils.noneEmpty(params.getUserName())){
             where.and(qUser.userName.contains(params.getUserName()));
         }

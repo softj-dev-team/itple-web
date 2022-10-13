@@ -35,6 +35,7 @@
                 <form onsubmit="return false;" class="adSearch-in" id="form1">
                     <div class="in-box">
                         <select name="academyClass" class="input-df mb20">
+                            <option value="">전체</option>
                             <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.className, params.academyClass)}">잇플코딩입문반</option>
                         </select>
                         <select name="studentStatus" class="input-df mb20">
