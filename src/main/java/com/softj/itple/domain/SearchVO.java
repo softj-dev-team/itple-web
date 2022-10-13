@@ -98,6 +98,7 @@ public class SearchVO {
 	private Long price;
 	private String memo;
 	private String approved;
+	private String edOrder;
 
 	//관리자-출결
 	private String attendanceNo;

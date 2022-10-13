@@ -84,6 +84,5 @@ public class Student extends Auditing{
         this.totalCost = totalCost;
         this.payCost = payCost;
         this.telNo = telNo;
-
     }
 }

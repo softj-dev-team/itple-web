@@ -68,45 +68,12 @@ public class A3Service {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
     public Page<Student> getStudentList(SearchVO params, Pageable pageable){
-        QStudent qStudent = QStudent.student;
-        BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false));
 
-        if(!ObjectUtils.isEmpty(params.getStudentStatus())){
-            where.and(qStudent.studentStatus.eq(params.getStudentStatus()));
-        }
+        int studentListTotal = studentRepo.getStudentListTotal(params.getStudentStatus() != null ? params.getStudentStatus().getCode() : null, params.getAcademyType() != null ? params.getAcademyType().getCode() : null, params.getGrade() != null ? params.getGrade().getCode() : null, params.getSearchType(), params.getSearchValue());
 
-        if(!ObjectUtils.isEmpty(params.getAcademyType())){
-            where.and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
-        }else {
-            if (ObjectUtils.isEmpty(params.getStudentStatus()))
-                where.and(qStudent.academyClass.isNull());
-            else
-                where.and(qStudent.academyClass.isNotNull());
-        }
+        List<Student> studentList = studentRepo.getStudentList(params.getStudentStatus() != null ? params.getStudentStatus().getCode() : null, params.getAcademyType() != null ? params.getAcademyType().getCode() : null, params.getGrade() != null ? params.getGrade().getCode() : null, params.getEdOrder() != null ? params.getEdOrder() : "asc", params.getSearchType(), params.getSearchValue(), pageable);
 
-        if(StringUtils.noneEmpty(params.getSearchValue())){
-            switch (params.getSearchType()){
-                case "userName":
-                    where.and(qStudent.user.userName.contains(params.getSearchValue()));
-                    break;
-                case "className":
-                    where.and(qStudent.academyClass.className.contains(params.getSearchValue()));
-                    break;
-                case "school":
-                    where.and(qStudent.school.contains(params.getSearchValue()));
-                    break;
-                case "parentName":
-                    where.and(qStudent.parentName.contains(params.getSearchValue()));
-                    break;
-               /* case "parentTel":
-                    where.and(qStudent.parentTel.contains(params.getSearchValue()));
-                    break;*/
-            }
-        }
-        if(StringUtils.noneEmpty(params.getGrade())) {
-            where.and(qStudent.grade.eq(params.getGrade()));
-        }
-        return studentRepo.findAll(where, pageable);
+        return new PageImpl<Student>(studentList, pageable, studentListTotal);
     }
 
     public Student getStudent(SearchVO params){

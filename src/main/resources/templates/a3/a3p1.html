@@ -27,6 +27,7 @@
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <input type="hidden" id="studentStatus" name="studentStatus" th:value="${params.studentStatus}">
                     <input type="hidden" id="academyType" name="academyType" th:value="${params.academyType}">
+                    <input type="hidden" id="edOrder" name="edOrder"/>
                     <div class="in-box">
                         <select name="grade" id="grade">
                             <option value="">전체</option>
@@ -64,7 +65,7 @@
                     <th>반</th>
                     <th>보호자 성함</th>
                     <th>보호자 연락처</th>
-                    <th>입학일</th>
+                    <th>입학일<button type="button" id="btnEdAsc" onclick="goOrder('asc')">∧</button> <button type="button" id="btnEdDesc" onclick="goOrder('desc')">∨</button></th>
                     <th>포인트</th>
                 </tr>
                 </thead>
@@ -111,6 +112,15 @@
     <script th:src="@{/assets/js/a3/a3p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
+        function goOrder(order){
+            if(order == "asc") {
+                $("#edOrder").val("asc");
+            }else {
+                $("#edOrder").val("desc");
+            }
+            goSearch();
+        }
+
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');
         });
