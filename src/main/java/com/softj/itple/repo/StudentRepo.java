@@ -49,15 +49,19 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       ELSE '01' END " +
             "       AND CASE WHEN CAST(:grade AS TEXT) IS NOT NULL THEN A.grade = CAST(:grade AS TEXT) " +
             "       ELSE A.grade IS NOT NULL END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL AND CAST(:classId AS TEXT) IS NOT NULL THEN  B.id = CAST(COALESCE(CAST(:classId AS TEXT), '0') AS INTEGER) " +
+            "       ELSE 1=1 END " +
             "       AND C.user_name LIKE CASE WHEN CAST(:searchType AS TEXT) = 'userName' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
-            "       ELSE '%' END " +
-            "       AND B.class_name LIKE CASE WHEN CAST(:searchType AS TEXT) = 'className' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE '%' END " +
             "       AND A.school LIKE CASE WHEN CAST(:searchType AS TEXT) = 'school' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE '%' END " +
             "       AND A.parent_name LIKE CASE WHEN CAST(:searchType AS TEXT) = 'parentName' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
+            "       ELSE '%' END " +
+            "       AND A.parent_tel LIKE CASE WHEN CAST(:searchType AS TEXT) = 'parentTel' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
+            "       ELSE '%' END " +
+            "       AND A.attendance_no LIKE CASE WHEN CAST(:searchType AS TEXT) = 'attendanceNo' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE '%' END ", nativeQuery = true)
-    int getStudentListTotal(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("searchType")String searchType, @Param("searchValue")String searchValue);
+    int getStudentListTotal(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("searchType")String searchType, @Param("searchValue")String searchValue);
 
     @Query(value = "SELECT A.*" +
             "       FROM " +
@@ -73,14 +77,18 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       ELSE '01' END " +
             "       AND CASE WHEN CAST(:grade AS TEXT) IS NOT NULL THEN A.grade = CAST(:grade AS TEXT) " +
             "       ELSE A.grade IS NOT NULL END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL AND CAST(:classId AS TEXT) IS NOT NULL THEN  B.id = CAST(COALESCE(CAST(:classId AS TEXT), '0') AS INTEGER)" +
+            "       ELSE 1=1 END " +
             "       AND C.user_name LIKE CASE WHEN CAST(:searchType AS TEXT) = 'userName' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE '%' END " +
-            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL AND CAST(:searchType AS TEXT) = 'className' THEN  B.class_name LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
-            "       ELSE 1=1 END " +
             "       AND A.school LIKE CASE WHEN CAST(:searchType AS TEXT) = 'school' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE '%' END " +
             "       AND A.parent_name LIKE CASE WHEN CAST(:searchType AS TEXT) = 'parentName' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE '%' END " +
+            "       AND A.parent_tel LIKE CASE WHEN CAST(:searchType AS TEXT) = 'parentTel' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
+            "       ELSE '%' END " +
+            "       AND A.attendance_no LIKE CASE WHEN CAST(:searchType AS TEXT) = 'attendanceNo' THEN  '%'||CAST(:searchValue AS TEXT)||'%' " +
+            "       ELSE '%' END " +
             "       ORDER BY CASE WHEN :edOrder = 'asc' THEN A.enter_date end asc, CASE WHEN :edOrder = 'desc' THEN A.enter_date end desc, C.user_name collate \"ko_KR.utf8\" asc", nativeQuery = true)
-    List<Student> getStudentList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue, Pageable pageable);
+    List<Student> getStudentList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue, Pageable pageable);
 }

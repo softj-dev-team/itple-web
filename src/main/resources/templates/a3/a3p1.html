@@ -29,19 +29,29 @@
                     <input type="hidden" id="academyType" name="academyType" th:value="${params.academyType}">
                     <input type="hidden" id="edOrder" name="edOrder"/>
                     <div class="in-box">
-                        <select name="grade" id="grade">
+                        <select name="searchCateogry" id="searchCateogry">
+                            <option value="">전체</option>
+                            <option value="classId" th:selected="${#strings.equals(params.searchCateogry,'classId')}">반</option>
+                            <option value="grade" th:selected="${#strings.equals(params.searchCateogry,'grade')}">학년</option>
+                        </select>
+                        <select name="classId" id="classId" th:style="${params.searchCateogry == 'classId' ? 'width:300px;display:inline' : 'width:300px;display:none'}">
+                            <option value="">전체</option>
+                            <option th:each="el : ${classList}" th:value="${el.id}"
+                                    th:selected="${#strings.equals(el.id, params.classId)}" th:text="${el.className}"></option>
+                        </select>
+                        <select name="grade" id="grade" th:style="${params.searchCateogry == 'grade' ? 'display:inline' : 'display:none'}">
                             <option value="">전체</option>
                             <option th:each="el : ${T(com.softj.itple.domain.Types.Grade).values()}" th:value="${el}"
                                     th:selected="${#strings.equals(el, params.grade)}" th:text="${el.message}"></option>
                         </select>
-                        <select name="searchType" id="searchType">
+                        <select name="searchType" id="searchType" th:style="${params.searchCateogry == null || params.searchCateogry == '' ? 'display:inline' : 'display:none'}">
                             <option value="userName" th:selected="${#strings.equals(param.searchType, 'userName')}">이름</option>
-                            <option value="className" th:selected="${#strings.equals(param.searchType, 'className')}">반</option>
                             <option value="school" th:selected="${#strings.equals(param.searchType, 'school')}">학교</option>
                             <option value="parentName" th:selected="${#strings.equals(param.searchType, 'parentName')}">보호자 성함</option>
-                            <!--<option value="parentTel" th:selected="${#strings.equals(param.searchType, 'parentTel')}">부모님 연락처</option>-->
+                            <option value="parentTel" th:selected="${#strings.equals(param.searchType, 'parentTel')}">보호자 연락처</option>
+                            <option value="attendanceNo" th:selected="${#strings.equals(param.searchType, 'attendanceNo')}">출결번호</option>
                         </select>
-                        <input type="text" name="searchValue" th:value="${param.searchValue}">
+                        <input type="text" name="searchValue" id="searchValue" th:style="${params.searchCateogry == null || params.searchCateogry == '' ? 'display:inline' : 'display:none'}" th:value="${param.searchValue}">
                     </div>
                     <button type="button" class="src-btn" onclick="goSearch()"></button>
                 </form>
@@ -120,6 +130,26 @@
             }
             goSearch();
         }
+
+        $("#searchCateogry").on('change', function(){
+           var searchCategory = $(this).val();
+           if(searchCategory == ""){
+               $("#searchType").css("display","inline");
+               $("#searchValue").css("display","inline");
+               $("#grade").css("display","none");
+               $("#classId").css("display","none");
+           }else if(searchCategory == "grade"){
+               $("#searchType").css("display","none");
+               $("#searchValue").css("display","none");
+               $("#grade").css("display","inline");
+               $("#classId").css("display","none");
+           }else if(searchCategory == "classId"){
+               $("#searchType").css("display","none");
+               $("#searchValue").css("display","none");
+               $("#grade").css("display","none");
+               $("#classId").css("display","inline");
+           }
+        });
 
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');

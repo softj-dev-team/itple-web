@@ -99,6 +99,7 @@ public class SearchVO {
 	private String memo;
 	private String approved;
 	private String edOrder;
+	private String searchCateogry;
 
 	//관리자-출결
 	private String attendanceNo;

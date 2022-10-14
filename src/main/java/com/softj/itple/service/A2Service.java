@@ -324,6 +324,11 @@ public class A2Service {
         find.setStatus(Types.TaskStatus.NOT_SUBMIT);
         find.setReturnMessage(params.getReturnMessage());
         studentTaskRepo.save(find);
+
+        /*String templateCode = params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "TJ_5055" : "TJ_5057";
+        String message = "[" + params.getAttendanceType().getMessage() + "학원 등하원 안내] "+student.getUser().getUserName() + " 학생이 " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH시 mm분")) + "에 "
+                + (params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "안전하게 등원하였습니다" : "수업이 종료되었습니다") + " (미소)";
+        aligoUtil.send(student.getParentTel(), message, templateCode, "[" + params.getAttendanceType().getMessage() + "학원 등하원 안내]", null);*/
     }
 
 

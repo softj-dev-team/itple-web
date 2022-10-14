@@ -69,9 +69,9 @@ public class A3Service {
 
     public Page<Student> getStudentList(SearchVO params, Pageable pageable){
 
-        int studentListTotal = studentRepo.getStudentListTotal(params.getStudentStatus() != null ? params.getStudentStatus().getCode() : null, params.getAcademyType() != null ? params.getAcademyType().getCode() : null, params.getGrade() != null ? params.getGrade().getCode() : null, params.getSearchType(), params.getSearchValue());
+        int studentListTotal = studentRepo.getStudentListTotal(params.getStudentStatus() != null ? params.getStudentStatus().getCode() : null, params.getAcademyType() != null ? params.getAcademyType().getCode() : null, params.getGrade() != null ? params.getGrade().getCode() : null, params.getClassId(), params.getSearchType(), params.getSearchValue());
 
-        List<Student> studentList = studentRepo.getStudentList(params.getStudentStatus() != null ? params.getStudentStatus().getCode() : null, params.getAcademyType() != null ? params.getAcademyType().getCode() : null, params.getGrade() != null ? params.getGrade().getCode() : null, params.getEdOrder() != null ? params.getEdOrder() : "asc", params.getSearchType(), params.getSearchValue(), pageable);
+        List<Student> studentList = studentRepo.getStudentList(params.getStudentStatus() != null ? params.getStudentStatus().getCode() : null, params.getAcademyType() != null ? params.getAcademyType().getCode() : null, params.getGrade() != null ? params.getGrade().getCode() : null, params.getClassId(), params.getEdOrder() != null ? params.getEdOrder() : "asc", params.getSearchType(), params.getSearchValue(), pageable);
 
         return new PageImpl<Student>(studentList, pageable, studentListTotal);
     }

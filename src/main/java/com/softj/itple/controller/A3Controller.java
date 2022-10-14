@@ -35,6 +35,7 @@ public class A3Controller {
             params.setStudentStatus(Types.StudentStatus.STUDENT);
         }
 
+        model.addAttribute("classList", commonService.getClassList(params));
         model.addAttribute("list",a3Service.getStudentList(params, pageable));
         model.addAttribute("params",params);
         return "a3/a3p1";
@@ -47,7 +48,7 @@ public class A3Controller {
         if(Objects.isNull(params.getStudentStatus())) {
             params.setStudentStatus(Types.StudentStatus.STUDENT);
         }
-        model.addAttribute("classList", commonService.getClassList());
+        model.addAttribute("classList", commonService.getClassList(params));
         model.addAttribute("el", a3Service.getStudent(params));
         model.addAttribute("params", params);
         return "a3/a3p1-detail";

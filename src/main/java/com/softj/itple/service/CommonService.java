@@ -1,7 +1,9 @@
 package com.softj.itple.service;
 
+import com.querydsl.core.BooleanBuilder;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.entity.AcademyClass;
+import com.softj.itple.entity.QAcademyClass;
 import com.softj.itple.entity.Student;
 import com.softj.itple.repo.*;
 import lombok.RequiredArgsConstructor;
@@ -55,8 +57,9 @@ public class CommonService {
         return result;
     }
 
-    public List<AcademyClass> getClassList(){
-        return academyClassRepo.getAllAcademyClassList(false);
+    public List<AcademyClass> getClassList(SearchVO params){
+
+        return academyClassRepo.getAllAcademyClassList(false, Objects.nonNull(params.getAcademyType()) ? params.getAcademyType().getCode() : null);
     }
 
     public List<AcademyClass> getClassListByType(SearchVO params){
