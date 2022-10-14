@@ -110,6 +110,7 @@ public class SearchVO {
 	//관리자-포트폴리오
 	private Types.VisibleStatus visibleStatus;
 	private String summary;
+	private Types.PortfolioType portfolioType;
 
 	//관리자-수납관리
 	private Long[] paymentIdList = new Long[0];

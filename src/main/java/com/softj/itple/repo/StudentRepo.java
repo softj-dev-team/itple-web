@@ -59,7 +59,7 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       ELSE '%' END ", nativeQuery = true)
     int getStudentListTotal(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("searchType")String searchType, @Param("searchValue")String searchValue);
 
-    @Query(value = "SELECT A.*, B.class_name, C.user_name" +
+    @Query(value = "SELECT A.*" +
             "       FROM " +
             "       tb_student A " +
             "       LEFT JOIN tb_class B ON B.id = A.class_id " +

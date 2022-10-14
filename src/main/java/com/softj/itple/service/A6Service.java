@@ -48,7 +48,9 @@ public class A6Service {
 
     public Page<Portfolio> getPortfolioList(SearchVO params, Pageable pageable){
         QPortfolio qPortfolio = QPortfolio.portfolio;
-        BooleanBuilder where = new BooleanBuilder().and(qPortfolio.isDeleted.eq(false).and(qPortfolio.user.student.id.eq(params.getId())));
+        BooleanBuilder where = new BooleanBuilder().and(qPortfolio.isDeleted.eq(false).and(qPortfolio.user.student.id.eq(params.getId()))
+                                .and(qPortfolio.portfolioType.eq(params.getPortfolioType())));
+
         return portfolioRepo.findAll(where, pageable);
     }
 
@@ -65,6 +67,7 @@ public class A6Service {
         save.setSubject(params.getSubject());
         save.setSummary(params.getSummary());
         save.setContents(params.getContents());
+        save.setPortfolioType(params.getPortfolioType());
         save.setUser(User.builder().id(Long.parseLong(params.getUserId())).build());
         Pattern p = Pattern.compile("src=\"([^\"]+)\".*>");
         Matcher m = p.matcher(save.getContents());

@@ -31,6 +31,27 @@
                     <a href="/c5/p1"><p class="sec-point">포인트 : <span th:text="| ${#numbers.formatInteger(session.studentVO.coin,0,'COMMA')}|">1,000</span></p></a>
                 </div>
             </div>
+            <div class="sec sec5">
+                <div class="sec-in flex-sec">
+                    <div class="set-tit">
+                        <a href="/c1/p1">공지사항</a>
+                        <p>잇플 학원의 공지사항 페이지입니다.</p>
+                    </div>
+                    <div class="notice-wrap">
+                        <ul>
+                            <li th:each="el : ${noticeList}">
+                                <a th:href="|/c1/p1-detail/${el.id}|">
+                                    <div class="notice-date">
+                                        <p class="date" th:text="${#temporals.format(el.createdAt, 'dd')}">14</p>
+                                        <p class="year" th:text="${#temporals.format(el.createdAt, 'yyyy.MM')}">2022.04</p>
+                                    </div>
+                                    <p th:text="${el.subject}">2022년 잇플학원 공지사항입니다.</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="sec sec2">
                 <div class="sec-in">
                     <div class="set-tit">
@@ -94,27 +115,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sec sec5">
-                <div class="sec-in flex-sec">
-                    <div class="set-tit">
-                        <a href="/c1/p1">공지사항</a>
-                        <p>잇플 학원의 공지사항 페이지입니다.</p>
-                    </div>
-                    <div class="notice-wrap">
-                        <ul>
-                            <li th:each="el : ${noticeList}">
-                                <a th:href="|/c1/p1-detail/${el.id}|">
-                                    <div class="notice-date">
-                                        <p class="date" th:text="${#temporals.format(el.createdAt, 'dd')}">14</p>
-                                        <p class="year" th:text="${#temporals.format(el.createdAt, 'yyyy.MM')}">2022.04</p>
-                                    </div>
-                                    <p th:text="${el.subject}">2022년 잇플학원 공지사항입니다.</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 

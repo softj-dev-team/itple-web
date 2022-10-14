@@ -39,6 +39,7 @@ public class Types {
     public enum AcademyType implements Code<String> {
         CODING("01", "잇플 코딩"),
         ENGLISH("02", "잇플 영어");
+
         private String code;
         private String message;
 
@@ -94,6 +95,23 @@ public class Types {
         public static class Converter extends AbstractEnumConverter<TaskType, String> {
             public Converter() {
                 super(TaskType.class);
+            }
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum PortfolioType implements Code<String> {
+        COMPETITION("01", "각종대회/영재원"),
+        CERTIFICATE("02", "자격증/인증서"),
+        LEARNING("03", "Learning History");
+
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<PortfolioType, String> {
+            public Converter() {
+                super(PortfolioType.class);
             }
         }
     }
@@ -169,8 +187,8 @@ public class Types {
     @AllArgsConstructor
     public enum VisibleStatus implements Code<String> {
         VISIBLE("01", "공개"),
-        INVISIBLE("02", "비공개"),
-        ;
+        INVISIBLE("02", "비공개");
+
         private String code;
         private String message;
 

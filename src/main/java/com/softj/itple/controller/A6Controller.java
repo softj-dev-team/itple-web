@@ -44,6 +44,15 @@ public class A6Controller {
     //목록
     @GetMapping("/p1-student/{id}")
     public String p1student(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 12) Pageable pageable) {
+
+        if(params.getAcademyType().equals(Types.AcademyType.CODING) && Objects.isNull(params.getPortfolioType())){
+            params.setPortfolioType(Types.PortfolioType.COMPETITION);
+        }
+
+        if(params.getAcademyType().equals(Types.AcademyType.ENGLISH) && Objects.isNull(params.getPortfolioType())){
+            params.setPortfolioType(Types.PortfolioType.LEARNING);
+        }
+
         model.addAttribute("list",a6Service.getPortfolioList(params, pageable));
         model.addAttribute("student",a3Service.getStudent(params));
         model.addAttribute("params",params);
