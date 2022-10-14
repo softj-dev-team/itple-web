@@ -65,7 +65,7 @@
                     <th>반</th>
                     <th>보호자 성함</th>
                     <th>보호자 연락처</th>
-                    <th>입학일<button type="button" id="btnEdAsc" onclick="goOrder('asc')">∧</button> <button type="button" id="btnEdDesc" onclick="goOrder('desc')">∨</button></th>
+                    <th class="ADbtn">입학일<button type="button" id="btnEdAsc" onclick="goOrder('asc')">∧</button> <button type="button" id="btnEdDesc" onclick="goOrder('desc')">∨</button></th>
                     <th>포인트</th>
                 </tr>
                 </thead>
@@ -123,6 +123,12 @@
 
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');
+        });
+        $(document).ready(function () {
+            $(".ADbtn button").click(function () {
+                $(".ADbtn button").removeClass('on');
+                $(this).addClass('on');
+            });
         });
     </script>
 </th:block>

@@ -3558,19 +3558,34 @@ input.txtRight{text-align: right;}
     width: 210px;
 }
 .adTable.list4{text-align: center;}
-.adTable.list4 tr th:nth-child(1){width: 5%;}
-.adTable.list4 tr th:nth-child(2){width: 5%;}
+.adTable.list4 tr th:nth-child(1){width: 4%;}
+.adTable.list4 tr th:nth-child(2){width: 6%;}
 .adTable.list4 tr th:nth-child(3){width: 5%;}
 .adTable.list4 tr th:nth-child(4){width: 10%;}
 .adTable.list4 tr th:nth-child(5){width: 5%;}
 .adTable.list4 tr th:nth-child(6){width: auto;}
 .adTable.list4 tr th:nth-child(7){width: 10%;}
 .adTable.list4 tr th:nth-child(8){width: 10%;}
-.adTable.list4 tr th:nth-child(9){width: 10%;}
+.adTable.list4 tr th:nth-child(9){width: 13%;}
 .adTable.list4 tr th:nth-child(10){width: 10%;}
 .list4 tbody tr {
     cursor: pointer;
 }
+.ADbtn button{
+    width: 30px;
+    height: 30px;
+    background: #cccccc;
+}
+.ADbtn button:nth-child(1){
+    border-radius: 5px 0 0 5px;
+    margin-left: 10px;
+    margin-right: -2px;
+}
+.ADbtn button:nth-child(2){
+    border-radius: 0 5px 5px 0;
+}
+.ADbtn button:nth-child(1).on{background:#4f83e1; }
+.ADbtn button:nth-child(2).on{background:#e16565; }
 .width90{
     width: 90%;
 }
