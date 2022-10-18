@@ -1,5 +1,6 @@
 package com.softj.itple.repo;
 
+import com.softj.itple.domain.A4TooltipDTO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AttendanceHistory;
 import com.softj.itple.entity.User;
@@ -20,6 +21,9 @@ public interface AttendanceHistoryRepo extends JpaRepository<AttendanceHistory, 
     AttendanceHistory findFirstByUserAndAttendanceStatusAndCreatedAtGreaterThan(@Param("user")User user, @Param("attendanceStatus") Types.AttendanceStatus attendanceStatus, @Param("createdAt") LocalDateTime createdAt);
     @Query(value = "select a.* from tb_attendance_history a where a.user_id = :userId and CAST(a.created_at AS DATE) = :createdAt limit 1", nativeQuery = true)
     AttendanceHistory findTopByUserAndCreatedAtOrderByCreatedAtDesc(@Param("userId") Long userId, @Param("createdAt") LocalDate createdAt);
+
+    @Query(value = "select a.created_at AS createdAt, a.attendance_status AS attendanceStatus, (SELECT COUNT(b.id) FROM tb_attendance_history b WHERE b.user_id = :userId AND SUBSTRING(CAST(b.created_at as TEXT), 1, 4) = SUBSTRING(CAST(:createdAt as TEXT), 1, 4) AND SUBSTRING(CAST(b.created_at as TEXT), 6, 2) = SUBSTRING(CAST(:createdAt as TEXT), 6, 2) AND b.attendance_status = '01') as totalMonth from tb_attendance_history a where a.user_id = :userId and CAST(a.created_at AS DATE) = :createdAt", nativeQuery = true)
+    List<A4TooltipDTO> findByUserAndCreatedAtOrderByCreatedAtDesc(@Param("userId") Long userId, @Param("createdAt") LocalDate createdAt);
 
     @Modifying
     @Transactional

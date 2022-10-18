@@ -168,6 +168,10 @@ public class A4Service {
         return attendanceHistoryRepo.findTopByUserAndCreatedAtOrderByCreatedAtDesc(params.getId(), params.getAttendanceDate());
     }
 
+    public List<A4TooltipDTO> getAttendanceHistoryByUserIdAndDate(SearchVO params){
+        return attendanceHistoryRepo.findByUserAndCreatedAtOrderByCreatedAtDesc(params.getId(), params.getAttendanceDate());
+    }
+
     public CoinHistory getCoinHistory(SearchVO params){
         return coinHistoryRepo.findFirstByUserOrderByIdDesc(User.builder().id(params.getId()).build());
     }

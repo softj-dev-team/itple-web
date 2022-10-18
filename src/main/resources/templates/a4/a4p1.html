@@ -103,8 +103,32 @@
                     callback(await getEvents(info));
                 },
                 eventDidMount: function(info) {
-                    tippy(info.el, {
-                        content:  info.event,
+                    var formData = {
+                        id: info.event._def.resourceIds[0],
+                        attendanceDate: info.event.start.format("yyyy-MM-dd")
+                    };
+                    console.log(formData);
+
+                    $.post("/api/a4/p1/l4", formData, function (res) {
+                        loading(0);
+                        var dataList = res.data;
+                        var comeStr = "";
+                        var leaveStr = "";
+                        var totalStr = "";
+
+                        for(var i = 0; i < dataList.length; i++){
+                            var dateTime = dataList[i].createdAt.substring(0, 19);
+
+                            if(dataList[i].attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).COME.code}]]){
+                                comeStr += "등원시간 : " + dateTime;
+                            }else if(dataList[i].attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).LEAVE.code}]]){
+                                leaveStr += "하원시간 : " + dateTime;
+                            }
+                            totalStr = dateTime.substring(5,7) + "월 출석일수 : " + dataList[i].totalMonth;
+                        }
+                        tippy(info.el, {
+                            content: comeStr + " " + leaveStr + " " + totalStr,
+                        });
                     });
                 },
                 dateClick: function(info) {
@@ -214,13 +238,7 @@
 
                         atList.forEach(el => {
                             atDays.push(el.attendanceStr);
-                            console.log("atList : "+el.attendanceStr);
                         });
-                        atOrgDays.forEach(el => {
-                            console.log("atOrgList : "+el);
-                        });
-
-
 
                         while (start < end){
                             var startMonth = (start.getMonth()+1) < 10 ? '0'+(start.getMonth()+1) : (start.getMonth()+1);
