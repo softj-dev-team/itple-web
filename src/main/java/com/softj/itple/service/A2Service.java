@@ -13,6 +13,7 @@ import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
+import com.softj.itple.util.AligoUtil;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
@@ -49,6 +50,8 @@ public class A2Service {
     private final StudentTaskRepo studentTaskRepo;
     private final StudentRepo studentRepo;
     private final CoinHistoryRepo coinHistoryRepo;
+
+    private final AligoUtil aligoUtil;
 
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -325,10 +328,11 @@ public class A2Service {
         find.setReturnMessage(params.getReturnMessage());
         studentTaskRepo.save(find);
 
-        /*String templateCode = params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "TJ_5055" : "TJ_5057";
-        String message = "[" + params.getAttendanceType().getMessage() + "학원 등하원 안내] "+student.getUser().getUserName() + " 학생이 " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH시 mm분")) + "에 "
-                + (params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "안전하게 등원하였습니다" : "수업이 종료되었습니다") + " (미소)";
-        aligoUtil.send(student.getParentTel(), message, templateCode, "[" + params.getAttendanceType().getMessage() + "학원 등하원 안내]", null);*/
+        String templateCode = "TK_3148";
+        String message = "[" + find.getTask().getAcademyClass().getAcademyType().getMessage() + "학원 "+ find.getTask().getTaskType().getMessage() +" 반려사유 안내]\n" +
+                "학생명 : "+ find.getStudent().getUser().getUserName() + "\n과제명 : " + find.getTask().getSubject() + "\n" +
+                "반려사유 : " + params.getReturnMessage();
+        aligoUtil.send(find.getStudent().getParentTel(), message, templateCode, "[" + find.getTask().getAcademyClass().getAcademyType().getMessage() + "학원 "+ find.getTask().getTaskType().getMessage() +" 반려사유 안내]", null);
     }
 
 

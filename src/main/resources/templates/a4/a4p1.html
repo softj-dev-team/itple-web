@@ -245,7 +245,7 @@
                             var startDay = start.getDate() < 10 ? '0'+start.getDate() : start.getDate();
                             var startDate = start.getFullYear()+'-'+startMonth+'-'+startDay;
 
-                            if(!atOrgDays.includes(start.getDay().toString())){// && el1.attendanceDate != startDate && el1.attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).COME.code}]]
+                            if(!atOrgDays.includes(start.getDay().toString())){
                                 if(!atDays.includes(start.getDay().toString())){
                                     start.plusDate(1);
                                     continue;
