@@ -3808,7 +3808,7 @@ textarea.textA{
     border-bottom: 1px solid #2D7AC0;
 }
 .categoryCon > div p{
-    width: calc(100% - 40px);
+    width: calc(100% - 85px);
     height: 19px;
     float: left;
     padding-right: 16px;
@@ -3839,7 +3839,7 @@ textarea.textA{
 .modiBox{
     border-radius: 5px;
     overflow: hidden;
-    width: calc(100% - 40px);
+    width: calc(100% - 85px);
     float: left;
 }
 .modiBox input {
@@ -3996,4 +3996,20 @@ textarea.textA{
     width: 100%;
     margin-bottom: 0;
     height: 40px;
+}
+.upOrder{
+    margin-left: 10px;
+    width: 19px;
+    height: 19px;
+    background: url(../img/up.png) no-repeat center / 45%;
+    border-radius: 3px 0 0 3px;
+    border: 1px solid #cccccc;
+    border-right: none;
+}
+.downOrder{
+    width: 19px;
+    height: 19px;
+    background: url(../img/down.png) no-repeat center / 45%;
+    border-radius: 0 3px 3px 0;
+    border: 1px solid #cccccc;
 }
