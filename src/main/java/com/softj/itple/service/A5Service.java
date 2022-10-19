@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +40,27 @@ public class A5Service {
         BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
                 .and(qStudent.academyClass.academyType.eq(params.getAcademyType())).and(qStudent.studentStatus.eq(Types.StudentStatus.STUDENT));
 
-        if(StringUtils.noneEmpty(params.getUserName())){
-            where.and(qStudent.user.userName.contains(params.getUserName()));
+        if(Objects.nonNull(params.getPaymentStatus())){
+            if("01".equals(params.getPaymentStatus().getCode())){
+                where.and((qPayment.isNull()).or(qPayment.status.eq(params.getPaymentStatus())));
+            }else {
+                where.and(qPayment.status.eq(params.getPaymentStatus()));
+            }
+        }
+
+        if(com.softj.itple.util.StringUtils.noneEmpty(params.getSearchValue())){
+            switch (params.getSearchType()){
+                case "userName":
+                    where.and(qStudent.user.userName.contains(params.getSearchValue()));
+                    break;
+                case "parentName":
+                    where.and(qStudent.parentName.contains(params.getSearchValue()));
+                    break;
+            }
+        }
+
+        if(Objects.nonNull(params.getSearchPaymentType())){
+            where.and(qPayment.paymentType.eq(params.getSearchPaymentType()));
         }
 
         JPAQuery<Student> query = jpaQueryFactory.select(Projections.fields(Student.class,
@@ -133,6 +153,35 @@ public class A5Service {
         save.setStatus(params.getPaymentStatus());
 
         paymentRepo.save(save);
+
+
+        int nowYear = params.getYear();
+        int nowMonth = params.getMonth();
+        for(int i=nowYear; i<nowYear+3; i++){
+            if(i == nowYear){
+                for(int j=(nowMonth+1); j<13; j++){
+                    Payment memoSave = paymentRepo.findByStudentAndYearAndMonth(student, i, j).orElse(Payment.builder().build());
+                    memoSave.setStudent(student);
+                    memoSave.setYear(i);
+                    memoSave.setMonth(j);
+                    memoSave.setMemo(params.getMemo());
+                    memoSave.setPaymentType(params.getPaymentType());
+                    memoSave.setStatus(Types.PaymentStatus.NONE);
+                    paymentRepo.save(memoSave);
+                }
+            }else{
+                for(int j=1; j<13; j++){
+                    Payment memoSave = paymentRepo.findByStudentAndYearAndMonth(student, i, j).orElse(Payment.builder().build());
+                    memoSave.setStudent(student);
+                    memoSave.setYear(i);
+                    memoSave.setMonth(j);
+                    memoSave.setMemo(params.getMemo());
+                    memoSave.setPaymentType(params.getPaymentType());
+                    memoSave.setStatus(Types.PaymentStatus.NONE);
+                    paymentRepo.save(memoSave);
+                }
+            }
+        }
     }
 
     @Transactional

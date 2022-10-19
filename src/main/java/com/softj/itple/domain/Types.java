@@ -237,7 +237,11 @@ public class Types {
     public enum PaymentType implements Code<String> {
         CARD("01", "카드"),
         CASH("02", "현금"),
-        ACCOUNT("03", "계좌");
+        APP("04", "결제앱"),
+        PAY("05", "서울페이"),
+        ACCOUNT("03", "계좌이체"),
+        BEFORE("06", "선납결제"),
+        REGULAR("07", "정기결제");
 
         private String code;
         private String message;
@@ -258,9 +262,9 @@ public class Types {
         private String code;
         private String message;
 
-        public static class Converter extends AbstractEnumConverter<PaymentType, String> {
+        public static class Converter extends AbstractEnumConverter<PaymentStatus, String> {
             public Converter() {
-                super(PaymentType.class);
+                super(PaymentStatus.class);
             }
         }
     }

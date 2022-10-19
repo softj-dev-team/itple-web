@@ -30,7 +30,9 @@ public class Payment extends Auditing{
     private String memo;
     private Integer year;
     private Integer month;
+    @Convert(converter = Types.PaymentStatus.Converter.class)
     private Types.PaymentStatus status;
+
 
 
     @Builder

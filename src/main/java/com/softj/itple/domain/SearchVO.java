@@ -123,6 +123,7 @@ public class SearchVO {
 	private List<AcademyClass> academyClassList;
 	private Types.AcademyType academyClassType;
 	private Types.PaymentType paymentType;
+	private Types.PaymentType searchPaymentType;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate paymentDate;
 	private Types.AcademyType academyType;

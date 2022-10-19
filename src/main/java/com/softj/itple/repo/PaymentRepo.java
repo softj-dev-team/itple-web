@@ -13,4 +13,7 @@ public interface PaymentRepo extends JpaRepository<Payment, Long>, QuerydslPredi
     Optional<Payment> findById(long id);
 
     List<Payment> findByStudent(Student student);
+
+    Optional<Payment> findByStudentAndYearAndMonth(Student student, int year, int month);
 }
+
