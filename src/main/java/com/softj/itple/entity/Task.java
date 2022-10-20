@@ -35,6 +35,11 @@ public class Task extends Auditing{
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<StudentTask> studentTasks;
+
+    @OneToMany(mappedBy = "task",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private List<TaskFile> taskFileList;
+
     @Builder
     public Task(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, AcademyClass academyClass, Types.TaskType taskType, String subject, String teacher, LocalDate startDate, LocalDate endDate, String contents, long coin) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
