@@ -53,7 +53,7 @@ DOCTYPE html>
                     <td th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd HH:mm')}|">22.03.24 ~ 22.03.27</td>
                     <td>
                         <th:block th:switch="${#strings.toString(el.status)}">
-                            <button th:case="NOT_SUBMIT" type="button" class="btn btn-blue" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">작성</button>
+                            <button th:case="NOT_SUBMIT" type="button" class="btn btn-blue" th:onclick="|ut.redirect('/c2/p1-write/${el.id}')|">작성</button>
                             <button th:case="SUBMIT" type="button" class="btn btn-yellow" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인중</button>
                             <button th:case="COMPLETE" type="button" class="btn btn-lightGray" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인 완료</button>
                         </th:block>
