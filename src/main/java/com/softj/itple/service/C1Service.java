@@ -329,14 +329,9 @@ public class C1Service {
     @Transactional
     public void saveBoardCategory(SearchVO params, HttpServletRequest request){
         // delete
-        HttpSession session = request.getSession();
-        LocalDateTime now = LocalDateTime.now();
-
         if(params.getRemoveIdList() != null) {
             for (long id : params.getRemoveIdList()) {
                 CodeDetail save = codeDetailRepo.findById(id).get();
-                save.setUpdatedAt(now);
-                save.setUpdatedId(session.getAttribute("userId").toString());
                 save.setDeleted(true);
                 codeDetailRepo.save(save);
             }
@@ -346,12 +341,12 @@ public class C1Service {
         if(params.getUpdateIdList() != null){
             int i=0;
             String[] codeNameList = params.getCodeNameList();
+            int[] codeOrderList = params.getCodeOrderList();
 
             for(long id: params.getUpdateIdList()){
                 CodeDetail save = codeDetailRepo.findById(id).get();
                 save.setCodeName(codeNameList[i]);
-                save.setUpdatedAt(now);
-                save.setUpdatedId(session.getAttribute("userId").toString());
+                save.setSort(codeOrderList[i]);
                 codeDetailRepo.save(save);
                 i++;
             }
@@ -376,8 +371,6 @@ public class C1Service {
 
                 if(save.getId() != 0){
                     save.setDeleted(false);
-                    save.setUpdatedAt(now);
-                    save.setUpdatedId(session.getAttribute("userId").toString());
                     codeDetailRepo.save(save);
                 }else {
                     String codeValue = "";
@@ -403,8 +396,6 @@ public class C1Service {
         CodeDetail save = codeDetailRepo.findByMasterId(2).orElse(CodeDetail.builder().build());
 
         if(params.getRoleType() != save.getRoleType()) {
-            save.setUpdatedAt(now);
-            save.setUpdatedId(session.getAttribute("userId").toString());
             save.setRoleType(params.getRoleType());
             codeDetailRepo.save(save);
         }

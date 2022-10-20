@@ -54,6 +54,7 @@ public class SearchVO {
 	private long[] updateIdList;
 	private String[] codeNameList;
 	private String[] newCodeNameList;
+	private int[] codeOrderList;
 	private List<CodeDetail> boardCategoryList;
 
 
