@@ -8,6 +8,10 @@ $(function(){
     })
 })
 
+function goSort(){
+    $("#form1").submit();
+}
+
 function goSearch(){
     $("#page").val(0);
     $("#form1").submit();
@@ -48,7 +52,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
                 $("input[name=idList]").prop("checked",true);
                 $.post(path+'/s1',formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
-                    ut.redirect("/c1/p1","boardType", $("[name=boardType]").val());
+                    ut.redirect("/c1/p1-detail/"+res.data,"boardType", $("[name=boardType]").val());
                 });
             });
             break;

@@ -165,6 +165,14 @@ public class C1Service {
     public Page<BoardComment> getBoardCommentList(SearchVO params, Pageable pageable){
         QBoardComment qBoardComment = QBoardComment.boardComment;
         BooleanBuilder where = new BooleanBuilder().and(qBoardComment.board.id.eq(params.getId()).and(qBoardComment.parent.isNull()));
+        if(StringUtils.noneEmpty(params.getCommentOrder())) {
+            if("asc".equals(params.getCommentOrder())) {
+                pageable = PageRequest.of(params.getPage(), 10, Sort.by(Sort.Direction.ASC, "id"));
+            }else{
+                pageable = PageRequest.of(params.getPage(), 10, Sort.by(Sort.Direction.DESC, "id"));
+            }
+
+        }
         return boardCommentRepo.findAll(where, pageable);
     }
 
@@ -288,7 +296,7 @@ public class C1Service {
     }
 
     @Transactional
-    public void saveBoard(SearchVO params){
+    public long saveBoard(SearchVO params){
         Board save = Board.builder().build();
         if(LongUtils.noneEmpty(params.getId())){
             save = boardRepo.findById(params.getId()).get();
@@ -311,6 +319,8 @@ public class C1Service {
             f.setBoard(finalSave);
         }
         boardFileRepo.saveAll(fileList);
+
+        return finalSave.getId();
     }
 
     @Transactional

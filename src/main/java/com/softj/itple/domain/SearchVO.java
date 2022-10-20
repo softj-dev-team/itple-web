@@ -48,6 +48,7 @@ public class SearchVO {
 	private Long upperId;
 	private Long commentId;
 	private String boardCategory;
+	private String commentOrder;
 	private long masterId;
 	private CodeDetail codeDetail;
 	private long[] removeIdList;
