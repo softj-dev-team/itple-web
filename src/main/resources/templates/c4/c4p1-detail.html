@@ -10,7 +10,7 @@
 <th:block layout:fragment="content">
     <div class="fullbnr" th:style="|background-image:url(${el.thumbnail})|"></div>
     <div class="content portfolio">
-        <p class="cateP">[카테고리]</p>
+        <p class="cateP" th:text="|[${el.portfolioType.message}]|"></p>
         <h1 class="portfolioH1" th:text="${el.subject}">톨스토이의 &#60;사람은 무엇으로 사는가&#62; 독후감상문</h1>
         <div class="portfolioSub">
             <p class="name" th:text="${el.user.userName}">김잇플</p>

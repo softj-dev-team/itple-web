@@ -13,6 +13,7 @@ import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
 import com.softj.itple.util.AuthUtil;
+import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -50,9 +53,19 @@ public class C2Service {
     public Page<StudentTask> getStudentTaskList(SearchVO params, Pageable pageable){
         QStudentTask qStudentTask = QStudentTask.studentTask;
         BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.student.eq(AuthUtil.getStudent())));
+
         if(Objects.nonNull(params.getTaskType())){
             where.and(qStudentTask.task.taskType.eq(params.getTaskType()));
         }
+
+        return studentTaskRepo.findAll(where, pageable);
+    }
+
+    public Page<StudentTask> getStudentTaskAdminList(SearchVO params, Pageable pageable){
+        QStudentTask qStudentTask = QStudentTask.studentTask;
+        QTask qTask = QTask.task;
+        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qTask.createdId.eq(Long.toString(AuthUtil.getAdmin().getUser().getId()))).and(qStudentTask.status.eq(Types.TaskStatus.SUBMIT)));
+
         return studentTaskRepo.findAll(where, pageable);
     }
 

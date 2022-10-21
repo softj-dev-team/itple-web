@@ -23,6 +23,31 @@
                     <a href="/adminMyInfo" class="sec-mypage">내 정보</a>
                 </div>
             </div>
+            <div class="sec sec5">
+                <div class="sec-in flex-sec">
+                    <div class="set-tit">
+                        <a href="/a2/p1">수업연계</a>
+                        <p>제출된 과제의 목록입니다.</p>
+                    </div>
+                    <div class="notice-wrap">
+                        <ul>
+                            <li th:each="el : ${taskList}">
+                                <a th:href="|/a2/p1-detail/${el.task.id}?taskType=${el.task.taskType}|">
+                                    <div class="notice-date">
+                                        <p class="date" th:text="${#temporals.format(el.createdAt, 'dd')}">14</p>
+                                        <p class="year" th:text="${#temporals.format(el.createdAt, 'yyyy.MM')}">2022.04</p>
+                                    </div>
+                                    <p>
+                                        <span th:text="|[${el.task.taskType.message}]|">과제</span>
+                                        <span th:text="${el.task.subject}">2022년 잇플학원 독후감입니다.</span> /
+                                        <span th:text="${el.student.user.userName}">홍길동</span>
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="main-cont" th:if="${@authUtil.isRole('STUDENT')}">
             <div class="sec sec1">
@@ -65,7 +90,7 @@
                                 <p th:text="${el.task.contents}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
                             </div>
                             <th:block th:switch="${#strings.toString(el.status)}">
-                                <button th:case="NOT_SUBMIT" type="button" class="ass-write" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|" th:text="|${el.task.taskType.message}작성|">과제작성</button>
+                                <button th:case="NOT_SUBMIT" type="button" class="ass-write" th:onclick="|ut.redirect('/c2/p1-write/${el.id}')|" th:text="|${el.task.taskType.message}작성|">과제작성</button>
                                 <button th:case="SUBMIT" type="button" class="ass-check" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인중</button>
                                 <button th:case="COMPLETE" type="button" class="ass-complete" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|"  th:text="|${el.task.taskType.message}완료|">과제완료</button>
                             </th:block>
