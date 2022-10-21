@@ -84,6 +84,7 @@ public class C1Service {
                         qBoard.subject,
                         qBoard.boardCategory,
                         qBoard.viewCount,
+                        qBoard.isPopup,
                         qBoard.user,
                         ExpressionUtils.as(
                                 JPAExpressions.select(qBoardComment.count())
@@ -160,6 +161,10 @@ public class C1Service {
             el.setStarCount(boardStarRepo.countByBoard(el));
         }
         return el;
+    }
+
+    public Board getBoardNoticePopup(){
+        return boardRepo.findByIsPopup(true);
     }
 
     public Page<BoardComment> getBoardCommentList(SearchVO params, Pageable pageable){
@@ -312,6 +317,13 @@ public class C1Service {
             String thumbnail = m.group(1);
             save.setThumbnail(thumbnail);
         }
+
+        CodeUtil cu = new CodeUtil(codeDetailRepo);
+
+        if(Objects.nonNull(params.getIsPopup()) && params.getBoardCategory().equals(cu.getCodeValue(1, "공지"))){
+            save.setIsPopup(params.getIsPopup());
+        }
+
         Board finalSave = boardRepo.save(save);
 
         List<BoardFile> fileList = boardFileRepo.findAllById(Arrays.asList(params.getIdList()));

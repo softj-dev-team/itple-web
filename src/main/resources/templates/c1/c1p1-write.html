@@ -24,12 +24,13 @@
                                 th:value="${e}" th:text="${e.message}"
                                 th:selected="${params.boardType == e || el.boardType == e}">잇플 코딩 게시판</option>
                     </select>
-                    <select name="boardCategory" class="select-md">
+                    <select name="boardCategory" id="boardCategory" class="select-md" style="margin-right:15px">
                         <option th:each="e : ${@codeUtil.getCodeList(1)}"
                                 th:if="${@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType)}"
                                 th:value="${e.codeValue}" th:text="${e.codeName}"
                                 th:selected="${el.boardCategory == e.codeValue}">잇플 코딩 게시판</option>
                     </select>
+                    <input type="checkbox" name="isPopup" id="isPopup"><label for="isPopup" id="isPopupLabel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;메인팝업</label>
                     <input type="text" placeholder="제목을 입력하세요." class="input-df" th:value="${el.subject}" name="subject">
                 </div>
                 <div>
@@ -113,9 +114,22 @@
             });
         }
 
-        //파일첨부
+
         $(document).ready(function() {
+            //파일첨부
             $("#fileInput").on("change", fileUpload);
+
+            // 공지 팝업 선택
+            $("#boardCategory").on("change", function(){
+               var boardCategory = $(this).val();
+               if(boardCategory == [[${@codeUtil.getCodeValue(1, '공지')}]]){
+                   $("#isPopup").show();
+                   $("#isPopupLabel").show();
+               }else{
+                   $("#isPopup").hide();
+                   $("#isPopupLabel").hide();
+               }
+            });
         });
 
         function fileUpload(e) {

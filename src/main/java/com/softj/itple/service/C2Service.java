@@ -2,9 +2,7 @@ package com.softj.itple.service;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.BookReportStampDTO;
@@ -15,14 +13,11 @@ import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
 import com.softj.itple.util.AuthUtil;
-import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.modelmapper.internal.util.Lists;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,7 +49,10 @@ public class C2Service {
 
     public Page<StudentTask> getStudentTaskList(SearchVO params, Pageable pageable){
         QStudentTask qStudentTask = QStudentTask.studentTask;
-        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(params.getTaskType())).and(qStudentTask.student.eq(AuthUtil.getStudent())));
+        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.student.eq(AuthUtil.getStudent())));
+        if(Objects.nonNull(params.getTaskType())){
+            where.and(qStudentTask.task.taskType.eq(params.getTaskType()));
+        }
         return studentTaskRepo.findAll(where, pageable);
     }
 

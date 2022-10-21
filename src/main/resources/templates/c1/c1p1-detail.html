@@ -30,7 +30,7 @@
             <div class="detailTitle">
                 <div class="tableBtn-box">
                     <div class="leftBox">
-                        <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|">[강사 소통]</p>
+                        <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}${el.isPopup == true ? '-팝업' : ''}]|">[강사 소통]</p>
                         <p class="titlewrap"><a href="#"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">2022년 3월 7일 월요일 공지사항 안내</span></a></p>
                         <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
                     </div>

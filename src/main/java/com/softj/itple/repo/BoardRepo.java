@@ -13,4 +13,5 @@ import java.util.List;
 @Repository
 public interface BoardRepo extends JpaRepository<Board, Long>, QuerydslPredicateExecutor<Board> {
     List<Board> findByUser(User user);
+    Board findByIsPopup(Boolean isPopup);
 }

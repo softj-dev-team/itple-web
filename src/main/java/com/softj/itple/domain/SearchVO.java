@@ -43,6 +43,7 @@ public class SearchVO {
 	//게시판
 	private Types.AcademyType boardType;
 	private Types.RoleType roleType;
+	private Boolean isPopup;
 	private String subject;
 	private String contents;
 	private Long upperId;

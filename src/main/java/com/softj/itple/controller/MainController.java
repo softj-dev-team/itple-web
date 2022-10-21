@@ -49,12 +49,13 @@ public class MainController {
 			HttpSession session = request.getSession(true);
 			Student studentVO = studentRepo.findWithUserByUser(User.builder().id(Long.parseLong(session.getAttribute("userId").toString())).build());
 			session.setAttribute("studentVO", studentVO);
+			model.addAttribute("noticePopup", c1Service.getBoardNoticePopup());
 		}
 		if(ObjectUtils.isEmpty(AuthUtil.getStudent().getAcademyClass())){
 			return "redirect:/logout";
 		}
 		params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
-	    params.setTaskType(Types.TaskType.TASK);
+
 		model.addAttribute("noticeList", c1Service.getBoardNoticeList(params, pageable));
 	    model.addAttribute("taskList", c2Service.getStudentTaskList(params, pageable));
 	    model.addAttribute("bookRentalList", c3Service.getBookRentalList(params, pageable));

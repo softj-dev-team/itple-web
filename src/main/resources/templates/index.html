@@ -65,9 +65,9 @@
                                 <p th:text="${el.task.contents}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
                             </div>
                             <th:block th:switch="${#strings.toString(el.status)}">
-                                <button th:case="NOT_SUBMIT" type="button" class="ass-write" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">과제작성</button>
+                                <button th:case="NOT_SUBMIT" type="button" class="ass-write" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|" th:text="|${el.task.taskType.message}작성|">과제작성</button>
                                 <button th:case="SUBMIT" type="button" class="ass-check" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인중</button>
-                                <button th:case="COMPLETE" type="button" class="ass-complete" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">과제완료</button>
+                                <button th:case="COMPLETE" type="button" class="ass-complete" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|"  th:text="|${el.task.taskType.message}완료|">과제완료</button>
                             </th:block>
                         </div>
                     </div>
@@ -118,103 +118,138 @@
 
         </div>
     </div>
-
+    <div class="pop-up" th:if="${@authUtil.isRole('STUDENT') && noticePopup != null}">
+        <div class="popBg"></div>
+        <div class="popContent">
+            <div class="popBody">
+                <div class="popin">
+                    공지사항
+                    <br/><br/>
+                    <img th:src="|${noticePopup.getThumbnail()}|" th:alt="${noticePopup.subject}">
+                </div>
+                <div class="popBtnWrap">
+                    <button type="button" class="popBtn-non">오늘 하루 보지않기</button>
+                    <button type="button" class="popBtn popOff">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script th:if="${@authUtil.isRole('STUDENT')}" th:src="@{/assets/js/common.js(v='1.0.0')}"></script>
     <script th:if="${@authUtil.isRole('STUDENT')}" th:inline="javascript">
-    //슬라이더
-    $('.main-slide').slick({
-            slidesToShow:4,
-            infinite:true,
-            speed : 100,
-            dots : false,
-            autoplay : true,
-            autoplaySpeed : 3000,
-            pauseOnHover : true,
-            arrows : true,
-            responsive: [
+
+        $(document).ready(function(){
+
+            if(!getCookie("noticePopup")){
+                $('.pop-up').addClass('on');
+            }else{
+                $('.pop-up').removeClass('on');
+            }
+
+            $(document).on("click",".popBtn-non",function(){
+                setCookie("noticePopup", "expire", 1);
+                $('.pop-up').removeClass('on');
+            });
+
+            $(document).on("click", ".popOff", function(){
+                $('.pop-up').removeClass('on');
+            });
+
+        });
+
+        //슬라이더
+        $('.main-slide').slick({
+                slidesToShow:4,
+                infinite:true,
+                speed : 100,
+                dots : false,
+                autoplay : true,
+                autoplaySpeed : 3000,
+                pauseOnHover : true,
+                arrows : true,
+                responsive: [
+                        {
+                            breakpoint: 1280,
+                            settings: {
+
+                                slidesToShow:3
+                            }
+                        },
+                        {
+                            breakpoint: 768,
+                            settings: {
+
+                                slidesToShow:2
+                            }
+                        },
+                        {
+                            breakpoint: 430,
+                            settings: {
+                                slidesToShow:1
+                            }
+                        }
+                    ]
+        });
+        $('.book-slide').slick({
+                slidesToShow:3,
+                infinite:true,
+                speed : 100,
+                dots : false,
+                autoplay : true,
+                autoplaySpeed : 3000,
+                pauseOnHover : true,
+                arrows : false,
+                responsive: [
                     {
-						breakpoint: 1280,
-						settings: {
+                        breakpoint: 430,
+                        settings: {
 
-							slidesToShow:3
-						}
-					},
-					{
-						breakpoint: 768,
-						settings: {
+                            slidesToShow:2
+                        }
+                    },
+                ]
+        });
+        $('.po-slide').slick({
+                slidesToShow:3,
+                infinite:true,
+                speed : 100,
+                dots : false,
+                autoplay : true,
+                autoplaySpeed : 3000,
+                pauseOnHover : true,
+                arrows : true,
+                responsive: [
+                    {
+                        breakpoint: 768,
+                        settings: {
 
-							slidesToShow:2
-						}
-					},
-					{
-						breakpoint: 430,
-						settings: {
-							slidesToShow:1
-						}
-					}
-				]
-    });
-    $('.book-slide').slick({
-            slidesToShow:3,
-            infinite:true,
-            speed : 100,
-            dots : false,
-            autoplay : true,
-            autoplaySpeed : 3000,
-            pauseOnHover : true,
-            arrows : false,
-            responsive: [
-                {
-                    breakpoint: 430,
-                    settings: {
-
-                        slidesToShow:2
+                            slidesToShow:2
+                        }
+                    },
+                    {
+                        breakpoint: 430,
+                        settings: {
+                            slidesToShow:1
+                        }
                     }
-                },
-            ]
-    });
-    $('.po-slide').slick({
-            slidesToShow:3,
-            infinite:true,
-            speed : 100,
-            dots : false,
-            autoplay : true,
-            autoplaySpeed : 3000,
-            pauseOnHover : true,
-            arrows : true,
-            responsive: [
-                {
-                    breakpoint: 768,
-                    settings: {
+                ]
+        });
 
-                        slidesToShow:2
-                    }
-                },
-                {
-                    breakpoint: 430,
-                    settings: {
-                        slidesToShow:1
-                    }
-                }
-            ]
-    });
+        $('.po-tab li').click(function(){
+            let $this = $(this);
+            let index = $this.index();
 
-    $('.po-tab li').click(function(){
-        let $this = $(this);
-        let index = $this.index();
+            $this.addClass('active');
+            $this.siblings('.po-tab li.active').removeClass('active');
 
-        $this.addClass('active');
-        $this.siblings('.po-tab li.active').removeClass('active');
+            let $outer = $this.closest('.sec-in');
+            let $current = $outer.find(' > .port-wrap > .po-con.active');
+            let $post = $outer.find(' > .port-wrap > .po-con').eq(index);
 
-        let $outer = $this.closest('.sec-in');
-        let $current = $outer.find(' > .port-wrap > .po-con.active');
-        let $post = $outer.find(' > .port-wrap > .po-con').eq(index);
+            $current.removeClass('active');
+            $post.addClass('active');
 
-        $current.removeClass('active');
-        $post.addClass('active');
-
-        $('.po-slide').slick('setPosition');
-    });
+            $('.po-slide').slick('setPosition');
+        });
 
     </script>
 </th:block>
