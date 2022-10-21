@@ -39,8 +39,15 @@
                     </div>
                 </div>
             </div>
-            <div class="detailContents" th:utext="${el.contents}">
-                내용
+            <div class="detailContents">
+                <div th:utext="${el.contents}" style="margin-bottom: 20px"></div>
+                <div th:if="${el.boardFileList != null && el.boardFileList.size() != 0}" th:each="file : ${el.boardFileList}" style="margin-top: 20px">
+                    <th:block th:each="fileExt : ${#strings.arraySplit(file.orgFileName,'.')}" th:if="${fileExtStat.count == fileExtStat.size}">
+                        <video th:if="${#strings.equals(fileExt,'mp4')}" width="60%" controls>
+                            <source th:src="|/comFileDownload/${file.uploadFileName}|" type="video/mp4">
+                        </video>
+                    </th:block>
+                </div>
             </div>
             <div class="detailInfo clearfix">
                 <div class="fileV" th:if="${el.boardFileList != null && el.boardFileList.size() != 0}">
