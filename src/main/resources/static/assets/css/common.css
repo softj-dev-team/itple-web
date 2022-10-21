@@ -13,7 +13,7 @@
 }
 *{margin: 0;padding: 0;box-sizing: border-box;}
 *{-webkit-text-size-adjust:none}
-body{position:relative;font-family: 'Pretendard-Regular', sans-serif!important;font-size:16px;line-height:normal!important;color:#333;letter-spacing: -0.5px;-webkit-overflow-scrolling: touch; background: #ffffff;min-width: 320px;}
+body{position:relative;font-family: 'Pretendard-Regular', sans-serif!important;font-size:16px;line-height:normal!important;color:#333;letter-spacing: -0.5px;-webkit-overflow-scrolling: touch; background: #ffffff;min-width: 320px;height: 100%}
 .clearfix::after{
     content: '';
     display: block;
@@ -3731,6 +3731,14 @@ input.txtRight{text-align: right;}
 .writeCon textarea,
 .writeCon input,
 .writeCon select{ font-size: 16px;}
+.WHd{display: flex;}
+.WLeft{
+    display: block;
+    width: calc(100% - 235px);
+}
+.WRight{
+    display: block;
+}
 textarea.textA{
     width: 100%;
     height: 100px;
@@ -3849,6 +3857,45 @@ textarea.textA{
     font-size: 16px;
 }
 .modiBox input[type=text]:focus{border: none;}
+.tab2 {
+    width: 100%;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+.tab-ul2{
+    font-size: 16px;
+    width: auto;
+    overflow: hidden;
+    border-bottom: 1px solid #f1f1f1;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+.tab-ul2 li {
+    padding: 0 10px;
+    width: 80px;
+    height: 16px;
+    color: #cccccc;
+    float: left;
+    text-align: center;
+    line-height: 16px;
+}
+.tab-ul2 li.active {
+    position: relative;
+    font-family: 'Pretendard-Bold';
+}
+.cateP{
+    text-align: center;
+    display: block;
+    animation-name: pfAni;
+    animation-duration: .8s;
+    animation-delay: 0;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-size: 25px;
+}
 @media screen and (max-width: 768px){
     .btnL button.btn {
         width: 100%;
@@ -3864,6 +3911,12 @@ textarea.textA{
     }
     .modalContent.md {
         width: 100%;
+    }
+    .cateP{
+        font-size: 16px;
+    }
+    .WLeft{
+        width: calc(100% - 193px);
     }
 }
 .fc-event {

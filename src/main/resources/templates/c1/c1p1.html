@@ -16,8 +16,8 @@
                 <li th:classappend="${#strings.equals(params.boardType,'ENGLISH') ? 'active' : ''}"><a href="/c1/p1?boardType=ENGLISH">잇플 영어</a></li>
             </ul>
         </div>
-        <div class="tab clearfix">
-            <ul class="tab-ul">
+        <div class="tab2 clearfix">
+            <ul class="tab-ul2">
                 <li th:class="${#strings.isEmpty(params.boardCategory) ? 'active' : ''}"><a href="/c1/p1">전체</a></li>
                 <li th:each="el : ${@codeUtil.getCodeList(1)}" th:classappend="${#strings.equals(params.boardCategory,el.codeValue) ? 'active' : ''}">
                     <a th:href="|/c1/p1?boardType=${params.boardType}&boardCategory=${el.codeValue}|" th:text="${el.codeName}">공지</a>
