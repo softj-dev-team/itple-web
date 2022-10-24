@@ -126,7 +126,7 @@ public class A3Service {
                     .coinStatus(diffCoin > 0L ? Types.CoinStatus.PLUS : Types.CoinStatus.MINUS)
                     .user(save.getUser())
                     .coin(diffCoin)
-                    .memo("관리자 설정")
+                    .memo(params.getCoinMemo())
                     .build());
         }
 

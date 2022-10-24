@@ -127,13 +127,12 @@ public class A4Service {
                     saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
                     saveCoinHistory.setMemo("하원시간 이후 하원");
                     saveCoinHistory.setCoin(1L);
+
+                    coinHistoryRepo.save(saveCoinHistory);
+                    student.setCoin(student.getCoin() + saveCoinHistory.getCoin());
+                    studentRepo.save(student);
                 }
-
-                coinHistoryRepo.save(saveCoinHistory);
-                student.setCoin(student.getCoin() + saveCoinHistory.getCoin());
-                studentRepo.save(student);
             }
-
         }
 
         int dayofweekNum = now.getDayOfWeek().getValue();

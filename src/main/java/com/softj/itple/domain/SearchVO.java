@@ -102,6 +102,7 @@ public class SearchVO {
 	private Integer paymentDay;
 	private Long price;
 	private String memo;
+	private String coinMemo;
 	private String approved;
 	private String edOrder;
 	private String searchCateogry;

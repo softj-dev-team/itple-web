@@ -21,6 +21,19 @@
                 <div class="inputSec">
                     <label for="coin" class="mb5">포인트</label>
                     <input type="text" class="input-df mb20" name="coin" id="coin" th:value="${el.coin}">
+                    <select name="coinMemo" class="input-df mb20">
+                        <option value="">포인트 수정시 내역을 선택하세요.</option>
+                        <option value="간식">간식</option>
+                        <option value="숙제/독후감">숙제/독후감</option>
+                        <option value="뒷정리">뒷정리</option>
+                        <option value="퀴즈/미션">퀴즈/미션</option>
+                        <option value="준비물">준비물</option>
+                        <option value="준비물">준비물</option>
+                        <option value="수업태도">수업태도</option>
+                        <option value="마켓데이">마켓데이</option>
+                        <option value="개근포인트">개근포인트</option>
+                        <option value="기타">기타</option>
+                    </select>
                     <label for="" class="mb5">승인/미승인</label>
                     <select name="approved" class="input-df mb20">
                         <option value="true" th:selected="${el.user.approved}">승인</option>
