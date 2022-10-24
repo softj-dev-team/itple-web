@@ -25,4 +25,5 @@ public class Attendance extends Auditing{
     @Convert(converter = Types.DayOfWeek.Converter.class)
     private Types.DayOfWeek attendanceDay;
     private LocalTime attendanceAt;
+    private LocalTime leaveAt;
 }

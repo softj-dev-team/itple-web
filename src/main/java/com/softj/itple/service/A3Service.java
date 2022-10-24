@@ -137,6 +137,7 @@ public class A3Service {
             attendanceRepo.save(Attendance.builder()
                     .user(save.getUser())
                     .attendanceAt(LocalTime.of(params.getHourList()[i], params.getMinList()[i]))
+                    .leaveAt(LocalTime.of(params.getLeaveHourList()[i], params.getLeaveMinList()[i]))
                     .attendanceDay(params.getDayOfWeekList()[i])
                     .build());
         }

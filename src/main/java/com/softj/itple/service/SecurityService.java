@@ -156,16 +156,16 @@ public class SecurityService implements UserDetailsService{
         if(StringUtils.noneEmpty(params.getUserPw())) {
             save.getUser().setUserPw(new BCryptPasswordEncoder().encode(params.getUserPw()));
         }
-        if(StringUtils.noneEmpty(params.getUserName())) {
+        /*if(StringUtils.noneEmpty(params.getUserName())) {
             save.getUser().setUserName(params.getUserName());
-        }
+        }*/
 //        save.getUser().setUserId(params.getUserId());
         userRepo.save(save.getUser());
 
 //        save.getAcademyClass().setId(params.getClassId());
 
 //        save.setAttendanceNo(params.getAttendanceNo());
-        if(StringUtils.noneEmpty(params.getBirth())) {
+        /*if(StringUtils.noneEmpty(params.getBirth())) {
             save.setBirth(params.getBirth());
         }
         if(StringUtils.noneEmpty(params.getSchool())) {
@@ -194,9 +194,9 @@ public class SecurityService implements UserDetailsService{
             save.setTelNo(params.getTelNo());
         }
 
-        studentRepo.save(save);
+        studentRepo.save(save);*/
 
-        attendanceRepo.deleteAllByUser(save.getUser());
+        /*attendanceRepo.deleteAllByUser(save.getUser());
         attendanceRepo.flush();
 
         for(int i=0; i < params.getDayOfWeekList().length; i++){
@@ -205,7 +205,7 @@ public class SecurityService implements UserDetailsService{
                     .attendanceAt(LocalTime.of(params.getHourList()[i], params.getMinList()[i]))
                     .attendanceDay(params.getDayOfWeekList()[i])
                     .build());
-        }
+        }*/
         return save;
     }
 

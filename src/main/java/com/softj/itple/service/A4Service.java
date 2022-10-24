@@ -112,6 +112,30 @@ public class A4Service {
             studentRepo.save(student);
         }
 
+        if(params.getAttendanceStatus() == Types.AttendanceStatus.LEAVE) {
+
+            Attendance attendance = attendanceRepo.findByUserIdAndAttendanceDay(student.getUser().getId(), Types.DayOfWeek.valueOf(now.getDayOfWeek().toString()));
+
+            if (Objects.nonNull(attendance)) {
+                CoinHistory saveCoinHistory = CoinHistory.builder()
+                        .user(student.getUser())
+                        .build();
+                LocalDateTime leaveAt = LocalDateTime.of(now.toLocalDate(), attendance.getLeaveAt());
+
+                if (now.isEqual(leaveAt) || now.isAfter(leaveAt)) {
+                    //코인 증감
+                    saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
+                    saveCoinHistory.setMemo("하원시간 이후 하원");
+                    saveCoinHistory.setCoin(1L);
+                }
+
+                coinHistoryRepo.save(saveCoinHistory);
+                student.setCoin(student.getCoin() + saveCoinHistory.getCoin());
+                studentRepo.save(student);
+            }
+
+        }
+
         int dayofweekNum = now.getDayOfWeek().getValue();
 
         switch (dayofweekNum){

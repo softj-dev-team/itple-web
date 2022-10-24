@@ -100,8 +100,9 @@
                 </div>
                 <div class="inputSec timeSelectOuter">
                     <label for="" class="mb10">등원 시간</label>
-                    <div class="timeSelectWrap">
-                        <select name="dayOfWeekList" class="daySel">
+                    <div th:if="${#lists.isEmpty(el.user.attendanceList)}" style="margin-bottom: 10px;color:red">※ 저장된 등원시간이 없습니다. 등원시간을 등록해주세요.</div>
+                    <div class="timeSelectWrap comeTime">
+                        <select name="dayOfWeekList" class="daySel comeDayOfWeek">
                             <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}" th:selected="${not #lists.isEmpty(el.user.attendanceList) && day == el.user.attendanceList.get(0).attendanceDay}">월요일</option>
                         </select>
                         <select name="hourList">
@@ -129,8 +130,8 @@
                         <button type="button" class="btn-add"></button>
                     </div>
 
-                    <div class="timeSelectWrap" th:each="at : ${el.user.attendanceList}" th:if="${atStat.index != 0}">
-                        <select name="dayOfWeekList" class="daySel">
+                    <div class="timeSelectWrap comeTime" th:each="at : ${el.user.attendanceList}" th:if="${atStat.index != 0}">
+                        <select name="dayOfWeekList" class="daySel comeDayOfWeek">
                             <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}" th:selected="${day == at.attendanceDay}">월요일</option>
                         </select>
                         <select name="hourList">
@@ -158,6 +159,66 @@
                         <button type="button" class="btn-remove"></button>
                     </div>
                 </div>
+
+
+                <div class="inputSec timeSelectOuter2">
+                    <label for="" class="mb10">하원 시간</label>
+                    <div class="timeSelectWrap leaveTime">
+                        <select class="daySel dayOfWeekList" disabled>
+                            <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}" th:selected="${not #lists.isEmpty(el.user.attendanceList) && day == el.user.attendanceList.get(0).attendanceDay}">월요일</option>
+                        </select>
+                        <select name="leaveHourList">
+                            <option value="9" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(9, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">9시</option>
+                            <option value="10" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(10, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">10시</option>
+                            <option value="11" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(11, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">11시</option>
+                            <option value="12" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(12, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">12시</option>
+                            <option value="13" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(13, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">13시</option>
+                            <option value="14" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(14, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">14시</option>
+                            <option value="15" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(15, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">15시</option>
+                            <option value="16" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(16, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">16시</option>
+                            <option value="17" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(17, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">17시</option>
+                            <option value="18" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(18, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">18시</option>
+                            <option value="19" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(19, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">19시</option>
+                            <option value="20" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(20, #temporals.format(el.user.attendanceList.get(0).leaveAt,'H'))}">20시</option>
+                        </select>
+                        <select name="leaveMinList">
+                            <option value="0" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(0, #temporals.format(el.user.attendanceList.get(0).leaveAt,'m'))}">00분</option>
+                            <option value="10" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(10, #temporals.format(el.user.attendanceList.get(0).leaveAt,'m'))}">10분</option>
+                            <option value="20" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(20, #temporals.format(el.user.attendanceList.get(0).leaveAt,'m'))}">20분</option>
+                            <option value="30" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(30, #temporals.format(el.user.attendanceList.get(0).leaveAt,'m'))}">30분</option>
+                            <option value="40" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(40, #temporals.format(el.user.attendanceList.get(0).leaveAt,'m'))}">40분</option>
+                            <option value="50" th:selected="${not #lists.isEmpty(el.user.attendanceList) && #strings.equals(50, #temporals.format(el.user.attendanceList.get(0).leaveAt,'m'))}">50분</option>
+                        </select>
+                    </div>
+
+                    <div class="timeSelectWrap leaveTime" th:each="at : ${el.user.attendanceList}" th:if="${atStat.index != 0}">
+                        <select class="daySel dayOfWeekList" disabled>
+                            <option th:each="day : ${T(com.softj.itple.domain.Types.DayOfWeek).values()}" th:value="${day}" th:text="${day.message}" th:selected="${day == at.attendanceDay}">월요일</option>
+                        </select>
+                        <select name="leaveHourList">
+                            <option value="9" th:selected="${#strings.equals(9, #temporals.format(at.leaveAt,'H'))}">9시</option>
+                            <option value="10" th:selected="${#strings.equals(10, #temporals.format(at.leaveAt,'H'))}">10시</option>
+                            <option value="11" th:selected="${#strings.equals(11, #temporals.format(at.leaveAt,'H'))}">11시</option>
+                            <option value="12" th:selected="${#strings.equals(12, #temporals.format(at.leaveAt,'H'))}">12시</option>
+                            <option value="13" th:selected="${#strings.equals(13, #temporals.format(at.leaveAt,'H'))}">13시</option>
+                            <option value="14" th:selected="${#strings.equals(14, #temporals.format(at.leaveAt,'H'))}">14시</option>
+                            <option value="15" th:selected="${#strings.equals(15, #temporals.format(at.leaveAt,'H'))}">15시</option>
+                            <option value="16" th:selected="${#strings.equals(16, #temporals.format(at.leaveAt,'H'))}">16시</option>
+                            <option value="17" th:selected="${#strings.equals(17, #temporals.format(at.leaveAt,'H'))}">17시</option>
+                            <option value="18" th:selected="${#strings.equals(18, #temporals.format(at.leaveAt,'H'))}">18시</option>
+                            <option value="19" th:selected="${#strings.equals(19, #temporals.format(at.leaveAt,'H'))}">19시</option>
+                            <option value="20" th:selected="${#strings.equals(20, #temporals.format(at.leaveAt,'H'))}">20시</option>
+                        </select>
+                        <select name="leaveMinList">
+                            <option value="0" th:selected="${#strings.equals(0, #temporals.format(at.leaveAt,'m'))}">00분</option>
+                            <option value="10" th:selected="${#strings.equals(10, #temporals.format(at.leaveAt,'m'))}">10분</option>
+                            <option value="20" th:selected="${#strings.equals(20, #temporals.format(at.leaveAt,'m'))}">20분</option>
+                            <option value="30" th:selected="${#strings.equals(30, #temporals.format(at.leaveAt,'m'))}">30분</option>
+                            <option value="40" th:selected="${#strings.equals(40, #temporals.format(at.leaveAt,'m'))}">40분</option>
+                            <option value="50" th:selected="${#strings.equals(50, #temporals.format(at.leaveAt,'m'))}">50분</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="btn-center mt60">
                     <button type="button" class="btn" onclick="studentSave()">저장하기</button>
                 </div>
@@ -174,15 +235,23 @@
                 orientation: "auto"
             });
 
+            $(document).on("change", ".comeDayOfWeek", function(){
+                var idx = $(this).parent('.timeSelectWrap').index();
+                var opt = $(this).val();
+                $(".leaveTime:nth-child("+(idx+1)+") > .dayOfWeekList").val(opt);
+            });
+
             $(document).on("click", ".btn-remove", function(){
-                $(this).parents('.timeSelectWrap').remove();
+                var idx = $(this).parent('.timeSelectWrap').index();
+                $(this).parent('.timeSelectWrap').remove();
+                $(".leaveTime:nth-child("+(idx+1)+")").remove();
             }).on("click", ".btn-add", function(){
-                if($(".timeSelectWrap").length > 6){
+                if($(".comeTime").length > 6){
                     modal.alert('7일 이상 추가할 수 없습니다.');
                 }else{
                     var html = `
-                        <div class="timeSelectWrap">
-                            <select name="dayOfWeekList" class="daySel">
+                        <div class="timeSelectWrap comeTime">
+                            <select name="dayOfWeekList" class="daySel comeDayOfWeek">
                                 <option value="MONDAY">월요일</option>
                                 <option value="TUESDAY">화요일</option>
                                 <option value="WEDNESDAY">수요일</option>
@@ -213,10 +282,47 @@
                                 <option value="40">40분</option>
                                 <option value="50">50분</option>
                             </select>
-                            <button type="button" class="btn-remove"></button>
+                            <button type="button" class="btn-remove btn-come-remove"></button>
                         </div>
                     `;
                     $(".timeSelectOuter").append(html);
+
+                    var html2 = `
+                        <div class="timeSelectWrap leaveTime">
+                            <select class="daySel dayOfWeekList" disabled>
+                                <option value="MONDAY">월요일</option>
+                                <option value="TUESDAY">화요일</option>
+                                <option value="WEDNESDAY">수요일</option>
+                                <option value="THURSDAY">목요일</option>
+                                <option value="FRIDAY">금요일</option>
+                                <option value="SATURDAY">토요일</option>
+                                <option value="SUNDAY">일요일</option>
+                            </select>
+                            <select name="leaveHourList">
+                                <option value="9">9시</option>
+                                <option value="10">10시</option>
+                                <option value="11">11시</option>
+                                <option value="12">12시</option>
+                                <option value="13">13시</option>
+                                <option value="14">14시</option>
+                                <option value="15">15시</option>
+                                <option value="16">16시</option>
+                                <option value="17">17시</option>
+                                <option value="18">18시</option>
+                                <option value="19">19시</option>
+                                <option value="20">20시</option>
+                            </select>
+                            <select name="leaveMinList">
+                                <option value="0">00분</option>
+                                <option value="10">10분</option>
+                                <option value="20">20분</option>
+                                <option value="30">30분</option>
+                                <option value="40">40분</option>
+                                <option value="50">50분</option>
+                            </select>
+                        </div>
+                    `;
+                    $(".timeSelectOuter2").append(html2);
                 }
             });
 
