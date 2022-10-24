@@ -31,6 +31,18 @@
             <button onclick="location.href='/a4/p2?attendanceType=ENGLISH'" type="button" class="ml10 attendBtn btn btn-red">잇플영어 출석페이지</button>
         </div>
         <div class="content-in clearfix">
+            <div class="tab clearfix">
+                <ul class="tab-ul">
+                    <li th:classappend="${#strings.equals(params.academyType,'CODING') ? 'active' : ''}"><a href="/a4/p1?academyType=CODING">잇플 코딩</a></li>
+                    <li th:classappend="${#strings.equals(params.academyType,'ENGLISH') ? 'active' : ''}"><a href="/a4/p1?academyType=ENGLISH">잇플 영어</a></li>
+                </ul>
+            </div>
+            <div class="tab2 clearfix">
+                <ul class="tab-ul2">
+                    <li th:class="${#strings.isEmpty(params.attendanceStatus) ? 'active' : ''}"><a th:href="|/a4/p1?academyType=${params.academyType}|">전체</a></li>
+                    <li th:class="${!#strings.isEmpty(params.attendanceStatus) ? 'active' : ''}"><a th:href="|/a4/p1?academyType=${params.academyType}&attendanceStatus=COME|">오늘 등원생</a></li>
+                </ul>
+            </div>
             <div class="adSearch clearfix selSearch">
                 <form onsubmit="return false;" class="adSearch-in" id="form1">
                     <div class="in-box">
@@ -204,6 +216,8 @@
                 var formData = {
                     classId: $("select[name=academyClass]").val(),
                     studentStatus: $("select[name=studentStatus]").val(),
+                    academyType: [[${params.academyType}]],
+                    attendanceStatus: [[${params.attendanceStatus}]],
                     userName : $("input[name=userName]").val(),
                     year : $("select[name=year]").val(),
                     month : $("select[name=month]").val()
@@ -270,11 +284,19 @@
                                     "color": "#dd5a43",
                                     "className": "text-center"
                                 });
-                            }else{
+                            }else if(start >= now) {
                                 events.push({
                                     "resourceId": el.id,
                                     "start": start.format('yyyy-MM-dd'),
                                     "color": "#FFFFFF",
+                                    "className": "text-center"
+                                });
+                            }else{
+                                events.push({
+                                    "resourceId": el.id,
+                                    "title": "X",
+                                    "start": start.format('yyyy-MM-dd'),
+                                    "color": "#dd5a43",
                                     "className": "text-center"
                                 });
                             }

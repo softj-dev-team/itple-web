@@ -35,6 +35,9 @@ public class A4Controller {
         if (Objects.isNull(params.getStudentStatus())) {
             params.setStudentStatus(Types.StudentStatus.STUDENT);
         }
+        if (Objects.isNull(params.getAcademyType())){
+            params.setAcademyType(Types.AcademyType.CODING);
+        }
         model.addAttribute("classList", commonService.getClassList(params));
         model.addAttribute("params", params);
         return "a4/a4p1";

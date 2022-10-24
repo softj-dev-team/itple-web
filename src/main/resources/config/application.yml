@@ -111,7 +111,7 @@ server:
   port: 808
   servlet:
     session:
-      timeout: 60m
+      timeout: -1
 
 spring:
   profiles: prod

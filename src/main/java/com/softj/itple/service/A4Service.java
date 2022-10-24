@@ -203,9 +203,14 @@ public class A4Service {
     public List<A4ResourceDTO> getUserList(SearchVO params){
         QUser qUser = QUser.user;
         QAttendance qAttendance = QAttendance.attendance;
+        QAttendanceHistory qAttendanceHistory = QAttendanceHistory.attendanceHistory;
 
         BooleanBuilder where = new BooleanBuilder()
                 .and(qUser.student.studentStatus.eq(params.getStudentStatus()));
+
+        if(Objects.nonNull(params.getAcademyType())){
+            where.and(qUser.student.academyClass.academyType.eq(params.getAcademyType()));
+        }
         if(LongUtils.noneEmpty(params.getClassId())){
             where.and(qUser.student.academyClass.eq(AcademyClass.builder().id(params.getClassId()).build()));
         }
@@ -213,13 +218,27 @@ public class A4Service {
             where.and(qUser.userName.contains(params.getUserName()));
         }
 
-        JPAQuery<A4ResourceDTO> query = jpaQueryFactory.select(Projections.fields(A4ResourceDTO.class,
-                        qUser.id,
-                        qUser.userName.as("title")))
-                .from(qUser)
-                .where(where);
-
-        List<A4ResourceDTO> attendanceList = query.fetch();
+        JPAQuery<A4ResourceDTO> query = null;
+        List<A4ResourceDTO> attendanceList = null;
+        if(Objects.nonNull(params.getAttendanceStatus())){
+            // 오늘 등원한 학생
+            where.and(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME)).and(qAttendanceHistory.createdAt.between(LocalDateTime.now().with(LocalTime.MIN), LocalDateTime.now().with(LocalTime.MAX)));
+            query = jpaQueryFactory.select(Projections.fields(A4ResourceDTO.class,
+                            qUser.id,
+                            qUser.userName.as("title")))
+                    .from(qUser)
+                    .leftJoin(qAttendanceHistory).on(qAttendanceHistory.user.eq(qUser))
+                    .where(where);
+            attendanceList = query.fetch();
+        }else {
+            // 모든 학생
+            query = jpaQueryFactory.select(Projections.fields(A4ResourceDTO.class,
+                            qUser.id,
+                            qUser.userName.as("title")))
+                    .from(qUser)
+                    .where(where);
+            attendanceList = query.fetch();
+        }
 
         for(A4ResourceDTO dto : attendanceList){
             List<A4StrDTO> dayList = attendanceRepo.getAttendanceDayList(dto.getId(), params.getYear().toString(), params.getMonth().toString());
