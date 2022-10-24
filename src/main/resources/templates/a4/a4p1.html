@@ -120,9 +120,9 @@
                             var dateTime = dataList[i].createdAt.substring(0, 19);
 
                             if(dataList[i].attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).COME.code}]]){
-                                comeStr += "등원시간 : " + dateTime;
+                                comeStr += "등원시간 : " + dateTime + " /";
                             }else if(dataList[i].attendanceStatus == [[${T(com.softj.itple.domain.Types.AttendanceStatus).LEAVE.code}]]){
-                                leaveStr += "하원시간 : " + dateTime;
+                                leaveStr += "하원시간 : " + dateTime + " /";
                             }
                             totalStr = dateTime.substring(5,7) + "월 출석일수 : " + dataList[i].totalMonth;
                         }
@@ -168,7 +168,7 @@
                             var selDate = infoYear+infoMonth+infoDay;
                             var now = nowYear+nowMonth+nowDay;
 
-                            if(selDate <= now){
+                            if(selDate < now){
                                 modal.alert("등원하지 않은 날입니다.");
                             }else{
                                 modal.confirm("결석으로 체크하시겠습니까?",function(){
@@ -269,19 +269,12 @@
                                     "start": start.format('yyyy-MM-dd'),
                                     "color": "#dd5a43",
                                     "className": "text-center"
-                                });                           }else if(start >= now) {
-                                events.push({
-                                    "resourceId": el.id,
-                                    "start": start.format('yyyy-MM-dd'),
-                                    "color": "#FFFFFF",
-                                    "className": "text-center"
                                 });
                             }else{
                                 events.push({
                                     "resourceId": el.id,
-                                    "title": "X",
                                     "start": start.format('yyyy-MM-dd'),
-                                    "color": "#dd5a43",
+                                    "color": "#FFFFFF",
                                     "className": "text-center"
                                 });
                             }
