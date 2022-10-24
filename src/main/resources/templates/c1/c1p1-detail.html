@@ -6,7 +6,7 @@
 <head>
     <title>잇플 커뮤니티</title>
 </head>
-<body onscroll="setDivPosition();">
+<body>
 <th:block layout:fragment="content">
     <form id="form1">
         <input type="hidden" id="id" name="id" th:value="${el.id}">
@@ -139,13 +139,13 @@
         var boardId = /*[[${el.id}]]*/0;
         /*]]>*/
 
-        $(document).ready(function(){
+        /*$(document).ready(function(){
             var strPos = getCookie("scrollTop");
 
             if(strPos != null) {
                 $("html,body").animate({scrollTop:parseInt(strPos)}, 100);
             }
-        });
+        });*/
 
         function enterKey(id, parentId, commentId, obj){
             goAction('S2',id, parentId, commentId, obj, "enter");

@@ -71,7 +71,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
                 return;
             }
             $.post(path+'/s2',{id: arg1, upperId: arg2, commentId: arg3, contents: contents},function(res){
-                location.reload();
+                document.location.reload(true);
             });
             break;
         /*카테고리 저장*/
@@ -86,7 +86,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
             break;
         case "U1":
             $.post(`${path}/u1`,{id:arg1},function(){
-               location.reload();
+               document.location.reload(true);
             });
             break;
         case "E1":
@@ -104,7 +104,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
         case "D2":
             modal.confirm("삭제하시겠습니까?",function(){
                 $.post(`${path}/d2`,{id:arg1},function(){
-                    location.reload();
+                    document.location.reload(true);
                 });
             });
             break;
