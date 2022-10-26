@@ -87,9 +87,6 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                location.reload();
             });
             break;
-        case "E1":
-
-            break;
         /*삭제*/
         case "D1":
             var formS1 = $('#form2');
@@ -152,6 +149,12 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                     $("#reportMo .fileUP").append(html);
                 })
             });
+            break;
+        /*엑셀*/
+        case "E1":
+            $("#form1").attr("action", "/excelFileDownload/a3/p1/e1");
+            $("#form1").attr("method", "POST");
+            $("#form1").submit();
             break;
     }
 }

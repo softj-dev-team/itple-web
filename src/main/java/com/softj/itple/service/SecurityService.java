@@ -90,7 +90,8 @@ public class SecurityService implements UserDetailsService{
         boolean isSuccess = false;
         Student find = studentRepo.findPW(params.getUserName(),params.getEmail(),params.getUserId());
         if(Objects.nonNull(find)){
-            String tempPw = UUID.randomUUID().toString();
+            String[] tempPwArr = UUID.randomUUID().toString().split("-");
+            String tempPw = tempPwArr[0];
             com.softj.itple.entity.User save = find.getUser();
             save.setUserPw(new BCryptPasswordEncoder().encode(tempPw));
             userRepo.save(save);

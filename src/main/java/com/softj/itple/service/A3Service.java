@@ -1,44 +1,31 @@
 package com.softj.itple.service;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
-import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
-import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class A3Service {
-    private final JPAQueryFactory jpaQueryFactory;
-    private final AcademyClassRepo academyClassRepo;
-    private final TaskRepo taskRepo;
+public class A3Service{
+
     private final UserRepo userRepo;
     private final AttendanceRepo attendanceRepo;
     private final StudentTaskRepo studentTaskRepo;

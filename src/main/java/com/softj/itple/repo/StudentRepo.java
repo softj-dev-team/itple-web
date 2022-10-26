@@ -91,4 +91,33 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       ELSE A.attendance_no LIKE '%' OR A.attendance_no IS NULL END " +
             "       ORDER BY CASE WHEN :edOrder = 'asc' THEN A.enter_date end asc, CASE WHEN :edOrder = 'desc' THEN A.enter_date end desc, C.user_name collate \"ko_KR.utf8\" asc", nativeQuery = true)
     List<Student> getStudentList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue, Pageable pageable);
+
+    @Query(value = "SELECT A.*" +
+            "       FROM " +
+            "       tb_student A " +
+            "       LEFT JOIN tb_class B ON B.id = A.class_id " +
+            "       JOIN tb_user C ON C.id = A.user_id " +
+            "       WHERE A.is_deleted = false " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NULL THEN A.class_id IS NULL " +
+            "       ELSE A.class_id IS NOT NULL END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN B.academy_type = CAST(:academyType AS TEXT) " +
+            "       ELSE B.academy_type IS NULL END " +
+            "       AND A.student_status = CASE WHEN CAST(:studentStatus AS TEXT) IS NOT NULL THEN CAST(:studentStatus AS TEXT) " +
+            "       ELSE '01' END " +
+            "       AND CASE WHEN CAST(:grade AS TEXT) IS NOT NULL THEN A.grade = CAST(:grade AS TEXT) " +
+            "       ELSE A.grade IS NOT NULL END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL AND CAST(:classId AS TEXT) IS NOT NULL THEN  B.id = CAST(COALESCE(CAST(:classId AS TEXT), '0') AS INTEGER)" +
+            "       ELSE 1=1 END " +
+            "       AND CASE WHEN CAST(:searchType AS TEXT) = 'userName' THEN C.user_name LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
+            "       ELSE C.user_name LIKE '%' OR C.user_name IS NULL END " +
+            "       AND CASE WHEN CAST(:searchType AS TEXT) = 'school' THEN A.school LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
+            "       ELSE A.school LIKE '%' OR A.school IS NULL END " +
+            "       AND CASE WHEN CAST(:searchType AS TEXT) = 'parentName' THEN A.parent_name LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
+            "       ELSE A.parent_name LIKE '%' OR A.parent_name IS NULL END " +
+            "       AND CASE WHEN CAST(:searchType AS TEXT) = 'parentTel' THEN A.parent_tel LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
+            "       ELSE A.parent_tel LIKE '%' OR A.parent_tel IS NULL END " +
+            "       AND CASE WHEN CAST(:searchType AS TEXT) = 'attendanceNo' THEN A.attendance_no LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
+            "       ELSE A.attendance_no LIKE '%' OR A.attendance_no IS NULL END " +
+            "       ORDER BY CASE WHEN :edOrder = 'asc' THEN A.enter_date end asc, CASE WHEN :edOrder = 'desc' THEN A.enter_date end desc, C.user_name collate \"ko_KR.utf8\" asc", nativeQuery = true)
+    List<Student> getStudentExcelList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue);
 }

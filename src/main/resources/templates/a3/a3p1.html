@@ -59,10 +59,16 @@
             <div class="tableBtn-box">
                 <div class="leftBox">
                     <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                    <form id="form2" name="form2">
+                        <input type="hidden" name="idList" id="idList" />
+                    </form>
                 </div>
-                <form id="form2" name="form2">
-                    <input type="hidden" name="idList" id="idList" />
-                </form>
+                <div class="rightBox">
+                    <button type="button" class="m-btn" onclick="goAction('E1')">엑셀다운로드</button>
+                    <form id="form3" name="form3">
+                        <input type="hidden" name="params" id="params" />
+                    </form>
+                </div>
             </div>
             <table class="adTable list4">
                 <thead class="adTable-head">
@@ -133,6 +139,10 @@
 
         $("#searchCateogry").on('change', function(){
            var searchCategory = $(this).val();
+            $("#searchType").val("userName");
+            $("#searchValue").val("");
+            $("#grade").val("");
+            $("#classId").val("");
            if(searchCategory == ""){
                $("#searchType").css("display","inline");
                $("#searchValue").css("display","inline");
@@ -154,11 +164,10 @@
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');
         });
-        $(document).ready(function () {
-            $(".ADbtn button").click(function () {
-                $(".ADbtn button").removeClass('on');
-                $(this).addClass('on');
-            });
+
+        $(".ADbtn button").on("click",function () {
+            $(".ADbtn button").removeClass('on');
+            $(this).addClass('on');
         });
     </script>
 </th:block>

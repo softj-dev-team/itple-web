@@ -15,27 +15,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class C2RestController {
     final private C2Service c2Service;
 
-//    //삭제
-//    @PostMapping("/p1/d1")
-//    public Response p1p1(SearchVO params){
-//        c2Service.deleteBoard(params);
-//        return Response.builder()
-//                .build();
-//    }
-//    //추천
-//    @PostMapping("/p1/u1")
-//    public Response p1u1(SearchVO params){
-//        c2Service.toggleStar(params);
-//        return Response.builder()
-//                .build();
-//    }
-//    //삭제
-//    @PostMapping("/p1/d2")
-//    public Response p1p2(SearchVO params){
-//        c2Service.deleteBoardComment(params);
-//        return Response.builder()
-//                .build();
-//    }
     //댓 작성
     @PostMapping("/p1/s1")
     public Response p1s1(SearchVO params){
@@ -43,13 +22,6 @@ public class C2RestController {
         return Response.builder()
                 .build();
     }
-//    //댓 작성
-//    @PostMapping("/p1/s2")
-//    public Response p1s2(SearchVO params){
-//        c2Service.saveBoardComment(params);
-//        return Response.builder()
-//                .build();
-//    }
 
     //파일업로드
     @PostMapping("/p1/f1")

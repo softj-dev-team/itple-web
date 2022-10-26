@@ -2,28 +2,23 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
-import com.softj.itple.entity.BoardFile;
-import com.softj.itple.entity.PortfolioFile;
-import com.softj.itple.entity.StudentTaskFile;
-import com.softj.itple.entity.TaskFile;
+import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
-import com.softj.itple.repo.BoardFileRepo;
-import com.softj.itple.repo.PortfolioFileRepo;
-import com.softj.itple.repo.StudentTaskFileRepo;
-import com.softj.itple.repo.TaskFileRepo;
+import com.softj.itple.repo.*;
 import com.softj.itple.service.CommonService;
 import com.softj.itple.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.util.HashMap;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +28,12 @@ public class ComController {
     final private StudentTaskFileRepo studentTaskFileRepo;
     final private TaskFileRepo taskFileRepo;
 
+    final private StudentRepo studentRepo;
+
     final private PortfolioFileRepo portfolioFileRepo;
+
+    @Value("${file.uploadDir}")
+    private String FILE_PATH;
 
     @GetMapping("/comFileDownload/{path}")
     public void fileDownload(@PathVariable("path") String path,
