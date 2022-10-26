@@ -46,11 +46,11 @@
             <div class="adSearch clearfix selSearch">
                 <form onsubmit="return false;" class="adSearch-in" id="form1">
                     <div class="in-box">
-                        <select name="academyClass" class="input-df mb20">
+                        <select name="academyClass" id="academyClass" class="input-df mb20">
                             <option value="">전체</option>
                             <option th:each="class : ${classList}" th:value="${class.id}" th:text="${class.className}" th:selected="${#strings.equals(class.className, params.academyClass)}">잇플코딩입문반</option>
                         </select>
-                        <select name="studentStatus" class="input-df mb20">
+                        <select name="studentStatus" id="studentStatus" class="input-df mb20">
                             <option th:each="studentStatus : ${T(com.softj.itple.domain.Types.StudentStatus).values()}" th:value="${studentStatus}" th:text="${studentStatus.message}" th:selected="${studentStatus == params.studentStatus}">1학년</option>
                         </select>
                         <select name="year" id="year">
@@ -331,6 +331,17 @@
             }
             calendar.refetchResources();
         }
+
+        $("#studentStatus").on("change", function(){
+            var studentStatus = $(this).val();
+            if(studentStatus != "STUDENT"){
+                $("#academyClass").val("");
+                $("#academyClass").css("display","none");
+            }else{
+                $("#academyClass").css("display","inline");
+            }
+        });
+
     </script>
 </th:block>
 </body>

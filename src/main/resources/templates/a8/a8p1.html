@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/layout">
+<head>
+    <title>관리자 설정</title>
+</head>
+<body class="adminBody">
+<th:block layout:fragment="content">
+    <div class="adContent">
+        <h1 class="adH1">SMS관리</h1>
+        <div class="content-in clearfix">
+            <div class="search clearfix">
+                <form action="" class="search-in">
+                    <div class="in-box">
+                        <select name="" id="">
+                            <option value="all">전체</option>
+                            <option value="title">제목</option>
+                            <option value="text">내용</option>
+                        </select>
+                        <input type="text">
+                    </div>
+                    <button type="button" class="src-btn"></button>
+                </form>
+            </div>
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                    <button type="button" class="m-btn btn-line ComBtn">선택삭제</button>
+                </div>
+                <div class="rightBox">
+                    <a href="smsWrite.html" class="a-btn">메시지 전송</a>
+                </div>
+            </div>
+            <table class="adTable smsTable checklist">
+                <thead class="adTable-head">
+                <tr>
+                    <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                    <th>번호</th>
+                    <th>이름</th>
+                    <th>내용</th>
+                    <th>발송건수</th>
+                    <th>수신번호</th>
+                    <th>발송일자</th>
+                </tr>
+                </thead>
+                <tbody class="adTable-body sms-body">
+                <tr>
+                    <td><input type="checkbox" id="ch1"><label for="ch1"></label></td>
+                    <td>10</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="ch2"><label for="ch2"></label></td>
+                    <td>9</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용이 길어지면 말줄임표가 나옵니다.</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="ch3"><label for="ch3"></label></td>
+                    <td>8</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="ch4"><label for="ch4"></label></td>
+                    <td>7</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="ch5"><label for="ch5"></label></td>
+                    <td>6</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="ch6"><label for="ch6"></label></td>
+                    <td>5</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="ch7"><label for="ch7"></label></td>
+                    <td>4</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="ch8"><label for="ch8"></label></td>
+                    <td>3</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="ch9"><label for="ch9"></label></td>
+                    <td>2</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="ch10"><label for="ch10"></label></td>
+                    <td>1</td>
+                    <td>김잇플</td>
+                    <td>메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td>3</td>
+                    <td>010-1234-5678</td>
+                    <td>2022.09.16</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul class="pagination">
+            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+            <li class="page-item"><a class="page-link active" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            <li class="page-item"><a class="page-link" href="#">7</a></li>
+            <li class="page-item"><a class="page-link" href="#">8</a></li>
+            <li class="page-item"><a class="page-link" href="#">9</a></li>
+            <li class="page-item"><a class="page-link" href="#">10</a></li>
+            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+        </ul>
+    </div>
+    <div class="modal" id="smsModal">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs sms-modal">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody payMo">
+                <label for="" class="mb5">이름</label>
+                <p>김잇플</p>
+                <label for="" class="mb5">수신번호</label>
+                <p>010-1234-5678</p>
+                <label for="" class="mb5">내용</label>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium iusto aspernatur, culpa optio debitis voluptatem saepe corrupti sint explicabo velit minus veritatis nemo at magnam, accusamus tenetur laboriosam placeat officia.
+                </p>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-blue modalOff">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/assets/js/a7/a7p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+        $('.smsTable tbody tr').on('click', function () {
+            $('#smsModal').addClass('on');
+        });
+        $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+            $(this).parents('.modal').removeClass('on');
+        })
+
+        function goWrite(){
+            location.href="/a7/p1-write?academyType="+[[${params.academyType}]];
+        }
+    </script>
+</th:block>
+</body>
+</html>
+
+
+

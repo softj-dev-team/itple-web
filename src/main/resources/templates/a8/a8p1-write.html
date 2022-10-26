@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/layout">
+<head>
+    <title>관리자 설정</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="content">
+        <h1 class="responsiveH1 subH1">메시지 전송</h1>
+        <div class="content-in clearfix">
+            <p class="smsAll">총 <span>100</span>건 / <span class="txt-B">99</span></p>
+            <div class="writeCon writeHead2 smsBox">
+                <div class="smsLeft">
+                    <div class="smsN">
+                        <div class="smsN1">
+                            <label for="">발신번호</label>
+                            <select name="" id="" class="select-md">
+                                <option value="발신번호">010-5678-1234</option>
+                                <option value="010-1234-5678">010-1234-5678</option>
+                            </select>
+                        </div>
+                        <div class="smsN2">
+                            <label for="">수신번호</label>
+                            <div class="flexStart">
+                                <input type="text" placeholder="수신번호 입력" class="input-df">
+                                <button type="button" class="m-btn">추가</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="smsList-n">
+                        <div class="flexwrap smsList-h">
+                            <button type="button" class="m-btn btn-line ">선택삭제</button>
+                            <div>
+                                <p>총 <span class="txt-B"> 10</span>명</p>
+                            </div>
+                        </div>
+                        <table class="adTable smsTable checklist">
+                            <thead class="adTable-head">
+                            <tr>
+                                <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                                <th>이름</th>
+                                <th>수신번호</th>
+                                <th>삭제</th>
+                            </tr>
+                            </thead>
+                            <tbody class="adTable-body ">
+                            <tr>
+                                <td><input type="checkbox" id="ch1"><label for="ch1"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="ch2"><label for="ch2"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="ch3"><label for="ch3"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="ch4"><label for="ch4"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="ch5"><label for="ch5"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="ch6"><label for="ch6"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="ch7"><label for="ch7"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="ch8"><label for="ch8"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="ch9"><label for="ch9"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="ch10"><label for="ch10"></label></td>
+                                <td>김잇플</td>
+                                <td>010-1234-5678</td>
+                                <td><button type="button" class="delBtn">삭제</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <ul class="pagination">
+                            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
+                            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
+                            <li class="page-item"><a class="page-link active" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
+                            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="smsRight">
+                    <label for="">메시지 내용</label>
+                    <textarea placeholder="메시지 내용 입력 "></textarea>
+                    <p class="smsbyte"><span class="txt-B">0</span> byte</p>
+                </div>
+            </div>
+            <div class="btn-center Tbtn">
+                <button type="submit" class="btn submitBtn">메시지 전송</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="modalText">
+                    메시지를 보내시겠습니까?
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-blue modalOff">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/assets/js/a7/a7p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
+
+        $('.submitBtn').on('click', function () {
+            $('.modal').addClass('on');
+        });
+        $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
+            $(this).parents('.modal').removeClass('on');
+        })
+
+        function goSave(){
+            var className = $("#className").val();
+            if(className == ""){
+                modal.alert("반이름을 적어주세요.");
+                return;
+            }
+
+            goAction('S1',[[${params.academyType}]]);
+        }
+    </script>
+</th:block>
+</body>
+</html>
