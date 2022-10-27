@@ -3,6 +3,7 @@ package com.softj.itple.controller;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.service.A7Service;
+import com.softj.itple.service.A8Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -24,14 +25,13 @@ import java.util.Objects;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class A8Controller {
 
-    private final A7Service a7Service;
-    private final CommonService commonService;
-
+    private final A8Service a8service;
     private final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     //목록
     @GetMapping("/p1")
     public String p1(ModelMap model, SearchVO params, @PageableDefault(size=10) Pageable pageable) {
+
         model.addAttribute("params", params);
         return "a8/a8p1";
     }

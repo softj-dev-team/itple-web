@@ -65,7 +65,7 @@ public class AligoUtil {
         }
     }
 
-    public void smsSsend(String receiver,String message) {
+    public void smsSend(String receiver,String message) {
         Map<String,Object> formData = new HashMap<>();
         formData.put("key", apiKey);
         formData.put("user_id", userId);
@@ -78,6 +78,43 @@ public class AligoUtil {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public Map<String,Object> smsSendList(int page, int page_size, String startDate, int limitDay) {
+        Map<String,Object> formData = new HashMap<>();
+        formData.put("key", apiKey);
+        formData.put("user_id", userId);
+        formData.put("page", page);
+        formData.put("page_size", page_size);
+        formData.put("start_date", startDate);
+        formData.put("limit_day", limitDay);
+
+        Map<String,Object> response = new HashMap<>();
+
+        try {
+            response = RestUtil.restCall(SMS_BASE_URL+"/list/", RequestMethod.POST, null, formData, Map.class);
+            log.debug("Aligo Res: {}", response);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public Map<String,Object> smsSendDetail(int mid) {
+        Map<String,Object> formData = new HashMap<>();
+        formData.put("key", apiKey);
+        formData.put("user_id", userId);
+        formData.put("mid", mid);
+
+        Map<String,Object> response = new HashMap<>();
+
+        try {
+            response = RestUtil.restCall(SMS_BASE_URL+"/sms_list/", RequestMethod.POST, null, formData, Map.class);
+            log.debug("Aligo Res: {}", response);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return response;
     }
 
     public Map remain() {

@@ -10,17 +10,47 @@
     <div class="adContent">
         <h1 class="adH1">SMS관리</h1>
         <div class="content-in clearfix">
-            <div class="search clearfix">
-                <form action="" class="search-in">
-                    <div class="in-box">
-                        <select name="" id="">
-                            <option value="all">전체</option>
-                            <option value="title">제목</option>
-                            <option value="text">내용</option>
-                        </select>
-                        <input type="text">
+            <div class="clearfix">
+                <form name="form1">
+                    <input type="hidden" id="page" name="page">
+                    <div class="formWrap">
+                        <table class="formLeft">
+                            <tbody>
+                            <tr>
+                                <td class="formTit"><label for="searchStartDate" class="">조회시작일자</label></td>
+                                <td>
+                                    <div class="datepickerWrap">
+                                        <input type="text" name="searchStartDate" id="searchStartDate" class="input-df datepicker" th:value="${params.attendanceNo}"/>
+                                        <i class="i-date"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="formRight">
+                            <tbody>
+                            <tr>
+                                <td class="formTit"><label for="searchStartDate" class="">조회기간</label></td>
+                                <td>
+                                    <input type="radio" name="limitDay" id="limitDay1" value="1"><label for="limitDay1">하루</label>
+                                    <input type="radio" name="limitDay" id="limitDay2" value="7"><label for="limitDay2">일주일전</label>
+                                    <input type="radio" name="limitDay" id="limitDay3" value="30"><label for="limitDay3">한달전</label>
+                                </td>
+                                <td class="formTit"><label for="pageSize" class="">페이지당 출력행수</label></td>
+                                <td>
+                                    <select name="pageSize" id="pageSize">
+                                        <option value="30">30개</option>
+                                        <option value="50">50개</option>
+                                        <option value="100">100개</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <button type="button" class="src-btn"></button>
+                    <div style="text-align:right;margin-right: 15px;">
+                        <a href="javascript:goSearch();" class="aBtn">검색</a>
+                    </div>
                 </form>
             </div>
             <div class="tableBtn-box">
@@ -138,20 +168,8 @@
             </table>
         </div>
         <ul class="pagination">
-            <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
-            <li class="page-item"><a class="page-link active" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
-            <li class="page-item"><a class="page-link" href="#">7</a></li>
-            <li class="page-item"><a class="page-link" href="#">8</a></li>
-            <li class="page-item"><a class="page-link" href="#">9</a></li>
-            <li class="page-item"><a class="page-link" href="#">10</a></li>
-            <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
-            <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
+            <li class="page-arrow"><a class="page-link p-L1" href="#">이전</a></li>
+            <li class="page-arrow"><a class="page-link p-R1" href="#">다음</a></li>
         </ul>
     </div>
     <div class="modal" id="smsModal">
@@ -178,6 +196,11 @@
     </div>
     <script th:src="@{/assets/js/a7/a7p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
+        $(".datepicker").datepicker({
+            format: "yyyy-mm-dd",
+            language: "ko",
+            orientation: "auto"
+        });
         $('.smsTable tbody tr').on('click', function () {
             $('#smsModal').addClass('on');
         });
@@ -192,6 +215,7 @@
 </th:block>
 </body>
 </html>
+
 
 
 
