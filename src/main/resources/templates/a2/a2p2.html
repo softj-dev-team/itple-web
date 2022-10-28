@@ -19,7 +19,7 @@
         </div>
         <div class="content-in clearfix">
             <div class="clearfix">
-                <form id="form1">
+                <form id="form1" class="formF">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <div class="formWrap">
                         <table class="formLeft">
@@ -68,7 +68,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div style="text-align:right;margin-right: 15px;">
+                    <div class="formSear">
                         <a href="javascript:goSearch();" class="aBtn">검색</a>
                     </div>
                 </form>

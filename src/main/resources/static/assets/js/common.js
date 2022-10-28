@@ -64,6 +64,11 @@ $(function(){
         if(chk) $('.checklist td:nth-child(1) input').prop('checked',true);
         else $('.checklist td:nth-child(1) input').prop('checked',false);
     });
+    $('#all-chk2').click(function(){
+        var chk = $(this).is(':checked');//.attr('checked');
+        if(chk) $('.checklist2 td:nth-child(1) input').prop('checked',true);
+        else $('.checklist2 td:nth-child(1) input').prop('checked',false);
+    });
 });
 $(function(){
     $('#studAll').click(function(){

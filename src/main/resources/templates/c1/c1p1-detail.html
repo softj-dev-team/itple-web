@@ -61,9 +61,11 @@
                         <button type="button" th:onclick="|goAction('U1','${el.id}')|"><i class="icon" th:classappend="${isStar ? 'i-star':'up'}"></i>추천</button>
                         <button type="button" onclick="copy(location.href)"><i class="icon i-share"></i>공유</button>
                     </div>
-                    <div class="leftwrap">
-                        <span class="replyNum">댓글 <span class="text-blue" th:text="${el.commentCount}">157</span><button type="button" class="upOrder upSort"></button><button type="button" class="downOrder downSort"></span>
+                    <div class="leftwrap flexCenter btnF">
+                        <span class="replyNum">댓글 <span class="text-blue" th:text="${el.commentCount}">157</span></span>
                         <span class="up" th:text="|추천 ${el.starCount}|">추천 213</span>
+                        <button type="button" class="upOrder upSort"></button>
+                        <button type="button" class="downOrder downSort"></button>
                     </div>
                 </div>
             </div>

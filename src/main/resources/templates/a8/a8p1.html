@@ -11,9 +11,9 @@
         <h1 class="adH1">SMS관리</h1>
         <div class="content-in clearfix">
             <div class="clearfix">
-                <form name="form1">
+                <form name="form1" class="formF">
                     <input type="hidden" id="page" name="page">
-                    <div class="formWrap">
+                    <div class="formWrap formWrap2">
                         <table class="formLeft">
                             <tbody>
                             <tr>
@@ -31,7 +31,7 @@
                             <tbody>
                             <tr>
                                 <td class="formTit"><label for="searchStartDate" class="">조회기간</label></td>
-                                <td>
+                                <td class="radioTd">
                                     <input type="radio" name="limitDay" id="limitDay1" value="1"><label for="limitDay1">하루</label>
                                     <input type="radio" name="limitDay" id="limitDay2" value="7"><label for="limitDay2">일주일전</label>
                                     <input type="radio" name="limitDay" id="limitDay3" value="30"><label for="limitDay3">한달전</label>
@@ -48,7 +48,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div style="text-align:right;margin-right: 15px;">
+                    <div class="formSear">
                         <a href="javascript:goSearch();" class="aBtn">검색</a>
                     </div>
                 </form>
@@ -167,7 +167,7 @@
                 </tbody>
             </table>
         </div>
-        <ul class="pagination">
+        <ul class="pagination pagi2">
             <li class="page-arrow"><a class="page-link p-L1" href="#">이전</a></li>
             <li class="page-arrow"><a class="page-link p-R1" href="#">다음</a></li>
         </ul>

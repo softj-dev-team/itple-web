@@ -26,6 +26,7 @@
                             <div class="flexStart">
                                 <input type="text" placeholder="수신번호 입력" class="input-df">
                                 <button type="button" class="m-btn">추가</button>
+                                <button type="button" class="m-btn btn-line searchM">검색</button>
                             </div>
                         </div>
                     </div>
@@ -149,11 +150,116 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" id="searchM">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs modalP">
+            <div class="modalHd">
+                <h3>수신번호검색</h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="mSearch">
+                    <select>
+                        <option>전체</option>
+                        <option>이름</option>
+                        <option>번호</option>
+                    </select>
+                    <input type="text">
+                    <button type="button" class="btn">검색</button>
+                </div>
+                <div class="moTable-con">
+                    <table class="table modalTable admodalT">
+                        <colgroup>
+                            <col style="width: 15%;">
+                            <col style="width: 25%;">
+                            <col style="width: auto;">
+                        </colgroup>
+                        <thead class="table-head">
+                        <tr>
+                            <th><input type="checkbox" id="all-chk2"><label for="all-chk2"></label></th>
+                            <th>이름</th>
+                            <th>번호</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="body-scroll">
+                        <table class="table modalTable admodalT">
+                            <colgroup>
+                                <col style="width: 15%;">
+                                <col style="width: 25%;">
+                                <col style="width: auto;">
+                            </colgroup>
+                            <tbody class="table-body checklist2">
+                                <tr>
+                                    <td><input type="checkbox" id="mCh1"><label for="mCh1"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="mCh2"><label for="mCh2"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="mCh3"><label for="mCh3"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="mCh4"><label for="mCh4"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="mCh5"><label for="mCh5"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="mCh6"><label for="mCh6"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="mCh7"><label for="mCh7"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="mCh8"><label for="mCh8"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="mCh9"><label for="mCh9"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="mCh10"><label for="mCh10"></label></td>
+                                    <td>김잇플</td>
+                                    <th>010-1234-5678</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-gray modalOff">취소</button>
+                    <button type="button" class="btn btn-blue" id="confirm-callback-btn">선택추가</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script th:src="@{/assets/js/a7/a7p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
 
         $('.submitBtn').on('click', function () {
             $('.modal').addClass('on');
+        });
+        $('.searchM').on('click', function () {
+            $('#searchM').addClass('on');
         });
         $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
             $(this).parents('.modal').removeClass('on');

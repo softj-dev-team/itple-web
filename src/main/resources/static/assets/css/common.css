@@ -256,6 +256,10 @@ select {
     appearance: none;
     background: url(../img/bottom.png) no-repeat center right 10px / 15px;
 }
+select:focus{
+    outline:none;
+    border:1px solid #2D7AC0;
+}
 select::-ms-expand {
     display: none;
 }
@@ -516,7 +520,7 @@ i.i-date{
 .modalContent.xs{
     width:360px;
 }
-.modalContent.md{
+.modalContent.mdmd{
     width:540px;
 }
 .modalContent.lg{
@@ -2264,7 +2268,7 @@ i.icon{
     vertical-align: middle;
 }
 .detailInfo .up{
-    margin-left: 6px;
+    margin-left: 10px;
     color: #A1A1A1;
 }
 .detailInfo .up::before{
@@ -2623,6 +2627,11 @@ a.a-btn{
     .header{padding-left: calc((100% - 1727px)/2 + 23.5px)!important;}
     .nav-out{width: 1232px;}
     .logo{width:224px;}
+}
+@media screen and (max-width:1210px){
+
+    .adHead .nav-out{display: none;}
+    .adHead .right-btn-box {display: block;}
 }
 /* mobile */
 @media screen and (max-width:1280px){
@@ -3395,14 +3404,16 @@ a.a-btn{
 }
 
 /* admin */
-body.adminBody{
+.adHead ~ .main{
     min-width: 1280px;
 }
-.adminBody .gnb > li{
-    width:10.2vw;
+.adHead .gnb > li{
+    width: 6.2vw;
+    max-width: 115px;
+    min-width: 100px;
 }
 .adContent{
-    max-width: 1280px;
+    width: 1280px;
     margin: 80px auto 0;
     padding: 0px 24px;
 }
@@ -3450,6 +3461,7 @@ body.adminBody{
 }
 .adContent .content-in {
     width: 100%;
+    padding: 0;
 }
 .tableBtn-box{
     display: flex;
@@ -4127,7 +4139,7 @@ textarea.textA{
 }
 .tab-ul2 li {
     padding: 0 10px;
-    width: 80px;
+    min-width: 80px;
     height: 16px;
     color: #cccccc;
     float: left;
@@ -4149,29 +4161,6 @@ textarea.textA{
     color: #ffffff;
     margin-bottom: 10px;
     font-size: 25px;
-}
-@media screen and (max-width: 768px){
-    .btnL button.btn {
-        width: 100%;
-    }
-    .btnL button:nth-child(1){
-        margin-bottom: 5px;
-    }
-    .inputSec textarea{
-        font-size: 16px;
-    }
-    .tableBtn-box {
-        margin-top: 16px;
-    }
-    .modalContent.md {
-        width: 100%;
-    }
-    .cateP{
-        font-size: 16px;
-    }
-    .WLeft{
-        width: calc(100% - 193px);
-    }
 }
 .fc-event {
     line-height: 2.1 !important;
@@ -4263,22 +4252,22 @@ textarea.textA{
 .tooltip:hover .tooltipTxt p {
     margin-bottom: 3px;
 }
+.formF{
+    display: flex;
+    align-items: center;
+    margin-bottom: 45px;
+}
+.formF *{font-size: 14px}
 .formWrap{
     display: flex;
-    margin-bottom: 20px;
+    width: calc(100% - 90px);
 }
-.formLeft{
-    width: 45%;
-    margin-right: 16px;
-}
-.formRight{
-    width: 55%;
-}
-/* .formWrap tr:nth-child(1){
-    border-bottom: 1px solid #f1f1f1;
-} */
+.formLeft{width: 45%;}
+.formRight{width: 55%;}
 .formWrap tr td {
     padding: 5px 15px;
+    border: 1px solid #ccc;
+    border-left: none;
 }
 .formWrap .formTit{
     width: 100px;
@@ -4303,6 +4292,14 @@ textarea.textA{
     margin-bottom: 0;
     height: 40px;
 }
+.formSear a.aBtn{
+    height: 103px;
+    width: 90px;
+    background: #2e2e2e;
+    border: 1px solid #2e2e2e;
+    border-radius: 0px;
+    line-height: 103px;
+}
 .upOrder{
     margin-left: 10px;
     width: 19px;
@@ -4318,4 +4315,155 @@ textarea.textA{
     background: url(../img/down.png) no-repeat center / 45%;
     border-radius: 0 3px 3px 0;
     border: 1px solid #cccccc;
+}
+.btnF{line-height: 26px}
+.btnF button{padding: 12px;}
+.btnF button.downSort{margin-left: 2px}
+input[type=radio]{
+    display: none;
+}
+input[type=radio]+label{
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.radioTd label:not(:nth-of-type(1)) {
+    margin-left: 16px;
+}
+input[type=radio]+label::before{
+    content: '';
+    display:inline-block;
+    position:absolute;
+    top:0;
+    left:0;
+    width:16px;
+    height:16px;
+    border-radius: 10px;
+    border: 1px solid #707070;
+    background:#fff;
+}
+input[type=radio]:checked+label::after{
+    content: '';
+    display:inline-block;
+    position:absolute;
+    top:4px;
+    left:4px;
+    width:10px;
+    height:10px;
+    border-radius: 10px;
+    background:#2D7AC0;
+}
+input[type=radio]:checked+label::before{
+    border-color:#2D7AC0;
+}
+
+.formWrap2 .formLeft{width: 35%;}
+.formWrap2 .formRight{ width: 65%;}
+.formWrap.formWrap2 .formTit{
+    width: auto;
+    min-width: 100px;
+}
+.formWrap.formWrap2 select{
+    width: 100%;
+    min-width: 130px;
+    padding-left: 10px;
+}
+.formWrap2 + .formSear a.aBtn{
+    height: 50px;
+    line-height: 50px;
+}
+.pagination.pagi2 li.page-arrow {
+    line-height: 40px;
+    height: 40px;
+}
+.pagination.pagi2 li a::before{display: none}
+.pagination.pagi2 li a.page-link {
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    margin: 0px;
+    border-radius: 40px;
+    border: 1px solid #0B4E8B;
+    background: #0B4E8B;
+    color: #ffffff;
+    font-size: 16px;
+}
+.pagination.pagi2 li a.page-link.p-L1 {
+    background: #ffffff;
+    color: #0B4E8B;
+    font-size: 16px;
+    margin-right: 5px;
+}
+.table.modalTable.admodalT{font-size: 14px}
+.table.modalTable.admodalT .table-head tr{
+    height: 40px;
+
+}
+.table.modalTable.admodalT input[type=checkbox]+label{
+    height: 17px;
+    width: 17px;
+    display: block;
+    margin: 0 auto;
+}
+.table.modalTable.admodalT .table-body tr{height: 35px}
+.table.modalTable.admodalT .table-body tr td {
+    padding: 10px 5px;
+}
+.table.modalTable.admodalT + .body-scroll {
+    max-height: 250px;
+}
+.mSearch{
+    display: flex;
+    margin-bottom: 20px;
+}
+.mSearch *{font-size: 14px;}
+.mSearch select{
+    width: 80px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #cccccc;
+    border-right: 0;
+    padding-left: 5px;
+}
+.mSearch input{
+    width: calc(100% - 160px);
+}
+.mSearch button.btn{
+    width: 80px;
+    border-radius: 0 5px 5px 0;
+    height: 35px;
+}
+
+@media screen and (max-width: 768px){
+    .btnL button.btn {
+        width: 100%;
+    }
+    .btnL button:nth-child(1){
+        margin-bottom: 5px;
+    }
+    .inputSec textarea{
+        font-size: 16px;
+    }
+    .tableBtn-box {
+        margin-top: 16px;
+    }
+    .modalContent.md {
+        width: 100%;
+    }
+    .cateP{
+        font-size: 16px;
+    }
+    .WLeft{
+        width: calc(100% - 193px);
+    }
+    .table.admodalT .table-head {
+        display: table-row-group;
+    }
+    .mSearch button.btn {
+        height: 40px;
+        margin-top:0;
+    }
+    .modalP.xs .modalBtnWrap {
+        margin-top: 30px;
+    }
 }
