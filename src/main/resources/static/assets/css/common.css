@@ -2607,6 +2607,11 @@ a.a-btn{
     width: 100%;
     border: 1px solid #9E9E9E;
     height: 100%;
+    min-height: 520px;
+}
+.smsRight textarea:focus{
+    outline:none;
+    border: 1px solid #2D7AC0;
 }
 .smsRight .smsbyte{
     height: 45px;
