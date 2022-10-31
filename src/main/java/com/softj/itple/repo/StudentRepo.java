@@ -35,6 +35,9 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
     @Query("select a from Student a where a.studentStatus = :studentStatus and a.user.isApproved = :isApproved")
     List<Student> findAllByStudentStatus(@Param("studentStatus")Types.StudentStatus studentStatus, @Param("isApproved")boolean isApproved);
 
+    @Query("select a from Student a where a.telNo = :telNo or a.parentTel = :telNo")
+    List<Student> findTopByTelNoOrParentTel(@Param("telNo")String telNo);
+
     @Query(value = "SELECT count(A.id)" +
             "       FROM " +
             "       tb_student A " +
@@ -120,4 +123,19 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       ELSE A.attendance_no LIKE '%' OR A.attendance_no IS NULL END " +
             "       ORDER BY CASE WHEN :edOrder = 'asc' THEN A.enter_date end asc, CASE WHEN :edOrder = 'desc' THEN A.enter_date end desc, C.user_name collate \"ko_KR.utf8\" asc", nativeQuery = true)
     List<Student> getStudentExcelList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue);
+
+
+    @Query(value = "select COUNT(A.id) from Student A JOIN User B ON B.id = A.user_id where  A.isDeleted = false " +
+            "       AND CASE WHEN CAST(:telNo AS TEXT) IS NOT NULL THEN (A.tel_no LIKE '%'||CAST(:telNo AS TEXT)||'%' OR A.parent_tel LIKE '%'||CAST(:telNo AS TEXT)||'%')" +
+            "       ELSE 1=1 END" +
+            "       AND CASE WHEN CAST(:userName AS TEXT) IS NOT NULL THEN (B.user_name LIKE '%'||CAST(:userName AS TEXT)||'%' OR A.parent_name LIKE '%'||CAST(:userName AS TEXT)||'%')" +
+            "       ELSE 1=1 END", nativeQuery = true)
+    int getStudentByStudentOrParentTotal(@Param("telNo")String telNo, @Param("userName")String userName);
+
+    @Query(value = "select A.* from Student A JOIN User B ON B.id = A.user_id where  A.isDeleted = false " +
+            "       AND CASE WHEN CAST(:telNo AS TEXT) IS NOT NULL THEN (A.tel_no LIKE '%'||CAST(:telNo AS TEXT)||'%' OR A.parent_tel LIKE '%'||CAST(:telNo AS TEXT)||'%')" +
+            "       ELSE 1=1 END" +
+            "       AND CASE WHEN CAST(:userName AS TEXT) IS NOT NULL THEN (B.user_name LIKE '%'||CAST(:userName AS TEXT)||'%' OR A.parent_name LIKE '%'||CAST(:userName AS TEXT)||'%')" +
+            "       ELSE 1=1 END ORDER BY B.user_name collate \"ko_KR.utf8\" asc", nativeQuery = true)
+    List<Student> getStudentByStudentOrParent(@Param("telNo")String telNo, @Param("userName")String userName);
 }

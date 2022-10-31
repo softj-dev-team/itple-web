@@ -10,29 +10,34 @@
     <div class="content">
         <h1 class="responsiveH1 subH1">메시지 전송</h1>
         <div class="content-in clearfix">
-            <p class="smsAll">총 <span>100</span>건 / <span class="txt-B">99</span></p>
+            <p class="smsAll">
+                SMS 전송가능 건수 : <span class="txt-B" th:text="${data['result']['SMS_CNT']}">99</span>
+                / LMS 전송가능 건수 : <span class="txt-B" th:text="${data['result']['LMS_CNT']}">99</span>
+                / MMS 전송가능 건수 : <span class="txt-B" th:text="${data['result']['MMS_CNT']}">99</span>
+            </p>
             <div class="writeCon writeHead2 smsBox">
                 <div class="smsLeft">
                     <div class="smsN">
                         <div class="smsN1">
                             <label for="">발신번호</label>
-                            <select name="" id="" class="select-md">
+                            <input type="text" value="010-8741-4766" class="input-df" disabled/>
+                            <!--<select name="" id="" class="select-md">
                                 <option value="발신번호">010-5678-1234</option>
                                 <option value="010-1234-5678">010-1234-5678</option>
-                            </select>
+                            </select>-->
                         </div>
                         <div class="smsN2">
                             <label for="">수신번호</label>
                             <div class="flexStart">
-                                <input type="text" placeholder="수신번호 입력" class="input-df">
-                                <button type="button" class="m-btn">추가</button>
-                                <button type="button" class="m-btn btn-line searchM">검색</button>
+                                <input type="text" placeholder="수신번호 입력" class="input-df" id="inputTelNo">
+                                <button type="button" class="m-btn" id="btnTelAdd">추가</button>
+                                <button type="button" class="m-btn btn-line searchM" id="btnSearchTelNo">검색</button>
                             </div>
                         </div>
                     </div>
                     <div class="smsList-n">
                         <div class="flexwrap smsList-h">
-                            <button type="button" class="m-btn btn-line ">선택삭제</button>
+                            <button type="button" class="m-btn btn-line" id="selDelete">선택삭제</button>
                             <div>
                                 <p>총 <span class="txt-B"> 10</span>명</p>
                             </div>
@@ -46,70 +51,10 @@
                                 <th>삭제</th>
                             </tr>
                             </thead>
-                            <tbody class="adTable-body ">
-                            <tr>
-                                <td><input type="checkbox" id="ch1"><label for="ch1"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" id="ch2"><label for="ch2"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" id="ch3"><label for="ch3"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" id="ch4"><label for="ch4"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" id="ch5"><label for="ch5"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" id="ch6"><label for="ch6"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" id="ch7"><label for="ch7"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" id="ch8"><label for="ch8"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" id="ch9"><label for="ch9"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" id="ch10"><label for="ch10"></label></td>
-                                <td>김잇플</td>
-                                <td>010-1234-5678</td>
-                                <td><button type="button" class="delBtn">삭제</button></td>
-                            </tr>
+                            <tbody class="adTable-body">
                             </tbody>
                         </table>
-                        <ul class="pagination">
+                        <!--<ul class="pagination">
                             <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
                             <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
                             <li class="page-item"><a class="page-link active" href="#">1</a></li>
@@ -119,13 +64,13 @@
                             <li class="page-item"><a class="page-link" href="#">5</a></li>
                             <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
                             <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
-                        </ul>
+                        </ul>-->
                     </div>
                 </div>
                 <div class="smsRight">
                     <label for="">메시지 내용</label>
-                    <textarea placeholder="메시지 내용 입력 "></textarea>
-                    <p class="smsbyte"><span class="txt-B">0</span> byte</p>
+                    <textarea placeholder="메시지 내용 입력" id="message"></textarea>
+                    <p class="smsbyte"><span class="txt-B" id="smsbyte">0</span> byte</p>
                 </div>
             </div>
             <div class="btn-center Tbtn">
@@ -191,11 +136,7 @@
                                 <col style="width: auto;">
                             </colgroup>
                             <tbody class="table-body checklist2">
-                                <tr>
-                                    <td><input type="checkbox" id="mCh1"><label for="mCh1"></label></td>
-                                    <td>김잇플</td>
-                                    <th>010-1234-5678</th>
-                                </tr>
+
                                 <tr>
                                     <td><input type="checkbox" id="mCh2"><label for="mCh2"></label></td>
                                     <td>김잇플</td>
@@ -258,12 +199,52 @@
         $('.submitBtn').on('click', function () {
             $('.modal').addClass('on');
         });
+
         $('.searchM').on('click', function () {
             $('#searchM').addClass('on');
         });
+
+        $("#selDelete").on("click", function(){
+            $(".smsTable .adTable-body tr input:checkbox").each(function(){
+                if($(this).is(":checked")){
+                    $(this).parent().parent().remove();
+                }
+            })
+        });
+
+        $("#btnSearchTelNo").on("click", function(){
+           goAction("L2");
+        });
+
         $(document).on("click", ".modalClose, .modalOff, .modal-bg", function(){
             $(this).parents('.modal').removeClass('on');
         })
+
+        $(document).on("click", ".delBtn", function(){
+           $(this).parent().parent().remove();
+        });
+
+        $(document).on("keyup","#message",function(){
+            stringByteLength = (function(s,b,i,c){
+                for(b=i=0;c=s.charCodeAt(i++);b+=c>>11?3:c>>7?2:1);
+                return b
+            })($(this).val());
+            $("#smsbyte").text(stringByteLength);
+        });
+
+        $("#btnTelAdd").on("click", function(){
+            var idx = $(".smsTable .adTable-body tr").length == 0 ? 1 : $(".smsTable .adTable-body tr").length+1;
+            var telNo = $("#inputTelNo").val();
+            var telNoStr = telNo.replaceAll("-","");
+            var html = "<tr>\n" +
+                "<td><input type=\"checkbox\" id=\"ch_"+idx+"\"><label for=\"ch_"+idx+"\"></label></td>\n" +
+                "<td style='text-align: center'></td>\n" +
+                "<td>"+telNo+"<input type=\"hidden\" name=\"receiverList\" value=\""+telNoStr+"\" /></td>\n" +
+                "<td><button type=\"button\" class=\"delBtn\">삭제</button></td>\n" +
+                "</tr>";
+            $("#inputTelNo").val("");
+            $(".smsTable .adTable-body").append(html);
+        });
 
         function goSave(){
             var className = $("#className").val();

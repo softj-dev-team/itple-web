@@ -139,10 +139,9 @@ public class SearchVO {
 
 	//SMS관리
 	private int pageSize;
-	private String searchStartDate;
 	private int limitDay;
 	private int mid;
-	private String receiverList;
+	private String[] receiverList;
 	private String message;
 
 	//관리자-반관리

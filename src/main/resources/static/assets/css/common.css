@@ -2518,15 +2518,13 @@ div.NOT_SUBMIT {
     min-width: 20px;
     white-space: nowrap;
 }
-.smsTable tr th:nth-child(1){width: 5%;}
-.smsTable tr th:nth-child(2){width: 7%;}
-.smsTable tr th:nth-child(3){width: 11%;}
-.smsTable tr th:nth-child(4){width: auto;}
-.smsTable tr th:nth-child(5){width: 10%;}
-.smsTable tr th:nth-child(6){width: 15%;}
-.smsTable tr th:nth-child(7){width: 12%;}
+.smsTable tr th:nth-child(1){width: 7%;}
+.smsTable tr th:nth-child(2){width: auto;}
+.smsTable tr th:nth-child(3){width: 10%;}
+.smsTable tr th:nth-child(4){width: 15%;}
+.smsTable tr th:nth-child(5){width: 20%;}
 .smsTable tr td{cursor: pointer;}
-.smsTable tr td:not(:nth-child(4)){text-align: center;}
+.smsTable tr td:not(:nth-child(2)){text-align: center;}
 a.a-btn{
     display: block;
     height:40px;
@@ -2589,7 +2587,6 @@ a.a-btn{
 .smsList-n .smsTable tr th:nth-child(2) {width: 23%;}
 .smsList-n .smsTable tr th:nth-child(3) {width: auto;}
 .smsList-n .smsTable tr th:nth-child(4) {width: 15%;}
-.smsList-n .smsTable tbody tr td:nth-child(3) {text-align: left;}
 .adTable button.delBtn {
     background: url(../img/delete.png) no-repeat center / contain;
     width: 15px;

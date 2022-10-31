@@ -129,7 +129,7 @@ public class RestUtil {
                 Set<String> keys = headers.keySet();
                 for(String key:keys) {
                     if(!headers.get(key).equals(""))
-                        request.addHeader(key,(String)headers.get(key));
+                        request.addHeader(key,String.valueOf(headers.get(key)));
                 }
             }
 
@@ -138,7 +138,7 @@ public class RestUtil {
                 Set<String> keys = bodys.keySet();
                 for (String key:keys) {
                     if(!bodys.get(key).equals(""))
-                        entity.add(new BasicNameValuePair(key, (String)bodys.get(key)));
+                        entity.add(new BasicNameValuePair(key, String.valueOf(bodys.get(key))));
                 }
             }
 
