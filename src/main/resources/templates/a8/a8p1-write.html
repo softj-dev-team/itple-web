@@ -103,8 +103,7 @@
     </div>
     <script th:src="@{/assets/js/a8/a8p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
-        var windowObj;
-        function popup() { windowObj = window.open("/a8/p1-popup", "list", "width=830, height=520"); }
+        function popup() { window.open("/a8/p1-popup", "list", "width=830, height=520"); }
         function getSelectTelNoList(){
             var studentNameList = $("#studentNameList").val();
             var studentTelNoList = $("#studentTelNoList").val();
