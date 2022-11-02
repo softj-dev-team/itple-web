@@ -63,4 +63,12 @@ public class A8Controller {
         model.addAttribute("params",params);
         return "a8/a8p1-write";
     }
+
+    //등록
+    @GetMapping("/p1-popup")
+    public String p1popup(ModelMap model, SearchVO params, @PageableDefault(size=6) Pageable pageable){
+        model.addAttribute("list", a8service.getStudentParentList(params, pageable));
+        model.addAttribute("params",params);
+        return "a8/a8p1-popup";
+    }
 }

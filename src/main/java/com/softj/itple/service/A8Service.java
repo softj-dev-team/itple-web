@@ -229,13 +229,13 @@ public class A8Service {
         aligoUtil.smsSend(receiverListStr, params.getMessage());
     }
 
-    public Page<Student> getStudentParentList(SearchVO params, Pageable pageable){
+    public Page<A8StudentDTO> getStudentParentList(SearchVO params, Pageable pageable){
 
-        int studentListTotal = studentRepo.getStudentByStudentOrParentTotal(params.getTelNo() != null ? params.getTelNo() : null, params.getUserName() != null ? params.getUserName() : null);
+        int studentListTotal = studentRepo.getStudentByStudentOrParentTotal(params.getSearchType() != null ? params.getSearchType() : null, params.getSearchValue() != null ? params.getSearchValue() : null);
 
-        List<Student> studentList = studentRepo.getStudentByStudentOrParent(params.getTelNo() != null ? params.getTelNo() : null, params.getUserName() != null ? params.getUserName() : null);
+        List<A8StudentDTO> studentList = studentRepo.getStudentByStudentOrParent(params.getSearchType() != null ? params.getSearchType() : null, params.getSearchValue() != null ? params.getSearchValue() : null, pageable);
 
-        return new PageImpl<Student>(studentList, pageable, studentListTotal);
+        return new PageImpl<A8StudentDTO>(studentList, pageable, studentListTotal);
     }
 
 }

@@ -15,19 +15,6 @@
                     <input type="hidden" id="page" name="page" th:value="${data.get('firstPage')}">
                     <input type="hidden" id="pageOffset" name="pageOffset"  th:value="${data.get('firstPageOffset')}">
                     <input type="hidden" id="pageNum" name="pageNum" th:value="${params.pageNum}">
-                    <!--<input type="hidden" id="pageList" name="pageList" th:value="${data.get('pageList')}">
-                    <input type="hidden" id="pageOffsetList" name="pageOffsetList"  th:value="${data.get('pageOffsetList')}">-->
-                    <!--<input type="hidden" id="nextPage" name="nextPage" th:value="${data.get('nextPage')}">
-                    <input type="hidden" id="prevPage" name="prevPage" th:value="${data.get('prevPage')}">
-                    <input type="hidden" id="nextPageOffset" name="nextPageOffset" th:value="${data.get('nextPageOffset')}">
-                    <input type="hidden" id="prevPageOffset" name="prevPageOffset" th:value="${data.get('prevPageOffset')}">
-                    <input type="hidden" id="savePrePrevPage" name="savePrePrevPage" th:value="${data.get('savePrePrevPage')}">
-                    <input type="hidden" id="savePrePrevOffset" name="savePrePrevOffset" th:value="${data.get('savePrePrevOffset')}">
-                    <input type="hidden" id="savePrePrevPage2" name="savePrePrevPage2" th:value="${data.get('savePrePrevPage2')}">
-                    <input type="hidden" id="savePrePrevOffset2" name="savePrePrevOffset2" th:value="${data.get('savePrePrevOffset2')}">
-                    <input type="hidden" id="savePrevPage" name="savePrevPage" th:value="${data.get('savePrevPage')}">
-                    <input type="hidden" id="savePrevOffset" name="savePrevOffset" th:value="${data.get('savePrevOffset')}">
-                    <input type="hidden" id="prev" name="prev" th:value="${data.get('prev')}">-->
                     <div class="formWrap formWrap2">
                         <table class="formLeft">
                             <tbody>
@@ -74,25 +61,20 @@
                 <thead class="adTable-head">
                 <tr>
                     <th>번호</th>
-                    <!--<th>이름</th>-->
                     <th>내용</th>
                     <th>발송건수</th>
                     <th>전송상태</th>
-                    <!--<th>수신번호</th>-->
                     <th>발송일자</th>
                 </tr>
                 </thead>
                 <tbody class="adTable-body sms-body">
                 <tr th:each="el : ${data.get('list')}">
                     <td>
-                        <!--<span th:text="${data.get('list').pageable.offset+elStat.count}"></span>-->
                         <span th:text="${(20*params.pageNum)+elStat.count}"></span>
                     </td>
-                    <!--<td>김잇플</td>-->
                     <td th:text="${el.msg}">메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
                     <td th:text="${el.sms_count}">3</td>
                     <td th:text="${el.reserve_state}">전송완료</td>
-                    <!--<td th:text="${el['sender']}">010-1234-5678</td>-->
                     <td th:text="${el.reg_date}">2022.09.16</td>
                     <input type="hidden" name="id" th:value="${elStat.count}"/>
                     <input type="hidden" name="type" th:id="|type${elStat.count}|" th:value="${el.type}"/>
@@ -104,10 +86,6 @@
         </div>
         <!--페이지네이션-->
         <th:block th:with="totalPageSize=${data.get('totalPageSize')}, pageList=${data.get('pageList')}, pageOffsetList=${data.get('pageOffsetList')}, pageNum=${params.pageNum}" th:include="layout/smsPagination :: pagination"></th:block>
-       <!-- <ul class="pagination pagi2">
-            <li class="page-arrow" th:if="${params.pageNum > 0}"><a class="page-link p-L1" href="javascript:void(0)" onclick="prev()">이전</a></li>
-            <li class="page-arrow" th:if="${#strings.equals(data.get('nextYn'),'Y')}"><a class="page-link p-R1" href="javascript:void(0)" onclick="next()">다음</a></li>
-        </ul>-->
     </div>
     <div class="modal" id="smsModal">
         <div class="modal-bg"></div>

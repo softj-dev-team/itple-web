@@ -1,8 +1,8 @@
 package com.softj.itple.repo;
 
+import com.softj.itple.domain.A8StudentDTO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AcademyClass;
-import com.softj.itple.entity.Admin;
 import com.softj.itple.entity.Student;
 import com.softj.itple.entity.User;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -125,17 +124,17 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
     List<Student> getStudentExcelList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue);
 
 
-    @Query(value = "select COUNT(A.id) from Student A JOIN User B ON B.id = A.user_id where  A.isDeleted = false " +
-            "       AND CASE WHEN CAST(:telNo AS TEXT) IS NOT NULL THEN (A.tel_no LIKE '%'||CAST(:telNo AS TEXT)||'%' OR A.parent_tel LIKE '%'||CAST(:telNo AS TEXT)||'%')" +
+    @Query(value = "select COUNT(A.id) from tb_student A JOIN tb_user B ON B.id = A.user_id where  A.is_deleted = false " +
+            "       AND CASE WHEN CAST(:searchType AS TEXT) = 'telNo' THEN (A.tel_no LIKE '%'||CAST(:searchValue AS TEXT)||'%' OR A.parent_tel LIKE '%'||CAST(:searchValue AS TEXT)||'%')" +
             "       ELSE 1=1 END" +
-            "       AND CASE WHEN CAST(:userName AS TEXT) IS NOT NULL THEN (B.user_name LIKE '%'||CAST(:userName AS TEXT)||'%' OR A.parent_name LIKE '%'||CAST(:userName AS TEXT)||'%')" +
+            "       AND CASE WHEN CAST(:searchType AS TEXT) = 'userName' THEN (B.user_name LIKE '%'||CAST(:searchValue AS TEXT)||'%' OR A.parent_name LIKE '%'||CAST(:searchValue AS TEXT)||'%')" +
             "       ELSE 1=1 END", nativeQuery = true)
-    int getStudentByStudentOrParentTotal(@Param("telNo")String telNo, @Param("userName")String userName);
+    int getStudentByStudentOrParentTotal(@Param("searchType")String searchType, @Param("searchValue")String searchValue);
 
-    @Query(value = "select A.* from Student A JOIN User B ON B.id = A.user_id where  A.isDeleted = false " +
-            "       AND CASE WHEN CAST(:telNo AS TEXT) IS NOT NULL THEN (A.tel_no LIKE '%'||CAST(:telNo AS TEXT)||'%' OR A.parent_tel LIKE '%'||CAST(:telNo AS TEXT)||'%')" +
+    @Query(value = "select A.tel_no AS telNo, A.parent_name AS parentName, A.parent_tel AS parentTel, B.user_name AS userName from tb_student A JOIN tb_user B ON B.id = A.user_id where  A.is_deleted = false " +
+            "       AND CASE WHEN CAST(:searchType AS TEXT) = 'telNo' THEN (A.tel_no LIKE '%'||CAST(:searchValue AS TEXT)||'%' OR A.parent_tel LIKE '%'||CAST(:searchValue AS TEXT)||'%')" +
             "       ELSE 1=1 END" +
-            "       AND CASE WHEN CAST(:userName AS TEXT) IS NOT NULL THEN (B.user_name LIKE '%'||CAST(:userName AS TEXT)||'%' OR A.parent_name LIKE '%'||CAST(:userName AS TEXT)||'%')" +
+            "       AND CASE WHEN CAST(:searchType AS TEXT) = 'userName' THEN (B.user_name LIKE '%'||CAST(:searchValue AS TEXT)||'%' OR A.parent_name LIKE '%'||CAST(:searchValue AS TEXT)||'%')" +
             "       ELSE 1=1 END ORDER BY B.user_name collate \"ko_KR.utf8\" asc", nativeQuery = true)
-    List<Student> getStudentByStudentOrParent(@Param("telNo")String telNo, @Param("userName")String userName);
+    List<A8StudentDTO> getStudentByStudentOrParent(@Param("searchType")String searchType, @Param("searchValue")String searchValue, Pageable pageable);
 }

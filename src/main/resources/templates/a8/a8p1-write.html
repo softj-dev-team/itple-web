@@ -15,6 +15,7 @@
                 / LMS 전송가능 건수 : <span class="txt-B" th:text="${data['result']['LMS_CNT']}">99</span>
                 / MMS 전송가능 건수 : <span class="txt-B" th:text="${data['result']['MMS_CNT']}">99</span>
             </p>
+            <form name="form1" id="form1">
             <div class="writeCon writeHead2 smsBox">
                 <div class="smsLeft">
                     <div class="smsN">
@@ -31,8 +32,11 @@
                             <div class="flexStart">
                                 <input type="text" placeholder="수신번호 입력" class="input-df" id="inputTelNo">
                                 <button type="button" class="m-btn" id="btnTelAdd">추가</button>
-<!--                                <button type="button" class="m-btn btn-line searchM" id="btnSearchTelNo">검색</button>-->
-                                <button type="button" class="m-btn btn-line searchM" id="btnSearchTelNo" onclick="popup();">검색</button>
+                                <button type="button" class="m-btn btn-line searchM" onclick="popup();">검색</button>
+                                <input type="hidden" name="studentNameList" id="studentNameList"/>
+                                <input type="hidden" name="studentTelNoList" id="studentTelNoList"/>
+                                <input type="hidden" name="parentNameList" id="parentNameList"/>
+                                <input type="hidden" name="parentTelNoList" id="parentTelNoList"/>
                             </div>
                         </div>
                     </div>
@@ -40,7 +44,7 @@
                         <div class="flexwrap smsList-h">
                             <button type="button" class="m-btn btn-line" id="selDelete">선택삭제</button>
                             <div>
-                                <p>총 <span class="txt-B"> 10</span>명</p>
+                                <p>총 <span class="txt-B" id="totalNum"> 0</span>명</p>
                             </div>
                         </div>
                         <table class="adTable smsTable checklist">
@@ -70,13 +74,14 @@
                 </div>
                 <div class="smsRight">
                     <label for="">메시지 내용</label>
-                    <textarea placeholder="메시지 내용 입력" id="message"></textarea>
+                    <textarea placeholder="메시지 내용 입력" name="message" id="message"></textarea>
                     <p class="smsbyte"><span class="txt-B" id="smsbyte">0</span> byte</p>
                 </div>
             </div>
             <div class="btn-center Tbtn">
-                <button type="submit" class="btn submitBtn">메시지 전송</button>
+                <button type="button" class="btn submitBtn">메시지 전송</button>
             </div>
+            </form>
         </div>
     </div>
     <div class="modal">
@@ -96,109 +101,66 @@
             </div>
         </div>
     </div>
-
-<!--    <div class="modal" id="searchM">-->
-<!--        <div class="modal-bg"></div>-->
-<!--        <div class="modalContent xs modalP">-->
-<!--            <div class="modalHd">-->
-<!--                <h3>수신번호검색</h3>-->
-<!--                <button class="modalClose"></button>-->
-<!--            </div>-->
-<!--            <div class="modalBody">-->
-<!--                <div class="mSearch">-->
-<!--                    <select>-->
-<!--                        <option>전체</option>-->
-<!--                        <option>이름</option>-->
-<!--                        <option>번호</option>-->
-<!--                    </select>-->
-<!--                    <input type="text">-->
-<!--                    <button type="button" class="btn">검색</button>-->
-<!--                </div>-->
-<!--                <div class="moTable-con">-->
-<!--                    <table class="table modalTable admodalT">-->
-<!--                        <colgroup>-->
-<!--                            <col style="width: 15%;">-->
-<!--                            <col style="width: 25%;">-->
-<!--                            <col style="width: auto;">-->
-<!--                        </colgroup>-->
-<!--                        <thead class="table-head">-->
-<!--                        <tr>-->
-<!--                            <th><input type="checkbox" id="all-chk2"><label for="all-chk2"></label></th>-->
-<!--                            <th>이름</th>-->
-<!--                            <th>번호</th>-->
-<!--                        </tr>-->
-<!--                        </thead>-->
-<!--                    </table>-->
-<!--                    <div class="body-scroll">-->
-<!--                        <table class="table modalTable admodalT">-->
-<!--                            <colgroup>-->
-<!--                                <col style="width: 15%;">-->
-<!--                                <col style="width: 25%;">-->
-<!--                                <col style="width: auto;">-->
-<!--                            </colgroup>-->
-<!--                            <tbody class="table-body checklist2">-->
-
-<!--                                <tr>-->
-<!--                                    <td><input type="checkbox" id="mCh2"><label for="mCh2"></label></td>-->
-<!--                                    <td>김잇플</td>-->
-<!--                                    <th>010-1234-5678</th>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td><input type="checkbox" id="mCh3"><label for="mCh3"></label></td>-->
-<!--                                    <td>김잇플</td>-->
-<!--                                    <th>010-1234-5678</th>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td><input type="checkbox" id="mCh4"><label for="mCh4"></label></td>-->
-<!--                                    <td>김잇플</td>-->
-<!--                                    <th>010-1234-5678</th>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td><input type="checkbox" id="mCh5"><label for="mCh5"></label></td>-->
-<!--                                    <td>김잇플</td>-->
-<!--                                    <th>010-1234-5678</th>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td><input type="checkbox" id="mCh6"><label for="mCh6"></label></td>-->
-<!--                                    <td>김잇플</td>-->
-<!--                                    <th>010-1234-5678</th>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td><input type="checkbox" id="mCh7"><label for="mCh7"></label></td>-->
-<!--                                    <td>김잇플</td>-->
-<!--                                    <th>010-1234-5678</th>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td><input type="checkbox" id="mCh8"><label for="mCh8"></label></td>-->
-<!--                                    <td>김잇플</td>-->
-<!--                                    <th>010-1234-5678</th>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td><input type="checkbox" id="mCh9"><label for="mCh9"></label></td>-->
-<!--                                    <td>김잇플</td>-->
-<!--                                    <th>010-1234-5678</th>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td><input type="checkbox" id="mCh10"><label for="mCh10"></label></td>-->
-<!--                                    <td>김잇플</td>-->
-<!--                                    <th>010-1234-5678</th>-->
-<!--                                </tr>-->
-<!--                            </tbody>-->
-<!--                        </table>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="modalBtnWrap">-->
-<!--                    <button type="button" class="btn btn-gray modalOff">취소</button>-->
-<!--                    <button type="button" class="btn btn-blue" id="confirm-callback-btn">선택추가</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-    <script th:src="@{/assets/js/a7/a7p1.js(v='1.0.0')}"></script>
+    <script th:src="@{/assets/js/a8/a8p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
-        function popup() { window.open("a8p1-popup.html", "list", "width=430, height=470"); }
+        var windowObj;
+        function popup() { windowObj = window.open("/a8/p1-popup", "list", "width=830, height=630"); }
+        function getSelectTelNoList(){
+            var studentNameList = $("#studentNameList").val();
+            var studentTelNoList = $("#studentTelNoList").val();
+            var parentNameList = $("#parentNameList").val();
+            var parentTelNoList = $("#parentTelNoList").val();
+            var idx = $(".smsTable .adTable-body tr").length == 0 ? 1 : $(".smsTable .adTable-body tr").length+1;
+            var totalNum = parseInt($("#totalNum").text());
+            var addNum = 0;
+
+            if(studentTelNoList != ""){
+                var studentNameArr = studentNameList.split(",");
+                var studentTelNoArr = studentTelNoList.split(",");
+
+                for(var i=0; i<studentTelNoArr.length; i++){
+                    var name = studentNameArr[i];
+                    var telNo = studentTelNoArr[i];
+                    var telNoStr = telNo.replaceAll("-","");
+
+                    var html = "<tr>\n" +
+                        "<td><input type=\"checkbox\" id=\"ch_"+idx+"\"><label for=\"ch_"+idx+"\"></label></td>\n" +
+                        "<td style='text-align: center'>"+name+"</td>\n" +
+                        "<td>"+telNo+"<input type=\"hidden\" name=\"receiverList\" value=\""+telNoStr+"\" /></td>\n" +
+                        "<td><button type=\"button\" class=\"delBtn\">삭제</button></td>\n" +
+                        "</tr>";
+                    $(".smsTable .adTable-body").append(html);
+                    idx++;
+                    addNum++;
+                }
+            }
+
+            if(parentTelNoList != ""){
+                var parentNameArr = parentNameList.split(",");
+                var parentTelNoArr = parentTelNoList.split(",");
+
+                for(var i=0; i<parentTelNoArr.length; i++){
+                    var name = parentNameArr[i];
+                    var telNo = parentTelNoArr[i];
+                    var telNoStr = telNo.replaceAll("-","");
+
+                    var html = "<tr>\n" +
+                        "<td><input type=\"checkbox\" id=\"ch_"+idx+"\"><label for=\"ch_"+idx+"\"></label></td>\n" +
+                        "<td style='text-align: center'>"+name+"</td>\n" +
+                        "<td>"+telNo+"<input type=\"hidden\" name=\"receiverList\" value=\""+telNoStr+"\" /></td>\n" +
+                        "<td><button type=\"button\" class=\"delBtn\">삭제</button></td>\n" +
+                        "</tr>";
+                    $(".smsTable .adTable-body").append(html);
+                    idx++;
+                    addNum++;
+                }
+            }
+
+            $("#totalNum").text(totalNum+addNum);
+
+        }
         $('.submitBtn').on('click', function () {
-            $('.modal').addClass('on');
+            goAction("S1");
         });
 
         $('.searchM').on('click', function () {
@@ -206,11 +168,15 @@
         });
 
         $("#selDelete").on("click", function(){
+            var totalNum = parseInt($("#totalNum").text());
+            var removeNum = 0;
             $(".smsTable .adTable-body tr input:checkbox").each(function(){
                 if($(this).is(":checked")){
                     $(this).parent().parent().remove();
+                    removeNum++;
                 }
-            })
+            });
+            $("#totalNum").text(totalNum-removeNum);
         });
 
         $("#btnSearchTelNo").on("click", function(){
@@ -222,7 +188,9 @@
         })
 
         $(document).on("click", ".delBtn", function(){
-           $(this).parent().parent().remove();
+            var totalNum = parseInt($("#totalNum").text());
+            $("#totalNum").text(totalNum-1);
+            $(this).parent().parent().remove();
         });
 
         $(document).on("keyup","#message",function(){
@@ -237,14 +205,28 @@
             var idx = $(".smsTable .adTable-body tr").length == 0 ? 1 : $(".smsTable .adTable-body tr").length+1;
             var telNo = $("#inputTelNo").val();
             var telNoStr = telNo.replaceAll("-","");
-            var html = "<tr>\n" +
-                "<td><input type=\"checkbox\" id=\"ch_"+idx+"\"><label for=\"ch_"+idx+"\"></label></td>\n" +
-                "<td style='text-align: center'></td>\n" +
-                "<td>"+telNo+"<input type=\"hidden\" name=\"receiverList\" value=\""+telNoStr+"\" /></td>\n" +
-                "<td><button type=\"button\" class=\"delBtn\">삭제</button></td>\n" +
-                "</tr>";
-            $("#inputTelNo").val("");
-            $(".smsTable .adTable-body").append(html);
+            var totalNum = parseInt($("#totalNum").text());
+
+            if(telNo != "") {
+                var regPhone = /^\d{3}-\d{3,4}-\d{4}$/;
+                if (!regPhone.test(telNo)) {
+                    modal.alert('수신번호가 핸드폰 번호 형식이 아닙니다. (010-0000-0000)');
+                    return;
+                }
+
+                var html = "<tr>\n" +
+                    "<td><input type=\"checkbox\" id=\"ch_"+idx+"\"><label for=\"ch_"+idx+"\"></label></td>\n" +
+                    "<td style='text-align: center'></td>\n" +
+                    "<td>"+telNo+"<input type=\"hidden\" name=\"receiverList\" value=\""+telNoStr+"\" /></td>\n" +
+                    "<td><button type=\"button\" class=\"delBtn\">삭제</button></td>\n" +
+                    "</tr>";
+                $("#totalNum").text(totalNum+1);
+                $("#inputTelNo").val("");
+                $(".smsTable .adTable-body").append(html);
+            }else{
+                modal.alert("수신번호를 입력하세요");
+                return;
+            }
         });
 
         function goSave(){

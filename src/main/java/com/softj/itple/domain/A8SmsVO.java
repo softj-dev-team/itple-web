@@ -1,6 +1,5 @@
 package com.softj.itple.domain;
 
-import com.softj.itple.entity.Student;
 import lombok.Getter;
 import lombok.Setter;
 

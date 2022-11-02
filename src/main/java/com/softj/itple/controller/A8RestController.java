@@ -26,12 +26,12 @@ public class A8RestController {
     }
 
     //연락처목록
-    @PostMapping("/p1/l2")
+   /* @PostMapping("/p1/l2")
     public Response p1l2(SearchVO params, Pageable pageable){
         return  Response.builder()
                 .data(a8Service.getStudentParentList(params, pageable))
                 .build();
-    }
+    }*/
 
     //메세지 전송
     @PostMapping("/p1/s1")

@@ -50,40 +50,14 @@ function goAction(flag, arg1, arg2) {
             var formS1 = $('#form1');
             var url = path + '/p1/s1';
 
-            modal.confirm("저장하시겠습니까?", function () {
+            modal.confirm("전송하시겠습니까?", function () {
 
                 $.post(url, formS1.serialize(), function () {
                     loading(0);
-                    modal.alert('저장되었습니다.');
-                    ut.redirect("/a7/p1", "academyType", arg1);
+                    modal.alert('전송되었습니다.');
+                    ut.reload();
                 });
             });
-            break;
-        case "L2":
-            var url = path +"/p1/l2";
-
-            $.post(url, {"page":0} ,function(res){
-                var idx = 1;
-                $("#searchM .modalTable .admodalT .checklist2 tr").remove();
-                var data = res.data;
-                var html = "";
-                /*data.forEach(el => function(){
-                    html ="<tr>\n" +
-                    "<td><input type=\"checkbox\" id=\"mCh_"+idx+"\"><label for=\"mCh_"+idx+"\"></label></td>\n" +
-                    "<td>힉셍 :"+data.user.userName+"</td>\n" +
-                    "<th>"+data.telNo+"</th>\n" +
-                    "</tr>\n" +
-                    "<tr>\n";
-                    idx += 1;
-                    html += "<td><input type=\"checkbox\" id=\"mCh_"+idx+"\"><label for=\"mCh_"+idx+"\"></label></td>\n" +
-                    "<td>부모님 :"+data.parentTel+"</td>\n" +
-                    "<th>"+data.telNo+"</th>\n" +
-                    "</tr>\n";
-                    idx++;
-                });*/
-                //$("#searchM .modalTable .admodalT .checklist2").append(html);
-            });
-
             break;
         // 메세지 상세정보
         case "P1":
@@ -134,7 +108,7 @@ function goAction(flag, arg1, arg2) {
 
             });
             break;
-        case "E1":
+        case "P2":
             break;
         case "D1":
             break;

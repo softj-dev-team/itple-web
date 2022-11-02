@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="layout/layout">
+      layout:decorate="layout/none-layout">
 <head>
     <title>관리자 설정</title>
     <style>
@@ -66,93 +66,146 @@
 <body>
     <div class="popup" id="searchM">
         <div class="popBody">
+            <form name="form1" id="form1" action="">
+            <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
             <div class="mSearch">
-                <select>
-                    <option>전체</option>
-                    <option>이름</option>
-                    <option>번호</option>
+                <select name="searchType" id="searchType">
+                    <option th:selected="${#strings.equals(param.searchType, 'userName')}" value="userName">이름</option>
+                    <option th:selected="${#strings.equals(param.searchType, 'telNo')}" value="telNo">번호</option>
                 </select>
-                <input type="text">
-                <button type="button" class="btn">검색</button>
+                <input type="text" name="searchValue" id="test1" th:value="${param.searchValue}">
+                <button type="button" class="btn" onclick="goSearch();">검색</button>
             </div>
+            </form>
             <div class="popTable-con">
                 <table class="table popTable">
                     <colgroup>
+                        <col style="width: 5%;">
+                        <col style="width: 10%;">
                         <col style="width: 15%;">
-                        <col style="width: 25%;">
-                        <col style="width: auto;">
+                        <col style="width: 20%;">
+                        <col style="width: 5%;">
+                        <col style="width: 10%;">
+                        <col style="width: 15%;">
+                        <col style="width: 20%;">
                     </colgroup>
                     <thead class="table-head">
                         <tr>
-                            <th><input type="checkbox" id="all-chk2"><label for="all-chk2"></label></th>
+                            <th><input type="checkbox" id="all-chk1"><label for="all-chk1"></label></th>
+                            <th>구분</th>
+                            <th>이름</th>
+                            <th>번호</th>
+                            <th><input type="checkbox" id="all-chk3"><label for="all-chk3"></label></th>
+                            <th>구분</th>
                             <th>이름</th>
                             <th>번호</th>
                         </tr>
                     </thead>
                 </table>
-                <div class="body-scroll">
+                <div>
                     <table class="table popTable">
                         <colgroup>
+                            <col style="width: 5%;">
+                            <col style="width: 10%;">
                             <col style="width: 15%;">
-                            <col style="width: 25%;">
-                            <col style="width: auto;">
+                            <col style="width: 20%;">
+                            <col style="width: 5%;">
+                            <col style="width: 10%;">
+                            <col style="width: 15%;">
+                            <col style="width: 20%;">
                         </colgroup>
                         <tbody class="table-body checklist2">
-
-                        <tr>
-                            <td><input type="checkbox" id="mCh2"><label for="mCh2"></label></td>
-                            <td>김잇플</td>
-                            <th>010-1234-5678</th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" id="mCh3"><label for="mCh3"></label></td>
-                            <td>김잇플</td>
-                            <th>010-1234-5678</th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" id="mCh4"><label for="mCh4"></label></td>
-                            <td>김잇플</td>
-                            <th>010-1234-5678</th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" id="mCh5"><label for="mCh5"></label></td>
-                            <td>김잇플</td>
-                            <th>010-1234-5678</th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" id="mCh6"><label for="mCh6"></label></td>
-                            <td>김잇플</td>
-                            <th>010-1234-5678</th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" id="mCh7"><label for="mCh7"></label></td>
-                            <td>김잇플</td>
-                            <th>010-1234-5678</th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" id="mCh8"><label for="mCh8"></label></td>
-                            <td>김잇플</td>
-                            <th>010-1234-5678</th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" id="mCh9"><label for="mCh9"></label></td>
-                            <td>김잇플</td>
-                            <th>010-1234-5678</th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" id="mCh10"><label for="mCh10"></label></td>
-                            <td>김잇플</td>
-                            <th>010-1234-5678</th>
+                        <tr th:each="el : ${list}">
+                            <td>
+                                <input type="checkbox" name="chkStudent" th:id="|chkStudent${elStat.count}|"><label th:for="|chkStudent${elStat.count}|"></label>
+                                <input type="hidden" name="studentNameList" th:value="${el.userName}"/>
+                                <input type="hidden" name="studentTelNoList" th:value="${el.telNo}"/>
+                            </td>
+                            <td>학생</td>
+                            <td th:text="${el.userName}">김잇플</td>
+                            <th th:text="${el.telNo}">010-1234-5678</th>
+                            <td>
+                                <input type="checkbox" name="chkParent" th:id="|chkParent${9999-elStat.count}|"><label th:for="|chkParent${9999-elStat.count}|"></label>
+                                <input type="hidden" name="parentNameList" th:value="${el.parentName}"/>
+                                <input type="hidden" name="parentTelNoList" th:value="${el.parentTel}"/>
+                            </td>
+                            <td>학부모</td>
+                            <td th:text="${el.parentName}">김잇플</td>
+                            <th th:text="${el.parentTel}">010-1234-5678</th>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <!--페이지네이션-->
+            <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
             <div class="popBtnWrap">
                 <button type="button" class="btn btn-gray popOff" onclick="self.close();">취소</button>
-                <button type="button" class="btn btn-blue" id="confirm-callback-btn">선택추가</button>
+                <button type="button" class="btn btn-blue" id="btnSelect">선택추가</button>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $("#all-chk1").on("click", function(){
+           if($(this).is(":checked")){
+               $("input:checkbox[name=chkStudent]").each(function(){
+                  $(this).prop("checked", true);
+               });
+           }else{
+               $("input:checkbox[name=chkStudent]").each(function(){
+                   $(this).prop("checked", false);
+               });
+           }
+        });
+        $("#all-chk3").on("click", function(){
+            if($(this).is(":checked")){
+                $("input:checkbox[name=chkParent]").each(function(){
+                    $(this).prop("checked", true);
+                });
+            }else{
+                $("input:checkbox[name=chkParent]").each(function(){
+                    $(this).prop("checked", false);
+                });
+            }
+        });
+        $("#btnSelect").on("click",function(){
+            var studentNameList = new Array();
+            var studentTelNoList = new Array();
+            var parentNameList = new Array();
+            var parentTelNoList = new Array();
+
+            $("input:checkbox[name=chkStudent]").each(function(){
+               if($(this).is(":checked")){
+                   var studentName = $(this).siblings("input[name=studentNameList]").val();
+                   var studentTelNo = $(this).siblings("input[name=studentTelNoList]").val();
+                   if(studentTelNo != "") {
+                       studentNameList.push(studentName);
+                       studentTelNoList.push(studentTelNo);
+                   }
+               }
+            });
+
+            $("input:checkbox[name=chkParent]").each(function(){
+                if($(this).is(":checked")){
+                    var parentName = $(this).siblings("input[name=parentNameList]").val();
+                    var parentTelNo = $(this).siblings("input[name=parentTelNoList]").val();
+                    if(parentTelNo != "") {
+                        parentNameList.push(parentName);
+                        parentTelNoList.push(parentTelNo);
+                    }
+                }
+            });
+            window.opener.document.getElementById("studentNameList").value = studentNameList.join(',');
+            window.opener.document.getElementById("studentTelNoList").value = studentTelNoList.join(',');
+            window.opener.document.getElementById("parentNameList").value = parentNameList.join(',');
+            window.opener.document.getElementById("parentTelNoList").value = parentTelNoList.join(',');
+            window.opener.getSelectTelNoList();
+            self.close();
+        });
+        function goSearch(){
+            $("#page").val(0);
+            $("#form1").submit();
+        }
+    </script>
 </body>
 </html>
