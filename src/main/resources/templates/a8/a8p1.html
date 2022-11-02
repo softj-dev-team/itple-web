@@ -11,8 +11,23 @@
         <h1 class="adH1">SMS관리</h1>
         <div class="content-in clearfix">
             <div class="clearfix">
-                <form name="form1" class="formF">
-                    <input type="hidden" id="page" name="page" th:value="${params.page}">
+                <form id="form1" name="form1" class="formF">
+                    <input type="hidden" id="page" name="page" th:value="${data.get('firstPage')}">
+                    <input type="hidden" id="pageOffset" name="pageOffset"  th:value="${data.get('firstPageOffset')}">
+                    <input type="hidden" id="pageNum" name="pageNum" th:value="${params.pageNum}">
+                    <!--<input type="hidden" id="pageList" name="pageList" th:value="${data.get('pageList')}">
+                    <input type="hidden" id="pageOffsetList" name="pageOffsetList"  th:value="${data.get('pageOffsetList')}">-->
+                    <!--<input type="hidden" id="nextPage" name="nextPage" th:value="${data.get('nextPage')}">
+                    <input type="hidden" id="prevPage" name="prevPage" th:value="${data.get('prevPage')}">
+                    <input type="hidden" id="nextPageOffset" name="nextPageOffset" th:value="${data.get('nextPageOffset')}">
+                    <input type="hidden" id="prevPageOffset" name="prevPageOffset" th:value="${data.get('prevPageOffset')}">
+                    <input type="hidden" id="savePrePrevPage" name="savePrePrevPage" th:value="${data.get('savePrePrevPage')}">
+                    <input type="hidden" id="savePrePrevOffset" name="savePrePrevOffset" th:value="${data.get('savePrePrevOffset')}">
+                    <input type="hidden" id="savePrePrevPage2" name="savePrePrevPage2" th:value="${data.get('savePrePrevPage2')}">
+                    <input type="hidden" id="savePrePrevOffset2" name="savePrePrevOffset2" th:value="${data.get('savePrePrevOffset2')}">
+                    <input type="hidden" id="savePrevPage" name="savePrevPage" th:value="${data.get('savePrevPage')}">
+                    <input type="hidden" id="savePrevOffset" name="savePrevOffset" th:value="${data.get('savePrevOffset')}">
+                    <input type="hidden" id="prev" name="prev" th:value="${data.get('prev')}">-->
                     <div class="formWrap formWrap2">
                         <table class="formLeft">
                             <tbody>
@@ -35,14 +50,9 @@
                                     <input type="radio" name="limitDay" id="limitDay1" th:checked="${params.limitDay == 1}" value="1"><label for="limitDay1">하루</label>
                                     <input type="radio" name="limitDay" id="limitDay2" th:checked="${params.limitDay == 7}" value="7"><label for="limitDay2">일주일</label>
                                     <input type="radio" name="limitDay" id="limitDay3" th:checked="${params.limitDay == 30}" value="30"><label for="limitDay3">한달</label>
-                                </td>
-                                <td class="formTit"><label for="pageSize" class="">페이지당 출력행수</label></td>
-                                <td>
-                                    <select name="pageSize" id="pageSize">
-                                        <option value="30" th:selected="${params.pageSize == 30}">30개</option>
-                                        <option value="50" th:selected="${params.pageSize == 50}">50개</option>
-                                        <option value="100" th:selected="${params.pageSize == 100}">100개</option>
-                                    </select>
+                                    <input type="radio" name="limitDay" id="limitDay4" th:checked="${params.limitDay == 90}" value="90"><label for="limitDay4">3개월</label>
+                                    <input type="radio" name="limitDay" id="limitDay5" th:checked="${params.limitDay == 180}" value="180"><label for="limitDay5">6개월</label>
+                                    <input type="radio" name="limitDay" id="limitDay6" th:checked="${params.limitDay == 365}" value="365"><label for="limitDay6">1년</label>
                                 </td>
                             </tr>
                             </tbody>
@@ -73,25 +83,31 @@
                 </tr>
                 </thead>
                 <tbody class="adTable-body sms-body">
-                <tr th:each="el : ${data['result']['list']}">
-                    <td th:text="${(params.page*params.pageSize)-(params.pageSize-elStat.count)}"></td>
+                <tr th:each="el : ${data.get('list')}">
+                    <td>
+                        <!--<span th:text="${data.get('list').pageable.offset+elStat.count}"></span>-->
+                        <span th:text="${(20*params.pageNum)+elStat.count}"></span>
+                    </td>
                     <!--<td>김잇플</td>-->
-                    <td th:text="${el['msg']}">메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
-                    <td th:text="${el['sms_count']}">3</td>
-                    <td th:text="${el['reserve_state']}">전송완료</td>
+                    <td th:text="${el.msg}">메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</td>
+                    <td th:text="${el.sms_count}">3</td>
+                    <td th:text="${el.reserve_state}">전송완료</td>
                     <!--<td th:text="${el['sender']}">010-1234-5678</td>-->
-                    <td th:text="${el['reg_date']}">2022.09.16</td>
+                    <td th:text="${el.reg_date}">2022.09.16</td>
                     <input type="hidden" name="id" th:value="${elStat.count}"/>
-                    <input type="hidden" name="mid" th:id="|mid${elStat.count}|" th:value="${el['mid']}"/>
-                    <input type="hidden" name="msg" th:id="|msg${elStat.count}|" th:value="${el['msg']}"/>
+                    <input type="hidden" name="type" th:id="|type${elStat.count}|" th:value="${el.type}"/>
+                    <input type="hidden" name="mid" th:id="|mid${elStat.count}|" th:value="${el.mid}"/>
+                    <input type="hidden" name="msg" th:id="|msg${elStat.count}|" th:value="${el.msg}"/>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <ul class="pagination pagi2">
-            <li class="page-arrow" th:if="${params.page > 1}"><a class="page-link p-L1" th:href="|/a8/p1?page=${params.page-1}|">이전</a></li>
-            <li class="page-arrow" th:if="${#strings.equals(data.get('result').get('next_yn'),'Y')}"><a class="page-link p-R1" th:href="|/a8/p1?page=${params.page+1}|">다음</a></li>
-        </ul>
+        <!--페이지네이션-->
+        <th:block th:with="totalPageSize=${data.get('totalPageSize')}, pageList=${data.get('pageList')}, pageOffsetList=${data.get('pageOffsetList')}, pageNum=${params.pageNum}" th:include="layout/smsPagination :: pagination"></th:block>
+       <!-- <ul class="pagination pagi2">
+            <li class="page-arrow" th:if="${params.pageNum > 0}"><a class="page-link p-L1" href="javascript:void(0)" onclick="prev()">이전</a></li>
+            <li class="page-arrow" th:if="${#strings.equals(data.get('nextYn'),'Y')}"><a class="page-link p-R1" href="javascript:void(0)" onclick="next()">다음</a></li>
+        </ul>-->
     </div>
     <div class="modal" id="smsModal">
         <div class="modal-bg"></div>
@@ -121,6 +137,20 @@
             $(this).parents('.modal').removeClass('on');
         })
 
+        function prev(){
+            $("#page").val($("#prevPage").val());
+            $("#pageOffset").val(parseInt($("#prevPageOffset").val()));
+            $("#pageNum").val(parseInt($("#pageNum").val())-1);
+            $("#prev").val("Y");
+            $("#form1").submit();
+        }
+        function next(){
+            $("#page").val($("#nextPage").val());
+            $("#pageOffset").val(parseInt($("#nextPageOffset").val()));
+            $("#pageNum").val(parseInt($("#pageNum").val())+1);
+            $("#prev").val("");
+            $("#form1").submit();
+        }
         function goWrite(){
             location.href="/a7/p1-write?academyType="+[[${params.academyType}]];
         }
@@ -128,6 +158,8 @@
 </th:block>
 </body>
 </html>
+
+
 
 
 

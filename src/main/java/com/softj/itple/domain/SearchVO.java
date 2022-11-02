@@ -138,9 +138,12 @@ public class SearchVO {
 	private Student totalMonth;
 
 	//SMS관리
+	private int pageOffset;
+	private int pageNum;
 	private int pageSize;
 	private int limitDay;
 	private int mid;
+	private String type;
 	private String[] receiverList;
 	private String message;
 

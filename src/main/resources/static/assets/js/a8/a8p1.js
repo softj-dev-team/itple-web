@@ -10,6 +10,19 @@ $(function(){
 
 function goSearch(){
     $("#page").val(0);
+    $("#pageNum").val(0);
+    $("#pageOffset").val(0);
+    $("#prevPage").val(0);
+    $("#nextPage").val(0);
+    $("#prevPageOffset").val(0);
+    $("#nextPageOffset").val(0);
+    $("#savePrevPage").val(0);
+    $("#savePrevOffset").val(0);
+    $("#savePrePrevPage").val(0);
+    $("#savePrePrevOffset").val(0);
+    $("#savePrePrevPage2").val(0);
+    $("#savePrePrevOffset2").val(0);
+    $("#prev").val("");
     $("#form1").submit();
 }
 
@@ -77,8 +90,9 @@ function goAction(flag, arg1, arg2) {
             $('#smsModal .modalBody').html("");
             var url = path + '/p1/p1';
             var mid = $("#mid"+arg1).val();
+            var type = $("#type"+arg1).val();
             var message = $("#msg"+arg1).val();
-            $.post(url, {"mid" : mid}, function(res){
+            $.post(url, {"mid" : mid, "type" : type}, function(res){
                 var data = res.data;
                 var html = "";
                 for(var i=0; i< data.length; i++){

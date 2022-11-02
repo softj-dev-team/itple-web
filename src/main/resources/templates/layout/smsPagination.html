@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<th:block th:fragment="pagination">
+    <ul class="pagination"
+         th:with="curPageSlice = ${pageNum/10},
+                  lastPageSlice = ${totalPageSize/10},
+                  curPageNumber = ${pageNum+1},
+                  prevPageNumber = ${pageNum-1},
+                  nextPageNumber = ${pageNum+1},
+                  isPrev = ${pageNum != 0},
+                  isNext = ${pageNum != totalPageSize and totalPageSize != 0},
+                  pageName = ${name != null ? name : 'page'}">
+
+        <li class="page-arrow" th:if="${curPageSlice != 0}">
+            <a class="page-link p-L2" href="javascript:void(0)" data-page="1" data-page-offset="0" data-page-num="0" th:classappend="${pageName}"></a>
+        </li>
+        <li class="page-arrow" th:if="${isPrev}">
+            <a class="page-link p-L1" href="javascript:void(0)" th:attr="data-page=${pageList.get(prevPageNumber)}, data-page-offset=${pageOffsetList.get(prevPageNumber)}, data-page-num=${prevPageNumber}" th:classappend="${pageName}"></a>
+        </li>
+        <li class="page-item">
+            <a class="page-link"
+               href="javascript:void(0)"
+               th:each="i : ${#numbers.sequence(1, (curPageSlice==lastPageSlice ? totalPageSize%10 : 10))}"
+               th:with="page = ${(curPageSlice)*10+i}, idx=${((curPageSlice)*10+i)-1}"
+               th:attr="data-page=${pageList.get(idx)}, data-page-offset=${pageOffsetList.get(idx)}, data-page-num=${idx}"
+               th:classappend="|${(curPageNumber%10 == 0 ? 10 : curPageNumber%10) == i ? 'active' : ''} ${pageName}|"
+               th:if="${i != 0}">
+                [[${page}]]
+            </a>
+        </li>
+        <li class="page-arrow" th:if="${isNext}">
+            <a class="page-link p-R1" href="javascript:void(0)" th:attr="data-page=${pageList.get(nextPageNumber)}, data-page-offset=${pageOffsetList.get(nextPageNumber)}, data-page-num=${nextPageNumber}" th:classappend="${pageName}"></a>
+        </li>
+        <li class="page-arrow" th:if="${curPageSlice != lastPageSlice}">
+            <a class="page-link p-R2" href="javascript:void(0)" th:attr="data-page=${pageList.get(totalPageSize)}, data-page-offset=${pageOffsetList.get(totalPageSize)}, data-page-num=${totalPageSize}" th:classappend="${pageName}"></a>
+        </li>
+    </ul>
+    
+    <script th:inline="javascript">
+        $(function(){
+            $(document).on("click","a.page",function(){
+                var page = $(this).data("page");
+                var pageOffset = $(this).data("pageOffset");
+                var pageNum = $(this).data("pageNum");
+
+                $("#page").val(page);
+                $("#pageOffset").val(pageOffset);
+                $("#pageNum").val(pageNum);
+                $("#form1").submit();
+            });
+        });
+    </script>
+</th:block>
+
+<th:block th:fragment="pageInfo">
+    <div class="cBox">
+        <div class="search-list">
+            <article>
+                <h4>건수</h4>
+                <div class="input">
+                    <div class="selectBox change">
+                        <select th:name="${name != null ? name : 'size'}" onchange="sizeChange()">
+                            <option value="20" th:selected="${list.pageable.pageSize==20}">20건</option>
+                            <option value="40" th:selected="${list.pageable.pageSize==40}">40건</option>
+                            <option value="80" th:selected="${list.pageable.pageSize==80}">80건</option>
+                            <option value="100" th:selected="${list.pageable.pageSize==100}">100건</option>
+                            <option value="200" th:selected="${list.pageable.pageSize==200}">200건</option>
+                            <option value="500" th:selected="${list.pageable.pageSize==500}">500건</option>
+                            <option value="1000" th:selected="${list.pageable.pageSize==1000}">1,000건</option>
+                            <option value="10000" th:selected="${list.pageable.pageSize==10000}">10,000건</option>
+                        </select>
+                    </div>
+                </div>
+            </article>
+
+            <div class="btns">
+                <span class="guide">총 데이터 <b>[[${#numbers.formatInteger(list.totalElements, 1, 'COMMA')}]]</b>건</span>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        function sizeChange(){
+            loading(1);
+            /*<![CDATA[*/
+            var pageName = /*[[${pageName != null ? pageName : 'page'}]]*/'page';
+            var formId = /*[[${formId}]]*/ '';
+            /*]]>*/
+            $("#"+pageName).val(0);
+            $("#"+formId).submit();
+        }
+    </script>
+
+</th:block>
+</html>

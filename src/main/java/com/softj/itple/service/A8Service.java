@@ -1,15 +1,7 @@
 package com.softj.itple.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.softj.itple.domain.A8SmsResultVO;
-import com.softj.itple.domain.A8SmsVO;
-import com.softj.itple.domain.A8StudentVO;
-import com.softj.itple.domain.SearchVO;
+import com.softj.itple.domain.*;
 import com.softj.itple.entity.*;
 import com.softj.itple.repo.StudentRepo;
 import com.softj.itple.util.AligoUtil;
@@ -32,13 +24,129 @@ public class A8Service {
 
     private final StudentRepo studentRepo;
 
-    private final JPAQueryFactory jpaQueryFactory;
-
 
     public Map<String, Object> getSmsList(SearchVO params){
+        Map<String, Object> result = new HashMap<>();
+
+        int pageSize = params.getPageSize();
+        int newPage = params.getPage();
+        int pageOffset = params.getPageOffset();
+        int newPageOffset = 0;
+        int lastPageOffset = 0;
+        int lastNewPage = 0;
+        int realPageSize = 20;
+        int idx = 0;
+        int totalPage = 1;
+        int totalPageOffset = 0;
+        int totalPageSize = 0;
+        int totalIdx = 0;
+        int lastTotalPage = 0;
+        int lastTotalPageOffset = 0;
+        List<Integer> pageList = new ArrayList<Integer>();
+        List<Integer> pageOffsetList = new ArrayList<Integer>();
+
+        String lastNextYn = "";
+        String nextYn = "Y";
+        String totalNextYn = "Y";
+
 
         String startDate = params.getStartDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        return aligoUtil.smsSendList(params.getPage(), params.getPageSize(), startDate, params.getLimitDay());
+
+        int firstPage = 0;
+        int firstPageOffset = 0;
+
+
+        firstPage = newPage;
+        firstPageOffset = pageOffset;
+
+        pageList.add(1);
+        pageOffsetList.add(0);
+
+        List<A8SmsListVO> list = new ArrayList<>();
+
+        while(totalNextYn.equals("Y")) {
+
+            if(totalIdx > realPageSize){
+                pageList.add(lastTotalPage);
+                pageOffsetList.add(lastTotalPageOffset);
+                totalIdx = 0;
+            }
+
+
+            Map<String, Object> totalMap = aligoUtil.smsSendList(totalPage, pageSize, startDate, params.getLimitDay());
+            if (Objects.nonNull(totalMap.get("result"))) {
+                LinkedHashMap<String, Object> resultMap = (LinkedHashMap<String, Object>) totalMap.get("result");
+                totalNextYn = resultMap.get("next_yn").toString();
+
+                List<Map> listMap = (List<Map>) resultMap.get("list");
+
+                for (Map listArray : listMap) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    A8SmsListVO smsListVO = objectMapper.convertValue(listArray, A8SmsListVO.class);
+
+                    if (!smsListVO.getType().equals("AT")) {
+                        totalIdx++;
+                        lastTotalPage = totalPage;
+                        lastTotalPageOffset = totalPageOffset;
+                    }
+                    totalPageOffset++;
+                }
+                totalPage++;
+            }
+        }
+
+        totalPageSize = (int) Math.ceil((double)totalPage/20);
+
+        while(nextYn.equals("Y")) {
+
+            if(idx >= realPageSize){
+                break;
+            }
+
+            newPageOffset = (newPage - 1) * pageSize;
+
+            Map<String, Object> map = aligoUtil.smsSendList(newPage, pageSize, startDate, params.getLimitDay());
+
+            if (Objects.nonNull(map.get("result"))) {
+                LinkedHashMap<String, Object> resultMap = (LinkedHashMap<String, Object>) map.get("result");
+                nextYn = resultMap.get("next_yn").toString();
+                lastNextYn = nextYn;
+
+                List<Map> listMap = (List<Map>) resultMap.get("list");
+
+                for (Map listArray : listMap) {
+
+                    if(idx >= realPageSize){
+                        break;
+                    }
+
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    A8SmsListVO smsListVO = objectMapper.convertValue(listArray, A8SmsListVO.class);
+
+                    if (!smsListVO.getType().equals("AT")) {
+                        if (newPageOffset >= pageOffset && idx < realPageSize) {
+                            list.add(smsListVO);
+                            lastNewPage = newPage;
+                            lastPageOffset = newPageOffset;
+                            lastNextYn = nextYn;
+                            idx++;
+                        }
+                    }
+                    newPageOffset++;
+                }
+                newPage += 1;
+            }
+        }
+
+        result.put("firstPage",firstPage);
+        result.put("firstPageOffset",firstPageOffset);
+        result.put("nextYn", lastNextYn);
+        result.put("totalPageSize", totalPageSize);
+        result.put("pageList", pageList);
+        result.put("pageOffsetList", pageOffsetList);
+        result.put("list", list);
+
+        return result;
     }
 
     public Map<String, Object> getSmsRemain(){
@@ -48,7 +156,7 @@ public class A8Service {
     public List<A8SmsVO> getSmsDetail(SearchVO params){
 
         Map<String, Object> map = new HashMap<>();
-        map = aligoUtil.smsSendDetail(params.getMid());
+        map = aligoUtil.smsSendDetail(params.getMid(), params.getType());
         List<A8SmsVO> list = new ArrayList<A8SmsVO>();
 
         if(Objects.nonNull(map.get("result"))){
@@ -131,3 +239,4 @@ public class A8Service {
     }
 
 }
+

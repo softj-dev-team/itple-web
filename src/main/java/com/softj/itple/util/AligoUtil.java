@@ -117,7 +117,7 @@ public class AligoUtil {
         return response;
     }
 
-    public Map<String,Object> smsSendDetail(Integer mid) {
+    public Map<String,Object> smsSendDetail(Integer mid, String type) {
         Map<String,Object> formData = new HashMap<>();
         formData.put("key", apiKey);
         formData.put("user_id", userId);
@@ -125,8 +125,17 @@ public class AligoUtil {
 
         Map<String,Object> response = new HashMap<>();
 
+        String urlSms = SMS_BASE_URL+"/sms_list/";
+        String urlAk = BASE_URL+"/akv10/history/detail/";
+        String url = "";
+        if(type.equals("AK")){
+            url = urlAk;
+        }else{
+            url = urlSms;
+        }
+
         try {
-            response = RestUtil.restCall(SMS_BASE_URL+"/sms_list/", RequestMethod.POST, null, formData, Map.class);
+            response = RestUtil.restCall(url, RequestMethod.POST, null, formData, Map.class);
             log.debug("Aligo Res: {}", response);
         }catch (IOException e){
             e.printStackTrace();
