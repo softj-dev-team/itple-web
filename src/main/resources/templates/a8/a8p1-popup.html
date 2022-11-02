@@ -5,6 +5,11 @@
 <head>
     <title>관리자 설정</title>
     <style>
+        .popBody {
+            display: flex;
+            flex-direction: column;
+            padding: 20px 20px 0 20px;
+        }
         .mSearch {
             display: flex;
             margin-bottom: 20px;
@@ -41,6 +46,7 @@
         }
         table.popTable {
             font-size: 14px;
+            text-align: center;
         }
         .table.popTable .table-head tr {
             height: 40px;
@@ -51,7 +57,13 @@
             display: block;
             margin: 0 auto;
         }
-        .popBtnWrap {
+        .table.popTable .table-body tr {
+            height: 35px;
+        }
+        .table.popTable .table-body tr td {
+            padding: 10px 5px;
+        }
+        .popupBtnWrap {
             margin-top: 30px;
             text-align: center;
         }
@@ -60,6 +72,21 @@
             height: 45px;
             font-size: 14px;
             font-family: "Pretendard Regular";
+            color: #ffffff;
+        }
+        .popBody .pagination{margin-top: 40px}
+        .popTable tr th:nth-child(4){
+            border-right: 1px solid #cccccc !important;
+        }
+        @media screen and (max-width: 768px){
+            .mSearch button.btn {
+                height: 40px;
+                margin-top: 0;
+            }
+            .table.popTable .table-head {
+                display: table-row-group;
+
+            }
         }
     </style>
 </head>
@@ -139,7 +166,7 @@
             </div>
             <!--페이지네이션-->
             <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
-            <div class="popBtnWrap">
+            <div class="popupBtnWrap">
                 <button type="button" class="btn btn-gray popOff" onclick="self.close();">취소</button>
                 <button type="button" class="btn btn-blue" id="btnSelect">선택추가</button>
             </div>
