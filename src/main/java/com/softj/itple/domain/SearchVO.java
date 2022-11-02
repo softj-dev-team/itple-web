@@ -161,6 +161,7 @@ public class SearchVO {
 	private boolean menu6;
 	private boolean menu7;
 	private boolean menu8;
+	private boolean menu9;
 }
 
 

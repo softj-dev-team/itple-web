@@ -123,6 +123,7 @@ public class A7Service {
                 .menu6(params.isMenu6())
                 .menu7(params.isMenu7())
                 .menu8(params.isMenu8())
+                .menu9(params.isMenu9())
                 .build();
 
         userRepo.save(save.getUser());
@@ -151,6 +152,7 @@ public class A7Service {
         save.setMenu6(params.isMenu6());
         save.setMenu7(params.isMenu7());
         save.setMenu8(params.isMenu8());
+        save.setMenu9(params.isMenu9());
         save.getUser().setUserName(params.getUserName());
         save.getUser().setApproved(Boolean.parseBoolean(params.getApproved()));
 
