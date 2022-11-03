@@ -48,6 +48,8 @@ public class A1Service {
 
         QBook qBook = QBook.book;
         QBookRental qBookRental = QBookRental.bookRental;
+        QUser qUser = QUser.user;
+        QCodeDetail qCodeDetail = QCodeDetail.codeDetail;
 
         BooleanBuilder where = new BooleanBuilder().and(qBook.isDeleted.eq(false));
 
@@ -57,7 +59,7 @@ public class A1Service {
                     where.and(qBook.subject.contains(params.getSearchValue()));
                     break;
                 case "rentalName":
-                    where.and(qBook.rentalName.contains(params.getSearchValue()));
+                    where.and(qUser.userName.contains(params.getSearchValue()));
                     break;
             }
         }
@@ -75,50 +77,16 @@ public class A1Service {
                         qBook.bookNo,
                         qBook.contents,
                         qBook.bookCategory,
-                        ExpressionUtils.as(
-                                JPAExpressions.select(qBookRental.rentalStatus)
-                                        .from(qBookRental)
-                                        .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
-                                                .and(
-                                                        qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
-                                                                            .from(qBookRental)
-                                                                            .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false)))
-                                                )))
-                                        ,"bookStatus"),
-                        ExpressionUtils.as(
-                                JPAExpressions.select(qBookRental.user.userName)
-                                        .from(qBookRental)
-                                        .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
-                                                .and(
-                                                        qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
-                                                                .from(qBookRental)
-                                                                .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false)))
-                                                        )))
-                                ,"rentalName"),
-                        ExpressionUtils.as(
-                                JPAExpressions.select(qBookRental.startDate)
-                                        .from(qBookRental)
-                                        .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
-                                                .and(
-                                                        qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
-                                                                .from(qBookRental)
-                                                                .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false)))
-                                                        )))
-                                ,"startDate"),
-                        ExpressionUtils.as(
-                                JPAExpressions.select(qBookRental.endDate)
-                                        .from(qBookRental)
-                                        .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
-                                                .and(
-                                                        qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
-                                                                .from(qBookRental)
-                                                                .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false)))
-                                                        )))
-                                ,"endDate"))
-                )
+                        qBookRental
+                ))
                 .from(qBook)
+                .join(qCodeDetail).on(qCodeDetail.codeValue.eq(qBook.bookCategory).and(qCodeDetail.masterId.eq(4L)).and(qCodeDetail.academyType.eq(params.getAcademyType())))
+                .leftJoin(qBookRental).on(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
+                        .and(qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
+                                .from(qBookRental)
+                                .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))))))
                 .where(where)
-                .orderBy(qBook.id.desc())
+                .orderBy(qBookRental.rentalStatus.desc().nullsLast(), qBook.id.desc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset());
 
@@ -131,6 +99,14 @@ public class A1Service {
     @Transactional
     public void deleteBook(SearchVO params) {
         for(long id : params.getIdList()){
+
+            Book book = bookRepo.findById(id).orElse(Book.builder().build());
+            List<BookRental> bookRental = bookRentalRepo.findAllByBook(book);
+
+            for(BookRental deleteRental : bookRental){
+                bookRentalRepo.deleteById(deleteRental.getId());
+            }
+
             bookRepo.deleteById(id);
         }
     }
@@ -138,37 +114,31 @@ public class A1Service {
     @Transactional
     public void saveBook(SearchVO params) {
 
-      Book save = bookRepo.findById(params.getId()).orElse(Book.builder().build());
+        Book save = bookRepo.findById(params.getId()).orElse(Book.builder().build());
 
-      LocalDate startDate = params.getStartDate();
-      LocalDate endDate = params.getEndDate();
+        LocalDate startDate = params.getStartDate();
+        LocalDate endDate = params.getEndDate();
 
-      save.setSubject(params.getSubject());
-      save.setWriter(params.getWriter());
-      save.setBookNo(params.getBookNo());
-      save.setContents(params.getContents());
-      save.setThumbnail(params.getThumbnail());
-      save.setBookStatus(params.getBookStatus());
-      save.setStartDate(startDate);
-      save.setEndDate(endDate);
-      save.setRentalName(params.getRentalName());
-      save.setBookCategory(params.getBookCategory());
+        save.setSubject(params.getSubject());
+        save.setWriter(params.getWriter());
+        save.setBookNo(params.getBookNo());
+        save.setContents(params.getContents());
+        save.setThumbnail(params.getThumbnail());
+        save.setBookStatus(params.getBookStatus());
+        save.setBookCategory(params.getBookCategory());
 
 
-      if(ObjectUtils.isEmpty(params.getBookStatus())){
+        if(ObjectUtils.isEmpty(params.getBookStatus())){
             save.setBookStatus(Types.BookRentalStatus.AVAILABLE);
-      }
+        }
 
-      bookRepo.save(save);
+        bookRepo.save(save);
     }
 
     public BookRental getBookRental(SearchVO params){
-        Book book = bookRepo.findById(params.getBookId()).orElse(Book.builder().build());
-        BookRental bookRental = BookRental.builder().build();
 
-        if(book.getBookStatus().equals(Types.BookRentalStatus.LOAN) || book.getBookStatus().equals(Types.BookRentalStatus.DELINQUENT)) {
-            bookRental = bookRentalRepo.findTopByBookOrderByCreatedAtDesc(book).orElse(BookRental.builder().build());
-        }
+        Book book = bookRepo.findById(params.getBookId()).orElse(Book.builder().build());
+        BookRental bookRental = bookRentalRepo.findTopByBookOrderByCreatedAtDesc(book).orElse(BookRental.builder().build());
 
         bookRental.setBook(book);
 
@@ -207,6 +177,8 @@ public class A1Service {
                 status = Types.BookRentalStatus.LOAN;
             }
         }else{
+            if(StringUtils.equals(book.getBookStatus(),"RETURN") || StringUtils.equals(book.getBookStatus(),"AVAILABLE"))
+                throw new ApiException("대여되지 않은 도서입니다.", ErrorCode.INTERNAL_SERVER_ERROR);
             if(!StringUtils.equals(save.getUser().getUserName(),params.getUserName()))
                 throw new ApiException("대여한 대여자와 반납하는 대여자가 일치하지 않습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
             if(save.getUser().getId() != student.getUser().getId())
@@ -226,17 +198,7 @@ public class A1Service {
         if(status.equals(Types.BookRentalStatus.RETURN))
             status = Types.BookRentalStatus.AVAILABLE;
 
-        if(StringUtils.equals(params.getEvBookRental(),"LOAN")) {
-            book.setBookStatus(status);
-            book.setStartDate(save.getStartDate());
-            book.setEndDate(save.getEndDate());
-            book.setRentalName(save.getUser().getUserName());
-        }else{
-            book.setBookStatus(status);
-            book.setStartDate(null);
-            book.setEndDate(null);
-            book.setRentalName("");
-        }
+        book.setBookStatus(status);
 
         bookRepo.save(book);
         bookRentalRepo.save(save);
@@ -252,7 +214,7 @@ public class A1Service {
 
         if(StringUtils.equals(book.getBookStatus(),"AVAILABLE"))
             throw new ApiException("이미 반납된 도서입니다.", ErrorCode.INTERNAL_SERVER_ERROR);
-        
+
         Types.BookRentalStatus status = Types.BookRentalStatus.AVAILABLE;
         LocalDate returnDate = LocalDate.now();
 
@@ -260,9 +222,6 @@ public class A1Service {
         save.setReturnDate(returnDate);
 
         book.setBookStatus(save.getRentalStatus());
-        book.setStartDate(null);
-        book.setEndDate(null);
-        book.setRentalName("");
 
         bookRepo.save(book);
         bookRentalRepo.save(save);
@@ -273,21 +232,17 @@ public class A1Service {
     @Transactional
     public List<CodeDetail> selectBookCategoryList(SearchVO params){
         CodeUtil cu = new CodeUtil(codeDetailRepo);
-        List<CodeDetail> list = cu.getCodeList(params.getMasterId());
+        List<CodeDetail> list = cu.getBookCodeList(params.getMasterId(), params.getAcademyType().name());
         return list;
     }
 
     @Transactional
-    public void saveBookCategory(SearchVO params, HttpServletRequest request){
+    public void saveBookCategory(SearchVO params){
         // delete
-        HttpSession session = request.getSession();
-        LocalDateTime now = LocalDateTime.now();
 
         if(params.getRemoveIdList() != null) {
             for (long id : params.getRemoveIdList()) {
                 CodeDetail save = codeDetailRepo.findById(id).get();
-                save.setUpdatedAt(now);
-                save.setUpdatedId(session.getAttribute("userId").toString());
                 save.setDeleted(true);
                 codeDetailRepo.save(save);
             }
@@ -301,8 +256,6 @@ public class A1Service {
             for(long id: params.getUpdateIdList()){
                 CodeDetail save = codeDetailRepo.findById(id).get();
                 save.setCodeName(codeNameList[i]);
-                save.setUpdatedAt(now);
-                save.setUpdatedId(session.getAttribute("userId").toString());
                 codeDetailRepo.save(save);
                 i++;
             }
@@ -323,12 +276,10 @@ public class A1Service {
             }
 
             for(String codeName : params.getNewCodeNameList()){
-                CodeDetail save = codeDetailRepo.findByCodeName(codeName).orElse(CodeDetail.builder().build());
+                CodeDetail save = codeDetailRepo.findByMasterIdAndCodeName(4L, codeName).orElse(CodeDetail.builder().build());
 
                 if(save.getId() != 0){
                     save.setDeleted(false);
-                    save.setUpdatedAt(now);
-                    save.setUpdatedId(session.getAttribute("userId").toString());
                     codeDetailRepo.save(save);
                 }else {
                     String codeValue = "";
@@ -344,6 +295,7 @@ public class A1Service {
                     save.setMasterId(masterId);
                     save.setCodeName(codeName);
                     save.setCodeValue(codeValue);
+                    save.setAcademyType(params.getAcademyType());
                     save.setRoleType(Types.RoleType.STUDENT);
                     save.setSort(startSort);
                     codeDetailRepo.save(save);
