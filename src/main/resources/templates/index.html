@@ -144,7 +144,7 @@
         </div>
     </div>
     <div class="pop-up" th:if="${@authUtil.isRole('STUDENT') && noticePopup != null}">
-        <div class="popContent" th:each="el : ${noticePopup}" th:style="${#lists.size(noticePopup) > 1 ? 'left:'+elStat.count*17+'%' : ''}" th:id="|popup_${el.id}|" th:classappend="|popup_${elStat.count}|">
+        <div class="popContent" th:each="el : ${noticePopup}" th:style="${#lists.size(noticePopup) > 1 && !isMobile ? 'left:'+(elStat.index*400)+'px' : ''}" th:id="|popup_${el.id}|" th:classappend="|popup_${elStat.count}|">
             <div class="popBody">
                 <div class="popin">
                     공지사항
