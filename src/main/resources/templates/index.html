@@ -144,39 +144,75 @@
         </div>
     </div>
     <div class="pop-up" th:if="${@authUtil.isRole('STUDENT') && noticePopup != null}">
-        <div class="popBg"></div>
-        <div class="popContent">
+        <div class="popContent" th:each="el : ${noticePopup}" th:style="${#lists.size(noticePopup) > 1 ? 'left:'+elStat.count*17+'%' : ''}" th:id="|popup_${el.id}|" th:classappend="|popup_${elStat.count}|">
             <div class="popBody">
                 <div class="popin">
                     공지사항
                     <br/><br/>
-                    <img th:src="|${noticePopup.getThumbnail()}|" th:alt="${noticePopup.subject}">
+                    <img th:src="|${el.getThumbnail()}|" th:alt="${el.subject}">
                 </div>
                 <div class="popBtnWrap">
-                    <button type="button" class="popBtn-non">오늘 하루 보지않기</button>
-                    <button type="button" class="popBtn popOff">확인</button>
+                    <button type="button" class="popBtn-non" th:id="|non_${el.id}|">오늘 하루 보지않기</button>
+                    <button type="button" class="popBtn popOff" th:id="|popOff_${el.id}|">확인</button>
                 </div>
             </div>
         </div>
     </div>
+    <div class="popBg" th:if="${@authUtil.isRole('STUDENT') && noticePopup != null}"></div>
     <script th:if="${@authUtil.isRole('STUDENT')}" th:src="@{/assets/js/common.js(v='1.0.0')}"></script>
     <script th:if="${@authUtil.isRole('STUDENT')}" th:inline="javascript">
 
         $(document).ready(function(){
+            var popupSize = $(".popContent").length;
 
-            if(!getCookie("noticePopup")){
+            for(var i=1; i<popupSize+1; i++) {
+                var id = $(".popup_"+i).prop("id");
+                var idxArr = id.split("_");
+                var idx = idxArr[1];
+                if (!getCookie("noticePopup"+idx)) {
+                    $('#popup_'+idx).show();
+                } else {
+                    $('#popup_'+idx).remove();
+                }
+            }
+
+            popupSize = $(".popContent").length;
+
+            if(popupSize > 0){
                 $('.pop-up').addClass('on');
+                $('.popBg').show();
             }else{
                 $('.pop-up').removeClass('on');
+                $('.popBg').hide();
             }
 
             $(document).on("click",".popBtn-non",function(){
-                setCookie("noticePopup", "expire", 1);
-                $('.pop-up').removeClass('on');
+                var id = $(this).prop("id");
+                var idxArr = id.split("_");
+                var idx = idxArr[1];
+                var popupLength = $(".popContent").length;
+
+                setCookie("noticePopup"+idx, "expire", 1);
+                $('#popup_'+idx).remove();
+
+                $('#popup_'+idx).remove();
+                if(popupLength < 2) {
+                    $(".pop-up").removeClass('on');
+                    $(".popBg").hide();
+                }
             });
 
             $(document).on("click", ".popOff", function(){
-                $('.pop-up').removeClass('on');
+                var id = $(this).prop("id");
+                var idxArr = id.split("_");
+                var idx = idxArr[1];
+                var popupLength = $(".popContent").length;
+
+                $('#popup_'+idx).remove();
+                if(popupLength < 2) {
+                    $(".pop-up").removeClass('on');
+                    $(".popBg").hide();
+                }
             });
 
         });
