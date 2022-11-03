@@ -84,6 +84,7 @@ public class C1Service {
                         qBoard.subject,
                         qBoard.boardCategory,
                         qBoard.viewCount,
+                        qBoard.isPopup,
                         qBoard.user,
                         ExpressionUtils.as(
                                 JPAExpressions.select(qBoardComment.count())
@@ -128,27 +129,27 @@ public class C1Service {
         }
 
         JPAQuery<Board> query = jpaQueryFactory.select(Projections.fields(Board.class,
-                qBoard.id,
-                qBoard.thumbnail,
-                qBoard.createdAt,
-                qBoard.subject,
-                qBoard.boardCategory,
-                qBoard.viewCount,
-                qBoard.user,
-                ExpressionUtils.as(
-                        JPAExpressions.select(qBoardComment.count())
-                                .from(qBoardComment)
-                                .where(qBoardComment.board.eq(qBoard)),"commentCount"),
-                ExpressionUtils.as(
-                        JPAExpressions.select(qBoardStar.count())
-                                .from(qBoardStar)
-                                .where(qBoardStar.board.eq(qBoard)),"starCount"))
-        )
-        .from(qBoard)
-        .where(where)
-        .orderBy(qBoard.id.desc())
-        .limit(pageable.getPageSize())
-        .offset(pageable.getOffset());
+                        qBoard.id,
+                        qBoard.thumbnail,
+                        qBoard.createdAt,
+                        qBoard.subject,
+                        qBoard.boardCategory,
+                        qBoard.viewCount,
+                        qBoard.user,
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBoardComment.count())
+                                        .from(qBoardComment)
+                                        .where(qBoardComment.board.eq(qBoard)),"commentCount"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qBoardStar.count())
+                                        .from(qBoardStar)
+                                        .where(qBoardStar.board.eq(qBoard)),"starCount"))
+                )
+                .from(qBoard)
+                .where(where)
+                .orderBy(qBoard.id.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
 
         return new PageImpl<Board>(query.fetch(), pageable, query.fetchCount());
     }
@@ -162,9 +163,21 @@ public class C1Service {
         return el;
     }
 
+    public Board getBoardNoticePopup(){
+        return boardRepo.findByIsPopup(true);
+    }
+
     public Page<BoardComment> getBoardCommentList(SearchVO params, Pageable pageable){
         QBoardComment qBoardComment = QBoardComment.boardComment;
         BooleanBuilder where = new BooleanBuilder().and(qBoardComment.board.id.eq(params.getId()).and(qBoardComment.parent.isNull()));
+        if(StringUtils.noneEmpty(params.getCommentOrder())) {
+            if("asc".equals(params.getCommentOrder())) {
+                pageable = PageRequest.of(params.getPage(), 10, Sort.by(Sort.Direction.ASC, "id"));
+            }else{
+                pageable = PageRequest.of(params.getPage(), 10, Sort.by(Sort.Direction.DESC, "id"));
+            }
+
+        }
         return boardCommentRepo.findAll(where, pageable);
     }
 
@@ -236,12 +249,12 @@ public class C1Service {
         BooleanBuilder where = new BooleanBuilder().and(qBoardLog.isDeleted.eq(false).and(qBoardLog.board.eq(board)));
 
         JPAQuery<BoardLog> query = jpaQueryFactory.select(Projections.fields(BoardLog.class,
-                    qUser
+                        qUser
                 )).distinct()
                 .from(qBoardLog)
                 .join(qUser).on(qUser.eq(qBoardLog.user))
                 .where(where);
-        Types.Grade.valueOf("EL1");
+
         return query.fetch();
     }
 
@@ -288,7 +301,7 @@ public class C1Service {
     }
 
     @Transactional
-    public void saveBoard(SearchVO params){
+    public long saveBoard(SearchVO params){
         Board save = Board.builder().build();
         if(LongUtils.noneEmpty(params.getId())){
             save = boardRepo.findById(params.getId()).get();
@@ -304,6 +317,13 @@ public class C1Service {
             String thumbnail = m.group(1);
             save.setThumbnail(thumbnail);
         }
+
+        CodeUtil cu = new CodeUtil(codeDetailRepo);
+
+        if(Objects.nonNull(params.getIsPopup()) && params.getBoardCategory().equals(cu.getCodeValue(1, "공지"))){
+            save.setIsPopup(params.getIsPopup());
+        }
+
         Board finalSave = boardRepo.save(save);
 
         List<BoardFile> fileList = boardFileRepo.findAllById(Arrays.asList(params.getIdList()));
@@ -311,6 +331,8 @@ public class C1Service {
             f.setBoard(finalSave);
         }
         boardFileRepo.saveAll(fileList);
+
+        return finalSave.getId();
     }
 
     @Transactional
@@ -329,14 +351,9 @@ public class C1Service {
     @Transactional
     public void saveBoardCategory(SearchVO params, HttpServletRequest request){
         // delete
-        HttpSession session = request.getSession();
-        LocalDateTime now = LocalDateTime.now();
-
         if(params.getRemoveIdList() != null) {
             for (long id : params.getRemoveIdList()) {
                 CodeDetail save = codeDetailRepo.findById(id).get();
-                save.setUpdatedAt(now);
-                save.setUpdatedId(session.getAttribute("userId").toString());
                 save.setDeleted(true);
                 codeDetailRepo.save(save);
             }
@@ -346,12 +363,12 @@ public class C1Service {
         if(params.getUpdateIdList() != null){
             int i=0;
             String[] codeNameList = params.getCodeNameList();
+            int[] codeOrderList = params.getCodeOrderList();
 
             for(long id: params.getUpdateIdList()){
                 CodeDetail save = codeDetailRepo.findById(id).get();
                 save.setCodeName(codeNameList[i]);
-                save.setUpdatedAt(now);
-                save.setUpdatedId(session.getAttribute("userId").toString());
+                save.setSort(codeOrderList[i]);
                 codeDetailRepo.save(save);
                 i++;
             }
@@ -372,12 +389,10 @@ public class C1Service {
             }
 
             for(String codeName : params.getNewCodeNameList()){
-                CodeDetail save = codeDetailRepo.findByCodeName(codeName).orElse(CodeDetail.builder().build());
+                CodeDetail save = codeDetailRepo.findByMasterIdAndCodeName(1L,codeName).orElse(CodeDetail.builder().build());
 
                 if(save.getId() != 0){
                     save.setDeleted(false);
-                    save.setUpdatedAt(now);
-                    save.setUpdatedId(session.getAttribute("userId").toString());
                     codeDetailRepo.save(save);
                 }else {
                     String codeValue = "";
@@ -403,8 +418,6 @@ public class C1Service {
         CodeDetail save = codeDetailRepo.findByMasterId(2).orElse(CodeDetail.builder().build());
 
         if(params.getRoleType() != save.getRoleType()) {
-            save.setUpdatedAt(now);
-            save.setUpdatedId(session.getAttribute("userId").toString());
             save.setRoleType(params.getRoleType());
             codeDetailRepo.save(save);
         }

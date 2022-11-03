@@ -45,6 +45,14 @@ public class A4RestController {
                 .build();
     }
 
+    //출석날짜 시간 확인
+    @PostMapping("/p1/l4")
+    public Response p1l4(SearchVO params){
+        return Response.builder()
+                .data(a4Service.getAttendanceHistoryByUserIdAndDate(params))
+                .build();
+    }
+
     //결석 취소
     @PostMapping("/p1/d1")
     public Response p1d1(SearchVO params){

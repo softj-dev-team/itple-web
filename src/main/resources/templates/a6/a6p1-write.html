@@ -23,6 +23,12 @@
                         <select name="visibleStatus" id="" class="select-md">
                             <option th:each="visibleStatus : ${T(com.softj.itple.domain.Types.VisibleStatus).values()}" th:value="${visibleStatus}" th:text="${visibleStatus.message}" th:selected="${visibleStatus == el.visibleStatus}"></option>
                         </select>
+                        <select name="portfolioType" id="" class="select-md" th:if="${#strings.equals(params.academyType,T(com.softj.itple.domain.Types.AcademyType).CODING)}">
+                            <option th:each="el2 : ${T(com.softj.itple.domain.Types.PortfolioType).values()}" th:if="${#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).COMPETITION)||#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).CERTIFICATE)}" th:value="${el2}" th:text="${el2.message}" th:selected="${#strings.equals(el2,el.portfolioType) || #strings.equals(el2,params.portfolioType)}"></option>
+                        </select>
+                        <select name="portfolioType" id="" class="select-md" th:if="${#strings.equals(params.academyType,T(com.softj.itple.domain.Types.AcademyType).ENGLISH)}">
+                            <option th:each="el2 : ${T(com.softj.itple.domain.Types.PortfolioType).values()}" th:if="${#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).LEARNING)}" th:value="${el2}" th:text="${el2.message}" th:selected="${#strings.equals(el2,el.portfolioType) || #strings.equals(el2,params.portfolioType)}"></option>
+                        </select>
                         <input type="text" placeholder="제목을 입력해주세요." class="input-df" th:value="${el.subject}" name="subject">
                         <textarea name="summary" id="summary" cols="30" rows="10" class="textA mt10" placeholder="포트폴리오에 대한 설명을 입력해주세요." th:utext="${el.summary}"></textarea>
                     </div>

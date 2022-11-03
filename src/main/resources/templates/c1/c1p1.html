@@ -16,41 +16,50 @@
                 <li th:classappend="${#strings.equals(params.boardType,'ENGLISH') ? 'active' : ''}"><a href="/c1/p1?boardType=ENGLISH">잇플 영어</a></li>
             </ul>
         </div>
+        <div class="tab2 clearfix">
+            <ul class="tab-ul2">
+                <li th:class="${#strings.isEmpty(params.boardCategory) ? 'active' : ''}"><a href="/c1/p1">전체</a></li>
+                <li th:each="el : ${@codeUtil.getCodeList(1)}" th:classappend="${#strings.equals(params.boardCategory,el.codeValue) ? 'active' : ''}">
+                    <a th:href="|/c1/p1?boardType=${params.boardType}&boardCategory=${el.codeValue}|" th:text="${el.codeName}">공지</a>
+                </li>
+            </ul>
+        </div>
         <div class="content-in clearfix">
-            <div class="search clearfix">
-                <form id="form1" class="search-in">
-                    <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
-                    <input type="hidden" id="boardType" name="boardType" th:value="${params.boardType}">
-                    <div class="in-box">
-                        <select name="boardCategory">
-                            <option value="">전체</option>
-                            <option th:each="el : ${params.getBoardCategoryList()}" th:value="${el.codeValue}" th:text="${el.codeName}" th:selected="${#strings.equals(el.codeValue,params.boardCategory)}"></option>
-                        </select>
-                        <select name="searchType">
-                            <option value="subject" th:selected="${#strings.equals(params.searchType, 'subject')}">제목</option>
-                            <option value="contents" th:selected="${#strings.equals(params.searchType, 'contents')}">내용</option>
-                            <option value="user" th:selected="${#strings.equals(params.searchType, 'user')}">글쓴이</option>
-                        </select>
-                        <input type="text" name="searchValue" th:value="${params.searchValue}">
-                    </div>
-                    <button type="button" class="src-btn" id="search1" style="display:none"></button>
-                    <button type="button" class="src-btn active" id="search2" onclick="goSearch();"></button>
-                </form>
-            </div>
+
             <div class="tableBtn-box">
                 <div class="leftBox">
-                </div>
-                <div class="rightBox">
                     <button type="button" th:each="e : ${@codeUtil.getCodeList(2)}" th:if="${@authUtil.isRole('ADMIN') || @authUtil.isRole(e.roleType)}" class="m-btn"
                             onclick="goWrite();">글쓰기</button>
+                </div>
+                <div class="rightBox">
+                    <div class="search clearfix">
+                        <form id="form1" class="search-in">
+                            <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+                            <input type="hidden" id="boardType" name="boardType" th:value="${params.boardType}">
+                            <div class="in-box">
+                                <select name="boardCategory">
+                                    <option value="">전체</option>
+                                    <option th:each="el : ${params.getBoardCategoryList()}" th:value="${el.codeValue}" th:text="${el.codeName}" th:selected="${#strings.equals(el.codeValue,params.boardCategory)}"></option>
+                                </select>
+                                <select name="searchType">
+                                    <option value="subject" th:selected="${#strings.equals(params.searchType, 'subject')}">제목</option>
+                                    <option value="contents" th:selected="${#strings.equals(params.searchType, 'contents')}">내용</option>
+                                    <option value="user" th:selected="${#strings.equals(params.searchType, 'user')}">글쓴이</option>
+                                </select>
+                                <input type="text" name="searchValue" th:value="${params.searchValue}">
+                            </div>
+                            <button type="button" class="src-btn" id="search1" style="display:none"></button>
+                            <button type="button" class="src-btn active" id="search2" onclick="goSearch();"></button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
         <ul class="commuListUl">
-            <li th:each="el : ${noticeList}">
+            <li th:if="${#strings.isEmpty(params.boardCategory) || #strings.equals(params.boardCategory,@codeUtil.getCodeValue(1, '공지'))}" th:each="el : ${noticeList}">
                 <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
                 <div class="rightwrap">
-                    <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|"></p>
+                    <p class="category" th:text="|[${@codeUtil.getCodeName(1, el.boardCategory)}${el.isPopup ? '-팝업' : ''}]|"></p>
                     <p class="titlewrap"><a th:href="|/c1/p1-detail/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
                     <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
                 </div>
@@ -58,7 +67,7 @@
             <li th:each="el : ${list}">
                 <div class="thumbbox" th:style="|background-image: url('${el.thumbnail}');|"></div>
                 <div class="rightwrap">
-                    <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|"></p>
+                    <p class="category" th:text="|[${@codeUtil.getCodeName(1, el.boardCategory)}]|"></p>
                     <p class="titlewrap"><a th:href="|/c1/p1-detail/${el.id}|"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">잇플과 함께 할 선생님을 모십니다</span></a></p>
                     <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
                 </div>
@@ -117,7 +126,7 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
     <script th:src="@{/assets/js/c1/c1p1.js(v='1.0.0')}"></script>
 
@@ -142,6 +151,66 @@
             }else{
                 $("#search1").css("display","none");
                 $("#search2").css("display","block");
+            }
+        });
+        $(document).on("click", ".upOrder", function(){
+            var nowOrder = $(this).siblings(".codeOrder").val();
+            var nowOrderId = $(this).siblings(".codeOrder").prop("id");
+            var idx = nowOrderId.split("_")[1];
+
+            if(idx > 1) {
+                var upIdx = parseInt(idx)-1;
+                var tmpIdx = 9999;
+                var upOrder = $("#codeOrder_" + upIdx).val();
+                $(this).siblings(".codeOrder").val(upOrder); // 현재순서 -1로 변경
+                $("#codeOrder_" + upIdx).val(nowOrder); // 이전순서 현재순서로 변경
+
+                $("#id_"+idx).prop("id","id_"+tmpIdx);
+                $("#id_"+upIdx).prop("id","id_"+idx);
+                $("#id_"+tmpIdx).prop("id","id_"+upIdx);
+                $("#codeName_"+idx).prop("id","codeName_"+tmpIdx);
+                $("#codeName_"+upIdx).prop("id","codeName_"+idx);
+                $("#codeName_"+tmpIdx).prop("id","codeName_"+upIdx);
+                $("#codeOrder_"+idx).prop("id","codeOrder_"+tmpIdx);
+                $("#codeOrder_"+upIdx).prop("id","codeOrder_"+idx);
+                $("#codeOrder_"+tmpIdx).prop("id","codeOrder_"+upIdx); // id 변경
+
+                var nowCate = $("#cate_"+idx).html();;
+                var upCate = $("#cate_"+upIdx).html();
+                $("#cate_"+upIdx).html(nowCate);
+                $("#cate_"+idx).html(upCate); // 위치변경
+            }else{
+                modal.alert("처음 정렬순서입니다.");
+            }
+        });
+        $(document).on("click", ".downOrder", function(){
+            var nowOrder = $(this).siblings(".codeOrder").val();
+            var nowOrderId = $(this).siblings(".codeOrder").prop("id");
+            var idx = nowOrderId.split("_")[1];
+
+            if(idx < $(".categorySub").length) {
+                var downIdx = parseInt(idx)+1;
+                var tmpIdx = 9999;
+                var downOrder = $("#codeOrder_" + downIdx).val();
+                $(this).siblings(".codeOrder").val(downOrder); // 현재순서를 이후순서로 변경
+                $("#codeOrder_" + downIdx).val(nowOrder); // 이후순서 현재순서로 변경
+
+                $("#id_"+idx).prop("id","id_"+tmpIdx);
+                $("#id_"+downIdx).prop("id","id_"+idx);
+                $("#id_"+tmpIdx).prop("id","id_"+downIdx);
+                $("#codeName_"+idx).prop("id","codeName_"+tmpIdx);
+                $("#codeName_"+downIdx).prop("id","codeName_"+idx);
+                $("#codeName_"+tmpIdx).prop("id","codeName_"+downIdx);
+                $("#codeOrder_"+idx).prop("id","codeOrder_"+tmpIdx);
+                $("#codeOrder_"+downIdx).prop("id","codeOrder_"+idx);
+                $("#codeOrder_"+tmpIdx).prop("id","codeOrder_"+downIdx); // id 변경
+
+                var nowCate = $("#cate_"+idx).html();;
+                var downCate = $("#cate_"+downIdx).html();
+                $("#cate_"+downIdx).html(nowCate);
+                $("#cate_"+idx).html(downCate); // 위치변경
+            }else{
+                modal.alert("마지막 정렬순서입니다.");
             }
         });
         $(document).on("click", ".categoryRemove", function(){

@@ -14,12 +14,13 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@ToString
+@ToString(exclude = "user")
 @Table(name = "tb_attendance_history")
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class AttendanceHistory extends Auditing{
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
@@ -30,4 +31,7 @@ public class AttendanceHistory extends Auditing{
     private Types.AcademyType attendanceType;
 
     private String attendanceDay;
+
+    @Transient
+    private int totalMonth;
 }

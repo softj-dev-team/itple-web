@@ -38,27 +38,33 @@ public class SearchVO {
 	private Types.DayOfWeek[] dayOfWeekList = new Types.DayOfWeek[0];
 	private Integer[] hourList = new Integer[0];
 	private Integer[] minList = new Integer[0];
+	private Integer[] leaveHourList = new Integer[0];
+	private Integer[] leaveMinList = new Integer[0];
 	private String telNo;
 
 	//게시판
 	private Types.AcademyType boardType;
 	private Types.RoleType roleType;
+	private Boolean isPopup;
 	private String subject;
 	private String contents;
 	private Long upperId;
 	private Long commentId;
 	private String boardCategory;
+	private String commentOrder;
 	private long masterId;
 	private CodeDetail codeDetail;
 	private long[] removeIdList;
 	private long[] updateIdList;
 	private String[] codeNameList;
 	private String[] newCodeNameList;
+	private int[] codeOrderList;
 	private List<CodeDetail> boardCategoryList;
 
 
 	//수업연계
 	private Types.TaskStatus status;
+	private List<Types.TaskType> taskTypeList;
 	private Types.TaskType taskType;
 	private AcademyClass academyClass;
 	private Task task;
@@ -92,7 +98,10 @@ public class SearchVO {
 	private Integer paymentDay;
 	private Long price;
 	private String memo;
+	private String coinMemo;
 	private String approved;
+	private String edOrder;
+	private String searchCateogry;
 
 	//관리자-출결
 	private String attendanceNo;
@@ -104,6 +113,7 @@ public class SearchVO {
 	//관리자-포트폴리오
 	private Types.VisibleStatus visibleStatus;
 	private String summary;
+	private Types.PortfolioType portfolioType;
 
 	//관리자-수납관리
 	private Long[] paymentIdList = new Long[0];
@@ -115,12 +125,23 @@ public class SearchVO {
 	private List<AcademyClass> academyClassList;
 	private Types.AcademyType academyClassType;
 	private Types.PaymentType paymentType;
+	private Types.PaymentType searchPaymentType;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate paymentDate;
 	private Types.AcademyType academyType;
 	private Types.PaymentStatus paymentStatus;
 	private Student totalYear;
 	private Student totalMonth;
+
+	//SMS관리
+	private int pageOffset;
+	private int pageNum;
+	private int pageSize;
+	private int limitDay;
+	private int mid;
+	private String type;
+	private String[] receiverList;
+	private String message;
 
 	//관리자-반관리
 	private String className;
@@ -135,7 +156,9 @@ public class SearchVO {
 	private boolean menu6;
 	private boolean menu7;
 	private boolean menu8;
+	private boolean menu9;
 }
+
 
 
 

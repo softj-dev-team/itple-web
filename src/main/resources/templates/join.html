@@ -55,6 +55,18 @@
                     <label for="relation" class="mb5">학생과의 관계</label>
                     <input name="relation" id="relation" type="text" class="input-df mb20" >
                 </div>
+                <div class="tos">
+                    <input type="checkbox" name="tos-ch" id="tos-ch"><label for="tos-ch"><b class="tos-b">개인정보수집 및 이용동의</b></label>
+                    <div class="tos-txt">
+                        <p>잇플학원은 개인정보 보호법 제15조 및 제22조에 근거하여 귀하의 개인정보를 수집․이용하고자 하오니 다음의 내용을 충분히 검토하신 후 동의
+                            여부를 결정해 주시기 바랍니다.</p>
+                        <p>개인정보의 수집․이용 목적 : 홈페이지, CRM, 유튜브(잇플TV), 현수막, 포스터 등에 학원 수업내용 및 성과 홍보</p>
+                        <p>수집하는 개인정보의 항목 : 성명, 출신학교, 학년, 수업내용, 수상경력, 사진 및 영상</p>
+                        <p>개인정보의 보유 및 이용 기간 : 홍보물 게시 종료까지 *학원 퇴원일과 무관하며 요청 시 삭제됩니다.</p>
+                        <p>동의를 거부할 권리: 귀하는위와 같이 개인정보를 수집․이용하는 데 대한 동의를 거부할권리가있습니다.</p>
+                        <p>동의를 거부하실 경우 학원에서제공하는대회/영재원/자격증준비혜택을받으실수없으니참고하시기바랍니다.</p>
+                    </div>
+                </div>
                 <!--<div class="inputSec timeSelectOuter">
                     <label for="" class="mb10">등원 시간</label>
                     <div class="timeSelectWrap">
@@ -202,6 +214,7 @@
             var detailAddress = $("input[name=detailAddress]").val();
             var relation = $("input[name=relation]").val();
             var telNo = $("input[name=telNo]").val();
+            var agree = $("input:checkbox[name=tos-ch]").is(":checked");
 
             if(ut.isEmpty(userId)){
                 modal.required("아이디");
@@ -291,6 +304,11 @@
             }
             if(ut.isEmpty(relation)){
                 modal.required("학생과의 관계");
+                return;
+            }
+
+            if(!agree){
+                modal.required("개인정보수집 및 이용동의");
                 return;
             }
 

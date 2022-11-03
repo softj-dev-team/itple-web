@@ -9,9 +9,9 @@ $(function(){
 
     $("#studentTaskId").on("change",function(){
         var studentTaskId = $(this).val();
-       if(studentTaskId != ''){
-           ut.redirect(`/a6/p1-detail/${studentTaskId}`);
-       }
+        if(studentTaskId != ''){
+            ut.redirect(`/a6/p1-detail/${studentTaskId}`);
+        }
     });
 })
 
@@ -69,7 +69,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         case "U1":
             $.post(`${path}/u1`,{id:arg1},function(){
-               location.reload();
+                location.reload();
             });
             break;
         case "E1":

@@ -16,20 +16,24 @@
         <input type="hidden" name="status" th:value="${el.status}"/>
         <input type="hidden" name="taskType" th:value="${el.task.taskType}"/>
         <div class="content">
-            <h1 class="responsiveH1 subH1" th:text="${#strings.equals(el.task.taskType,'TASK') ? '과제 작성' : '독후감 작성'}">과제 작성</h1>
+            <h1 class="responsiveH1 subH1" th:text="${#strings.equals(el.task.taskType,'TASK') ? '과제 상세' : '독후감 상세'}">과제 상세</h1>
             <div class="content-in clearfix">
                 <div class="writeCon">
-                    <div class="writeHead">
-                        <th:block th:if="${#strings.equals(el.task.taskType, 'TASK')}">
-                            <p class="writeGroup" th:text="|[${el.task.academyClass.className}]|">[잇플코딩 기초입문반A]</p>
-                            <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
-                        </th:block>
-                        <th:block th:if="${#strings.equals(el.task.taskType, 'BOOK_REPORT')}">
-                            <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
-                        </th:block>
-                        <p class="writePeriod" th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd')}|">2022.04.23 ~ 2022.04.30</p>
+                    <div class="writeHead WHd">
+                        <div class="WLeft">
+                            <th:block th:if="${#strings.equals(el.task.taskType, 'TASK')}">
+                                <p class="writeGroup" th:text="|[${el.task.academyClass.className}]|">[잇플코딩 기초입문반A]</p>
+                                <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                            </th:block>
+                            <th:block th:if="${#strings.equals(el.task.taskType, 'BOOK_REPORT')}">
+                                <p class="writeTit" th:text="${el.task.subject}">수업 내용을 바탕으로 파이썬 실습내용 복습해보기</p>
+                            </th:block>
+                            <p class="writePeriod" th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd HH:mm')}|">2022.04.23 ~ 2022.04.30</p>
+                        </div>
+                        <div class="WRight">
+                            <div class="pointCom"><span>과제완료 포인트</span><p><span th:text="${#numbers.formatInteger(el.task.coin,0,'COMMA')}">1,000</span> 포인트</p></div>
+                        </div>
                     </div>
-
                     <div class="writeMain">
                         <th:block th:utext="${#strings.replace(el.task.contents, T(System).getProperty('line.separator'), '&lt;br /&gt;')}"></th:block>
                         <div class="fileV" th:if="${el.task.taskFileList != null && el.task.taskFileList.size() != 0}">
@@ -44,6 +48,14 @@
                             내용
                         </div>
                         <div class="countBox"><span class="text-count">0</span><span class="count-t">자</span></div>
+                        <div class="fileBox" th:if="${not #strings.isEmpty(el.returnMessage)}">
+                            <div class="fileHead">
+                                <p>반려사유</p>
+                            </div>
+                            <ul class="fileUP">
+                                <li th:text="${el.returnMessage}"></li>
+                            </ul>
+                        </div>
                         <div class="fileBox">
                             <div class="fileV" th:if="${el.studentTaskFileList != null && el.studentTaskFileList.size() != 0}">
                                 <p class="fileT">첨부파일</p>
@@ -53,7 +65,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="btn-center Tbtn" th:if="${#strings.equals(el.status, 'SUBMIT') || #strings.equals(el.status, 'NOT_SUBMIT')}">
                     <button type="button" class="btn submitBtn" th:onclick="|goWrite(${el.id})|">수정</button>
@@ -76,7 +87,6 @@
             var totalCaracteres = caracteres.length;
             $(".text-count").text(totalCaracteres);
         });
-
     </script>
 </th:block>
 </body>

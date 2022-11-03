@@ -17,6 +17,7 @@ import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
 import com.softj.itple.util.AligoUtil;
 import com.softj.itple.util.AuthUtil;
+import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -111,6 +112,29 @@ public class A4Service {
             studentRepo.save(student);
         }
 
+        if(params.getAttendanceStatus() == Types.AttendanceStatus.LEAVE) {
+
+            Attendance attendance = attendanceRepo.findByUserIdAndAttendanceDay(student.getUser().getId(), Types.DayOfWeek.valueOf(now.getDayOfWeek().toString()));
+
+            if (Objects.nonNull(attendance)) {
+                CoinHistory saveCoinHistory = CoinHistory.builder()
+                        .user(student.getUser())
+                        .build();
+                LocalDateTime leaveAt = LocalDateTime.of(now.toLocalDate(), attendance.getLeaveAt());
+
+                if (now.isEqual(leaveAt) || now.isAfter(leaveAt)) {
+                    //코인 증감
+                    saveCoinHistory.setCoinStatus(Types.CoinStatus.PLUS);
+                    saveCoinHistory.setMemo("하원시간 이후 하원");
+                    saveCoinHistory.setCoin(1L);
+
+                    coinHistoryRepo.save(saveCoinHistory);
+                    student.setCoin(student.getCoin() + saveCoinHistory.getCoin());
+                    studentRepo.save(student);
+                }
+            }
+        }
+
         int dayofweekNum = now.getDayOfWeek().getValue();
 
         switch (dayofweekNum){
@@ -139,7 +163,7 @@ public class A4Service {
 
         String templateCode = params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "TJ_5055" : "TJ_5057";
         String message = "[" + params.getAttendanceType().getMessage() + "학원 등하원 안내] "+student.getUser().getUserName() + " 학생이 " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH시 mm분")) + "에 "
-            + (params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "안전하게 등원하였습니다" : "수업이 종료되었습니다") + " (미소)";
+                + (params.getAttendanceStatus() == Types.AttendanceStatus.COME ? "안전하게 등원하였습니다" : "수업이 종료되었습니다") + " (미소)";
         aligoUtil.send(student.getParentTel(), message, templateCode, "[" + params.getAttendanceType().getMessage() + "학원 등하원 안내]", null);
 
         return attendanceHistoryRepo.save(AttendanceHistory.builder()
@@ -167,6 +191,10 @@ public class A4Service {
         return attendanceHistoryRepo.findTopByUserAndCreatedAtOrderByCreatedAtDesc(params.getId(), params.getAttendanceDate());
     }
 
+    public List<A4TooltipDTO> getAttendanceHistoryByUserIdAndDate(SearchVO params){
+        return attendanceHistoryRepo.findByUserAndCreatedAtOrderByCreatedAtDesc(params.getId(), params.getAttendanceDate());
+    }
+
     public CoinHistory getCoinHistory(SearchVO params){
         return coinHistoryRepo.findFirstByUserOrderByIdDesc(User.builder().id(params.getId()).build());
     }
@@ -180,17 +208,17 @@ public class A4Service {
                 .and(qAttendanceHistory.createdAt.month().eq(params.getStartDate().getMonthValue()));
 
         return jpaQueryFactory.select(Projections.fields(A4EventDTO.class,
-                qAttendanceHistory.user.id.as("resourceId"),
-                new CaseBuilder()
-                .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME))
-                .then(Expressions.constant("O"))
-                .otherwise(Expressions.constant("●")).as("title"),
-                new CaseBuilder()
-                        .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME))
-                        .then(Expressions.constant("#428bca"))
-                        .otherwise(Expressions.constant("#FFCC00")).as("color"),
-                ExpressionUtils.as(Expressions.constant("text-center"), "className"),
-                Expressions.stringTemplate( "to_char({0},'YYYY-MM-DD')", qAttendanceHistory.createdAt).as("start")))
+                        qAttendanceHistory.user.id.as("resourceId"),
+                        new CaseBuilder()
+                                .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME))
+                                .then(Expressions.constant("O"))
+                                .otherwise(Expressions.constant("●")).as("title"),
+                        new CaseBuilder()
+                                .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME))
+                                .then(Expressions.constant("#428bca"))
+                                .otherwise(Expressions.constant("#FFCC00")).as("color"),
+                        ExpressionUtils.as(Expressions.constant("text-center"), "className"),
+                        Expressions.stringTemplate( "to_char({0},'YYYY-MM-DD')", qAttendanceHistory.createdAt).as("start")))
                 .from(qAttendanceHistory)
                 .where(where).fetch();
     }
@@ -198,22 +226,42 @@ public class A4Service {
     public List<A4ResourceDTO> getUserList(SearchVO params){
         QUser qUser = QUser.user;
         QAttendance qAttendance = QAttendance.attendance;
+        QAttendanceHistory qAttendanceHistory = QAttendanceHistory.attendanceHistory;
 
         BooleanBuilder where = new BooleanBuilder()
-                .and(qUser.student.academyClass.eq(AcademyClass.builder().id(params.getClassId()).build()))
                 .and(qUser.student.studentStatus.eq(params.getStudentStatus()));
 
+        if(Objects.nonNull(params.getAcademyType())){
+            where.and(qUser.student.academyClass.academyType.eq(params.getAcademyType()));
+        }
+        if(LongUtils.noneEmpty(params.getClassId())){
+            where.and(qUser.student.academyClass.eq(AcademyClass.builder().id(params.getClassId()).build()));
+        }
         if(StringUtils.noneEmpty(params.getUserName())){
             where.and(qUser.userName.contains(params.getUserName()));
         }
 
-        JPAQuery<A4ResourceDTO> query = jpaQueryFactory.select(Projections.fields(A4ResourceDTO.class,
-                qUser.id,
-                qUser.userName.as("title")))
-        .from(qUser)
-        .where(where);
-
-        List<A4ResourceDTO> attendanceList = query.fetch();
+        JPAQuery<A4ResourceDTO> query = null;
+        List<A4ResourceDTO> attendanceList = null;
+        if(Objects.nonNull(params.getAttendanceStatus())){
+            // 오늘 등원한 학생
+            where.and(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME)).and(qAttendanceHistory.createdAt.between(LocalDateTime.now().with(LocalTime.MIN), LocalDateTime.now().with(LocalTime.MAX)));
+            query = jpaQueryFactory.select(Projections.fields(A4ResourceDTO.class,
+                            qUser.id,
+                            qUser.userName.as("title")))
+                    .from(qUser)
+                    .leftJoin(qAttendanceHistory).on(qAttendanceHistory.user.eq(qUser))
+                    .where(where);
+            attendanceList = query.fetch();
+        }else {
+            // 모든 학생
+            query = jpaQueryFactory.select(Projections.fields(A4ResourceDTO.class,
+                            qUser.id,
+                            qUser.userName.as("title")))
+                    .from(qUser)
+                    .where(where);
+            attendanceList = query.fetch();
+        }
 
         for(A4ResourceDTO dto : attendanceList){
             List<A4StrDTO> dayList = attendanceRepo.getAttendanceDayList(dto.getId(), params.getYear().toString(), params.getMonth().toString());
@@ -247,7 +295,7 @@ public class A4Service {
         AttendanceHistory delete = attendanceHistoryRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
 
         if(!delete.getAttendanceStatus().equals("03")){
-                new ApiException("결석 상태가 아니므로 취소할 수 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+            new ApiException("결석 상태가 아니므로 취소할 수 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         attendanceHistoryRepo.deleteById(params.getId());

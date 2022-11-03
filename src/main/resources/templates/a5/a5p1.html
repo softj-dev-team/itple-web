@@ -21,6 +21,11 @@
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <input type="hidden" id="academyType" name="academyType" th:value="${params.academyType}">
                     <div class="in-box">
+                        <select name="paymentStatus" id="paymentStatus">
+                            <option value="">전체</option>
+                            <option th:each="el : ${T(com.softj.itple.domain.Types.PaymentStatus).values()}" th:value="${el}" th:text="${el.message}"
+                                    th:selected="${#strings.equals(el, params.paymentStatus)}"></option>
+                        </select>
                         <select name="year" id="year">
                             <option th:each="num : ${#numbers.sequence(2,-5)}"
                                     th:with="year=${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}"
@@ -34,7 +39,19 @@
                                     th:text="|${num}월|"
                                     th:selected="${#strings.equals(num, params.month)}"></option>
                         </select>
-                        <input type="text" name="userName" th:value="${params.getUserName()}" placeholder="이름 검색">
+                        <select name="searchType" id="searchType">
+                            <option value="userName" th:selected="${#strings.equals(param.searchType, 'userName')}">이름</option>
+                            <option value="paymentType" th:selected="${#strings.equals(param.searchType, 'paymentType')}">납부방법</option>
+                            <option value="parentName" th:selected="${#strings.equals(param.searchType, 'parentName')}">학부모 이름</option>
+                        </select>
+                        <select name="searchPaymentType" id="searchPaymentType" th:style="${#strings.equals(params.getSearchType(),'paymentType') ? 'display:inline': 'display:none'}" th:value="${params.getSearchValue()}">
+                            <option value="">전체</option>
+                            <option th:each="er : ${T(com.softj.itple.domain.Types.PaymentType).values()}"
+                                    th:selected="${er == params.searchPaymentType}"
+                                    th:value="${er}" th:text="${er.message}">카드
+                            </option>
+                        </select>
+                        <input type="text" name="searchValue" id="searchValue"  th:style="${!#strings.equals(params.getSearchType(),'paymentType') ? 'display:inline': 'display:none'}" th:value="${params.getSearchValue()}" placeholder="검색">
                     </div>
                     <button type="button" class="src-btn" onClick="goSearch();"></button>
                 </form>
@@ -156,7 +173,6 @@
                     <th>보호자</th>
                     <th>수강료</th>
                     <th>납부액</th>
-                    <th>납부일</th>
                     <th>실제납부일</th>
                     <th>납부방법</th>
                     <th>메모</th>
@@ -180,7 +196,6 @@
                     <td><input type="text" name="cost" class="cost payComMoney alignR"
                                th:value="${el.payment != null ? #numbers.formatInteger(el.payment.cost,0,'COMMA') : ''}">
                     </td>
-                    <td><span th:text="|${el.paymentDay < 10 ? '0'+el.paymentDay : el.paymentDay}일|"></span></td>
                     <td>
                         <input type="text" name="paymentDate" class="paymentDate payDate input-df datepicker"
                                th:value="${el.payment != null ? el.payment.paymentDate : ''}">
@@ -197,22 +212,9 @@
                     <td>
                         <select name="paymentStatus" th:id="|paymentStatus_${elStat.count}|" class="paymentStatus">
                             <option th:each="er : ${T(com.softj.itple.domain.Types.PaymentStatus).values()}"
-                                    th:value="${er}" th:text="${er.message}">미납
+                                    th:value="${er}" th:text="${er.message}" th:selected="${el.payment == null ? #strings.equals(er,'NONE') : #strings.equals(er,el.payment.status)}">미납
                             </option>
                         </select>
-                        <script th:inline="javascript">
-                            var el = [[${el.payment != null ? 'EXIST' : null}]];
-                            var status = [[${ el.payment != null ? el.payment.status : ''}]];
-                            var idx = [[${elStat.count}]];
-
-                            if(el == null) {
-                                $("#paymentStatus_" + idx + " option:eq(0)").prop("selected", true);
-                            }else if(el != null && (status == '' || status == 'null')){
-                                $("#paymentStatus_" + idx + " option:eq(0)").prop("selected", true);
-                            }else if(el != null && status != '' && status != 'null'){
-                                $("#paymentStatus_" + idx).val( status ).prop("selected", true);
-                            }
-                        </script>
                     </td>
                 </tr>
                 </tbody>
@@ -263,6 +265,19 @@
     <script th:inline="javascript">
 
         $(document).ready(function () {
+
+            $("#searchType").on("change", function(){
+                var searchType = $(this).val();
+                $("#searchValue").val("");
+                $("#searchPaymentType").val("");
+                if(searchType == "userName" || searchType == "parentName"){
+                    $("#searchValue").css("display","inline");
+                    $("#searchPaymentType").css("display","none");
+                }else{
+                    $("#searchValue").css("display","none");
+                    $("#searchPaymentType").css("display","inline");
+                }
+            });
 
             $(".datepicker").datepicker({
                 format     : "yyyy-mm-dd",

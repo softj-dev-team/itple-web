@@ -39,6 +39,8 @@ public class StudentTask extends Auditing{
 
     private String returnMessage;
 
+    private Boolean coinComp;
+
     @OneToMany(mappedBy = "studentTask",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     private List<StudentTaskFile> studentTaskFileList;

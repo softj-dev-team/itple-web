@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>잇플ITPLE</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="../assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/common.css" rel="stylesheet" type="text/css">
+    <style>
+        .popBody {
+            display: flex;
+            flex-direction: column;
+            padding: 20px 20px 0 20px;
+        }
+        .mSearch {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .mSearch select {
+            width: 80px;
+            border-radius: 5px 0 0 5px;
+            border: 1px solid #cccccc;
+            border-right: 0;
+            padding-left: 5px;
+        }
+        .mSearch * {
+            font-size: 14px;
+        }
+        .mSearch input {
+            width: calc(100% - 160px);
+        }
+        .mSearch button.btn {
+            width: 80px;
+            border-radius: 0 5px 5px 0;
+            height: 35px;
+            font-family: "Pretendard Regular";
+        }
+        .body-scroll {
+            max-height: 500px;
+            overflow-y: scroll;
+        }
+        .table.popTable + .body-scroll {
+            max-height: 250px;
+        }
+        .table {
+            width: 100%;
+            font-size: 16px;
+        }
+        table.popTable {
+            font-size: 14px;
+        }
+        .table.popTable .table-head tr {
+            height: 40px;
+        }
+        .table.popTable input[type=checkbox]+label {
+            height: 17px;
+            width: 17px;
+            display: block;
+            margin: 0 auto;
+        }
+        .table.popTable .table-body tr {
+            height: 35px;
+        }
+        .table.popTable .table-body tr td {
+            padding: 10px 5px;
+        }
+        .popupBtnWrap {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .popup button.btn {
+            width: 120px;
+            height: 45px;
+            font-size: 14px;
+            font-family: "Pretendard Regular";
+            color: #ffffff;
+        }
+        @media screen and (max-width: 768px){
+            .mSearch button.btn {
+                height: 40px;
+                margin-top: 0;
+            }
+            .table.popTable .table-head {
+                display: table-row-group;
+
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="popup" id="searchM">
+    <div class="popBody">
+        <div class="mSearch">
+            <select>
+                <option>전체</option>
+                <option>이름</option>
+                <option>번호</option>
+            </select>
+            <input type="text">
+            <button type="button" class="btn">검색</button>
+        </div>
+        <div class="popTable-con">
+            <table class="table popTable">
+                <colgroup>
+                    <col style="width: 15%;">
+                    <col style="width: 25%;">
+                    <col style="width: auto;">
+                </colgroup>
+                <thead class="table-head">
+                <tr>
+                    <th><input type="checkbox" id="all-chk2"><label for="all-chk2"></label></th>
+                    <th>이름</th>
+                    <th>번호</th>
+                </tr>
+                </thead>
+            </table>
+            <div class="body-scroll">
+                <table class="table popTable">
+                    <colgroup>
+                        <col style="width: 15%;">
+                        <col style="width: 25%;">
+                        <col style="width: auto;">
+                    </colgroup>
+                    <tbody class="table-body checklist2">
+
+                    <tr>
+                        <td><input type="checkbox" id="mCh2"><label for="mCh2"></label></td>
+                        <td>김잇플</td>
+                        <th>010-1234-5678</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="mCh3"><label for="mCh3"></label></td>
+                        <td>김잇플</td>
+                        <th>010-1234-5678</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="mCh4"><label for="mCh4"></label></td>
+                        <td>김잇플</td>
+                        <th>010-1234-5678</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="mCh5"><label for="mCh5"></label></td>
+                        <td>김잇플</td>
+                        <th>010-1234-5678</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="mCh6"><label for="mCh6"></label></td>
+                        <td>김잇플</td>
+                        <th>010-1234-5678</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="mCh7"><label for="mCh7"></label></td>
+                        <td>김잇플</td>
+                        <th>010-1234-5678</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="mCh8"><label for="mCh8"></label></td>
+                        <td>김잇플</td>
+                        <th>010-1234-5678</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="mCh9"><label for="mCh9"></label></td>
+                        <td>김잇플</td>
+                        <th>010-1234-5678</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="mCh10"><label for="mCh10"></label></td>
+                        <td>김잇플</td>
+                        <th>010-1234-5678</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="popupBtnWrap">
+            <button type="button" class="btn btn-gray popOff" onclick="self.close();">취소</button>
+            <button type="button" class="btn btn-blue" id="confirm-callback-btn">선택추가</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

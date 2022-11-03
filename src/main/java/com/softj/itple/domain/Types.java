@@ -39,6 +39,7 @@ public class Types {
     public enum AcademyType implements Code<String> {
         CODING("01", "잇플 코딩"),
         ENGLISH("02", "잇플 영어");
+
         private String code;
         private String message;
 
@@ -70,7 +71,7 @@ public class Types {
     public enum TaskStatus implements Code<String> {
         NOT_SUBMIT("01", "미제출/다시제출"),
         SUBMIT("02", "제출"),
-        COMPLETE("03", "확인"),
+        COMPLETE("03", "확인완료"),
         ;
         private String code;
         private String message;
@@ -94,6 +95,23 @@ public class Types {
         public static class Converter extends AbstractEnumConverter<TaskType, String> {
             public Converter() {
                 super(TaskType.class);
+            }
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum PortfolioType implements Code<String> {
+        COMPETITION("01", "각종대회/영재원"),
+        CERTIFICATE("02", "자격증/인증서"),
+        LEARNING("03", "Learning History");
+
+        private String code;
+        private String message;
+
+        public static class Converter extends AbstractEnumConverter<PortfolioType, String> {
+            public Converter() {
+                super(PortfolioType.class);
             }
         }
     }
@@ -169,8 +187,8 @@ public class Types {
     @AllArgsConstructor
     public enum VisibleStatus implements Code<String> {
         VISIBLE("01", "공개"),
-        INVISIBLE("02", "비공개"),
-        ;
+        INVISIBLE("02", "비공개");
+
         private String code;
         private String message;
 
@@ -219,7 +237,11 @@ public class Types {
     public enum PaymentType implements Code<String> {
         CARD("01", "카드"),
         CASH("02", "현금"),
-        ACCOUNT("03", "계좌");
+        APP("04", "결제앱"),
+        PAY("05", "서울페이"),
+        ACCOUNT("03", "계좌이체"),
+        BEFORE("06", "선납결제"),
+        REGULAR("07", "정기결제");
 
         private String code;
         private String message;
@@ -236,13 +258,13 @@ public class Types {
     public enum PaymentStatus implements Code<String> {
         NONE("01", "미납"),
         COMP("02", "완납");
-        
+
         private String code;
         private String message;
 
-        public static class Converter extends AbstractEnumConverter<PaymentType, String> {
+        public static class Converter extends AbstractEnumConverter<PaymentStatus, String> {
             public Converter() {
-                super(PaymentType.class);
+                super(PaymentStatus.class);
             }
         }
     }

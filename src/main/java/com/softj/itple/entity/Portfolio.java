@@ -23,10 +23,18 @@ import java.util.List;
 public class Portfolio extends Auditing {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
     private String subject;
+
     private String summary;
+
     private String thumbnail;
+
     private String contents;
+
+    @Convert(converter = Types.PortfolioType.Converter.class)
+    private Types.PortfolioType portfolioType;
+
     @Convert(converter = Types.VisibleStatus.Converter.class)
     private Types.VisibleStatus visibleStatus;
 

@@ -18,10 +18,10 @@ $(function(){
     });
 });
 
-window.addEventListener("load", function(){
+/* window.addEventListener("load", function(){
     setTimeout(loaded, 100);
 
-}, false);
+}, false); : 스크롤탑 : 스크롤 가장 위로 위치시키는 기능 막기 : 20221024 */
 
 function loaded(){
     window.scrollTo(0, 1);
@@ -63,6 +63,11 @@ $(function(){
         var chk = $(this).is(':checked');//.attr('checked');
         if(chk) $('.checklist td:nth-child(1) input').prop('checked',true);
         else $('.checklist td:nth-child(1) input').prop('checked',false);
+    });
+    $('#all-chk2').click(function(){
+        var chk = $(this).is(':checked');//.attr('checked');
+        if(chk) $('.checklist2 td:nth-child(1) input').prop('checked',true);
+        else $('.checklist2 td:nth-child(1) input').prop('checked',false);
     });
 });
 $(function(){

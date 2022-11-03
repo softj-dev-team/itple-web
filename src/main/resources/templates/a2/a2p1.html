@@ -18,6 +18,7 @@
             <ul class="tab-ul">
                 <li th:classappend="${#strings.equals(params.taskType,'TASK') ? 'active' : ''}"><a href="/a2/p1">과제</a></li>
                 <li th:classappend="${#strings.equals(params.taskType,'BOOK_REPORT') ? 'active' : ''}"><a href="/a2/p1?taskType=BOOK_REPORT">독후감</a></li>
+                <li><a href="/a2/p2">통합검색</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">
@@ -25,7 +26,7 @@
                 <div class="leftBox">
                 </div>
                 <div class="rightBox">
-                    <a th:href="|/a2/p1-write/0?taskType=${params.taskType}|" class="aBtn" th:text="|${params.taskType.message} 등록|">독후감 등록</a>
+                    <a th:href="|/a2/p1-write/0/${list.pageable.pageNumber}?taskType=${params.taskType}|" class="aBtn" th:text="|${params.taskType.message} 등록|">독후감 등록</a>
                 </div>
             </div>
             <ul class="adTask-list">
@@ -35,7 +36,7 @@
                         <p th:each="task : ${el.taskList}">
                             <span th:text="${task.subject}">사람은 무엇으로 사는가</span>
                             <span th:if="${#strings.equals(task.taskType,'BOOK_REPORT')}" th:text="| - ${task.teacher} |"> - 톨스토이</span>
-                            <span class="ml10" th:text="| ${#temporals.format(task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(task.endDate,'yyyy.MM.dd')}|">~22.04.08</span>
+                            <span class="ml10" th:text="| ${#temporals.format(task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(task.endDate,'yyyy.MM.dd HH:mm')}|">~22.04.08</span>
                         </p>
                     </a>
                 </li>
@@ -47,8 +48,7 @@
     <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        /*]]>*/
+
     </script>
 </th:block>
 </body>

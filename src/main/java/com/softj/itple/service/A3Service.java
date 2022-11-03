@@ -1,44 +1,31 @@
 package com.softj.itple.service;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
-import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
-import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class A3Service {
-    private final JPAQueryFactory jpaQueryFactory;
-    private final AcademyClassRepo academyClassRepo;
-    private final TaskRepo taskRepo;
+public class A3Service{
+
     private final UserRepo userRepo;
     private final AttendanceRepo attendanceRepo;
     private final StudentTaskRepo studentTaskRepo;
@@ -68,45 +55,12 @@ public class A3Service {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
     public Page<Student> getStudentList(SearchVO params, Pageable pageable){
-        QStudent qStudent = QStudent.student;
-        BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false));
 
-        if(!ObjectUtils.isEmpty(params.getStudentStatus())){
-            where.and(qStudent.studentStatus.eq(params.getStudentStatus()));
-        }
+        int studentListTotal = studentRepo.getStudentListTotal(params.getStudentStatus() != null ? params.getStudentStatus().getCode() : null, params.getAcademyType() != null ? params.getAcademyType().getCode() : null, params.getGrade() != null ? params.getGrade().getCode() : null, params.getClassId(), params.getSearchType(), params.getSearchValue());
 
-        if(!ObjectUtils.isEmpty(params.getAcademyType())){
-            where.and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
-        }else {
-            if (ObjectUtils.isEmpty(params.getStudentStatus()))
-                where.and(qStudent.academyClass.isNull());
-            else
-                where.and(qStudent.academyClass.isNotNull());
-        }
+        List<Student> studentList = studentRepo.getStudentList(params.getStudentStatus() != null ? params.getStudentStatus().getCode() : null, params.getAcademyType() != null ? params.getAcademyType().getCode() : null, params.getGrade() != null ? params.getGrade().getCode() : null, params.getClassId(), params.getEdOrder() != null ? params.getEdOrder() : "asc", params.getSearchType(), params.getSearchValue(), pageable);
 
-        if(StringUtils.noneEmpty(params.getSearchValue())){
-            switch (params.getSearchType()){
-                case "userName":
-                    where.and(qStudent.user.userName.contains(params.getSearchValue()));
-                    break;
-                case "className":
-                    where.and(qStudent.academyClass.className.contains(params.getSearchValue()));
-                    break;
-                case "school":
-                    where.and(qStudent.school.contains(params.getSearchValue()));
-                    break;
-                case "parentName":
-                    where.and(qStudent.parentName.contains(params.getSearchValue()));
-                    break;
-               /* case "parentTel":
-                    where.and(qStudent.parentTel.contains(params.getSearchValue()));
-                    break;*/
-            }
-        }
-        if(StringUtils.noneEmpty(params.getGrade())) {
-            where.and(qStudent.grade.eq(params.getGrade()));
-        }
-        return studentRepo.findAll(where, pageable);
+        return new PageImpl<Student>(studentList, pageable, studentListTotal);
     }
 
     public Student getStudent(SearchVO params){
@@ -135,11 +89,13 @@ public class A3Service {
         }else{
             save.setAcademyClass(null);
         }
+        save.setCoin(reqCoin);
         save.setEnterDate(params.getEnterDate());
         save.setAttendanceNo(params.getAttendanceNo());
         save.setBirth(params.getBirth());
         save.setGrade(params.getGrade());
         save.setSchool(params.getSchool());
+        save.setEmail(params.getEmail());
         save.setZonecode(params.getZonecode());
         save.setRoadAddress(params.getRoadAddress());
         save.setDetailAddress(params.getDetailAddress());
@@ -148,7 +104,6 @@ public class A3Service {
         save.setPaymentDay(params.getPaymentDay());
         save.setPrice(params.getPrice());
         save.setMemo(params.getMemo());
-        save.setCoin(reqCoin);
         save.setTelNo(params.getTelNo());
         studentRepo.save(save);
 
@@ -158,7 +113,7 @@ public class A3Service {
                     .coinStatus(diffCoin > 0L ? Types.CoinStatus.PLUS : Types.CoinStatus.MINUS)
                     .user(save.getUser())
                     .coin(diffCoin)
-                    .memo("관리자 설정")
+                    .memo(params.getCoinMemo())
                     .build());
         }
 
@@ -169,6 +124,7 @@ public class A3Service {
             attendanceRepo.save(Attendance.builder()
                     .user(save.getUser())
                     .attendanceAt(LocalTime.of(params.getHourList()[i], params.getMinList()[i]))
+                    .leaveAt(LocalTime.of(params.getLeaveHourList()[i], params.getLeaveMinList()[i]))
                     .attendanceDay(params.getDayOfWeekList()[i])
                     .build());
         }
@@ -220,7 +176,7 @@ public class A3Service {
                 boardStarRepo.delete(boardStar);
             }
 
-            List<BookRental> delete6 = bookRentalRepo.findByUser(delete1.getUser());
+            List<BookRental> delete6 = bookRentalRepo.findByUserId(delete1.getUser().getId());
             for(BookRental bookRental : delete6){
                 bookRentalRepo.delete(bookRental);
             }

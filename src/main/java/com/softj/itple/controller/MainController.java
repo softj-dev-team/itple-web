@@ -49,12 +49,14 @@ public class MainController {
 			HttpSession session = request.getSession(true);
 			Student studentVO = studentRepo.findWithUserByUser(User.builder().id(Long.parseLong(session.getAttribute("userId").toString())).build());
 			session.setAttribute("studentVO", studentVO);
+
 		}
 		if(ObjectUtils.isEmpty(AuthUtil.getStudent().getAcademyClass())){
 			return "redirect:/logout";
 		}
 		params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
-	    params.setTaskType(Types.TaskType.TASK);
+
+		model.addAttribute("noticePopup", c1Service.getBoardNoticePopup());
 		model.addAttribute("noticeList", c1Service.getBoardNoticeList(params, pageable));
 	    model.addAttribute("taskList", c2Service.getStudentTaskList(params, pageable));
 	    model.addAttribute("bookRentalList", c3Service.getBookRentalList(params, pageable));
@@ -65,7 +67,8 @@ public class MainController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping("/adminMain")
-	public String adminMain(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 7) Pageable pageable) {
+	public String adminMain(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 7) Pageable pageable, HttpServletRequest request) {
+		model.addAttribute("taskList", c2Service.getStudentTaskAdminList(params, pageable));
 		return "index";
 	}
 

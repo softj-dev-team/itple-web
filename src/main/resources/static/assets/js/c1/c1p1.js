@@ -8,6 +8,10 @@ $(function(){
     })
 })
 
+function goSort(){
+    $("#form1").submit();
+}
+
 function goSearch(){
     $("#page").val(0);
     $("#form1").submit();
@@ -33,7 +37,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
                 var idx = 1;
 
                 data.forEach(function(ec){
-                    $(".categoryCon").append('<div class="categorySub" id="cate_'+idx+'"><input type="hidden" name="updateIdList" id="id_'+idx+'" value="'+ec.id+'"/><input type="hidden" name="codeNameList" class="codeNameList" id="codeName_'+idx+'" value="'+ec.codeName+'"/><p class="categoryTit">'+ec.codeName+'</p><div class="modiBtn-box"><button type="button" class="categoryModi"></button><button type="button" class="categoryRemove"></button></div></div>');
+                    $(".categoryCon").append('<div class="categorySub" id="cate_'+idx+'"><input type="hidden" name="updateIdList" id="id_'+idx+'" value="'+ec.id+'"/><input type="hidden" name="codeNameList" class="codeNameList" id="codeName_'+idx+'" value="'+ec.codeName+'"/><p class="categoryTit">'+ec.codeName+'</p><div class="modiBtn-box"><input type="hidden" name="codeOrderList" class="codeOrder" id="codeOrder_'+idx+'" value="'+ec.sort+'"/><button type="button" class="categoryModi"></button><button type="button" class="categoryRemove"></button><button type="button" class="upOrder"></button><button type="button" class="downOrder"></button></div></div>');
                     idx++;
                 });
                 $('#commOt').addClass('on');
@@ -48,7 +52,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
                 $("input[name=idList]").prop("checked",true);
                 $.post(path+'/s1',formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
-                    ut.redirect("/c1/p1","boardType", $("[name=boardType]").val());
+                    ut.redirect("/c1/p1-detail/"+res.data,"boardType", $("[name=boardType]").val());
                 });
             });
             break;
@@ -67,7 +71,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
                 return;
             }
             $.post(path+'/s2',{id: arg1, upperId: arg2, commentId: arg3, contents: contents},function(res){
-                location.reload();
+                document.location.reload(true);
             });
             break;
         /*카테고리 저장*/
@@ -82,7 +86,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
             break;
         case "U1":
             $.post(`${path}/u1`,{id:arg1},function(){
-               location.reload();
+               document.location.reload(true);
             });
             break;
         case "E1":
@@ -100,7 +104,7 @@ function goAction(flag, arg1, arg2, arg3, arg4, arg5) {
         case "D2":
             modal.confirm("삭제하시겠습니까?",function(){
                 $.post(`${path}/d2`,{id:arg1},function(){
-                    location.reload();
+                    document.location.reload(true);
                 });
             });
             break;

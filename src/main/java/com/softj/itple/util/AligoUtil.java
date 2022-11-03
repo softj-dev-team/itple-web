@@ -1,11 +1,13 @@
 package com.softj.itple.util;
 
+import com.softj.itple.domain.SearchVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,21 +67,6 @@ public class AligoUtil {
         }
     }
 
-    public void smsSsend(String receiver,String message) {
-        Map<String,Object> formData = new HashMap<>();
-        formData.put("key", apiKey);
-        formData.put("user_id", userId);
-        formData.put("sender", sender);
-        formData.put("receiver", receiver);
-        formData.put("msg", message);
-        try {
-            Map<String,Object> response = RestUtil.restCall(SMS_BASE_URL+"/send/", RequestMethod.POST, null, formData, Map.class);
-            log.debug("Aligo Res: {}", response);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
     public Map remain() {
         Map<String,Object> response= null;
         Map<String,Object> formData = new HashMap<>();
@@ -94,4 +81,83 @@ public class AligoUtil {
         }
         return response;
     }
+
+    public void smsSend(String receiver,String message) {
+        Map<String,Object> formData = new HashMap<>();
+        formData.put("key", apiKey);
+        formData.put("user_id", userId);
+        formData.put("sender", sender);
+        formData.put("receiver", receiver);
+        formData.put("msg", message);
+        try {
+            Map<String,Object> response = RestUtil.restCall(SMS_BASE_URL+"/send/", RequestMethod.POST, null, formData, Map.class);
+            log.debug("Aligo Res: {}", response);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public Map<String,Object> smsSendList(Integer page, Integer pageSize, String startDate, Integer limitDay) {
+        Map<String,Object> formData = new HashMap<>();
+        formData.put("key", apiKey);
+        formData.put("user_id", userId);
+        formData.put("page", page);
+        formData.put("page_size", pageSize);
+        formData.put("start_date", startDate);
+        formData.put("limit_day",limitDay);
+
+        Map<String,Object> response = new HashMap<>();
+
+        try {
+            response = RestUtil.restCall(SMS_BASE_URL+"/list/", RequestMethod.POST, null, formData, Map.class);
+            log.debug("Aligo Res: {}", response);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public Map<String,Object> smsSendDetail(Integer mid, String type) {
+        Map<String,Object> formData = new HashMap<>();
+        formData.put("key", apiKey);
+        formData.put("user_id", userId);
+        formData.put("mid", mid);
+
+        Map<String,Object> response = new HashMap<>();
+
+        String urlSms = SMS_BASE_URL+"/sms_list/";
+        String urlAk = BASE_URL+"/akv10/history/detail/";
+        String url = "";
+        if(type.equals("AK")){
+            url = urlAk;
+        }else{
+            url = urlSms;
+        }
+
+        try {
+            response = RestUtil.restCall(url, RequestMethod.POST, null, formData, Map.class);
+            log.debug("Aligo Res: {}", response);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public Map<String,Object> smsRemain() {
+        Map<String,Object> formData = new HashMap<>();
+        formData.put("key", apiKey);
+        formData.put("user_id", userId);
+
+        Map<String,Object> response = new HashMap<>();
+
+        try {
+            response = RestUtil.restCall(SMS_BASE_URL+"/remain/", RequestMethod.POST, null, formData, Map.class);
+            log.debug("Aligo Res: {}", response);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+
 }

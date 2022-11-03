@@ -91,8 +91,8 @@ public class SecurityController {
 	}
 
 	@GetMapping("/join")
-	public String join(ModelMap model){
-		model.addAttribute("classList",commonService.getClassList());
+	public String join(ModelMap model, SearchVO params){
+		model.addAttribute("classList",commonService.getClassList(params));
 		return "join";
 	}
 
@@ -118,9 +118,9 @@ public class SecurityController {
 	}
 
 	@GetMapping("/myInfo")
-	public String myInfo(ModelMap model){
+	public String myInfo(ModelMap model, SearchVO params){
 		model.addAttribute("el",studentRepo.findByUser(AuthUtil.getUser()));
-		model.addAttribute("classList",commonService.getClassList());
+		model.addAttribute("classList",commonService.getClassList(params));
 		return "myInfo";
 	}
 

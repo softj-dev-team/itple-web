@@ -28,6 +28,7 @@ public class Board extends Auditing{
     private String thumbnail;
     private String contents;
     private long viewCount;
+    private Boolean isPopup;
 
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
@@ -50,7 +51,7 @@ public class Board extends Auditing{
     private long starCount;
 
     @Builder
-    public Board(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, Types.AcademyType boardType, String boardCategory, String subject, String thumbnail, String contents, long viewCount, List<BoardFile> boardFileList, List<BoardComment> boardCommentList, long commentCount, long starCount) {
+    public Board(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, Types.AcademyType boardType, String boardCategory, String subject, String thumbnail, String contents, long viewCount, List<BoardFile> boardFileList, List<BoardComment> boardCommentList, long commentCount, long starCount, Boolean isPopup) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.user = user;
         this.boardType = boardType;
@@ -63,5 +64,6 @@ public class Board extends Auditing{
         this.boardCommentList = boardCommentList;
         this.commentCount = commentCount;
         this.starCount = starCount;
+        this.isPopup = isPopup;
     }
 }

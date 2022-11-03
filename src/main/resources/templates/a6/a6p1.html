@@ -9,19 +9,21 @@
 <body>
 <th:block layout:fragment="content">
     <div class="adContent">
-        <h1 class="adH1">포트폴리오</h1>
+        <h1 class="adH1">포트폴리오_<span th:text="${params.academyType.message}"></span></h1>
         <div class="tab clearfix adTab">
             <ul class="tab-ul">
-                <li th:classappend="${#strings.equals(params.studentStatus,'STUDENT') ? 'active' : ''}"><a href="/a6/p1?studentStatus=STUDENT">재원생</a></li>
-                <li th:classappend="${#strings.equals(params.studentStatus,'LEAVE') ? 'active' : ''}"><a href="/a6/p1?studentStatus=LEAVE">휴원생</a></li>
-                <li th:classappend="${#strings.equals(params.studentStatus,'DISCHARGE') ? 'active' : ''}"><a href="/a6/p1?studentStatus=DISCHARGE">퇴원생</a></li>
+                <li th:classappend="${#strings.equals(params.studentStatus,'STUDENT') ? 'active' : ''}"><a th:href="|/a6/p1?academyType=${params.academyType}&studentStatus=STUDENT|">재원생</a></li>
+                <li th:classappend="${#strings.equals(params.studentStatus,'LEAVE') ? 'active' : ''}"><a th:href="|/a6/p1?academyType=${params.academyType}&studentStatus=LEAVE|">휴원생</a></li>
+                <li th:classappend="${#strings.equals(params.studentStatus,'DISCHARGE') ? 'active' : ''}"><a th:href="|/a6/p1?academyType=${params.academyType}&studentStatus=DISCHARGE|">퇴원생</a></li>
             </ul>
         </div>
+
         <div class="content-in clearfix">
             <div class="adSearch clearfix">
                 <form id="form1" class="adSearch-in">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <input type="hidden" id="studentStatus" name="studentStatus" th:value="${params.studentStatus}">
+                    <input type="hidden" id="academyType" name="academyType" th:value="${params.academyType}">
                     <div class="in-box">
                         <select name="grade" id="grade">
                             <option value="">전체</option>
@@ -60,7 +62,7 @@
                     <td th:text="${el.academyClass?.className}">잇플 코딩입문반A</td>
                     <td th:text="${el.memo}"></td>
                     <td th:text="${#temporals.format(el.enterDate,'yyyy.MM.dd')}">2022.03.24</td>
-                    <td><button type="button" class="s-btn" th:onclick="|ut.redirect('/a6/p1-student/${el.id}')|">열람</button></td>
+                    <td><button type="button" class="s-btn" th:onclick="|goStudent(${el.id})|">열람</button></td>
                 </tr>
                 </tbody>
             </table>
@@ -72,6 +74,9 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
+        function goStudent(id){
+            location.href = '/a6/p1-student/'+id+'?academyType='+[[${params.academyType}]];
+        }
         /*]]>*/
     </script>
 </th:block>

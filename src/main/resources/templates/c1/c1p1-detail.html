@@ -6,11 +6,13 @@
 <head>
     <title>잇플 커뮤니티</title>
 </head>
-<body onscroll="setDivPosition();">
+<body>
 <th:block layout:fragment="content">
     <form id="form1">
+        <input type="hidden" id="id" name="id" th:value="${el.id}">
         <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
         <input type="hidden" id="boardType" name="boardType" th:value="${params.boardType}">
+        <input type="hidden" id="commentOrder" name="commentOrder"/>
     </form>
     <div class="content">
         <h1 class="responsiveH1" >잇플 커뮤니티</h1>
@@ -28,7 +30,7 @@
             <div class="detailTitle">
                 <div class="tableBtn-box">
                     <div class="leftBox">
-                        <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}]|">[강사 소통]</p>
+                        <p class="category" th:text="|[${@codeUtil.getCodeName('1', el.boardCategory)}${el.isPopup == true ? '-팝업' : ''}]|">[강사 소통]</p>
                         <p class="titlewrap"><a href="#"><span class="title" th:attr="data-reply='('+${el.commentCount}+')'" th:text="${el.subject}">2022년 3월 7일 월요일 공지사항 안내</span></a></p>
                         <p class="artiInfo"><span class="nickname" th:text="${el.user.userName}">닉네임</span><span class="date" th:text="${#temporals.format(el.createdAt,'yyyy.MM.dd')}">22.03.24</span><span class="view" th:text="${el.viewCount}">9</span><span class="up" th:text="${el.starCount}">10</span></p>
                     </div>
@@ -37,8 +39,15 @@
                     </div>
                 </div>
             </div>
-            <div class="detailContents" th:utext="${el.contents}">
-                내용
+            <div class="detailContents">
+                <div th:utext="${el.contents}" style="margin-bottom: 20px"></div>
+                <div th:if="${el.boardFileList != null && el.boardFileList.size() != 0}" th:each="file : ${el.boardFileList}" style="margin-top: 20px">
+                    <th:block th:each="fileExt : ${#strings.arraySplit(file.orgFileName,'.')}" th:if="${fileExtStat.count == fileExtStat.size}">
+                        <video th:if="${#strings.equals(fileExt,'mp4')}" width="60%" controls>
+                            <source th:src="|/comFileDownload/${file.uploadFileName}|" type="video/mp4">
+                        </video>
+                    </th:block>
+                </div>
             </div>
             <div class="detailInfo clearfix">
                 <div class="fileV" th:if="${el.boardFileList != null && el.boardFileList.size() != 0}">
@@ -52,9 +61,11 @@
                         <button type="button" th:onclick="|goAction('U1','${el.id}')|"><i class="icon" th:classappend="${isStar ? 'i-star':'up'}"></i>추천</button>
                         <button type="button" onclick="copy(location.href)"><i class="icon i-share"></i>공유</button>
                     </div>
-                    <div class="leftwrap">
+                    <div class="leftwrap flexCenter btnF">
                         <span class="replyNum">댓글 <span class="text-blue" th:text="${el.commentCount}">157</span></span>
                         <span class="up" th:text="|추천 ${el.starCount}|">추천 213</span>
+                        <button type="button" class="upOrder upSort"></button>
+                        <button type="button" class="downOrder downSort"></button>
                     </div>
                 </div>
             </div>
@@ -72,7 +83,7 @@
                         <p class="replyInfo">
                             <span th:text="${#temporals.format(comment.createdAt,'yyyy.MM.dd HH:mm')}">22.04.24 15:31</span>
                             <th:block th:if="${@authUtil.isRole('ADMIN') or comment.user.id == session.userId}">
-                            <span><button type="button" class="modiBtn" th:attr="data-id=${comment.id}">수정</button>│<button type="button" class="rpremoveBtn" th:onclick="|goAction('D2','${comment.id}')|">삭제</button></span>
+                                <span><button type="button" class="modiBtn" th:attr="data-id=${comment.id}">수정</button>│<button type="button" class="rpremoveBtn" th:onclick="|goAction('D2','${comment.id}')|">삭제</button></span>
                             </th:block>
                             <span><button type="button" class="rpBtn" th:attr="data-id=${comment.id}">답글쓰기</button></span>
                         </p>
@@ -84,7 +95,7 @@
                             <p class="replyInfo">
                                 <span th:text="${#temporals.format(commentChild.createdAt,'yyyy.MM.dd HH:mm')}">22.04.24 15:31</span>
                                 <th:block th:if="${@authUtil.isRole('ADMIN') or commentChild.user.id == session.userId}">
-                                <span><button type="button" class="modiBtn" th:attr="data-id=${commentChild.id}">수정</button>│<button type="button" class="rpremoveBtn" th:onclick="|goAction('D2','${commentChild.id}')|">삭제</button></span>
+                                    <span><button type="button" class="modiBtn" th:attr="data-id=${commentChild.id}">수정</button>│<button type="button" class="rpremoveBtn" th:onclick="|goAction('D2','${commentChild.id}')|">삭제</button></span>
                                 </th:block>
                             </p>
                         </div>
@@ -108,14 +119,14 @@
             <div class="modalBody commOption">
                 <div class="modalText">
                     <ul>
-                    <li th:each="bl:${boardLog}" th:if="${bl.getUser().getStudent() == null}" th:text="${bl.getUser().userName}"></li>
-                    <th:block th:each="bl:${boardLog}" th:if="${bl.getUser().getStudent() != null}">
-                        <li><span th:text="${bl.getUser().getStudent().school}"></span>&nbsp;
-                            <span th:each="gr : ${T(com.softj.itple.domain.Types.Grade).values()}"
-                            th:if="${gr == bl.getUser().getStudent().grade}" th:text="${gr.message}"></span>&nbsp;
-                            <span th:text="${bl.getUser().userName}"></span>
-                        </li>
-                    </th:block>
+                        <li th:each="bl:${boardLog}" th:if="${bl.getUser().getStudent() == null}" th:text="${bl.getUser().userName}"></li>
+                        <th:block th:each="bl:${boardLog}" th:if="${bl.getUser().getStudent() != null}">
+                            <li><span th:text="${bl.getUser().getStudent().school}"></span>&nbsp;
+                                <span th:each="gr : ${T(com.softj.itple.domain.Types.Grade).values()}"
+                                      th:if="${gr == bl.getUser().getStudent().grade}" th:text="${gr.message}"></span>&nbsp;
+                                <span th:text="${bl.getUser().userName}"></span>
+                            </li>
+                        </th:block>
                     </ul>
                 </div>
                 <div class="modalBtnWrap"></div>
@@ -130,13 +141,13 @@
         var boardId = /*[[${el.id}]]*/0;
         /*]]>*/
 
-        $(document).ready(function(){
+        /*$(document).ready(function(){
             var strPos = getCookie("scrollTop");
 
             if(strPos != null) {
                 $("html,body").animate({scrollTop:parseInt(strPos)}, 100);
             }
-        });
+        });*/
 
         function enterKey(id, parentId, commentId, obj){
             goAction('S2',id, parentId, commentId, obj, "enter");
@@ -189,7 +200,14 @@
             rp.text(modirp).show();
             $(this).parents(".replyInputbox").remove();
         });
-
+        $(document).on("click",".upSort", function(){
+            $("#commentOrder").val("asc");
+            goSort();
+        });
+        $(document).on("click",".downSort", function(){
+            $("#commentOrder").val("desc");
+            goSort();
+        });
     </script>
 </th:block>
 </body>

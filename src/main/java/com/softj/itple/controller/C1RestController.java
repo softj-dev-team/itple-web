@@ -52,8 +52,8 @@ public class C1RestController {
     //댓 작성
     @PostMapping("/p1/s1")
     public Response p1s1(SearchVO params){
-        c1Service.saveBoard(params);
         return Response.builder()
+                .data(c1Service.saveBoard(params))
                 .build();
     }
     //댓 작성

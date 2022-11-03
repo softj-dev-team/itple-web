@@ -1,130 +1,134 @@
-<!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org"
-          xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-          xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-          layout:decorate="layout/layout">
-    <head>
-        <title>수업연계</title>
-    </head>
-    <body>
-    <th:block layout:fragment="content">
-        <form id="form1">
-            <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
-            <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
-        </form>
-        <div class="content">
-            <h1 class="responsiveH1">수업연계</h1>
-            <div class="tab clearfix">
-                <ul class="tab-ul">
-                    <li th:classappend="${#strings.equals(params.taskType,'TASK') ? 'active' : ''}"><a href="/c2/p1">과제</a></li>
-                    <li th:classappend="${#strings.equals(params.taskType,'BOOK_REPORT') ? 'active' : ''}"><a href="/c2/p1?taskType=BOOK_REPORT">독후감</a></li>
-                </ul>
+DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>수업연계</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+        <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
+    </form>
+    <div class="content">
+        <h1 class="responsiveH1">수업연계</h1>
+        <div class="tab clearfix">
+            <ul class="tab-ul">
+                <li th:classappend="${#strings.equals(params.taskType,'TASK') ? 'active' : ''}"><a href="/c2/p1">과제</a></li>
+                <li th:classappend="${#strings.equals(params.taskType,'BOOK_REPORT') ? 'active' : ''}"><a href="/c2/p1?taskType=BOOK_REPORT">독후감</a></li>
+            </ul>
+        </div>
+        <div class="content-in clearfix">
+            <div class="pointBox">
+                <div class="pointTit">포인트</div>
+                <div class="point"><span th:text="| ${#numbers.formatInteger(session.studentVO.coin,0,'COMMA')}|">1,000</span> 포인트</div>
             </div>
-            <div class="content-in clearfix">
-                <div class="pointBox">
-                    <div class="pointTit">포인트</div>
-                    <div class="point"><span th:text="| ${#numbers.formatInteger(session.studentVO.coin,0,'COMMA')}|">1,000</span> 포인트</div>
-                </div>
-                <table class="table" th:classappend="${#strings.equals(params.taskType,'TASK') ? 'taskTalbe' : 'reportTalbe'}">
-                    <thead class="table-head">
-                    <tr>
-                        <th th:if="${#strings.equals(params.taskType,'TASK')}">반</th>
-                        <th th:text="${#strings.equals(params.taskType,'TASK') ? '과제제목' : '책 제목'}">과제제목</th>
-                        <th>기한</th>
-                        <th>상태</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-body" th:classappend="${#strings.equals(params.taskType,'TASK') ? 'taskBody' : 'reportBody'}">
-                    <tr th:each="el : ${list}">
-                        <td th:if="${#strings.equals(params.taskType,'TASK')}" th:text="${el.task.academyClass.className}">잇플코딩 입문반A</td>
-                        <td><p th:text="${el.task.subject+(#strings.equals(params.taskType,'BOOK_REPORT') ? ' - '+el.task.teacher : '')}">수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용</p>
-                            <div class="moTBody">
-                                <p>
-                                    <span th:text="${session.studentVO.academyClass.className}">잇플코딩 입문반A</span>ㅣ
-                                    <span th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd')}|">22.03.24 ~ 22.03.27</span>
-                                </p>
-                                <th:block th:switch="${#strings.toString(el.status)}">
-                                    <button th:case="NOT_SUBMIT" type="button" class="btn btn-blue" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">과제 작성</button>
-                                    <button th:case="SUBMIT" type="button" class="btn btn-yellow" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인중</button>
-                                    <button th:case="COMPLETE" type="button" class="btn btn-lightGray" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">과제 완료</button>
-                                </th:block>
-                            </div>
-                        </td>
-                        <td th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd')}|">22.03.24 ~ 22.03.27</td>
-                        <td>
+            <table class="table" th:classappend="${#strings.equals(params.taskType,'TASK') ? 'taskTalbe' : 'reportTalbe'}">
+                <thead class="table-head">
+                <tr>
+                    <th th:if="${#strings.equals(params.taskType,'TASK')}">반</th>
+                    <th th:text="${#strings.equals(params.taskType,'TASK') ? '과제제목' : '책 제목'}">과제제목</th>
+                    <th>기한</th>
+                    <th>상태</th>
+                </tr>
+                </thead>
+                <tbody class="table-body" th:classappend="${#strings.equals(params.taskType,'TASK') ? 'taskBody' : 'reportBody'}">
+                <tr th:each="el : ${list}">
+                    <td th:if="${#strings.equals(params.taskType,'TASK')}" th:text="${el.task.academyClass.className}">잇플코딩 입문반A</td>
+                    <td><p th:text="${el.task.subject+(#strings.equals(params.taskType,'BOOK_REPORT') ? ' - '+el.task.teacher : '')}">수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용</p>
+                        <div class="moTBody">
+                            <p>
+                                <span th:text="${session.studentVO.academyClass.className}">잇플코딩 입문반A</span>ㅣ
+                                <span th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd HH:mm')}|">22.03.24 ~ 22.03.27</span>
+                            </p>
                             <th:block th:switch="${#strings.toString(el.status)}">
-                                <button th:case="NOT_SUBMIT" type="button" class="btn btn-blue" th:onclick="|ut.redirect('/c2/p1-write/${el.id}')|">작성</button>
+                                <button th:case="NOT_SUBMIT" type="button" class="btn btn-blue" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">과제 작성</button>
                                 <button th:case="SUBMIT" type="button" class="btn btn-yellow" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인중</button>
-                                <button th:case="COMPLETE" type="button" class="btn btn-lightGray" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인 완료</button>
+                                <button th:case="COMPLETE" type="button" class="btn btn-lightGray" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">과제 완료</button>
                             </th:block>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </div>
+                    </td>
+                    <td th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd HH:mm')}|">22.03.24 ~ 22.03.27</td>
+                    <td>
+                        <th:block th:switch="${#strings.toString(el.status)}">
+                            <button th:case="NOT_SUBMIT" type="button" class="btn btn-blue" th:onclick="|ut.redirect('/c2/p1-write/${el.id}')|">작성</button>
+                            <button th:case="SUBMIT" type="button" class="btn btn-yellow" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인중</button>
+                            <button th:case="COMPLETE" type="button" class="btn btn-lightGray" th:onclick="|ut.redirect('/c2/p1-detail/${el.id}')|">확인 완료</button>
+                        </th:block>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-                <div class="tb-btn-bt" th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}">
-                    <button type="button" class="m-btn btn-line stampBtn" onclick="modalOpen('stampModal')"><span>독후감 확인</span></button>
-                </div>
+            <div class="tb-btn-bt" th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}">
+                <button type="button" class="m-btn btn-line stampBtn" onclick="modalOpen('stampModal')"><span>독후감 확인</span></button>
             </div>
-
-            <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
         </div>
 
-        <div class="modal" id="stampModal" th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}">
-            <div class="modal-bg"></div>
-            <div class="modalContent">
-                <div class="modalHd">
-                    <h3>독후감 확인</h3>
-                    <button class="modalClose"></button>
-                </div>
-                <div class="modalBody">
-                    <div class="moTable-con">
-                        <h2>독후감</h2>
-                        <div class="stampIn">
-                            <p><i class="repCom"></i> : 확인</p>
-                            <p><i class="repEd"></i> : 제출</p>
-                            <p><i class="repRe"></i> : 미제출/다시제출</p>
-                        </div>
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    </div>
+
+    <div class="modal" id="stampModal" th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}">
+        <div class="modal-bg"></div>
+        <div class="modalContent">
+            <div class="modalHd">
+                <h3>독후감 확인</h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="moTable-con">
+                    <h2>독후감</h2>
+                    <div class="stampIn">
+                        <p><i class="repCom"></i> : 확인</p>
+                        <p><i class="repEd"></i> : 제출</p>
+                        <p><i class="repRe"></i> : 미제출/다시제출</p>
+                    </div>
+                    <table class="table modalTable">
+                        <colgroup>
+                            <col style="width: 15%;">
+                            <col style="width: auto;">
+                            <col style="width: 20%;">
+                        </colgroup>
+                        <thead class="table-head">
+                        <tr>
+                            <th>No</th>
+                            <th>책 제목</th>
+                            <th>상태</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="body-scroll">
                         <table class="table modalTable">
                             <colgroup>
+                                <col style="width: 15%;">
                                 <col style="width: auto;">
                                 <col style="width: 20%;">
                             </colgroup>
-                            <thead class="table-head">
-                            <tr>
-                                <th>책 제목</th>
-                                <th>상태</th>
+                            <tbody class="table-body">
+                            <tr th:each="el : ${bookReportList}">
+                                <td style="text-align: center" th:text="${elStat.count}"></td>
+                                <td th:text="${el.subject}">정보 sw,로봇 영재원 대비 문제집</td>
+                                <td><div th:classappend="${el.status}"></div></td>
                             </tr>
-                            </thead>
+                            </tbody>
                         </table>
-                        <div class="body-scroll">
-                            <table class="table modalTable">
-                                <colgroup>
-                                    <col style="width: auto;">
-                                    <col style="width: 20%;">
-                                </colgroup>
-                                <tbody class="table-body">
-                                <tr th:each="el : ${bookReportList}">
-                                    <td th:text="${el.subject}">정보 sw,로봇 영재원 대비 문제집</td>
-                                    <td><div th:classappend="${el.status}"></div></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
-                    <div class="modalBtnWrap">
-                        <button type="button" class="btn btn-blue modalOff">닫기</button>
-                    </div>
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-blue modalOff">닫기</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script th:src="@{/assets/js/c2/c2p1.js(v='1.0.0')}"></script>
+    <script th:src="@{/assets/js/c2/c2p1.js(v='1.0.0')}"></script>
 
-        <script th:inline="javascript">
-            /*<![CDATA[*/
-            /*]]>*/
-        </script>
-    </th:block>
-    </body>
-    </html>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</th:block>
+</body>
+</html>
