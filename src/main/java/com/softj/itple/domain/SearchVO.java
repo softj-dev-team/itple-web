@@ -72,6 +72,8 @@ public class SearchVO {
 	private Long[] studentIdList = new Long[0];
 	private long coin;
 	private String returnMessage;
+	private int endTimeHour;
+	private int endTimeMin;
 
 	//관리자-출판서적
 	private long bookId;
@@ -89,6 +91,8 @@ public class SearchVO {
 	private LocalDate startDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate returnDate;
 
 	//관리자-학생관리
 	private Types.StudentStatus studentStatus;
@@ -145,6 +149,7 @@ public class SearchVO {
 
 	//관리자-반관리
 	private String className;
+	private Boolean isInvisible;
 
 	//관리자-관리자관리
 	private Long adminId;

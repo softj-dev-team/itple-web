@@ -220,8 +220,8 @@ public class A2Service {
     }
 
     public List<StudentTask> getStudentTaskListNotSubmit(SearchVO params){
-       List<StudentTask> notSubmitList = studentTaskRepo.findByTaskIdAndStatus(params.getId(), Types.TaskStatus.NOT_SUBMIT);
-       return notSubmitList;
+        List<StudentTask> notSubmitList = studentTaskRepo.findByTaskIdAndStatus(params.getId(), Types.TaskStatus.NOT_SUBMIT);
+        return notSubmitList;
     }
 
     public List<Integer> getStudentTaskSubmit(Page<Task> list){
