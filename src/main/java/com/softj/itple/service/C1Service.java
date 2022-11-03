@@ -165,6 +165,11 @@ public class C1Service {
         return el;
     }
 
+    public Board getPopup(SearchVO params){
+        Board el = boardRepo.findById(params.getId()).orElse(Board.builder().build());
+        return el;
+    }
+
     public List<Board> getBoardNoticePopup(){
         return boardRepo.findByIsPopup(true);
     }

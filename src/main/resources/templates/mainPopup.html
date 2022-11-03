@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/none-layout">
+<head>
+    <title>공지사항</title>
+</head>
+<body>
+<div class="pop-up on">
+    <div class="popContent">
+        <div class="popBody">
+            <div class="popin">
+                공지사항
+                <br/><br/>
+                <img th:src="|${el.getThumbnail()}|" th:alt="${el.subject}">
+            </div>
+            <div class="popBtnWrap">
+                <button type="button" class="popBtn-non" th:id="${el.id}">오늘 하루 보지않기</button>
+                <button type="button" class="popBtn popOff">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".popOff").on("click", function(){
+       self.close();
+    });
+    $(document).on("click",".popBtn-non",function(){
+        var idx = $(this).prop("id");
+        setCookie("noticePopup"+idx, "expire", 1);
+        self.close();
+    });
+</script>
+</body>
+</html>
