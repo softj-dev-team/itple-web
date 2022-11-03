@@ -29,7 +29,7 @@ public class Task extends Auditing{
     private String subject;
     private String teacher;
     private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime endDate;
     private String contents;
     private long coin;
 
@@ -41,7 +41,7 @@ public class Task extends Auditing{
     private List<TaskFile> taskFileList;
 
     @Builder
-    public Task(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, AcademyClass academyClass, Types.TaskType taskType, String subject, String teacher, LocalDate startDate, LocalDate endDate, String contents, long coin) {
+    public Task(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, AcademyClass academyClass, Types.TaskType taskType, String subject, String teacher, LocalDate startDate, LocalDateTime endDate, String contents, long coin) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.academyClass = academyClass;
         this.taskType = taskType;
