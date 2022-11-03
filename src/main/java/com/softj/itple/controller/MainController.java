@@ -22,7 +22,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,14 +63,6 @@ public class MainController {
 	    model.addAttribute("portfolioList", c4Service.getPortfolioList(params, pageable));
 	    model.addAttribute("params", params);
 		return "index";
-	}
-
-	@RequestMapping("/popup/{id}")
-	public String popup(@PathVariable long id, ModelMap model, SearchVO params){
-		params.setId(id);
-		model.addAttribute("el", c1Service.getPopup(params));
-		model.addAttribute("params", params);
-		return "mainPopup";
 	}
 
     @PreAuthorize("hasAuthority('ADMIN')")
