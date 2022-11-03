@@ -55,15 +55,8 @@ public class MainController {
 			return "redirect:/logout";
 		}
 
-		String userAgent = request.getHeader("User-Agent").toUpperCase();
-		boolean isMobile = false;
-		if(userAgent.indexOf("MOBI") > -1){
-			isMobile = true;
-		}
-
 		params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
 
-		model.addAttribute("isMobile", isMobile);
 		model.addAttribute("noticePopup", c1Service.getBoardNoticePopup());
 		model.addAttribute("noticeList", c1Service.getBoardNoticeList(params, pageable));
 	    model.addAttribute("taskList", c2Service.getStudentTaskList(params, pageable));

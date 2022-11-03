@@ -144,7 +144,7 @@
         </div>
     </div>
     <div class="pop-up" th:if="${@authUtil.isRole('STUDENT') && noticePopup != null}">
-        <div class="popContent" th:each="el : ${noticePopup}" th:style="${#lists.size(noticePopup) > 1 && !isMobile ? 'transform:none;': ''}" th:id="|popup_${el.id}|" th:classappend="|popup_${elStat.count}|">
+        <div class="popContent" th:each="el : ${noticePopup}" th:id="|popup_${el.id}|" th:classappend="|popup_${elStat.count}|">
             <div class="popBody">
                 <div class="popin">
                     <div class="tableBtn-box">
@@ -164,12 +164,17 @@
             </div>
         </div>
     </div>
-    <div class="popBg" th:if="${@authUtil.isRole('STUDENT') && noticePopup != null}"></div>
+    <div class="popBg" style="display:none" th:if="${@authUtil.isRole('STUDENT') && noticePopup != null}"></div>
     <script th:if="${@authUtil.isRole('STUDENT')}" th:src="@{/assets/js/common.js(v='1.0.0')}"></script>
     <script th:if="${@authUtil.isRole('STUDENT')}" th:inline="javascript">
+        var isMobile = navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i) ? true : false;
 
         $(document).on("click",".closePopup", function(){
            $(this).parents(".popContent").remove();
+            var popupLength = $(".popContent").length;
+            if(popupLength < 1) {
+                $(".popBg").hide();
+            }
         });
 
         $(document).ready(function(){
@@ -181,7 +186,10 @@
                 var idx = idxArr[1];
                 if (!getCookie("noticePopup"+idx)) {
                     $('#popup_'+idx).show();
-                    $('#popup_'+idx).css("left",(420*cssNum)+"px")
+                    if(!isMobile) {
+                        $('#popup_' + idx).css("left", (420 * cssNum) + "px");
+                        $('#popup_' + idx).css("transform", "none");
+                    }
                     cssNum++;
                 } else {
                     $('#popup_'+idx).remove();
@@ -207,7 +215,6 @@
                 setCookie("noticePopup"+idx, "expire", 1);
                 $('#popup_'+idx).remove();
 
-                $('#popup_'+idx).remove();
                 if(popupLength < 2) {
                     $(".pop-up").removeClass('on');
                     $(".popBg").hide();
