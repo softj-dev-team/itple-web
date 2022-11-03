@@ -54,6 +54,7 @@ public class MainController {
 		if(ObjectUtils.isEmpty(AuthUtil.getStudent().getAcademyClass())){
 			return "redirect:/logout";
 		}
+
 		params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
 
 		model.addAttribute("noticePopup", c1Service.getBoardNoticePopup());
