@@ -144,11 +144,17 @@
         </div>
     </div>
     <div class="pop-up" th:if="${@authUtil.isRole('STUDENT') && noticePopup != null}">
-        <div class="popContent" th:each="el : ${noticePopup}" th:style="${#lists.size(noticePopup) > 1 && !isMobile ? 'left:'+(elStat.index*400)+'px' : ''}" th:id="|popup_${el.id}|" th:classappend="|popup_${elStat.count}|">
+        <div class="popContent" th:each="el : ${noticePopup}" th:style="${#lists.size(noticePopup) > 1 && !isMobile ? 'transform:none;': ''}" th:id="|popup_${el.id}|" th:classappend="|popup_${elStat.count}|">
             <div class="popBody">
                 <div class="popin">
-                    공지사항
-                    <br/><br/>
+                    <div class="tableBtn-box">
+                        <div class="leftBox">
+                            공지사항
+                        </div>
+                        <div class="rigthBox">
+                            <div style="width:20px;height:20px;cursor:pointer;text-align:center;" class="closePopup">X</div>
+                        </div>
+                    </div>
                     <img th:src="|${el.getThumbnail()}|" th:alt="${el.subject}">
                 </div>
                 <div class="popBtnWrap">
@@ -162,15 +168,21 @@
     <script th:if="${@authUtil.isRole('STUDENT')}" th:src="@{/assets/js/common.js(v='1.0.0')}"></script>
     <script th:if="${@authUtil.isRole('STUDENT')}" th:inline="javascript">
 
+        $(document).on("click",".closePopup", function(){
+           $(this).parents(".popContent").remove();
+        });
+
         $(document).ready(function(){
             var popupSize = $(".popContent").length;
-
-            for(var i=1; i<popupSize+1; i++) {
-                var id = $(".popup_"+i).prop("id");
+            var cssNum = 0;
+            for(var i=0; i<popupSize; i++) {
+                var id = $(".popup_"+(i+1)).prop("id");
                 var idxArr = id.split("_");
                 var idx = idxArr[1];
                 if (!getCookie("noticePopup"+idx)) {
                     $('#popup_'+idx).show();
+                    $('#popup_'+idx).css("left",(420*cssNum)+"px")
+                    cssNum++;
                 } else {
                     $('#popup_'+idx).remove();
                 }
