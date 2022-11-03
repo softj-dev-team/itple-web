@@ -9,6 +9,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
+import com.softj.itple.exception.ApiException;
+import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.CodeUtil;
@@ -163,7 +165,7 @@ public class C1Service {
         return el;
     }
 
-    public Board getBoardNoticePopup(){
+    public List<Board> getBoardNoticePopup(){
         return boardRepo.findByIsPopup(true);
     }
 
@@ -303,6 +305,7 @@ public class C1Service {
     @Transactional
     public long saveBoard(SearchVO params){
         Board save = Board.builder().build();
+
         if(LongUtils.noneEmpty(params.getId())){
             save = boardRepo.findById(params.getId()).get();
         }
@@ -310,18 +313,17 @@ public class C1Service {
         save.setBoardCategory(params.getBoardCategory());
         save.setBoardType(params.getBoardType());
         save.setContents(params.getContents());
+        if(Objects.isNull(params.getIsPopup())){
+            save.setIsPopup(false);
+        }else {
+            save.setIsPopup(params.getIsPopup());
+        }
         save.setUser(User.builder().id(AuthUtil.getUserId()).build());
         Pattern p = Pattern.compile("src=\"([^\"]+)\".*>");
         Matcher m = p.matcher(save.getContents());
         if(m.find()){
             String thumbnail = m.group(1);
             save.setThumbnail(thumbnail);
-        }
-
-        CodeUtil cu = new CodeUtil(codeDetailRepo);
-
-        if(Objects.nonNull(params.getIsPopup()) && params.getBoardCategory().equals(cu.getCodeValue(1, "공지"))){
-            save.setIsPopup(params.getIsPopup());
         }
 
         Board finalSave = boardRepo.save(save);

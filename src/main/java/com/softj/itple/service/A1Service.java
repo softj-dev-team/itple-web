@@ -59,7 +59,7 @@ public class A1Service {
                     where.and(qBook.subject.contains(params.getSearchValue()));
                     break;
                 case "rentalName":
-                    where.and(qUser.userName.contains(params.getSearchValue()));
+                    where.and(qBookRental.user.userName.contains(params.getSearchValue()));
                     break;
             }
         }

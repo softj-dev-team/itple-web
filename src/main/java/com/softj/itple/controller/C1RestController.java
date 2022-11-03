@@ -49,7 +49,7 @@ public class C1RestController {
                 .data(c1Service.selectBoardCategoryList(params))
                 .build();
     }
-    //댓 작성
+    //저장
     @PostMapping("/p1/s1")
     public Response p1s1(SearchVO params){
         return Response.builder()

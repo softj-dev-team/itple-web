@@ -30,7 +30,7 @@
                                 th:value="${e.codeValue}" th:text="${e.codeName}"
                                 th:selected="${el.boardCategory == e.codeValue}">잇플 코딩 게시판</option>
                     </select>
-                    <input type="checkbox" name="isPopup" id="isPopup"><label for="isPopup" id="isPopupLabel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;메인팝업</label>
+                    <input type="checkbox" name="isPopup" id="isPopup" th:checked="${el.isPopup}"><label for="isPopup" id="isPopupLabel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;메인팝업</label>
                     <input type="text" placeholder="제목을 입력하세요." class="input-df" th:value="${el.subject}" name="subject">
                 </div>
                 <div>
