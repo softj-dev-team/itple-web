@@ -16,9 +16,9 @@
         <h1 class="adH1">수업연계</h1>
         <div class="tab clearfix adTab">
             <ul class="tab-ul">
+                <li><a href="/a2/p2">통합검색</a></li>
                 <li th:classappend="${#strings.equals(params.taskType,'TASK') ? 'active' : ''}"><a href="/a2/p1">과제</a></li>
                 <li th:classappend="${#strings.equals(params.taskType,'BOOK_REPORT') ? 'active' : ''}"><a href="/a2/p1?taskType=BOOK_REPORT">독후감</a></li>
-                <li><a href="/a2/p2">통합검색</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">
