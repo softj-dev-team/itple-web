@@ -10,11 +10,11 @@
             <ul class="gnb clearfix">
 
                 <li th:if="${session.adminVO.menu2}">
-                    <a href="/a2/p1">수업연계</a>
+                    <a href="/a2/p2">수업연계</a>
                     <ul class="lnb">
+                        <li><a href="/a2/p2">통합검색</a></li>
                         <li><a href="/a2/p1">과제</a></li>
                         <li><a href="/a2/p1?taskType=BOOK_REPORT">독후감</a></li>
-                        <li><a href="/a2/p2">통합검색</a></li>
                     </ul>
                 </li>
                 <li th:if="${session.adminVO.menu3}">
@@ -79,11 +79,11 @@
                 </p>
                 <ul class="ham-gnb">
                     <li th:if="${session.adminVO.menu2}"><button class="bot-btn"></button>
-                        <a href="/a2/p1">수업연계</a>
+                        <a href="/a2/p2">수업연계</a>
                         <ul class="ham-lnb">
+                            <li><a href="/a2/p2">통합검색</a></li>
                             <li><a href="/a2/p1">과제</a></li>
                             <li><a href="/a2/p1?taskType=BOOK_REPORT">독후감</a></li>
-                            <li><a href="/a2/p2">통합검색</a></li>
                         </ul>
                     </li>
                     <li th:if="${session.adminVO.menu3}"><button class="bot-btn"></button>
