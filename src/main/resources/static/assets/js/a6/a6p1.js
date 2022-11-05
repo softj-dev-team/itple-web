@@ -55,8 +55,12 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             modal.confirm("저장하시겠습니까?",function(){
                 $("input[name=idList]").prop("checked",true);
                 $.post(path+'/s1',formS1.serialize(),function(res){
+                    loading(0);
                     modal.alert('저장되었습니다.');
-                    ut.redirect(`/a6/p1-detail/${res.data}`);
+                    var data = res.data;
+                    var id = data.id;
+                    var portfolioType = data.portfolioType;
+                    ut.redirect("/a6/p1-detail/"+id,"portfolioType",portfolioType);
                 });
             });
             break;

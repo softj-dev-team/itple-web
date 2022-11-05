@@ -58,7 +58,9 @@ public class A6Service {
         Portfolio el = portfolioRepo.findById(params.getId()).orElse(Portfolio.builder().build());
         return el;
     }
-    public long savePortfolio(SearchVO params){
+    public Map<String,Object> savePortfolio(SearchVO params){
+
+        Map<String,Object> result = new HashMap<>();
         Portfolio save = Portfolio.builder().build();
         if(LongUtils.noneEmpty(params.getId())){
             save = portfolioRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
@@ -84,7 +86,11 @@ public class A6Service {
         }
         portfolioFileRepo.saveAll(fileList);
 
-        return finalSave.getId();
+
+        result.put("id", finalSave.getId());
+        result.put("portfolioType", finalSave.getPortfolioType());
+
+        return result;
     }
 
     @Transactional

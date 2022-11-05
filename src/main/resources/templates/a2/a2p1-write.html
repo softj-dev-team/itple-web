@@ -17,7 +17,7 @@
         </h1>
         <div class="responsiveInner">
             <form id="form1">
-                <input type="hidden" id="id" name="id" th:value="${el.id}">
+                <input type="hidden" id="id" name="id" th:value="${el == null ? 0 : el.id}">
                 <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
                 <div class="inputSec">
                     <label for="classId" class="mb5">반 선택</label>
@@ -32,33 +32,33 @@
                         </div>
                     </div>
                     <label for="subject" class="mb5">제목</label>
-                    <input type="text" class="input-df mb20" name="subject" id="subject" th:value="${el.subject}">
+                    <input type="text" class="input-df mb20" name="subject" id="subject" th:value="${el?.subject}">
                     <label th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" for="teacher" class="mb5">출제 선생님</label>
-                    <input th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" type="text" class="input-df mb20" id="teacher" name="teacher" th:value="${el.teacher}">
+                    <input th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" type="text" class="input-df mb20" id="teacher" name="teacher" th:value="${el?.teacher}">
                     <th:block th:switch="${#strings.toString(params.taskType)}">
                         <label for="contents" class="mb5" th:case="TASK">과제 내용</label>
                         <label for="contents" class="mb5" th:case="BOOK_REPORT">독후감 내용</label>
                     </th:block>
-                    <textarea name="contents" id="contents" cols="30" rows="10" class="mb20" th:value="${el.contents}"></textarea>
+                    <textarea name="contents" id="contents" cols="30" rows="10" class="mb20" th:value="${el?.contents}"></textarea>
                     <div class="dateBox mb20">
                         <th:block th:switch="${#strings.toString(params.taskType)}">
                             <label class="mb5" th:case="TASK">과제 마감일</label>
                             <label class="mb5" th:case="BOOK_REPORT">독후감 마감일</label>
                         </th:block>
                         <div class="datepickerWrap">
-                            <input type="text" class="input-df datepicker" name="startDate" th:value="${#temporals.format(el.startDate,'yyyy-MM-dd')}">
+                            <input type="text" class="input-df datepicker" name="startDate" th:value="${#temporals.format(el?.startDate,'yyyy-MM-dd')}">
                             <i class="i-date"></i>
                         </div>
                         <span>-</span>
                         <div class="datepickerWrap">
-                            <input type="text" class="input-df datepicker" name="endDate" th:value="${#temporals.format(el.endDate,'yyyy-MM-dd')}">
+                            <input type="text" class="input-df datepicker" name="endDate" th:value="${#temporals.format(el?.endDate,'yyyy-MM-dd')}">
                             <i class="i-date"></i>
                         </div>
                     </div>
                     <div class="dateBox">
                         <label for="coin" class="mb5">지급포인트</label>
                         <div class="datepickerWrap">
-                            <input type="text" class="input-df mb20 txtRight" th:value="${el.coin}" name="coin" id="coin">
+                            <input type="text" class="input-df mb20 txtRight" th:value="${el?.coin}" name="coin" id="coin">
                         </div>
                     </div>
                 </div>
