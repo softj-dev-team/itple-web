@@ -25,7 +25,7 @@ server:
   port: 8089
   servlet:
     session:
-      timeout: 180m
+      timeout: -1
 
 spring:
   profiles: dev

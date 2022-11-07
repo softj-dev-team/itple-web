@@ -316,7 +316,7 @@ public class A2Service {
     @Transactional
     public void completeStudentTask(SearchVO params){
         StudentTask find = studentTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
-        find.setStatus(Types.TaskStatus.COMPLETE);
+        find.setStatus(params.getTaskStatus());
         find.setReturnMessage(null);
         find.setCompDate(LocalDate.now());
         studentTaskRepo.save(find);
@@ -373,7 +373,7 @@ public class A2Service {
         coinHistoryRepo.save(CoinHistory.builder()
                 .user(student.getUser())
                 .coinStatus(Types.CoinStatus.MINUS)
-                .coin(task.getCoin())
+                .coin(-task.getCoin())
                 .memo("과제/독후감 확인 포인트 차감")
                 .build());
     }

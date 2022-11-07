@@ -68,6 +68,14 @@ public class A1Service {
             where.and(qBook.bookCategory.eq(params.getBookCategory()));
         }
 
+        if(com.softj.itple.util.StringUtils.noneEmpty(params.getRentalStatus())){
+            if(StringUtils.equals(params.getRentalStatus(),"AVAILABLE")){
+                where.and(qBookRental.rentalStatus.eq(Types.BookRentalStatus.AVAILABLE).or(qBookRental.rentalStatus.eq(Types.BookRentalStatus.RETURN)));
+            }else{
+                where.and(qBookRental.rentalStatus.eq(params.getRentalStatus()));
+            }
+        }
+
         JPAQuery<Book> query = jpaQueryFactory.select(Projections.fields(Book.class,
                         qBook.id,
                         qBook.thumbnail,

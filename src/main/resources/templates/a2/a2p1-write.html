@@ -19,6 +19,7 @@
             <form id="form1">
                 <input type="hidden" id="id" name="id" th:value="${el == null ? 0 : el.id}">
                 <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
+                <input type="hidden" id="academyClass" name="academyClass" th:value="${el?.academyClass.id}">
                 <div class="inputSec">
                     <label for="classId" class="mb5">반 선택</label>
                     <select name="classId" id="classId" class="input-df mb20" onchange="setStudentList()">
@@ -39,7 +40,7 @@
                         <label for="contents" class="mb5" th:case="TASK">과제 내용</label>
                         <label for="contents" class="mb5" th:case="BOOK_REPORT">독후감 내용</label>
                     </th:block>
-                    <textarea name="contents" id="contents" cols="30" rows="10" class="mb20" th:value="${el?.contents}"></textarea>
+                    <textarea name="contents" id="contents" cols="30" rows="10" class="mb20" th:utext="${el?.contents}"></textarea>
                     <div class="dateBox mb20">
                         <th:block th:switch="${#strings.toString(params.taskType)}">
                             <label class="mb5" th:case="TASK">과제 마감일</label>
@@ -74,8 +75,15 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         /*]]>*/
+        $(document).ready(function(){
+            var taskId = [[${el == null ? 0 : el.id}]];
+            if(taskId != 0) {
+                selectClassId(taskId);
+            }else{
+                setStudentList();
+            }
+        });
         $(function(){
-            setStudentList();
             $(".datepicker").datepicker({
                 format: "yyyy-mm-dd",
                 language: "ko",
