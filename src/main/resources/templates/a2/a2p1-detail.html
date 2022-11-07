@@ -130,10 +130,11 @@
                         <textarea id="returnMessage" style="height:60px"></textarea>
                     </div>
                     <div class="modalBtnWrap">
-                        <button type="button" class="btn btn-red" id="rejectBtn">다시제출 처리</button>
-                        <button type="button" class="btn btn-blue" id="completeBtn">확인 처리</button>
                         <button type="button" class="btn btn-blue" id="plusBtn">포인트 지급</button>
                         <button type="button" class="btn btn-red" id="minusBtn">포인트 차감</button>
+                        <button type="button" class="btn btn-red" id="rejectBtn">다시제출 처리</button>
+                        <button type="button" class="btn btn-blue" id="completeBtn">확인 처리</button>
+                        <button type="button" class="btn btn-blue" id="cancleBtn">취소 처리</button>
                     </div>
                 </div>
             </div>
@@ -167,6 +168,7 @@
                     $("#plusBtn, #minusBtn").prop("disabled", true);
                 });
             });
+
         </script>
 </th:block>
 </body>

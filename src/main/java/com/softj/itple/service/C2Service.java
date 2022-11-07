@@ -40,11 +40,6 @@ public class C2Service {
     private final StudentTaskRepo studentTaskRepo;
     private final StudentTaskFileRepo studentTaskFileRepo;
 
-    private final StudentRepo studentRepo;
-
-    private final CoinHistoryRepo coinHistoryRepo;
-
-    final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Value("${file.uploadDir}")
     private String FILE_PATH;
@@ -73,8 +68,8 @@ public class C2Service {
         QStudentTask qStudentTask = QStudentTask.studentTask;
         BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.task.taskType.eq(params.getTaskType())).and(qStudentTask.student.eq(AuthUtil.getStudent())));
         JPAQuery<BookReportStampDTO> query = jpaQueryFactory.select(Projections.fields(BookReportStampDTO.class,
-                qStudentTask.task.subject,
-                qStudentTask.status)
+                        qStudentTask.task.subject,
+                        qStudentTask.status)
                 )
                 .from(qStudentTask)
                 .leftJoin(qStudentTask.task)
@@ -93,7 +88,7 @@ public class C2Service {
         return ImmutableList.copyOf(studentTaskRepo.findAll(where));
     }
 
-//    public Page<BoardComment> getStudentTaskCommentList(SearchVO params, Pageable pageable){
+    //    public Page<BoardComment> getStudentTaskCommentList(SearchVO params, Pageable pageable){
 //        qStudentTaskComment qStudentTaskComment = qStudentTaskComment.boardComment;
 //        BooleanBuilder where = new BooleanBuilder().and(qStudentTaskComment.board.id.eq(params.getId()).and(qStudentTaskComment.parent.isNull()));
 //        return boardCommentRepo.findAll(where, pageable);

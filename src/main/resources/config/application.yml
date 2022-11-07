@@ -16,7 +16,7 @@ emailPassword: jkolyxvasuhzbbdh
 aligo:
   api-key: dcx8h2qdwvutbsv16wnkg2er4lja3row
   sender-key: 884f82e7b2814cef8efffae014a3edb165bc0da1
-  sender: 010-8741-4766
+  sender: 010-7571-4926
   user-id: itple333
 
 
@@ -25,15 +25,7 @@ server:
   port: 8089
   servlet:
     session:
-      timeout: 180m
-ssl:
-  key-store-type : PKCS12
-  key-store: file:src/main/resources/config/.keystore
-  key-store-password: thdud
-  key-alias: tomcat
-
-security:
-  require-ssl: true
+      timeout: -1
 
 spring:
   profiles: dev

@@ -31,8 +31,8 @@ public class A7RestController {
 
     //저장
     @PostMapping("/p1/s1")
-    public Response p1s1(SearchVO params) throws Exception {
-        a7Service.saveAcademyClass(params);
+    public Response p1s1(SearchVO params, HttpServletRequest request) throws Exception {
+        a7Service.saveAcademyClass(params, request);
         return Response.builder().build();
     }
 

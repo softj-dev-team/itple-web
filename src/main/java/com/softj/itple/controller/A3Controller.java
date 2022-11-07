@@ -5,6 +5,7 @@ import com.softj.itple.domain.Types;
 import com.softj.itple.service.A3Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -32,6 +33,10 @@ public class A3Controller {
 
         if(!Objects.isNull(params.getAcademyType()) && Objects.isNull(params.getStudentStatus())) {
             params.setStudentStatus(Types.StudentStatus.STUDENT);
+        }
+
+        if(Strings.isEmpty(params.getEdOrder())){
+            params.setEdOrder("asc");
         }
 
         model.addAttribute("classList", commonService.getClassList(params));

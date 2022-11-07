@@ -45,8 +45,8 @@ public class A1RestController {
     //대여,반납
     @PostMapping("/p1/s2")
     public Response p1s2(SearchVO params) throws ApiException {
-       a1Service.saveBookRental(params);
-       return Response.builder().build();
+        a1Service.saveBookRental(params);
+        return Response.builder().build();
     }
 
     //카테고리 저장

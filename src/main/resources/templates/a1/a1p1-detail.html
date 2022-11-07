@@ -7,101 +7,101 @@
 </head>
 <body>
 <th:block layout:fragment="content">
-<form id="form1">
-    <input type="hidden" name="id" th:value="${el.id}" />
-    <input type="hidden" name="thumbnail" id="thumbnail" th:value="${el.thumbnail}" />
-    <input type="hidden" name="startDate" id="startDate" th:value="${el.bookRental?.startDate}" />
-    <input type="hidden" name="endDate" id="endDate" th:value="${el.bookRental?.endDate}" />
-    <input type="hidden" name="rentalName" th:value="${el.bookRental?.user?.userName}"/>
-    <input type="hidden" name="bookStatus" th:value="${el.bookStatus}"/>
-    <input type="hidden" name="page" id="page" th:value="${params.page}"/>
-<div class="responsiveWrap">
-    <h1 class="responsiveH1">도서 상세정보</h1>
-    <div class="responsiveInner">
-        <div class="filebox">
-            <div class="detailsIgm upFile" id="FileImg" onclick="fileOpen();">
-                <div class="upFile-img" th:style="|background-image: url('${el.thumbnail}');|"></div>
+    <form id="form1">
+        <input type="hidden" name="id" th:value="${el.id}" />
+        <input type="hidden" name="thumbnail" id="thumbnail" th:value="${el.thumbnail}" />
+        <input type="hidden" name="startDate" id="startDate" th:value="${el.bookRental?.startDate}" />
+        <input type="hidden" name="endDate" id="endDate" th:value="${el.bookRental?.endDate}" />
+        <input type="hidden" name="rentalName" th:value="${el.bookRental?.user?.userName}"/>
+        <input type="hidden" name="bookStatus" th:value="${el.bookStatus}"/>
+        <input type="hidden" name="page" id="page" th:value="${params.page}"/>
+        <div class="responsiveWrap">
+            <h1 class="responsiveH1">도서 상세정보</h1>
+            <div class="responsiveInner">
+                <div class="filebox">
+                    <div class="detailsIgm upFile" id="FileImg" onclick="fileOpen();">
+                        <div class="upFile-img" th:style="|background-image: url('${el.thumbnail}');|"></div>
+                    </div>
+                    <input type="file"  name="files" class="uploadBtn"  id="image"  accept="image/*"  multiple="multiple" style="display: none;">
+                </div>
+                <div class="detailsBox inputSec">
+                    <label for="bookCategory" class="mb5">책 카테고리</label>
+                    <select name="bookCategory" id="bookCategory" class="select-md">
+                        <option value="">선택</option>
+                        <option th:each="e : ${@codeUtil.getCodeList(4)}"
+                                th:value="${e.codeValue}" th:text="${e.codeName}"
+                                th:selected="${el.bookCategory == e.codeValue}">카테고리</option>
+                    </select>
+                    <label for="subject" class="mb5">책 제목</label>
+                    <input type="text" name="subject" id="subject" th:value="${el.subject}" class="input-df mb20" >
+                    <label for="writer" class="mb5">작가명</label>
+                    <input type="text" name="writer" id="writer" th:value="${el.writer}" class="input-df mb20" >
+                    <label for="bookNo" class="mb5">책 번호</label>
+                    <input type="text" name="bookNo" id="bookNo" th:value="${el.bookNo}" class="input-df mb20" >
+                    <label for="contents" class="mb5">책 정보</label>
+                    <textarea name="contents" id="contents" cols="30" rows="10" th:value="${el.contents}" th:utext="${el.contents}">책 정보</textarea>
+                </div>
+                <div class="btn-center mt60">
+                    <button type="button" class="btn" onclick="goSave();">저장하기</button>
+                </div>
             </div>
-            <input type="file"  name="files" class="uploadBtn"  id="image"  accept="image/*"  multiple="multiple" style="display: none;">
         </div>
-        <div class="detailsBox inputSec">
-            <label for="bookCategory" class="mb5">책 카테고리</label>
-            <select name="bookCategory" id="bookCategory" class="select-md">
-                <option value="">선택</option>
-                <option th:each="e : ${@codeUtil.getCodeList(4)}"
-                        th:value="${e.codeValue}" th:text="${e.codeName}"
-                        th:selected="${el.bookCategory == e.codeValue}">카테고리</option>
-            </select>
-            <label for="subject" class="mb5">책 제목</label>
-            <input type="text" name="subject" id="subject" th:value="${el.subject}" class="input-df mb20" >
-            <label for="writer" class="mb5">작가명</label>
-            <input type="text" name="writer" id="writer" th:value="${el.writer}" class="input-df mb20" >
-            <label for="bookNo" class="mb5">책 번호</label>
-            <input type="text" name="bookNo" id="bookNo" th:value="${el.bookNo}" class="input-df mb20" >
-            <label for="contents" class="mb5">책 정보</label>
-            <textarea name="contents" id="contents" cols="30" rows="10" th:value="${el.contents}" th:utext="${el.contents}">책 정보</textarea>
-        </div>
-        <div class="btn-center mt60">
-            <button type="button" class="btn" onclick="goSave();">저장하기</button>
-        </div>
-    </div>
-</div>
-</form>
-<script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
-<script th:inline="javascript">
+    </form>
+    <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
 
-    function goSave(){
-        var subject = $("#subject").val();
-        if(subject == ""){
-            modal.alert("책제목을 적어주세요.");
-            return;
-        }
-
-        var bookNo = $("#bookNo").val();
-        if(bookNo == ""){
-            modal.alert("책번호를 적어주세요.");
-            return;
-        }
-
-        goAction('S1');
-    }
-
-    //파일첨부
-    $(document).ready(function() {
-        $("#image").on("change", fileUpload);
-    });
-
-    //파일첨부
-    function fileUpload(e) {
-        var formData = new FormData($("#form1")[0]);
-
-        $.ajax({
-            data : formData,
-            type : "POST",
-            url : "/comFileUpload",
-            contentType : false,
-            processData : false,
-            success : function(res) {
-                if(ut.isEmpty(res.data)){
-                    return;
-                }
-
-                document.getElementById("FileImg").innerHTML ="";
-                var img = document.createElement("div");
-                img.setAttribute("style", "background-image:url('/comFileDownload/"+res.data[0]+"')");
-                img.setAttribute("ID", "profileimg");
-                document.querySelector("div#FileImg").appendChild(img);
-                $("#thumbnail").val("/comFileDownload/"+res.data[0])
-                $("#image").val();
+        function goSave(){
+            var subject = $("#subject").val();
+            if(subject == ""){
+                modal.alert("책제목을 적어주세요.");
+                return;
             }
-        });
-    }
 
-    function fileOpen(){
-        var ele=document.getElementById('image');
-        ele.click();
-    }
-</script>
+            var bookNo = $("#bookNo").val();
+            if(bookNo == ""){
+                modal.alert("책번호를 적어주세요.");
+                return;
+            }
+
+            goAction('S1');
+        }
+
+        //파일첨부
+        $(document).ready(function() {
+            $("#image").on("change", fileUpload);
+        });
+
+        //파일첨부
+        function fileUpload(e) {
+            var formData = new FormData($("#form1")[0]);
+
+            $.ajax({
+                data : formData,
+                type : "POST",
+                url : "/comFileUpload",
+                contentType : false,
+                processData : false,
+                success : function(res) {
+                    if(ut.isEmpty(res.data)){
+                        return;
+                    }
+
+                    document.getElementById("FileImg").innerHTML ="";
+                    var img = document.createElement("div");
+                    img.setAttribute("style", "background-image:url('/comFileDownload/"+res.data[0]+"')");
+                    img.setAttribute("ID", "profileimg");
+                    document.querySelector("div#FileImg").appendChild(img);
+                    $("#thumbnail").val("/comFileDownload/"+res.data[0])
+                    $("#image").val();
+                }
+            });
+        }
+
+        function fileOpen(){
+            var ele=document.getElementById('image');
+            ele.click();
+        }
+    </script>
 </th:block>
 </body>
 </html>

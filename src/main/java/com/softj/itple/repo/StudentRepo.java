@@ -91,7 +91,7 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       ELSE A.parent_tel LIKE '%' OR A.parent_tel IS NULL END " +
             "       AND CASE WHEN CAST(:searchType AS TEXT) = 'attendanceNo' THEN A.attendance_no LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE A.attendance_no LIKE '%' OR A.attendance_no IS NULL END " +
-            "       ORDER BY CASE WHEN :edOrder = 'asc' THEN A.enter_date end asc, CASE WHEN :edOrder = 'desc' THEN A.enter_date end desc, C.user_name collate \"ko_KR.utf8\" asc", nativeQuery = true)
+            "       ORDER BY C.user_name collate \"ko_KR.utf8\" asc, CASE WHEN :edOrder = 'asc' THEN A.enter_date end asc, CASE WHEN :edOrder = 'desc' THEN A.enter_date end desc", nativeQuery = true)
     List<Student> getStudentList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue, Pageable pageable);
 
     @Query(value = "SELECT A.*" +
@@ -120,7 +120,7 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       ELSE A.parent_tel LIKE '%' OR A.parent_tel IS NULL END " +
             "       AND CASE WHEN CAST(:searchType AS TEXT) = 'attendanceNo' THEN A.attendance_no LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE A.attendance_no LIKE '%' OR A.attendance_no IS NULL END " +
-            "       ORDER BY CASE WHEN :edOrder = 'asc' THEN A.enter_date end asc, CASE WHEN :edOrder = 'desc' THEN A.enter_date end desc, C.user_name collate \"ko_KR.utf8\" asc", nativeQuery = true)
+            "       ORDER BY C.user_name collate \"ko_KR.utf8\" asc, CASE WHEN :edOrder = 'asc' THEN A.enter_date end asc, CASE WHEN :edOrder = 'desc' THEN A.enter_date end desc", nativeQuery = true)
     List<Student> getStudentExcelList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue);
 
 

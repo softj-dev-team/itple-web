@@ -42,12 +42,27 @@ public class A7Service {
     private final RoleRepo roleRepo;
 
     public Page<AcademyClass> getAcademyClassList(SearchVO params, Pageable pageable){
+        QAcademyClass qAcademyClass = QAcademyClass.academyClass;
 
-        int academyClassListTotal = academyClassRepo.getAcademyClassListTotal(params.getAcademyType().getCode(), params.getClassName());
+        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false))
+                .and(qAcademyClass.academyClass.academyType.eq(params.getAcademyType()));
 
-        List<AcademyClass> academyClassList = academyClassRepo.getAcademyClassList(params.getAcademyType().getCode(), params.getClassName(), pageable);
+        if(StringUtils.noneEmpty(params.getClassName())){
+            where.and(qAcademyClass.className.contains(params.getClassName()));
+        }
 
-        return new PageImpl<AcademyClass>(academyClassList, pageable, academyClassListTotal);
+        JPAQuery<AcademyClass> query = jpaQueryFactory.select(Projections.fields(AcademyClass.class,
+                        qAcademyClass.id,
+                        qAcademyClass.academyType,
+                        qAcademyClass.className
+                ))
+                .from(qAcademyClass)
+                .where(where)
+                .orderBy(qAcademyClass.id.asc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
+
+        return new PageImpl<AcademyClass>(query.fetch(), pageable, query.fetchCount());
     }
 
     public AcademyClass getAcademyClass(SearchVO params) {
@@ -55,11 +70,13 @@ public class A7Service {
     }
 
     @Transactional
-    public void saveAcademyClass(SearchVO params){
+    public void saveAcademyClass(SearchVO params, HttpServletRequest request){
+
+        HttpSession session = request.getSession();
+        LocalDateTime now = LocalDateTime.now();
 
         AcademyClass save = academyClassRepo.findById(params.getId()).orElse(AcademyClass.builder().build());
 
-        save.setIsInvisible(params.getIsInvisible());
         save.setAcademyType(params.getAcademyType());
         save.setClassName(params.getClassName());
         save.setDeleted(false);

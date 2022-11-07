@@ -74,6 +74,7 @@ public class SearchVO {
 	private String returnMessage;
 	private int endTimeHour;
 	private int endTimeMin;
+	private Types.TaskStatus taskStatus;
 
 	//관리자-출판서적
 	private long bookId;

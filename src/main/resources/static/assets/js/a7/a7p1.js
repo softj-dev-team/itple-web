@@ -38,6 +38,7 @@ function goAction(flag, arg1, arg2) {
             var url = path+'/p1/s1';
 
             modal.confirm("저장하시겠습니까?",function(){
+                loading(1);
 
                 $.post(url,formS1.serialize(),function(){
                     loading(0);
@@ -71,7 +72,7 @@ function goAction(flag, arg1, arg2) {
                 });
 
                 $("#idList").val(idList);
-
+                loading(1);
                 $.post(url,formS1.serialize(),function(){
                     loading(0);
                     modal.alert('삭제되었습니다.');
@@ -97,7 +98,7 @@ function goAction(flag, arg1, arg2) {
             });
 
             $("#idList").val(idList);
-
+            loading(1);
             $.post(url,formS1.serialize(),function(){
                 loading(0);
                 modal.alert('삭제되었습니다.');

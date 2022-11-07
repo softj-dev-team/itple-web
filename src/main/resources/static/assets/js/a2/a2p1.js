@@ -82,9 +82,16 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 });
             });
             break;
-        case "S2":
+        case "S2_1":
             modal.confirm("확인 하시겠습니까?",function(){
-                $.post(path+'/s2',{id: arg1},function(res){
+                $.post(path+'/s2',{id: arg1, taskStatus : "COMPLETE"},function(res){
+                    location.reload();
+                });
+            });
+            break;
+        case "S2_2":
+            modal.confirm("취소 하시겠습니까?",function(){
+                $.post(path+'/s2',{id: arg1, taskStatus : "SUBMIT"},function(res){
                     location.reload();
                 });
             });
@@ -187,11 +194,20 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 }
 
                 if(el.status == 'SUBMIT') {
-                    $("#reportMo .modalBtnWrap").show();
+                    $("#completeBtn").attr("onclick",`goAction('S2_1',${el.id})`);
                     $("#rejectBtn").attr("onclick",`goAction('S3',${el.id})`);
-                    $("#completeBtn").attr("onclick",`goAction('S2',${el.id})`);
+                    $("#plusBtn").css("display","inline-block");
+                    $("#minusBtn").css("display","inline-block");
+                    $("#rejectBtn").css("display","inline-block");
+                    $("#completeBtn").css("display","inline-block");
+                    $("#cancleBtn").css("display","none");
                 }else{
-                    $("#reportMo .modalBtnWrap").hide();
+                    $("#cancleBtn").attr("onclick",`goAction('S2_2',${el.id})`);
+                    $("#plusBtn").css("display","none");
+                    $("#minusBtn").css("display","none");
+                    $("#rejectBtn").css("display","none");
+                    $("#completeBtn").css("display","none");
+                    $("#cancleBtn").css("display","inline-block");
                 }
 
                 modalOpen('reportMo');
@@ -219,28 +235,34 @@ function setStudentList(){
         if(ut.isEmpty(list)){
             return;
         }
-
         list.forEach(function(el){
             html += `<input type="checkbox" id="stud${el.id}" name="studentIdList" value="${el.id}"><label for="stud${el.id}">${el.user.userName}</label>`;
         });
         $("#studentList").html(html);
+    });
+}
 
-        var taskId = $("#id").val();
-        if(taskId != 0){
+function selectClassId(taskId){
+    var academyClass = $("#academyClass").val();
+    $("#classId option").each(function(){
+        if($(this).val() == academyClass){
+            $(this).prop("selected", true);
+        }
+    });
 
-            $.post("/api/a2/p1/l1", {id: taskId}, function(res) {
-                var list = res.data;
+    setStudentList();
 
-                list.forEach(function(el){
-                    $("input[name=studentIdList]").each(function(){
-                        $(this).prop("disabled",true);
-                        if($(this).val() == el.student.id){
-                            $(this).prop("checked",true);
-                        }
-                    });
-                });
+    $.post("/api/a2/p1/l1", {id: taskId}, function(res) {
+        var list = res.data;
+
+        for(var i=0; i<list.length; i++){
+            $("input[name=studentIdList]").each(function(){
+                $(this).prop("disabled",true);
+                if($(this).val() == list[i].student.id){
+                    $(this).prop("checked",true);
+                }
             });
-
         }
     });
 }
+

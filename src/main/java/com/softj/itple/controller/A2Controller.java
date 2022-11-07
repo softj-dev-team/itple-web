@@ -79,6 +79,7 @@ public class A2Controller {
         }
 
         params.setPage(page);
+        List<AcademyClass> classList = commonService.getClassList(params);
 
         Task task = null;
 
@@ -98,7 +99,7 @@ public class A2Controller {
         }
 
         model.addAttribute("el", task);
-        model.addAttribute("classList", commonService.getClassList(params));
+        model.addAttribute("classList", classList);
         model.addAttribute("params",params);
 
         return "a2/a2p1-write";

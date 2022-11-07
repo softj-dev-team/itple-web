@@ -68,6 +68,14 @@ public class A1Service {
             where.and(qBook.bookCategory.eq(params.getBookCategory()));
         }
 
+        if(com.softj.itple.util.StringUtils.noneEmpty(params.getRentalStatus())){
+            if(StringUtils.equals(params.getRentalStatus(),"AVAILABLE")){
+                where.and(qBookRental.rentalStatus.eq(Types.BookRentalStatus.AVAILABLE).or(qBookRental.rentalStatus.eq(Types.BookRentalStatus.RETURN)));
+            }else{
+                where.and(qBookRental.rentalStatus.eq(params.getRentalStatus()));
+            }
+        }
+
         JPAQuery<Book> query = jpaQueryFactory.select(Projections.fields(Book.class,
                         qBook.id,
                         qBook.thumbnail,
@@ -82,9 +90,9 @@ public class A1Service {
                 .from(qBook)
                 .join(qCodeDetail).on(qCodeDetail.codeValue.eq(qBook.bookCategory).and(qCodeDetail.masterId.eq(4L)).and(qCodeDetail.academyType.eq(params.getAcademyType())))
                 .leftJoin(qBookRental).on(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))
-                                            .and(qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
-                                            .from(qBookRental)
-                                            .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))))))
+                        .and(qBookRental.id.eq(JPAExpressions.select(qBookRental.id.max())
+                                .from(qBookRental)
+                                .where(qBookRental.book.eq(qBook).and(qBookRental.isDeleted.eq(false))))))
                 .where(where)
                 .orderBy(qBookRental.rentalStatus.desc().nullsLast(), qBook.id.desc())
                 .limit(pageable.getPageSize())
@@ -114,25 +122,25 @@ public class A1Service {
     @Transactional
     public void saveBook(SearchVO params) {
 
-      Book save = bookRepo.findById(params.getId()).orElse(Book.builder().build());
+        Book save = bookRepo.findById(params.getId()).orElse(Book.builder().build());
 
-      LocalDate startDate = params.getStartDate();
-      LocalDate endDate = params.getEndDate();
+        LocalDate startDate = params.getStartDate();
+        LocalDate endDate = params.getEndDate();
 
-      save.setSubject(params.getSubject());
-      save.setWriter(params.getWriter());
-      save.setBookNo(params.getBookNo());
-      save.setContents(params.getContents());
-      save.setThumbnail(params.getThumbnail());
-      save.setBookStatus(params.getBookStatus());
-      save.setBookCategory(params.getBookCategory());
+        save.setSubject(params.getSubject());
+        save.setWriter(params.getWriter());
+        save.setBookNo(params.getBookNo());
+        save.setContents(params.getContents());
+        save.setThumbnail(params.getThumbnail());
+        save.setBookStatus(params.getBookStatus());
+        save.setBookCategory(params.getBookCategory());
 
 
-      if(ObjectUtils.isEmpty(params.getBookStatus())){
+        if(ObjectUtils.isEmpty(params.getBookStatus())){
             save.setBookStatus(Types.BookRentalStatus.AVAILABLE);
-      }
+        }
 
-      bookRepo.save(save);
+        bookRepo.save(save);
     }
 
     public BookRental getBookRental(SearchVO params){
@@ -214,7 +222,7 @@ public class A1Service {
 
         if(StringUtils.equals(book.getBookStatus(),"AVAILABLE"))
             throw new ApiException("이미 반납된 도서입니다.", ErrorCode.INTERNAL_SERVER_ERROR);
-        
+
         Types.BookRentalStatus status = Types.BookRentalStatus.AVAILABLE;
         LocalDate returnDate = LocalDate.now();
 

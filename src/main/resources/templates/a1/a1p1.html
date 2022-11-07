@@ -4,7 +4,7 @@
       layout:decorate="layout/layout">
 <head>
     <title>도서목록</title>
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>-->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>-->
     <script src="/assets/js/axios.min.js"></script>
 </head>
 <body class="adminBody">
@@ -15,6 +15,14 @@
             <ul class="tab-ul">
                 <li th:classappend="${#strings.equals(params.academyType,'CODING') ? 'active' : ''}"><a href="/a1/p1">잇플 코딩</a></li>
                 <li th:classappend="${#strings.equals(params.academyType,'ENGLISH') ? 'active' : ''}"><a href="/a1/p1?academyType=ENGLISH">잇플 영어</a></li>
+            </ul>
+        </div>
+        <div class="tab2 clearfix">
+            <ul class="tab-ul2">
+                <li th:class="${#strings.isEmpty(params.rentalStatus) ? 'active' : ''}"><a href="/a1/p1">전체</a></li>
+                <li th:class="${#strings.equals(params.rentalStatus, 'DELINQUENT') ? 'active' : ''}"><a th:href="|/a1/p1?academyType=${params.academyType}&rentalStatus=DELINQUENT|">연체중</a></li>
+                <li th:class="${#strings.equals(params.rentalStatus, 'LOAN') ? 'active' : ''}"><a th:href="|/a1/p1?academyType=${params.academyType}&rentalStatus=LOAN|">대여중</a></li>
+                <li th:class="${#strings.equals(params.rentalStatus, 'AVAILABLE') || #strings.equals(params.rentalStatus, 'RETURN') ? 'active' : ''}"><a th:href="|/a1/p1?academyType=${params.academyType}&rentalStatus=AVAILABLE|">대여하기</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">
@@ -28,7 +36,7 @@
                                     th:value="${e.codeValue}" th:text="${e.codeName}"
                                     th:selected="${params.bookCategory == e.codeValue}">카테고리</option>
                         </select>
-                         <select name="searchType" id="searchType">
+                        <select name="searchType" id="searchType">
                             <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">책제목</option>
                             <option value="rentalName" th:selected="${#strings.equals(param.searchType, 'rentalName')}">대여자</option>
                         </select>
@@ -51,45 +59,45 @@
             </div>
             <table class="adTable list1">
                 <thead class="adTable-head">
-                    <tr>
-                        <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
-                        <th>No</th>
-                        <th></th>
-                        <th>책 제목</th>
-                        <th>저자</th>
-                        <th>대여기간</th>
-                        <th>대여자</th>
-                        <th>상태</th>
-                        <th>QR코드</th>
-                    </tr>
+                <tr>
+                    <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
+                    <th>No</th>
+                    <th></th>
+                    <th>책 제목</th>
+                    <th>저자</th>
+                    <th>대여기간</th>
+                    <th>대여자</th>
+                    <th>상태</th>
+                    <th>QR코드</th>
+                </tr>
                 </thead>
                 <tbody class="adTable-body adTbody checklist">
-                    <tr th:each="el : ${list}">
-                        <td>
-                            <input type="checkbox" name="seqList" th:id="|a${elStat.count}|" ><label th:for="|a${elStat.count}|"></label>
-                            <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
-                        </td>
-                        <td>
-                            <span th:text="${list.pageable.offset+elStat.count}"></span>
-                        </td>
-                        <td>
+                <tr th:each="el : ${list}">
+                    <td>
+                        <input type="checkbox" name="seqList" th:id="|a${elStat.count}|" ><label th:for="|a${elStat.count}|"></label>
+                        <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
+                    </td>
+                    <td>
+                        <span th:text="${list.pageable.offset+elStat.count}"></span>
+                    </td>
+                    <td>
                         <div class="bookImg" th:style="|background-image: url('${el.thumbnail}');|"></div></td>
-                        <td><a th:href="|/a1/p1-detail/${el.id}/${list.pageable.pageNumber}|"><span class="category" th:if="${not #strings.isEmpty(el.bookCategory)}" th:text="|[${@codeUtil.getCodeName('4', el.bookCategory)}]|"></span> <span th:text="${el.subject}">책제목</span></a></td>
-                        <td><span th:text="${el.writer}">저자</span></td>
-                        <td><span th:if="${#strings.equals(el.bookRental?.rentalStatus,'LOAN') || #strings.equals(el.bookRental?.rentalStatus,'DELINQUENT')}" th:text="${el.bookRental?.startDate + '~' + el.bookRental?.endDate}">대여기간</span></td>
-                        <td><span th:if="${#strings.equals(el.bookRental?.rentalStatus,'LOAN') || #strings.equals(el.bookRental?.rentalStatus,'DELINQUENT')}" th:text="${el.bookRental?.user?.userName}">대여자</span></td>
-                        <td>
-                            <th:block th:switch="${#strings.toString(el.bookRental?.rentalStatus)}">
-                                <button type="button" th:case="null" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
-                                <button type="button" th:case="AVAILABLE" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
-                                <button type="button" th:case="RETURN" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
-                                <button type="button" th:case="RETURN2" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
-                                <button type="button" th:case="LOAN" class="btn btn-red" th:onclick="|goRental(${el.id})|">대여중</button>
-                                <button type="button" th:case="DELINQUENT" class="btn btn-yellow" th:onclick="|goRental(${el.id})|">연체</button>
-                            </th:block>
-                        </td>
-                        <td><a th:href="|javascript:download(${el.id},'${el.subject}')|"><img th:src="|https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${el.id}|"></a></td>
-                    </tr>
+                    <td><a th:href="|/a1/p1-detail/${el.id}/${list.pageable.pageNumber}|"><span class="category" th:if="${not #strings.isEmpty(el.bookCategory)}" th:text="|[${@codeUtil.getCodeName('4', el.bookCategory)}]|"></span> <span th:text="${el.subject}">책제목</span></a></td>
+                    <td><span th:text="${el.writer}">저자</span></td>
+                    <td><span th:if="${#strings.equals(el.bookRental?.rentalStatus,'LOAN') || #strings.equals(el.bookRental?.rentalStatus,'DELINQUENT')}" th:text="${el.bookRental?.startDate + '~' + el.bookRental?.endDate}">대여기간</span></td>
+                    <td><span th:if="${#strings.equals(el.bookRental?.rentalStatus,'LOAN') || #strings.equals(el.bookRental?.rentalStatus,'DELINQUENT')}" th:text="${el.bookRental?.user?.userName}">대여자</span></td>
+                    <td>
+                        <th:block th:switch="${#strings.toString(el.bookRental?.rentalStatus)}">
+                            <button type="button" th:case="null" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
+                            <button type="button" th:case="AVAILABLE" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
+                            <button type="button" th:case="RETURN" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
+                            <button type="button" th:case="RETURN2" class="btn btn-blue" th:onclick="|goRental(${el.id})|">대여하기</button>
+                            <button type="button" th:case="LOAN" class="btn btn-red" th:onclick="|goRental(${el.id})|">대여중</button>
+                            <button type="button" th:case="DELINQUENT" class="btn btn-yellow" th:onclick="|goRental(${el.id})|">연체</button>
+                        </th:block>
+                    </td>
+                    <td><a th:href="|javascript:download(${el.id},'${el.subject}')|"><img th:src="|https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${el.id}|"></a></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -221,16 +229,16 @@
                 method: 'GET',
                 responseType: 'blob'
             })
-            .then((response) => {
-                const url = window.URL
-                    .createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', `${fileName}.png`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            })
+                .then((response) => {
+                    const url = window.URL
+                        .createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', `${fileName}.png`);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
         }
         $(document).on("click", ".categoryRemove", function(){
             var id = $(this).parent().parent().prop("id");

@@ -29,7 +29,7 @@
             </ul>
         </div>
         <div class="btn-center">
-            <button class="btn" th:onclick="|ut.redirect('/a6/p1-write/${el.id}','userId','${el.user.id}')|">포트폴리오 수정</button>
+            <button class="btn" th:onclick="goModify()">포트폴리오 수정</button>
         </div>
 
     </div>
@@ -38,6 +38,9 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
+        function goModify(){
+            location.href="/a6/p1-write/[[${el.id}]]?userId=[[${el.user.id}]]&academyType="+[[${el.user.student.academyClass.academyType}]]+"&portfolioType="+[[${el.portfolioType}]];
+        }
         /*]]>*/
     </script>
 </th:block>
