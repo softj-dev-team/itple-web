@@ -742,8 +742,6 @@ i.i-date{
     margin: 0 0 0 14px;
 }
 .gnb > li {
-    width: 10.3vw;
-    max-width: 142px;
     height: 80px;
     line-height: 80px;
     float: left;
@@ -753,11 +751,12 @@ i.i-date{
 }
 .gnb > li > a{
     display: block;
+    padding: 0px 20px;
 }
 .gnb > li::after {
     content: "";
     display: none;
-    width: 85%;
+    width: 100px;
     height: 5px;
     border-radius: 3px;
     background: #2D7AC0;
@@ -803,10 +802,12 @@ i.i-date{
     display: flex;
     justify-content: center;
     white-space: nowrap;
+    width: 90px;
+    margin: 0 auto;
 }
 .lnb > li{
     float: left;
-    margin-right: 36px;
+    margin-right: 30px;
 }
 .lnb > li:last-child{
     margin-right: 0px;
@@ -2630,11 +2631,6 @@ a.a-btn{
     .nav-out{width: 1232px;}
     .logo{width:224px;}
 }
-@media screen and (max-width:1210px){
-
-    .adHead .nav-out{display: none;}
-    .adHead .right-btn-box {display: block;}
-}
 /* mobile */
 @media screen and (max-width:1280px){
     .main-banner > div {
@@ -3409,10 +3405,22 @@ a.a-btn{
 .adHead ~ .main{
     min-width: 1280px;
 }
-.adHead .gnb > li{
-    width: 6.2vw;
-    max-width: 115px;
-    min-width: 100px;
+.adHead .gnb > li > a{
+    padding: 0 20px;
+}
+
+
+@media screen and (max-width:1284px){
+    .adHead .gnb > li > a {
+        padding: 0 15px;
+    }
+    .gnb > li::after {
+        width: 90px;
+    }
+}
+@media screen and (max-width:1180px){
+    .adHead .nav-out{display: none;}
+    .adHead .right-btn-box {display: block;}
 }
 .adContent{
     width: 1280px;
