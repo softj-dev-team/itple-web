@@ -318,7 +318,9 @@ public class C1Service {
         }else {
             save.setIsPopup(params.getIsPopup());
         }
-        save.setUser(User.builder().id(AuthUtil.getUserId()).build());
+        if(LongUtils.isEmpty(save.getId())) {
+            save.setUser(User.builder().id(AuthUtil.getUserId()).build());
+        }
         Pattern p = Pattern.compile("src=\"([^\"]+)\".*>");
         Matcher m = p.matcher(save.getContents());
         if(m.find()){
