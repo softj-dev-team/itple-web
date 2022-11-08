@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -72,11 +73,11 @@ public class A7Service {
     @Transactional
     public void saveAcademyClass(SearchVO params, HttpServletRequest request){
 
-        HttpSession session = request.getSession();
-        LocalDateTime now = LocalDateTime.now();
-
         AcademyClass save = academyClassRepo.findById(params.getId()).orElse(AcademyClass.builder().build());
-
+        if(Objects.isNull(params.getIsInvisible())){
+            params.setIsInvisible(false);
+        }
+        save.setIsInvisible(params.getIsInvisible());
         save.setAcademyType(params.getAcademyType());
         save.setClassName(params.getClassName());
         save.setDeleted(false);

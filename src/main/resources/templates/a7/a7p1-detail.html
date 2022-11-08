@@ -7,41 +7,43 @@
 </head>
 <body>
 <th:block layout:fragment="content">
-<form id="form1">
-    <input type="hidden" name="id" th:value="${el.id}" />
-    <input type="hidden" name="page" id="page" th:value="${params.page}"/>
-<div class="responsiveWrap">
-    <h1 class="responsiveH1">반 상세정보</h1>
-    <div class="responsiveInner">
-        <div class="detailsBox inputSec">
-            <label for="academyType" class="mb5">반 구분</label>
-            <select name="academyType" id="academyType" class="select-md">
-                <option th:each="e : ${T(com.softj.itple.domain.Types.AcademyType).values()}"
-                        th:value="${e}" th:text="${e.message}"
-                        th:selected="${e == params.academyType}">카테고리</option>
-            </select>
-            <label for="className" class="mb5">반 이름</label>
-            <input type="text" name="className" id="className" th:value="${el.className}" class="input-df mb20" >
+    <form id="form1">
+        <input type="hidden" name="id" th:value="${el.id}" />
+        <input type="hidden" name="page" id="page" th:value="${params.page}"/>
+        <div class="responsiveWrap">
+            <h1 class="responsiveH1">반 상세정보</h1>
+            <div class="responsiveInner">
+                <div class="detailsBox inputSec">
+                    <label for="academyType" class="mb5">반 구분</label>
+                    <select name="academyType" id="academyType" class="select-md">
+                        <option th:each="e : ${T(com.softj.itple.domain.Types.AcademyType).values()}"
+                                th:value="${e}" th:text="${e.message}"
+                                th:selected="${e == params.academyType}">카테고리</option>
+                    </select>
+                    <label for="className" class="mb5">반 이름</label>
+                    <input type="text" name="className" id="className" th:value="${el.className}" class="input-df mb20" >
+                    <input type="checkbox" name="isInvisible" id="isInvisible" th:checked="${el.isInvisible == true}">
+                    <label for="isInvisible" class="mb5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;과제/독후감 목록에서 삭제</label>
+                </div>
+                <div class="btn-center mt60">
+                    <button type="button" class="btn" onclick="goSave();">저장하기</button>
+                </div>
+            </div>
         </div>
-        <div class="btn-center mt60">
-            <button type="button" class="btn" onclick="goSave();">저장하기</button>
-        </div>
-    </div>
-</div>
-</form>
-<script th:src="@{/assets/js/a7/a7p1.js(v='1.0.0')}"></script>
-<script th:inline="javascript">
+    </form>
+    <script th:src="@{/assets/js/a7/a7p1.js(v='1.0.0')}"></script>
+    <script th:inline="javascript">
 
-    function goSave(){
-        var className = $("#className").val();
-        if(className == ""){
-            modal.alert("반이름을 적어주세요.");
-            return;
+        function goSave(){
+            var className = $("#className").val();
+            if(className == ""){
+                modal.alert("반이름을 적어주세요.");
+                return;
+            }
+
+            goAction('S1',[[${params.academyType}]]);
         }
-
-        goAction('S1',[[${params.academyType}]]);
-    }
-</script>
+    </script>
 </th:block>
 </body>
 </html>
