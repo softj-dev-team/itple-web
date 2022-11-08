@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
@@ -17,9 +17,9 @@
         </h1>
         <div class="responsiveInner">
             <form id="form1">
-                <input type="hidden" id="id" name="id" th:value="${el == null ? 0 : el.id}">
+                <input type="hidden" id="id" name="id" th:value="${el == null ? 0 : el?.id}">
                 <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
-                <input type="hidden" id="academyClass" name="academyClass" th:value="${el?.academyClass.id}">
+                <input type="hidden" id="academyClass" name="academyClass" th:value="${el?.academyClass?.id}">
                 <div class="inputSec">
                     <label for="classId" class="mb5">반 선택</label>
                     <select name="classId" id="classId" class="input-df mb20" onchange="setStudentList()">
@@ -76,7 +76,7 @@
         /*<![CDATA[*/
         /*]]>*/
         $(document).ready(function(){
-            var taskId = [[${el == null ? 0 : el.id}]];
+            var taskId = [[${el == null ? 0 : el?.id}]];
             if(taskId != 0) {
                 selectClassId(taskId);
             }else{

@@ -45,7 +45,7 @@ spring:
       enabled: true
   freemarker:
     cache: false
-    
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://itple-copy.ck5lcam9i9dj.ap-northeast-2.rds.amazonaws.com:5432/itple?currentSchema=public
@@ -63,7 +63,7 @@ spring:
     password: pass
     properties:
       mail:
-        smtp: 
+        smtp:
           auth: true
           starttls:
             enable: true
@@ -109,14 +109,14 @@ spring:
   profiles: prod
   main:
     allow-bean-definition-overriding: true
-    
+
   devtools:
     livereload:
       enabled: false
 
   freemarker:
     cache: false
-    
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://itple-prod.ck5lcam9i9dj.ap-northeast-2.rds.amazonaws.com:5432/itple?currentSchema=public
