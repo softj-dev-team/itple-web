@@ -19,7 +19,7 @@
         </div>
         <div class="tab2 clearfix">
             <ul class="tab-ul2">
-                <li th:class="${#strings.isEmpty(params.rentalStatus) ? 'active' : ''}"><a href="/a1/p1">전체</a></li>
+                <li th:class="${#strings.isEmpty(params.rentalStatus) ? 'active' : ''}"><a th:href="|/a1/p1?academyType=${params.academyType}|">전체</a></li>
                 <li th:class="${#strings.equals(params.rentalStatus, 'DELINQUENT') ? 'active' : ''}"><a th:href="|/a1/p1?academyType=${params.academyType}&rentalStatus=DELINQUENT|">연체중</a></li>
                 <li th:class="${#strings.equals(params.rentalStatus, 'LOAN') ? 'active' : ''}"><a th:href="|/a1/p1?academyType=${params.academyType}&rentalStatus=LOAN|">대여중</a></li>
                 <li th:class="${#strings.equals(params.rentalStatus, 'AVAILABLE') || #strings.equals(params.rentalStatus, 'RETURN') ? 'active' : ''}"><a th:href="|/a1/p1?academyType=${params.academyType}&rentalStatus=AVAILABLE|">대여하기</a></li>

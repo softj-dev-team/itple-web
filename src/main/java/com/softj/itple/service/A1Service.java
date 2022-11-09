@@ -31,6 +31,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -69,8 +70,8 @@ public class A1Service {
         }
 
         if(com.softj.itple.util.StringUtils.noneEmpty(params.getRentalStatus())){
-            if(StringUtils.equals(params.getRentalStatus(),"AVAILABLE")){
-                where.and(qBookRental.rentalStatus.eq(Types.BookRentalStatus.AVAILABLE).or(qBookRental.rentalStatus.eq(Types.BookRentalStatus.RETURN)));
+            if(Objects.equals(params.getRentalStatus(),Types.BookRentalStatus.AVAILABLE)){
+                where.and(qBookRental.rentalStatus.eq(Types.BookRentalStatus.AVAILABLE).or(qBookRental.rentalStatus.eq(Types.BookRentalStatus.RETURN)).or(qBookRental.isNull()));
             }else{
                 where.and(qBookRental.rentalStatus.eq(params.getRentalStatus()));
             }
