@@ -75,7 +75,7 @@
                 <tr>
                     <th><input type="checkbox" id="all-chk"><label for="all-chk"></label></th>
                     <th>No</th>
-                    <th>이름</th>
+                    <th><div style="width:100%;height:25px;cursor:pointer;padding-top:4px" onclick="goOrderReset()">이름</div></th>
                     <th>학교</th>
                     <th>학년</th>
                     <th>반</th>
@@ -128,6 +128,10 @@
     <script th:src="@{/assets/js/a3/a3p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
+        function goOrderReset(){
+            $("#edOrder").val("");
+            goSearch();
+        }
         function goOrder(order){
             if(order == "asc") {
                 $("#edOrder").val("asc");

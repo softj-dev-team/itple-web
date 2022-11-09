@@ -36,7 +36,7 @@ public class A3Controller {
         }
 
         if(Strings.isEmpty(params.getEdOrder())){
-            params.setEdOrder("asc");
+            params.setEdOrder(null);
         }
 
         model.addAttribute("classList", commonService.getClassList(params));
