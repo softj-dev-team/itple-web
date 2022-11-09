@@ -8,8 +8,10 @@
 <body>
 <th:block layout:fragment="content">
     <input type="hidden" name="page" id="page" th:value="${params.page}" />
+
     <form id="form1">
-        <input type="hidden" name="thumbnail" id="thumbnail" />
+    <input type="hidden" name="thumbnail" id="thumbnail" />
+    <input type="hidden" name="academyType" id="academyType" th:value="${params.academyType}" />
     <div class="responsiveWrap">
         <h1 class="responsiveH1">신규 등록</h1>
         <div class="responsiveInner">
@@ -23,7 +25,7 @@
                 <label for="bookCategory" class="mb5">책 카테고리</label>
                 <select name="bookCategory" id="bookCategory" class="select-md">
                     <option value="">선택</option>
-                    <option th:each="e : ${@codeUtil.getCodeList(4)}"
+                    <option th:each="e : ${@codeUtil.getBookCodeList(4, params.academyType)}"
                             th:value="${e.codeValue}" th:text="${e.codeName}">카테고리</option>
                 </select>
                 <label for="subject" class="mb5">책 제목</label>
