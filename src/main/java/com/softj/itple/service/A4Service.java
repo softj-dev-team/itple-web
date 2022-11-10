@@ -237,9 +237,9 @@ public class A4Service {
         if(LongUtils.noneEmpty(params.getClassId())){
             where.and(qUser.student.academyClass.eq(AcademyClass.builder().id(params.getClassId()).build()));
         }
-        if(StringUtils.noneEmpty(params.getUserName())){
+        //if(StringUtils.noneEmpty(params.getUserName())){
             where.and(qUser.userName.contains(params.getUserName()));
-        }
+        //}
 
         JPAQuery<A4ResourceDTO> query = null;
         List<A4ResourceDTO> attendanceList = null;

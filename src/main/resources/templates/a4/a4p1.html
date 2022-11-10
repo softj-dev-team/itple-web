@@ -249,9 +249,11 @@
                         var end = new Date(info.end);
                         var now = new Date(Date.now());
                         var atDays = new Array();
+                        var atDate = new Array();
 
                         atList.forEach(el => {
                             atDays.push(el.attendanceStr);
+                            atDate.push(el.attendanceDate);
                         });
 
                         while (start < end){
@@ -259,22 +261,22 @@
                             var startDay = start.getDate() < 10 ? '0'+start.getDate() : start.getDate();
                             var startDate = start.getFullYear()+'-'+startMonth+'-'+startDay;
 
+
                             if(!atOrgDays.includes(start.getDay().toString())){
+                                //원래 등원요일이 아닌 경우
                                 if(!atDays.includes(start.getDay().toString())){
+                                    //등원한 날이 아닐경우
                                     start.plusDate(1);
                                     continue;
-                                }else {
-                                    var flag = false;
-                                    for(var i=0; i<atList.length; i++){
-                                        var el1 = atList[i];
-                                        if (el1.attendanceDate != '' && el1.attendanceDate != startDate) {
-                                            start.plusDate(1);
-                                            flag = true;
-                                        }
+                                }else{
+                                    //등원한 날인 경우
+                                    if(!atDate.includes(startDate)) {
+                                        start.plusDate(1);
+                                        continue;
                                     }
-                                    if(flag) continue;
                                 }
                             }
+
 
                             if(start < now) {
                                 events.push({

@@ -18,25 +18,7 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Long>, Queryds
     long deleteAllByUser(@Param("user")User user);
 
     Attendance findByUserIdAndAttendanceDay(long userId, Types.DayOfWeek today);
-
-
-    @Query(value="SELECT " +
-            "CASE " +
-            "WHEN A.attendance_day='07' THEN '0' " +
-            "WHEN A.attendance_day='01' THEN '1' " +
-            "WHEN A.attendance_day='02' THEN '2' " +
-            "WHEN A.attendance_day='03' THEN '3' " +
-            "WHEN A.attendance_day='04' THEN '4' " +
-            "WHEN A.attendance_day='05' THEN '5' " +
-            "WHEN A.attendance_day='06' THEN '6' " +
-            "ELSE ''" +
-            "END AS attendanceStr, " +
-            "'' as attendanceDate " +
-            "FROM tb_attendance A " +
-            "JOIN tb_user B ON B.id = A.user_id " +
-            "WHERE A.user_id = :userId " +
-            "UNION     " +
-            "SELECT DISTINCT " +
+    @Query(value= "SELECT DISTINCT " +
             "CASE " +
             "WHEN A.attendance_day ='07' THEN '0' " +
             "WHEN A.attendance_day ='01' THEN '1' " +
