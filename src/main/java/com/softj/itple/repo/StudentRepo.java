@@ -31,6 +31,10 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
     Student findPW(@Param("userName")String userName, @Param("email") String email, @Param("userId")String userId);
     @EntityGraph(attributePaths = {"user"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Student> findAllWithUserByAcademyClass(@Param("academyClass")AcademyClass academyClass);
+
+    @EntityGraph(attributePaths = {"user"}, type = EntityGraph.EntityGraphType.LOAD)
+    List<Student> findAllWithUserByAcademyClassAndStudentStatus(@Param("academyClass")AcademyClass academyClass, @Param("studentStatus")Types.StudentStatus studentStatus);
+
     @Query("select a from Student a where a.studentStatus = :studentStatus and a.user.isApproved = :isApproved")
     List<Student> findAllByStudentStatus(@Param("studentStatus")Types.StudentStatus studentStatus, @Param("isApproved")boolean isApproved);
 

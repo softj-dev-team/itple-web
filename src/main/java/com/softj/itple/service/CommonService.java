@@ -2,6 +2,7 @@ package com.softj.itple.service;
 
 import com.querydsl.core.BooleanBuilder;
 import com.softj.itple.domain.SearchVO;
+import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AcademyClass;
 import com.softj.itple.entity.QAcademyClass;
 import com.softj.itple.entity.Student;
@@ -67,6 +68,6 @@ public class CommonService {
     }
 
     public List<Student> getClassStudentList(SearchVO params){
-        return studentRepo.findAllWithUserByAcademyClass(AcademyClass.builder().id(params.getId()).build());
+        return studentRepo.findAllWithUserByAcademyClassAndStudentStatus(AcademyClass.builder().id(params.getId()).build(), Types.StudentStatus.STUDENT);
     }
 }
