@@ -82,6 +82,7 @@
                     <th>보호자 성함</th>
                     <th>보호자 연락처</th>
                     <th class="ADbtn">입학일<button type="button" id="btnEdAsc" onclick="goOrder('asc')">∧</button> <button type="button" id="btnEdDesc" onclick="goOrder('desc')">∨</button></th>
+                    <th th:if="${!#strings.equals(params.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT)}">휴/퇴원일</th>
                     <th>포인트</th>
                 </tr>
                 </thead>
@@ -99,6 +100,8 @@
                     <td th:text="${el.parentName}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">보호자 성함</td>
                     <td th:text="${el.parentTel}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">보호자 연락처</td>
                     <td th:text="${#temporals.format(el.enterDate,'yyyy.MM.dd')}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">2022.03.24</td>
+                    <td th:if="${!#strings.equals(params.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT)}"
+                        th:text="${#temporals.format(el.outDate,'yyyy.MM.dd')}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|"></td>
                     <td th:text="${#numbers.formatInteger(el.coin,0,'COMMA')}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">1000</td>
                 </tr>
                 </tbody>

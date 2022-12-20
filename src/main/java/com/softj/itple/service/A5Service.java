@@ -1,6 +1,7 @@
 package com.softj.itple.service;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -38,7 +39,7 @@ public class A5Service {
         QPayment qPayment = QPayment.payment;
 
         BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
-                .and(qStudent.academyClass.academyType.eq(params.getAcademyType())).and(qStudent.studentStatus.eq(Types.StudentStatus.STUDENT));
+                .and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
 
         if(Objects.nonNull(params.getPaymentStatus())){
             if("01".equals(params.getPaymentStatus().getCode())){
@@ -69,6 +70,9 @@ public class A5Service {
                         qStudent.parentName,
                         qStudent.paymentDay,
                         qStudent.price,
+                        qStudent.outDate,
+                        ExpressionUtils.as(qStudent.outDate.year(),"outStYear"),
+                        ExpressionUtils.as(qStudent.outDate.month(),"outStMonth"),
                         qPayment
                 ))
                 .from(qStudent)

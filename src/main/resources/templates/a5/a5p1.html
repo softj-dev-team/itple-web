@@ -176,11 +176,14 @@
                     <th>실제납부일</th>
                     <th>납부방법</th>
                     <th>메모</th>
+                    <th>휴/퇴원일</th>
                     <th>미납</th>
                 </tr>
                 </thead>
                 <tbody class="adTable-body ">
-                <tr th:each="el : ${list}">
+                <th:block th:each="el : ${list}" th:with="outDateYear=${el.outStMonth < 12 ? el.outStYear : el.outStYear+1}
+                                                    , outDateMonth=${el.outStMonth < 12 ? el.outStMonth+1 : 1}">
+                <tr th:if="${(!#strings.equals(el.user.student.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT) && #strings.equals((outDateYear == params.year ? (params.month < outDateMonth ? 'Y' : 'N') : ( params.year < outDateYear ? 'Y' : 'N')),'Y')) || #strings.equals(el.user.student.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT)}">
                     <td><input type="checkbox" name="seqList" th:id="|ch${elStat.count}|"><label th:for="|ch${elStat.count}|"></label>
                         <input type="hidden" name="id" class="id" th:value="${el.payment != null ? el.payment.id : 0}"/>
                         <input type="hidden" name="studentId" class="studentId" th:value="${el.id}"/>
@@ -209,6 +212,7 @@
                     </td>
                     <td><input type="text" name="memo" class="memo"
                                th:value="${el.payment != null ? el.payment.memo : ''}"></td>
+                    <td th:text="${!#strings.equals(el.user.student.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT) ? el.outDate : ''}"></td>
                     <td>
                         <select name="paymentStatus" th:id="|paymentStatus_${elStat.count}|" class="paymentStatus">
                             <option th:each="er : ${T(com.softj.itple.domain.Types.PaymentStatus).values()}"
@@ -217,6 +221,7 @@
                         </select>
                     </td>
                 </tr>
+                </th:block>
                 </tbody>
             </table>
         </div>

@@ -3844,6 +3844,7 @@ input.txtRight{text-align: right;}
 .adTable.list4 tr th:nth-child(8){width: 10%;}
 .adTable.list4 tr th:nth-child(9){width: 13%;}
 .adTable.list4 tr th:nth-child(10){width: 10%;}
+.adTable.list4 tr th:nth-child(11){width: 5%;}
 .list4 tbody tr {
     cursor: pointer;
 }
@@ -3944,7 +3945,8 @@ input.txtRight{text-align: right;}
 .payTable thead tr th:nth-child(7){width: 10%;padding-right: 7px;}
 .payTable thead tr th:nth-child(8){width: 10%;padding-right: 7px;}
 .payTable thead tr th:nth-child(9){width:auto;padding-right: 7px;}
-.payTable thead tr th:nth-child(10){width: 6%;padding-right: 7px;}
+.payTable thead tr th:nth-child(10){width:10%;padding-right: 7px;}
+.payTable thead tr th:nth-child(11){width: 6%;padding-right: 7px;}
 .payTable tbody tr td{
     text-align: center;
     padding: 0px;

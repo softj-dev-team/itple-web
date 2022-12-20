@@ -48,6 +48,9 @@ public class A5Controller {
         if(StringUtils.isEmpty(params.getMonth())){
             params.setMonth(LocalDate.now().getMonthValue());
         }
+
+        /*LocalDate outStDate = LocalDate.of(params.getYear(), params.getMonth() < 12 ? params.getMonth() + 1 : 1, 1);*/
+
         /*if(LongUtils.isEmpty(params.getClassId())) {
             params.setClassId(academyClassList.get(0).getId());
         }*/
@@ -56,6 +59,7 @@ public class A5Controller {
 
         params.setTotalYear(a5service.getStudentPaymentTotalYear(params));
         params.setTotalMonth(a5service.getStudentPaymentTotalMonth(params));
+
 
         model.addAttribute("list", a5service.getStudentPaymentList(params, pageable));
         model.addAttribute("params", params);

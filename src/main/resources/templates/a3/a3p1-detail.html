@@ -57,6 +57,11 @@
                         <input type="text" class="input-df mb20 datepicker" name="enterDate" th:value="${#temporals.format(el.enterDate, 'yyyy-MM-dd')}">
                         <i class="i-date"></i>
                     </div>
+                    <label class="mb5" id="outDateLabel" th:style="${!#strings.equals(el.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT) ? 'display:block' : 'display:none'}">휴/퇴원일</label>
+                    <div class="datepickerWrap" id="outDateWrap" th:style="${!#strings.equals(el.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT) ? 'display:block' : 'display:none'}">
+                        <input type="text" class="input-df mb20 datepicker" name="outDate" th:value="${#temporals.format(el.outDate, 'yyyy-MM-dd')}">
+                        <i class="i-date"></i>
+                    </div>
                     <label for="" class="mb5">반</label>
                     <select name="classId" class="input-df mb20">
                         <option value="">-- 선택 --</option>
@@ -247,6 +252,17 @@
                 format: "yyyy-mm-dd",
                 language: "ko",
                 orientation: "auto"
+            });
+
+            $(document).on("change", "select[name=studentStatus]", function(){
+               var studentStatus = $(this).val();
+               if(studentStatus != "STUDENT"){
+                   $("#outDateLabel").css("display","block");
+                   $("#outDateWrap").css("display","block");
+               }else{
+                   $("#outDateLabel").css("display","none");
+                   $("#outDateWrap").css("display","none");
+               }
             });
 
             $(document).on("change", ".comeDayOfWeek", function(){

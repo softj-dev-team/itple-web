@@ -107,6 +107,8 @@ public class SearchVO {
 	private String approved;
 	private String edOrder;
 	private String searchCateogry;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate outDate;
 
 	//관리자-출결
 	private String attendanceNo;

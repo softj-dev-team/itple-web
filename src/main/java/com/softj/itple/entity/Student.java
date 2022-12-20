@@ -48,6 +48,13 @@ public class Student extends Auditing{
     private Long price;
     private String telNo;
 
+    private LocalDate outDate;
+    @Transient
+    private int outStYear;
+
+    @Transient
+    private int outStMonth;
+
     @Transient
     private long totalCost;
 
@@ -63,7 +70,7 @@ public class Student extends Auditing{
     private String userName;
 
     @Builder
-    public Student(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, AcademyClass academyClass, String attendanceNo, String school, String zonecode, String roadAddress, String detailAddress, Types.Grade grade, String parentName, String parentTel, LocalDate birth, String email, long coin, LocalDate enterDate, String memo, Integer paymentDay, Long price, Types.StudentStatus studentStatus, Payment payment, long totalCost, long payCost, String telNo, String userName) {
+    public Student(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, AcademyClass academyClass, String attendanceNo, String school, String zonecode, String roadAddress, String detailAddress, Types.Grade grade, String parentName, String parentTel, LocalDate birth, String email, long coin, LocalDate enterDate, String memo, Integer paymentDay, Long price, Types.StudentStatus studentStatus, Payment payment, long totalCost, long payCost, String telNo, String userName, LocalDate outDate, int outStYear, int outStMonth) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.user = user;
         this.academyClass = academyClass;
@@ -88,5 +95,8 @@ public class Student extends Auditing{
         this.payCost = payCost;
         this.telNo = telNo;
         this.userName = userName;
+        this.outDate = outDate;
+        this.outStYear = outStYear;
+        this.outStMonth = outStMonth;
     }
 }
