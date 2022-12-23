@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Controller
@@ -32,6 +33,12 @@ public class A4Controller {
     //목록
     @GetMapping("/p1")
     public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
+
+        if(Objects.isNull(params.getYear())){
+            LocalDate now = LocalDate.now();
+            params.setYear(now.getYear());
+        }
+
         if (Objects.isNull(params.getStudentStatus())) {
             params.setStudentStatus(Types.StudentStatus.STUDENT);
         }

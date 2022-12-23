@@ -54,7 +54,8 @@
                             <option th:each="studentStatus : ${T(com.softj.itple.domain.Types.StudentStatus).values()}" th:value="${studentStatus}" th:text="${studentStatus.message}" th:selected="${studentStatus == params.studentStatus}">1학년</option>
                         </select>
                         <select name="year" id="year">
-                            <option th:each="num : ${#numbers.sequence(0,-5)}" th:value="${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}" th:text="|${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}년|">2022</option>
+                            <option th:each="num : ${#numbers.sequence(1,-5)}" th:value="${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}" th:text="|${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}년|"
+                            th:selected="${(T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num) == params.year}">2022</option>
                         </select>
                         <select name="month" id="month">
                             <option th:each="num : ${#numbers.sequence(1,12)}" th:value="${num}" th:text="|${num}월|" th:selected="${#strings.equals(#temporals.format(#temporals.createNow(),'M'), num)}"></option>

@@ -3,6 +3,7 @@ package com.softj.itple.service;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
@@ -40,6 +41,7 @@ public class A5Service {
 
         BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
                 .and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
+        where.and(qStudent.studentStatus.ne(Types.StudentStatus.STUDENT).and(qStudent.outDate.month().eq(params.getMonth())).and(qStudent.outDate.year().eq(params.getYear()))).or(qStudent.studentStatus.eq(Types.StudentStatus.STUDENT));
 
         if(Objects.nonNull(params.getPaymentStatus())){
             if("01".equals(params.getPaymentStatus().getCode())){
@@ -63,6 +65,26 @@ public class A5Service {
         if(Objects.nonNull(params.getSearchPaymentType())){
             where.and(qPayment.paymentType.eq(params.getSearchPaymentType()));
         }
+
+
+        /*"outDateYear=${el.outStMonth < 12 ? el.outStYear : el.outStYear+1}
+                , outDateMonth=${el.outStMonth < 12 ? el.outStMonth+1 : 1}"
+        #strings.equals((outDateYear == params.year ? (params.month < outDateMonth ? 'Y' : 'N') : ( params.year < outDateYear ? 'Y' : 'N')),'Y'))*/
+        /*if(params.getMonth() < 12) {
+            where_sub1.and();
+            where_sub2.and(qStudent.studentStatus.ne(Types.StudentStatus.STUDENT).and(qStudent.outDate.year().lt(params.getYear())));
+            new CaseBuilder()
+                    .when(qStudent.outDate.year().eq(params.getYear()))
+                    .then(where.and(where_sub1).or(qStudent.studentStatus.eq(Types.StudentStatus.STUDENT)))
+                    .otherwise();
+        }else{
+
+        }*/
+
+
+
+
+
 
         JPAQuery<Student> query = jpaQueryFactory.select(Projections.fields(Student.class,
                         qStudent.id,

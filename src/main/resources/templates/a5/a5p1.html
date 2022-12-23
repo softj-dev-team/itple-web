@@ -181,9 +181,8 @@
                 </tr>
                 </thead>
                 <tbody class="adTable-body ">
-                <th:block th:each="el : ${list}" th:with="outDateYear=${el.outStMonth < 12 ? el.outStYear : el.outStYear+1}
-                                                    , outDateMonth=${el.outStMonth < 12 ? el.outStMonth+1 : 1}">
-                <tr th:if="${(!#strings.equals(el.user.student.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT) && #strings.equals((outDateYear == params.year ? (params.month < outDateMonth ? 'Y' : 'N') : ( params.year < outDateYear ? 'Y' : 'N')),'Y')) || #strings.equals(el.user.student.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT)}">
+                <th:block th:each="el : ${list}">
+                <tr>
                     <td><input type="checkbox" name="seqList" th:id="|ch${elStat.count}|"><label th:for="|ch${elStat.count}|"></label>
                         <input type="hidden" name="id" class="id" th:value="${el.payment != null ? el.payment.id : 0}"/>
                         <input type="hidden" name="studentId" class="studentId" th:value="${el.id}"/>
