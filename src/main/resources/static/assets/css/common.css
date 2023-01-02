@@ -452,6 +452,11 @@ input[type=checkbox]:checked+label::before{
     border: 1px solid transparent;
     background: #2D7AC0 url(../img/ch-on.png) no-repeat center / 86%;
 }
+
+/* 풀캘린더 tippy */
+div[id^="tippy-"]{
+    min-width: 30px;
+}
 /* 파일첨부 수정 */
 .fileUP{
     height: 120px;
