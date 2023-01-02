@@ -200,27 +200,33 @@ public class A4Service {
     }
 
     public List<A4EventDTO> getAttendanceHistoryList(SearchVO params){
+
         QAttendanceHistory qAttendanceHistory = QAttendanceHistory.attendanceHistory;
         BooleanBuilder where = new BooleanBuilder()
                 .and(qAttendanceHistory.user.id.in(params.getIdList()))
-                .and((qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME)).or(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.ABSENT)))
                 .and(qAttendanceHistory.createdAt.year().eq(params.getStartDate().getYear()))
                 .and(qAttendanceHistory.createdAt.month().eq(params.getStartDate().getMonthValue()));
 
         return jpaQueryFactory.select(Projections.fields(A4EventDTO.class,
                         qAttendanceHistory.user.id.as("resourceId"),
                         new CaseBuilder()
-                                .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME))
-                                .then(Expressions.constant("O"))
-                                .otherwise(Expressions.constant("●")).as("title"),
+                                .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.ABSENT))
+                                .then(Expressions.constant("●"))
+                                .otherwise(Expressions.constant("O")).as("title"),
                         new CaseBuilder()
-                                .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.COME))
-                                .then(Expressions.constant("#428bca"))
-                                .otherwise(Expressions.constant("#FFCC00")).as("color"),
+                                .when(qAttendanceHistory.attendanceStatus.eq(Types.AttendanceStatus.ABSENT))
+                                .then(Expressions.constant("#FFCC00"))
+                                .otherwise(Expressions.constant("#428bca")).as("color"),
                         ExpressionUtils.as(Expressions.constant("text-center"), "className"),
                         Expressions.stringTemplate( "to_char({0},'YYYY-MM-DD')", qAttendanceHistory.createdAt).as("start")))
                 .from(qAttendanceHistory)
-                .where(where).fetch();
+                .where(qAttendanceHistory.id.in(
+                        JPAExpressions
+                                .select(qAttendanceHistory.id.max())
+                                .from(qAttendanceHistory)
+                                .where(where)
+                                .groupBy(qAttendanceHistory.user.id, Expressions.stringTemplate( "to_char({0},'YYYY-MM-DD')", qAttendanceHistory.createdAt))
+                )).fetch();
     }
 
     public List<A4ResourceDTO> getUserList(SearchVO params){

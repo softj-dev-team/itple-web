@@ -1,5 +1,6 @@
 package com.softj.itple.repo;
 
+import com.softj.itple.domain.A4EventDTO;
 import com.softj.itple.domain.A4TooltipDTO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AttendanceHistory;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -31,4 +33,35 @@ public interface AttendanceHistoryRepo extends JpaRepository<AttendanceHistory, 
     void insertAbsentDay(@Param("userId") Long userId, @Param("attendanceStatus") String attendanceStatus, @Param("attendanceType") String attendanceType, @Param("createdAt") LocalDateTime createdAt, @Param("createdId") String createdId, @Param("isDeleted") Boolean isDeleted);
 
     List<AttendanceHistory> findByUser(User user);
+
+    @Query(value = "SELECT" +
+            "            user_id AS resourceId," +
+            "            CASE " +
+            "                WHEN attendance_status='03' THEN '●' " +
+            "                ELSE 'O' " +
+            "            END AS title, " +
+            "            CASE " +
+            "                WHEN attendance_status='03' THEN '#FFCC00' " +
+            "                ELSE '#428bca' " +
+            "            END AS color, " +
+            "            'text-center' AS className, " +
+            "            to_char(created_at,'YYYY-MM-DD') AS start " +
+            "       FROM " +
+            "           tb_attendance_history" +
+            "       WHERE id IN ( " +
+            "           SELECT " +
+            "               MAX(id) " +
+            "           FROM " +
+            "               tb_attendance_history" +
+            "           WHERE" +
+            "               user_id IN (:idList)" +
+            "               AND extract(year " +
+            "           FROM " +
+            "               created_at)= :year " +
+            "               AND extract(month " +
+            "           FROM " +
+            "               created_at) = :month " +
+            "          GROUP BY user_id, to_char(created_at,'YYYY-MM-DD') " +
+            "      ) ORDER BY created_at desc", nativeQuery = true)
+    List<A4EventDTO> getAttendanceHistoryList(@Param("idList") Long[] idList, @Param("year") int year, @Param("month") int month);
 }

@@ -48,9 +48,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://itple-prod.ck5lcam9i9dj.ap-northeast-2.rds.amazonaws.com:5432/itple?currentSchema=public
-    username: 'itple'
-    password: 'itple123'
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=public
+    username: 'postgres'
+    password: 'thdud6431*'
 
   servlet:
     multipart:

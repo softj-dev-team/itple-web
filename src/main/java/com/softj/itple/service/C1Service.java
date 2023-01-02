@@ -9,8 +9,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
-import com.softj.itple.exception.ApiException;
-import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.CodeUtil;
@@ -18,24 +16,16 @@ import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
-import org.springframework.data.querydsl.QSort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,8 +42,6 @@ public class C1Service {
     private final BoardLogRepo boardLogRepo;
     private final CodeUtil codeUtil;
     private final CodeDetailRepo codeDetailRepo;
-
-    private final UserRepo userRepo;
 
     @Value("${file.uploadDir}")
     private String FILE_PATH;
