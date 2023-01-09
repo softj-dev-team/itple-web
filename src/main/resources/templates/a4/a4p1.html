@@ -276,9 +276,9 @@
                         });
 
                         while (start < end) {
-                            var startMonth = (start.getMonth()+1) < 10 ? '0'+(start.getMonth()+1) : (start.getMonth()+1);
-                            var startDay = start.getDate() < 10 ? '0'+start.getDate() : start.getDate();
-                            var startDate = start.getFullYear()+'-'+startMonth+'-'+startDay;
+                            var startMonth = (start.getMonth() + 1) < 10 ? '0' + (start.getMonth() + 1) : (start.getMonth() + 1);
+                            var startDay = start.getDate() < 10 ? '0' + start.getDate() : start.getDate();
+                            var startDate = start.getFullYear() + '-' + startMonth + '-' + startDay;
 
 
                             if (!atOrgDays.includes(start.getDay().toString())) {
@@ -286,13 +286,13 @@
                                 atList.forEach(el2 => {
                                     if (el2.attendanceDate == startDate) {
                                         events.push({
-                                            "resourceId": el.id,
+                                            "resourceId": el2.id,
                                             "title": "O",
-                                            "start": start.format('yyyy-MM-dd'),
+                                            "start": startDate,
                                             "color": "#428bca",
                                             "className": "text-center"
                                         });
-                                    }else{
+                                    }else {
                                         start.plusDate(1);
                                     }
                                 });
@@ -302,10 +302,10 @@
                                 var newStartDateTime = startDate + ' ' + el2.attendanceAt;
                                 start = new Date(newStartDateTime);
 
-                                if(start.getDay().toString() == el2.orgAttendanceStr) {
+                                if (start.getDay().toString() == el2.orgAttendanceStr) {
                                     if (start < now) {
                                         events.push({
-                                            "resourceId": el.id,
+                                            "resourceId": el2.id,
                                             "title": "X",
                                             "start": start.format('yyyy-MM-dd'),
                                             "color": "#dd5a43",
@@ -313,14 +313,14 @@
                                         });
                                     } else if (start >= now) {
                                         events.push({
-                                            "resourceId": el.id,
+                                            "resourceId": el2.id,
                                             "start": start.format('yyyy-MM-dd'),
                                             "color": "#FFFFFF",
                                             "className": "text-center"
                                         });
                                     } else {
                                         events.push({
-                                            "resourceId": el.id,
+                                            "resourceId": el2.id,
                                             "title": "X",
                                             "start": start.format('yyyy-MM-dd'),
                                             "color": "#dd5a43",
@@ -331,7 +331,6 @@
                             });
                             start.plusDate(1);
                         }
-
                     });
 
                     res.data.forEach(el2 => {

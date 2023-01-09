@@ -161,12 +161,12 @@ public class A8Service {
 
         if(Objects.nonNull(map.get("result"))){
             LinkedHashMap<String, Object> resultMap = (LinkedHashMap<String, Object>) map.get("result");
-            System.out.println(map.get("result").getClass().getName()); // LinkedHashMap<String, Object>
-            System.out.println(resultMap.get("list").getClass().getName()); // ArrayList
-            System.out.println(resultMap.get("list"));
+            //System.out.println(map.get("result").getClass().getName()); // LinkedHashMap<String, Object>
+            //System.out.println(resultMap.get("list").getClass().getName()); // ArrayList
+            //System.out.println(resultMap.get("list"));
 
 
-            System.out.println("============= Work Start ================");
+            //System.out.println("============= Work Start ================");
             List<Map> listMap = (List<Map>) resultMap.get("list");
 
             for(Map listArray : listMap) {
@@ -200,7 +200,7 @@ public class A8Service {
 
                 list.add(a8SmsVO);
             }
-            System.out.println("============= Work End ================");
+            //System.out.println("============= Work End ================");
         }
         return list;
     }
