@@ -120,7 +120,6 @@
                         id: info.event._def.resourceIds[0],
                         attendanceDate: info.event.start.format("yyyy-MM-dd")
                     };
-                    console.log(formData);
 
                     $.post("/api/a4/p1/l4", formData, function (res) {
                         loading(0);
@@ -243,74 +242,102 @@
             events = [];
             return new Promise((resolve, reject) => {
                 $.post("/api/a4/p1/l2", resources.reduce((prev, cur) => prev + `idList=${cur.id}&`, "") + `startDate=${info.start.format('yyyy-MM-dd')}`, function (res) {
+
                     resources.forEach(el => {
                         var atList = el.attendanceList;
-                        var atOrgDays = el.attendanceOrgList;
-                        var start = new Date(info.start);
-                        var end = new Date(info.end);
+                        var atOrgList = el.attendanceOrgList;
+                        var tmpStart = new Date(info.start);
+                        var tmpEnd = new Date(info.end);
                         var now = new Date(Date.now());
                         var atDays = new Array();
+                        var atOrgDays = new Array();
                         var atDate = new Array();
 
-                        atList.forEach(el => {
-                            atDays.push(el.attendanceStr);
-                            atDate.push(el.attendanceDate);
+                        var tmpStartYear = tmpStart.getFullYear();
+                        var tmpStartMonth = (tmpStart.getMonth()+1) < 10 ? '0'+(tmpStart.getMonth()+1) : (tmpStart.getMonth()+1);
+                        var tmpStartDay = tmpStart.getDate() < 10 ? '0'+tmpStart.getDate() : tmpStart.getDate();
+                        var tmpStartDate = tmpStartYear+'-'+tmpStartMonth+'-'+tmpStartDay;
+                        var tmpStartDateTime = tmpStartDate +' 00:00:00';
+
+                        var start = new Date(tmpStartDateTime);
+
+                        var tmpEndYear = tmpEnd.getFullYear();
+                        var tmpEndMonth = (tmpEnd.getMonth()+1) < 10 ? '0'+(tmpEnd.getMonth()+1) : (tmpEnd.getMonth()+1);
+                        var tmpEndDay = tmpEnd.getDate() < 10 ? '0'+tmpEnd.getDate() : tmpEnd.getDate();
+                        var tmpEndDate = tmpEndYear+'-'+tmpEndMonth+'-'+tmpEndDay;
+                        var tmpEndDateTime = tmpEndDate +' 23:59:59';
+
+                        var end = new Date(tmpEndDateTime);
+
+
+
+                        atOrgList.forEach(el2 => {
+                            atOrgDays.push(el2.orgAttendanceStr);
                         });
 
-                        while (start < end){
+                        while (start < end) {
                             var startMonth = (start.getMonth()+1) < 10 ? '0'+(start.getMonth()+1) : (start.getMonth()+1);
                             var startDay = start.getDate() < 10 ? '0'+start.getDate() : start.getDate();
                             var startDate = start.getFullYear()+'-'+startMonth+'-'+startDay;
 
 
-                            if(!atOrgDays.includes(start.getDay().toString())){
+                            if (!atOrgDays.includes(start.getDay().toString())) {
                                 //원래 등원요일이 아닌 경우
-                                if(!atDays.includes(start.getDay().toString())){
-                                    //등원한 날이 아닐경우
-                                    start.plusDate(1);
-                                    continue;
-                                }else{
-                                    //등원한 날인 경우
-                                    if(!atDate.includes(startDate)) {
+                                atList.forEach(el2 => {
+                                    if (el2.attendanceDate == startDate) {
+                                        events.push({
+                                            "resourceId": el.id,
+                                            "title": "O",
+                                            "start": start.format('yyyy-MM-dd'),
+                                            "color": "#428bca",
+                                            "className": "text-center"
+                                        });
+                                    }else{
                                         start.plusDate(1);
-                                        continue;
+                                    }
+                                });
+                            }
+
+                            atOrgList.forEach(el2 => {
+                                var newStartDateTime = startDate + ' ' + el2.attendanceAt;
+                                start = new Date(newStartDateTime);
+
+                                if(start.getDay().toString() == el2.orgAttendanceStr) {
+                                    if (start < now) {
+                                        events.push({
+                                            "resourceId": el.id,
+                                            "title": "X",
+                                            "start": start.format('yyyy-MM-dd'),
+                                            "color": "#dd5a43",
+                                            "className": "text-center"
+                                        });
+                                    } else if (start >= now) {
+                                        events.push({
+                                            "resourceId": el.id,
+                                            "start": start.format('yyyy-MM-dd'),
+                                            "color": "#FFFFFF",
+                                            "className": "text-center"
+                                        });
+                                    } else {
+                                        events.push({
+                                            "resourceId": el.id,
+                                            "title": "X",
+                                            "start": start.format('yyyy-MM-dd'),
+                                            "color": "#dd5a43",
+                                            "className": "text-center"
+                                        });
                                     }
                                 }
-                            }
-
-
-                            if(start < now) {
-                                events.push({
-                                    "resourceId": el.id,
-                                    "title": "X",
-                                    "start": start.format('yyyy-MM-dd'),
-                                    "color": "#dd5a43",
-                                    "className": "text-center"
-                                });
-                            }else if(start >= now) {
-                                events.push({
-                                    "resourceId": el.id,
-                                    "start": start.format('yyyy-MM-dd'),
-                                    "color": "#FFFFFF",
-                                    "className": "text-center"
-                                });
-                            }else{
-                                events.push({
-                                    "resourceId": el.id,
-                                    "title": "X",
-                                    "start": start.format('yyyy-MM-dd'),
-                                    "color": "#dd5a43",
-                                    "className": "text-center"
-                                });
-                            }
+                            });
                             start.plusDate(1);
                         }
+
                     });
 
-                    res.data.forEach(el => {
-                        events.push(el);
+                    res.data.forEach(el2 => {
+                        events.push(el2);
 
-                        var idx = events.findIndex(el2 => el2.resourceId == el.resourceId && el.start == el2.start);
+                        var idx = events.findIndex(el3 => el3.resourceId == el2.resourceId && el2.start == el3.start);
                         if(idx != -1){
                             events.splice(idx, 1);
                         }

@@ -401,6 +401,7 @@
             var price = $("input[name=price]").val();
             var coin = $("input[name=coin]").val();
             var telNo = $("input[name=telNo]").val();
+            var studentStatus = $("select[name=studentStatus]").val();
 
             if(attendanceNo.length != 4){
                 modal.alert("출결번호는 4자리 입력해주세요");
@@ -485,6 +486,14 @@
             if(dayArr.length != daySet.size){
                 modal.alert("중복된 요일은 선택 할 수 없습니다.");
                 return;
+            }
+
+            if(studentStatus != "STUDENT"){
+                var outDate = $("input[name=outDate]").val();
+                if(ut.isEmpty(outDate)){
+                    modal.alert("휴/퇴원생은 휴/퇴원일을 필수로 입력해주세요.");
+                    return;
+                }
             }
 
             $.post("/api/a3/p1/s1",$("#form1").serialize(),function(res){

@@ -270,29 +270,9 @@ public class A4Service {
         }
 
         for(A4ResourceDTO dto : attendanceList){
-            List<A4StrDTO> dayList = attendanceRepo.getAttendanceDayList(dto.getId(), params.getYear().toString(), params.getMonth().toString());
+            List<A4StrDTO> dayList = attendanceRepo.getAttendanceDayList(dto.getId(), params.getYear().toString(), params.getMonth() < 10 ? '0'+params.getMonth().toString() : params.getMonth().toString());
             dto.setAttendanceList(dayList);
-            BooleanBuilder where2 = new BooleanBuilder()
-                    .and(qAttendance.user.id.eq(dto.getId()));
-            List<String> dayOrgList = jpaQueryFactory.select(
-                            new CaseBuilder()
-                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.SUNDAY))
-                                    .then("0")
-                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.MONDAY))
-                                    .then("1")
-                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.TUESDAY))
-                                    .then("2")
-                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.WEDNESDAY))
-                                    .then("3")
-                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.THURSDAY))
-                                    .then("4")
-                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.FRIDAY))
-                                    .then("5")
-                                    .when(qAttendance.attendanceDay.eq(Types.DayOfWeek.SATURDAY))
-                                    .then("6")
-                                    .otherwise(""))
-                    .from(qAttendance)
-                    .where(where2).fetch();
+            List<A4OrgStrDTO> dayOrgList = attendanceRepo.getOrgAttendanceDayList(dto.getId());
             dto.setAttendanceOrgList(dayOrgList);
         }
         return attendanceList;

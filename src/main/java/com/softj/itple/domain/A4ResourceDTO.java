@@ -17,5 +17,5 @@ public class A4ResourceDTO implements Serializable {
     private long id;
     private String title;
     private List<A4StrDTO> attendanceList;
-    private List<String> attendanceOrgList;
+    private List<A4OrgStrDTO> attendanceOrgList;
 }

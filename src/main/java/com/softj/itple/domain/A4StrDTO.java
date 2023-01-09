@@ -10,4 +10,6 @@ public interface A4StrDTO extends Serializable {
 
     String getAttendanceStr();
 
+    long getId();
+
 }
