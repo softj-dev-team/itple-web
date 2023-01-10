@@ -34,34 +34,37 @@ public interface AttendanceHistoryRepo extends JpaRepository<AttendanceHistory, 
 
     List<AttendanceHistory> findByUser(User user);
 
-    @Query(value = "SELECT" +
-            "            user_id AS resourceId," +
+    @Query(value = "SELECT " +
+            "            A.user_id AS resourceId, " +
             "            CASE " +
-            "                WHEN attendance_status='03' THEN '●' " +
+            "                WHEN A.attendance_status='03' THEN '●' " +
             "                ELSE 'O' " +
             "            END AS title, " +
             "            CASE " +
-            "                WHEN attendance_status='03' THEN '#FFCC00' " +
+            "                WHEN A.attendance_status='03' THEN '#FFCC00' " +
             "                ELSE '#428bca' " +
             "            END AS color, " +
             "            'text-center' AS className, " +
-            "            to_char(created_at,'YYYY-MM-DD') AS start " +
-            "       FROM " +
-            "           tb_attendance_history" +
-            "       WHERE id IN ( " +
-            "           SELECT " +
-            "               MAX(id) " +
-            "           FROM " +
-            "               tb_attendance_history" +
-            "           WHERE" +
-            "               user_id IN (:idList)" +
-            "               AND extract(year " +
-            "           FROM " +
-            "               created_at)= :year " +
-            "               AND extract(month " +
-            "           FROM " +
-            "               created_at) = :month " +
-            "          GROUP BY user_id, to_char(created_at,'YYYY-MM-DD') " +
-            "      ) ORDER BY created_at desc", nativeQuery = true)
-    List<A4EventDTO> getAttendanceHistoryList(@Param("idList") Long[] idList, @Param("year") int year, @Param("month") int month);
+            "            to_char(A.created_at, 'YYYY-MM-DD') AS start " +
+            "        FROM " +
+            "            tb_attendance_history A " +
+            "        WHERE " +
+            "            (A.user_id, to_char(A.created_at, 'YYYYMMDDHH24MISSMS')) " +
+            "               IN ( " +
+            "                   SELECT " +
+            "                       B.user_id, " +
+            "                       max(to_char(B.created_at, 'YYYYMMDDHH24MISSMS')) " +
+            "                   FROM " +
+            "                        tb_attendance_history B " +
+            "                  WHERE " +
+            "                        B.user_id IN (:idList) " +
+            "                        AND extract(year from B.created_at) = :year " +
+            "                        AND extract(month from B.created_at) = :month " +
+            "                   GROUP BY " +
+            "                    B.user_id, " +
+            "                    to_char(B.created_at, 'YYYY-MM-DD') " +
+            "               )" +
+            "               ORDER BY start"
+            , nativeQuery = true)
+    List<A4EventDTO> getAttendanceHistoryEventList(@Param("idList") Long[] idList, @Param("year") int year, @Param("month") int month);
 }
