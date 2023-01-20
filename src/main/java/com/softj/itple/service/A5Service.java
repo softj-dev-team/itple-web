@@ -2,8 +2,10 @@ package com.softj.itple.service;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
@@ -41,7 +43,12 @@ public class A5Service {
 
         BooleanBuilder where = new BooleanBuilder().and(qStudent.isDeleted.eq(false))
                 .and(qStudent.academyClass.academyType.eq(params.getAcademyType()));
-        where.and(qStudent.studentStatus.ne(Types.StudentStatus.STUDENT).and(qStudent.outDate.month().eq(params.getMonth()).and(qStudent.outDate.year().eq(params.getYear()))).or(qStudent.studentStatus.eq(Types.StudentStatus.STUDENT)));
+        //where.and(qStudent.studentStatus.ne(Types.StudentStatus.STUDENT).and(qStudent.outDate.month().eq(params.getMonth()).and(qStudent.outDate.year().eq(params.getYear()))).or(qStudent.studentStatus.eq(Types.StudentStatus.STUDENT)));
+
+        where.and(qStudent.studentStatus.ne(Types.StudentStatus.STUDENT).and(qStudent.outDate.year().eq(params.getYear()).and(qStudent.outDate.month().goe(params.getMonth())))
+             .or(qStudent.studentStatus.ne(Types.StudentStatus.STUDENT).and(qStudent.outDate.year().gt(params.getYear()).and(qStudent.outDate.month().goe(1))))
+             .or(qStudent.studentStatus.ne(Types.StudentStatus.STUDENT).and(qStudent.outDate.year().lt(params.getYear()).and(qStudent.outDate.month().eq(0))))
+             .or(qStudent.studentStatus.eq(Types.StudentStatus.STUDENT)));
 
         if(Objects.nonNull(params.getPaymentStatus())){
             if("01".equals(params.getPaymentStatus().getCode())){
