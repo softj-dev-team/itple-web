@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="btn-center mt60">
-                    <button type="button" class="btn" onclick="goAction('S1')">등록하기</button>
+                    <button type="button" class="btn m-btn" onclick="goAction('S1')">등록하기</button><button type="button" class="btn m-btn btn-gray ml10" onclick="goList()">목록</button>
                 </div>
             </form>
         </div>
@@ -74,6 +74,11 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
+        function goList(){
+            var academyClass = $("#academyClass").val();
+            var taskType = $("#taskType").val();
+            location.href="/a2/p1-class/"+academyClass+"?taskType="+taskType;
+        }
         /*]]>*/
         $(document).ready(function(){
             var taskId = [[${el == null ? 0 : el?.id}]];
