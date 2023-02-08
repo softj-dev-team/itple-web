@@ -58,6 +58,9 @@ public class Student extends Auditing{
     @Transient
     private long totalCost;
 
+    @Transient
+    private String userName;
+
     @Convert(converter = Types.StudentStatus.Converter.class)
     private Types.StudentStatus studentStatus;
 
@@ -65,9 +68,6 @@ public class Student extends Auditing{
     private Payment payment;
     @Transient
     private long payCost;
-
-    @Transient
-    private String userName;
 
     @Builder
     public Student(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, AcademyClass academyClass, String attendanceNo, String school, String zonecode, String roadAddress, String detailAddress, Types.Grade grade, String parentName, String parentTel, LocalDate birth, String email, long coin, LocalDate enterDate, String memo, Integer paymentDay, Long price, Types.StudentStatus studentStatus, Payment payment, long totalCost, long payCost, String telNo, String userName, LocalDate outDate, int outStYear, int outStMonth) {

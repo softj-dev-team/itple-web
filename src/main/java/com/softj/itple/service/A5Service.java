@@ -76,11 +76,12 @@ public class A5Service {
 
         JPAQuery<Student> query = jpaQueryFactory.select(Projections.fields(Student.class,
                         qStudent.id,
-                        qStudent.user,
                         qStudent.parentName,
+                        qStudent.user.userName,
                         qStudent.paymentDay,
                         qStudent.price,
                         qStudent.outDate,
+                        qStudent.studentStatus,
                         ExpressionUtils.as(qStudent.outDate.year(),"outStYear"),
                         ExpressionUtils.as(qStudent.outDate.month(),"outStMonth"),
                         qPayment
@@ -180,7 +181,6 @@ public class A5Service {
                     memoSave.setMonth(j);
                     memoSave.setMemo(params.getMemo());
                     memoSave.setPaymentType(params.getPaymentType());
-                    memoSave.setStatus(Types.PaymentStatus.NONE);
                     paymentRepo.save(memoSave);
                 }
             }else{
@@ -191,7 +191,6 @@ public class A5Service {
                     memoSave.setMonth(j);
                     memoSave.setMemo(params.getMemo());
                     memoSave.setPaymentType(params.getPaymentType());
-                    memoSave.setStatus(Types.PaymentStatus.NONE);
                     paymentRepo.save(memoSave);
                 }
             }

@@ -192,7 +192,7 @@
                     <td>
                         <button type="button" class="saveBtn">저장</button>
                     </td>
-                    <td><span th:text="${el.user.userName}"></span></td>
+                    <td><span th:text="${el.userName}"></span></td>
                     <td><span th:text="${el.parentName}"></span></td>
                     <td><span th:text="${#numbers.formatInteger(el.price,0,'COMMA')}"></span></td>
                     <td><input type="text" name="cost" class="cost payComMoney alignR"
@@ -211,7 +211,7 @@
                     </td>
                     <td><input type="text" name="memo" class="memo"
                                th:value="${el.payment != null ? el.payment.memo : ''}"></td>
-                    <td th:text="${!#strings.equals(el.user.student.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT) ? el.outDate : ''}"></td>
+                    <td th:text="${!#strings.equals(el.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT) ? el.outDate : ''}"></td>
                     <td>
                         <select name="paymentStatus" th:id="|paymentStatus_${elStat.count}|" class="paymentStatus">
                             <option th:each="er : ${T(com.softj.itple.domain.Types.PaymentStatus).values()}"
