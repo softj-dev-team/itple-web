@@ -181,6 +181,9 @@ public class A5Service {
                     memoSave.setMonth(j);
                     memoSave.setMemo(params.getMemo());
                     memoSave.setPaymentType(params.getPaymentType());
+                    if(StringUtils.isEmpty(memoSave.getStatus())){
+                        memoSave.setStatus(Types.PaymentStatus.NONE);
+                    }
                     paymentRepo.save(memoSave);
                 }
             }else{
@@ -191,6 +194,9 @@ public class A5Service {
                     memoSave.setMonth(j);
                     memoSave.setMemo(params.getMemo());
                     memoSave.setPaymentType(params.getPaymentType());
+                    if(StringUtils.isEmpty(memoSave.getStatus())){
+                        memoSave.setStatus(Types.PaymentStatus.NONE);
+                    }
                     paymentRepo.save(memoSave);
                 }
             }
