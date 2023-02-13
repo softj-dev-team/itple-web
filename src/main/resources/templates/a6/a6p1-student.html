@@ -1,3 +1,74 @@
+<!--<style>
+    div {
+        margin: 0.5em 0;
+        padding: 2em;
+    }
+
+    #target,
+    #source {
+        border: 1px solid black;
+        padding: 0.5rem;
+    }
+
+    .dragging {
+        background-color: pink;
+    }
+</style>
+<div>
+    <ul>
+        <li id="source" draggable="true">
+            <p>
+                Select this element, drag it to the drop zone and then release the selection
+                to move the element.
+            </p>
+        </li>
+        <li class="source" draggable="true">
+            <p>
+                222Select this element, drag it to the drop zone and then release the selection
+                to move the element.
+            </p>
+        </li>
+    </ul>
+
+</div>
+<div id="target">Drop Zone</div>
+
+<button id="reset">Reset example</button>
+<script>
+    const source = document.querySelector("#source");
+    source.addEventListener("dragstart", (ev) => {
+        console.log("dragStart");
+        // Change the source element's background color
+        // to show that drag has started
+        ev.currentTarget.classList.add("dragging");
+        // Clear the drag data cache (for all formats/types)
+        ev.dataTransfer.clearData();
+        // Set the drag's format and data.
+        // Use the event target's id for the data
+        console.log(ev.target);
+        ev.dataTransfer.setData("text/plain", ev.target.id);
+    });
+    source.addEventListener("dragend", (ev) =>
+        ev.target.classList.remove("dragging")
+    );
+
+    const target = document.querySelector("#target");
+    target.addEventListener("dragover", (ev) => {
+        console.log("dragOver");
+        ev.preventDefault();
+    });
+    target.addEventListener("drop", (ev) => {
+        console.log("Drop");
+        ev.preventDefault();
+        // Get the data, which is the id of the source element
+        const data = ev.dataTransfer.getData("text");
+        const source = document.getElementById(data);
+        ev.target.appendChild(source);
+    });
+
+    const reset = document.querySelector("#reset");
+    reset.addEventListener("click", () => document.location.reload());
+</script>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
@@ -5,6 +76,13 @@
       layout:decorate="layout/layout">
 <head>
     <title>포트폴리오</title>
+    <style>
+        /*a {pointer-events: none}*/
+        ul { background-color: #8fdf82 !important;  opacity: 1; }
+        a { background-color: #0B4E8B !important; opacity: 1; }
+        li { background-color: #3c763d !important;  opacity: 1; }
+        li div { background-color: #8a6d3b !important;  opacity: 0.3;}
+    </style>
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -34,8 +112,8 @@
                     <a th:href="|javascript:ut.redirect('/a6/p1-write/0','userId','${student.user.id}','academyType', '${params.academyType}', 'portfolioType', '${params.portfolioType}')|" class="aBtn">포트폴리오 등록</a>
                 </div>
             </div>
-            <ul class="book-box portfolio clearfix">
-                <li class="book-list" th:each="el : ${list}">
+            <ul class="book-box portfolio clearfix" id="dragEl">
+                <li class="book-list" th:each="el : ${list}" th:id="|li_${elStat.count}|" draggable="true">
                     <input type="checkbox" name="seqList" th:id="|a${elStat.count}|"><label th:for="|a${elStat.count}|" style="top:10px;left:15px;"></label>
                     <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
                     <a th:href="|/a6/p1-detail/${el.id}|">
@@ -71,6 +149,39 @@
     <script th:src="@{/assets/js/a6/a6p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
+
+        const dragEl = document.querySelector("#dragEl");
+
+        dragEl.addEventListener("dragstart", (ev) => {
+            console.log("dragStart");
+            ev.currentTarget.classList.add("dragging");
+            ev.dataTransfer.clearData();
+            console.log(ev.target);
+            ev.dataTransfer.setData("text/plain", ev.target.id);
+        });
+        dragEl.addEventListener("dragend", (ev) =>
+            ev.target.classList.remove("dragging")
+        );
+
+        dragEl.addEventListener("dragover", (ev) => {
+            console.log("dragOver");
+            ev.preventDefault();
+        });
+        dragEl.addEventListener("drop", (ev) => {
+            const id = ev.target.id;
+            if(id.includes("li")){
+                return false;
+            }else {
+                console.log("Drop");
+                ev.preventDefault();
+
+                const data = ev.dataTransfer.getData("text");
+                console.log(data);
+                const source = document.getElementById(data);
+                ev.target.appendChild(source);
+            }
+        });
+
         $('.RemoveBtn').on('click', function () {
             $('#removeMo').addClass('on');
         });
