@@ -60,7 +60,9 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                     var data = res.data;
                     var id = data.id;
                     var portfolioType = data.portfolioType;
-                    ut.redirect("/a6/p1-detail/"+id,"portfolioType",portfolioType);
+                    var academyType = data.academyType;
+                    var studentId = data.studentId;
+                    ut.redirect("/a6/p1-detail/"+id,"portfolioType",portfolioType,"academyType",academyType,"studentId",studentId);
                 });
             });
             break;
@@ -68,6 +70,18 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             modal.confirm("확인 하시겠습니까?",function(){
                 $.post(path+'/s2',{id: arg1},function(res){
                     location.reload();
+                });
+            });
+            break;
+        case "S3": // 목록 순서 수정
+            var formS3 = $('#form3');
+            modal.confirm("목록을 수정 하시겠습니까?",function(){
+                $.post(path+'/s3',formS3.serialize(),function(res){
+                    <!--th:href="|/a6/p1-student/${params.id}?academyType=${params.academyType}|"-->
+                    var data = res.data;
+                    var academyType = data.academyType;
+                    var studentId = data.studentId;
+                    ut.redirect("/a6/p1-student/"+studentId,"academyType",academyType);
                 });
             });
             break;
@@ -92,8 +106,8 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             var idList = new Array();
             $("input[name=seqList]:checked").each(function(){
                 var numId = $(this).prop("id");
-                var num = numId.substring(1, numId.length);
-                var bookId = "id"+num;
+                var num = numId.split("_");
+                var bookId = "Id_"+num[1];
                 idList.push($("#"+bookId).val());
             });
 

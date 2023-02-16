@@ -32,6 +32,13 @@ public class Portfolio extends Auditing {
 
     private String contents;
 
+    private int sort;
+
+    private int year;
+
+    @Transient
+    private Long sortCnt;
+
     @Convert(converter = Types.PortfolioType.Converter.class)
     private Types.PortfolioType portfolioType;
 

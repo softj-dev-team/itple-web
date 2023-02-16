@@ -13,21 +13,36 @@
 <body>
 <th:block layout:fragment="content">
     <form id="form1">
-        <input type="hidden" name="id" th:value="${el.id}"/>
-        <input type="hidden" name="userId" th:value="${param.userId}"/>
+        <input type="hidden" name="id" id="id" th:value="${el.id}"/>
+        <input type="hidden" name="userId" id="userId" th:value="${param.userId}"/>
+        <input type="hidden" name="academyType" id="academyType" th:value="${param.academyType}"/>
         <div class="content">
             <h1 class="responsiveH1 subH1">포트폴리오 쓰기</h1>
             <div class="content-in clearfix">
                 <div class="writeCon porWrit">
                     <div class="writeHead2">
-                        <select name="visibleStatus" id="" class="select-md">
+
+                        <select name="visibleStatus" id="visibleStatus" class="select-md">
                             <option th:each="visibleStatus : ${T(com.softj.itple.domain.Types.VisibleStatus).values()}" th:value="${visibleStatus}" th:text="${visibleStatus.message}" th:selected="${visibleStatus == el.visibleStatus}"></option>
                         </select>
-                        <select name="portfolioType" id="" class="select-md" th:if="${#strings.equals(params.academyType,T(com.softj.itple.domain.Types.AcademyType).CODING)}">
-                            <option th:each="el2 : ${T(com.softj.itple.domain.Types.PortfolioType).values()}" th:if="${#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).COMPETITION)||#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).CERTIFICATE)}" th:value="${el2}" th:text="${el2.message}" th:selected="${#strings.equals(el2,el.portfolioType) || #strings.equals(el2,params.portfolioType)}"></option>
+                        <select name="portfolioType" id="portfolioType" class="select-md" th:if="${#strings.equals(params.academyType,T(com.softj.itple.domain.Types.AcademyType).CODING)}">
+                            <option th:each="el2 : ${T(com.softj.itple.domain.Types.PortfolioType).values()}" th:if="${#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).COMPETITION)||#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).CERTIFICATE)||#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).CODELEVEL)}" th:value="${el2}" th:text="${el2.message}" th:selected="${#strings.equals(el2,el.portfolioType) || #strings.equals(el2,params.portfolioType)}"></option>
                         </select>
-                        <select name="portfolioType" id="" class="select-md" th:if="${#strings.equals(params.academyType,T(com.softj.itple.domain.Types.AcademyType).ENGLISH)}">
-                            <option th:each="el2 : ${T(com.softj.itple.domain.Types.PortfolioType).values()}" th:if="${#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).LEARNING)}" th:value="${el2}" th:text="${el2.message}" th:selected="${#strings.equals(el2,el.portfolioType) || #strings.equals(el2,params.portfolioType)}"></option>
+                        <select name="portfolioType" id="portfolioType" class="select-md" th:if="${#strings.equals(params.academyType,T(com.softj.itple.domain.Types.AcademyType).ENGLISH)}">
+                            <option th:each="el2 : ${T(com.softj.itple.domain.Types.PortfolioType).values()}" th:if="${#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).LEARNING)||#strings.equals(el2,T(com.softj.itple.domain.Types.PortfolioType).ENGLISHLEVEL)}" th:value="${el2}" th:text="${el2.message}" th:selected="${#strings.equals(el2,el.portfolioType) || #strings.equals(el2,params.portfolioType)}"></option>
+                        </select>
+                        <select name="year" id="year" class="select-md">
+                            <option th:each="num : ${#numbers.sequence(2,-5)}"
+                                    th:with="year=${T(java.lang.Integer).parseInt(#temporals.format(#temporals.createNow(),'yyyy')) + num}"
+                                    th:value="${year}"
+                                    th:text="|${year}년|"
+                                    th:selected="${#strings.equals(year, params.year) || #strings.equals(year, el.year)}">2022</option>
+                        </select>
+                        <select name="sort" id="sort" class="select-md">
+                            <option th:each="num : ${#numbers.sequence(1,el.sort == 0 ? sortCnt+1 : sortCnt)}"
+                                    th:value="${num}"
+                                    th:text="${num}"
+                                    th:selected="${#strings.equals(num, el.sort == 0 ? numStat.last : el.sort)}">1</option>
                         </select>
                         <input type="text" placeholder="제목을 입력해주세요." class="input-df" th:value="${el.subject}" name="subject">
                         <textarea name="summary" id="summary" cols="30" rows="10" class="textA mt10" placeholder="포트폴리오에 대한 설명을 입력해주세요." th:utext="${el.summary}"></textarea>
@@ -52,6 +67,7 @@
                 </div>
                 <div class="btn-center Tbtn">
                     <button type="button" class="btn submitBtn" onclick="goAction('S1')">작성하기</button>
+                    <button type="button" class="btn btn-gray" onclick="goList()">목록</button>
                 </div>
             </div>
         </div>
@@ -161,6 +177,36 @@
                 });
             });
         });
+
+        $("#year, #portfolioType").on("change", function(){
+            let year = $("#year").val();
+            let userId = $("#userId").val();
+            let portfolioType = $("#portfolioType").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/api/a6/p1/l2",
+                data: {'year':year, 'userId':userId, 'portfolioType':portfolioType},
+                /*context: this,*/
+                success: function (res) {
+                    var sortCnt = res.data;
+                    $("#sort").html("");
+                    for(var i=1; i<=sortCnt+1; i++){
+                        var html = "<option value='"+i+"' ";
+                        if(i == sortCnt+1) {
+                            html += "selected";
+                        }
+                        html += ">"+i+"</option>";
+
+                        $("#sort").append(html);
+                    }
+                }
+            });
+        });
+
+        function goList(){
+            location.href="/a6/p1-student/[[${params.studentId}]]?academyType="+[[${params.academyType}]];
+        }
     </script>
 </th:block>
 </body>

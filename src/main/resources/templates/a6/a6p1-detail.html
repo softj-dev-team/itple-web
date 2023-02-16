@@ -11,7 +11,7 @@
     <div class="fullbnr" th:style="|background-image:url(${el.thumbnail})|"></div>
     <div class="content portfolio">
         <p class="cateP" th:text="|[${el.portfolioType.message}]|"></p>
-        <h1 class="portfolioH1" th:text="${el.subject}">톨스토이의 &#60;사람은 무엇으로 사는가&#62; 독후감상문</h1>
+        <h1 class="portfolioH1" th:text="|${el.year > 0 ? '['+el.year+']' : ''} ${el.subject}|">톨스토이의 &#60;사람은 무엇으로 사는가&#62; 독후감상문</h1>
         <div class="portfolioSub">
             <p class="name" th:text="${el.user.userName}">김잇플</p>
             <p class="class" th:text="${el.user.student.school+' | '+el.user.student.grade.message+' | '+el.user.student.academyClass.className}">잇플초등학교 │ 잇플 코딩입문반A</p>
@@ -30,6 +30,7 @@
         </div>
         <div class="btn-center">
             <button class="btn" th:onclick="goModify()">포트폴리오 수정</button>
+            <button class="btn btn-gray" th:onclick="goList()">목록</button>
         </div>
 
     </div>
@@ -39,7 +40,10 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         function goModify(){
-            location.href="/a6/p1-write/[[${el.id}]]?userId=[[${el.user.id}]]&academyType="+[[${el.user.student.academyClass.academyType}]]+"&portfolioType="+[[${el.portfolioType}]];
+            location.href="/a6/p1-write/[[${el.id}]]?userId=[[${el.user.id}]]&academyType="+[[${el.user.student.academyClass.academyType}]]+"&portfolioType="+[[${el.portfolioType}]]+"&studentId=[[${params.studentId}]]";
+        }
+        function goList(){
+            location.href="/a6/p1-student/[[${params.studentId}]]?academyType="+[[${params.academyType}]];
         }
         /*]]>*/
     </script>

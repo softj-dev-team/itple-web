@@ -102,9 +102,11 @@ public class Types {
     @Getter
     @AllArgsConstructor
     public enum PortfolioType implements Code<String> {
-        COMPETITION("01", "각종대회/영재원"),
+        COMPETITION("01", "각종대회"),
         CERTIFICATE("02", "자격증/인증서"),
-        LEARNING("03", "Learning History");
+        LEARNING("03", "Learning History"),
+        CODELEVEL("04", "레벨 테스트"),
+        ENGLISHLEVEL("05", "레벨 테스트");
 
         private String code;
         private String message;

@@ -1,6 +1,9 @@
 package com.softj.itple.service;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
@@ -15,11 +18,14 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.sound.sampled.Port;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -48,29 +54,78 @@ public class A6Service {
 
     public Page<Portfolio> getPortfolioList(SearchVO params, Pageable pageable){
         QPortfolio qPortfolio = QPortfolio.portfolio;
-        BooleanBuilder where = new BooleanBuilder().and(qPortfolio.isDeleted.eq(false).and(qPortfolio.user.student.id.eq(params.getId()))
+        QUser qUser = QUser.user;
+
+        BooleanBuilder where = new BooleanBuilder().and(qPortfolio.isDeleted.eq(false).and(qUser.student.id.eq(params.getId()))
                                 .and(qPortfolio.portfolioType.eq(params.getPortfolioType())));
 
-        return portfolioRepo.findAll(where, pageable);
+        JPAQuery<Portfolio> query = jpaQueryFactory.select(Projections.fields(Portfolio.class,
+                        qPortfolio.id,
+                        qPortfolio.thumbnail,
+                        qPortfolio.subject,
+                        qPortfolio.sort,
+                        qPortfolio.year,
+                        qUser
+                ))
+                .from(qPortfolio)
+                .join(qUser).on(qUser.eq(qPortfolio.user))
+                .where(where)
+                .orderBy(qPortfolio.year.desc(), qPortfolio.sort.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
+
+        return new PageImpl<Portfolio>(query.fetch(), pageable, query.fetchCount());
     }
 
     public Portfolio getPortfolio(SearchVO params){
         Portfolio el = portfolioRepo.findById(params.getId()).orElse(Portfolio.builder().build());
         return el;
     }
+
+    public long getPortfolioSortCntByYear(SearchVO params){
+        QPortfolio qPortfolio = QPortfolio.portfolio;
+        QUser qUser = QUser.user;
+
+        BooleanBuilder where = new BooleanBuilder().and(qPortfolio.isDeleted.eq(false).and(qUser.id.eq(Long.parseLong(params.getUserId())))
+                .and(qPortfolio.portfolioType.eq(params.getPortfolioType())).and(qPortfolio.year.eq(params.getYear())));
+
+        JPAQuery<Portfolio> query = jpaQueryFactory.select(Projections.fields(Portfolio.class,
+                        qPortfolio.id.count().as("sortCnt")
+                ))
+                .from(qPortfolio)
+                .join(qUser).on(qUser.eq(qPortfolio.user))
+                .where(where);
+
+        Portfolio result = query.fetch().get(0);
+
+        return result.getSortCnt();
+    }
     public Map<String,Object> savePortfolio(SearchVO params){
 
         Map<String,Object> result = new HashMap<>();
         Portfolio save = Portfolio.builder().build();
+
         if(LongUtils.noneEmpty(params.getId())){
             save = portfolioRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+            save.setSort(params.getSort());
+        }else{
+            Portfolio max = portfolioRepo.findTopByUserAndPortfolioTypeAndYearOrderBySortDesc(User.builder().id(Long.parseLong(params.getUserId())).build(), params.getPortfolioType(), params.getYear()).orElse(Portfolio.builder().build());
+            if(ObjectUtils.isEmpty(max)){
+                save.setSort(1);
+            }else {
+                save.setSort(max.getSort() + 1);
+            }
         }
         save.setVisibleStatus(params.getVisibleStatus());
         save.setSubject(params.getSubject());
         save.setSummary(params.getSummary());
         save.setContents(params.getContents());
         save.setPortfolioType(params.getPortfolioType());
-        save.setUser(User.builder().id(Long.parseLong(params.getUserId())).build());
+        save.setYear(params.getYear());
+
+        User user = userRepo.findById(Long.parseLong(params.getUserId())).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        save.setUser(user);
+
         Pattern p = Pattern.compile("src=\"([^\"]+)\".*>");
         Matcher m = p.matcher(save.getContents());
         if(m.find()){
@@ -89,6 +144,26 @@ public class A6Service {
 
         result.put("id", finalSave.getId());
         result.put("portfolioType", finalSave.getPortfolioType());
+        result.put("academyType", params.getAcademyType());
+        result.put("studentId", user.getStudent().getId());
+
+        return result;
+    }
+
+    public Map<String,Object> savePortfolioList(SearchVO params){
+
+        Map<String,Object> result = new HashMap<>();
+        Portfolio save = Portfolio.builder().build();
+        int[] sortList = params.getSortList();
+        int i = 0;
+        for(long id : params.getIdList()) {
+            save = portfolioRepo.findById(id).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+            save.setSort(sortList[i]);
+            portfolioRepo.save(save);
+            i++;
+        }
+        result.put("academyType", params.getAcademyType());
+        result.put("studentId", save.getUser().getStudent().getId());
 
         return result;
     }

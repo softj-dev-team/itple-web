@@ -69,6 +69,8 @@ public class SearchVO {
 	private AcademyClass academyClass;
 	private Task task;
 	private String teacher;
+
+	private Long studentId;
 	private Long[] studentIdList = new Long[0];
 	private long coin;
 	private String returnMessage;
@@ -97,7 +99,6 @@ public class SearchVO {
 
 	//관리자-학생관리
 	private Types.StudentStatus studentStatus;
-	private Long studentId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate enterDate;
 	private Integer paymentDay;
@@ -121,6 +122,9 @@ public class SearchVO {
 	private Types.VisibleStatus visibleStatus;
 	private String summary;
 	private Types.PortfolioType portfolioType;
+	private int[] sortList;
+
+	private int sort;
 
 	//관리자-수납관리
 	private Long[] paymentIdList = new Long[0];

@@ -17,11 +17,28 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class A6RestController {
     final private A6Service a6Service;
 
+
+    //연도별 정렬 총 갯수
+    @PostMapping("/p1/l2")
+    public Response p1l2(SearchVO params){
+        return Response.builder()
+                .data(a6Service.getPortfolioSortCntByYear(params))
+                .build();
+    }
+
     //저장
     @PostMapping("/p1/s1")
     public Response p1s1(SearchVO params){
         return Response.builder()
                 .data(a6Service.savePortfolio(params))
+                .build();
+    }
+
+    //저장
+    @PostMapping("/p1/s3")
+    public Response p1s3(SearchVO params){
+        return Response.builder()
+                .data(a6Service.savePortfolioList(params))
                 .build();
     }
 

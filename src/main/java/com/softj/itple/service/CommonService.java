@@ -1,10 +1,8 @@
 package com.softj.itple.service;
 
-import com.querydsl.core.BooleanBuilder;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AcademyClass;
-import com.softj.itple.entity.QAcademyClass;
 import com.softj.itple.entity.Student;
 import com.softj.itple.repo.*;
 import lombok.RequiredArgsConstructor;

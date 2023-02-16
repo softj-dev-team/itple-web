@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>포트폴리오</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+        <input type="hidden" id="academyType" name="academyType" th:value="${params.academyType}">
+        <input type="hidden" id="portfolioType" name="portfolioType" th:value="${params.portfolioType}">
+    </form>
+    <div class="content">
+        <h1 class="responsiveH1" th:text="|${student.user.userName} 포트폴리오_${params.academyType.message}|"> 포트폴리오 </h1>
+       <!-- <div class="tab clearfix adTab">
+            <ul class="tab-ul">
+                <li th:if="${#strings.equals(params.academyType,T(com.softj.itple.domain.Types.AcademyType).CODING)}" th:classappend="${#strings.equals(params.portfolioType,'COMPETITION') ? 'active' : ''}"><a th:href="|/a6/p1-student/${params.id}?academyType=CODING&portfolioType=COMPETITION|">각종대회/영재원</a></li>
+                <li th:if="${#strings.equals(params.academyType,T(com.softj.itple.domain.Types.AcademyType).CODING)}" th:classappend="${#strings.equals(params.portfolioType,'CERTIFICATE') ? 'active' : ''}"><a th:href="|/a6/p1-student/${params.id}?academyType=CODING&portfolioType=CERTIFICATE|">자격증/인증서</a></li>
+                <li th:if="${#strings.equals(params.academyType,T(com.softj.itple.domain.Types.AcademyType).ENGLISH)}" th:classappend="${#strings.equals(params.portfolioType,'LEARNING') ? 'active' : ''}"><a th:href="|/a6/p1-student/${params.id}?academyType=ENGLISH&portfolioType=LEARNING|">Learning History</a></li>
+            </ul>
+        </div>-->
+        <div class="content-in clearfix">
+            <div class="tableBtn-box">
+                <div class="leftBox">
+                    <button type="button" class="m-btn btn-line RemoveBtn">선택삭제</button>
+                    <form id="form2" name="form2">
+                        <input type="hidden" name="idList" id="idList" />
+                    </form>
+                </div>
+                <div class="rightBox">
+                    <button class="btn m-btn" onclick="goAction('S3')">수정완료</button>
+                </div>
+            </div>
+            <form id="form3">
+                <input type="hidden" name="academyType" th:value="${params.academyType}"/>
+                <ul class="book-box portfolio clearfix" id="dragUl">
+                    <li class="book-list" th:id="|dragLi_${elStat.count}|" th:each="el : ${list}" draggable="true">
+                        <input type="checkbox" name="seqList" th:id="|dragA_${elStat.count}|"><label th:id="|dragLb_${elStat.count}|" th:for="|dragA_${elStat.count}|" style="top:10px;left:15px;"></label>
+                        <input type="hidden" name="idList" th:id="|dragId_${elStat.count}|" th:value="${el.id}"/>
+                        <input type="hidden" name="sortList" th:id="|dragSort_${elStat.count}|" th:value="${el.sort}"/>
+                        <input type="hidden" name="year" th:id="|dragYear_${elStat.count}|" th:value="${el.year}"/>
+                        <div class="book-img" th:id="|dragImg_${elStat.count}|" th:style="|background-image: url(${el.thumbnail});|"></div>
+                        <div class="book-info" th:id="|dragInfo_${elStat.count}|">
+                            <p class="book-tit" th:id="|dragTit_${elStat.count}|" th:text="|${el.year > 0 ? '['+el.year+']' : ''} ${el.subject}|">제 50회 발명품 대회</p>
+                            <p class="book-author text-gray" th:id="|dragAth_${elStat.count}|" th:text="${el.user.student.school+' | '+el.user.student.academyClass.className}">잇플 코딩입문반Aㅣ김잇플</p>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+    </div>
+    <div class="modal" id="removeMo">
+        <div class="modal-bg"></div>
+        <div class="modalContent xs">
+            <div class="modalHd">
+                <h3></h3>
+                <button class="modalClose"></button>
+            </div>
+            <div class="modalBody">
+                <div class="modalText">
+                    선택 포트폴리오를 정말 삭제하시겠습니까?<br>
+                    삭제한 포트폴리오는 복구할 수 없습니다.
+                </div>
+                <div class="modalBtnWrap">
+                    <button type="button" class="btn btn-red modalOff" onclick="goAction('D1')">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/assets/js/a6/a6p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+
+        const dragEl = document.querySelector("#dragUl");
+
+        dragEl.addEventListener("dragstart", (ev) => {
+            console.log("dragStart");
+            ev.currentTarget.classList.add("dragging");
+            ev.dataTransfer.clearData();
+            console.log(ev.target);
+            ev.dataTransfer.setData("text/plain", ev.target.id);
+        });
+        dragEl.addEventListener("dragend", (ev) =>
+            ev.target.classList.remove("dragging")
+        );
+
+        dragEl.addEventListener("dragover", (ev) => {
+            console.log("dragOver");
+            ev.preventDefault();
+        });
+        dragEl.addEventListener("drop", (ev) => {
+            console.log(ev.target);
+
+            const id = ev.target.id;
+
+            if(id.indexOf("dragUl") > -1 || id.indexOf("dragTit") > -1 || id.indexOf("dragAth") > -1){
+                return false;
+            }else {
+                console.log("Drop");
+                ev.preventDefault();
+
+                const data = ev.dataTransfer.getData("text");
+                const source = document.getElementById(data);
+                const targetSource = ev.target.parentElement;
+                const bfId = source.id;
+                const nxtId = targetSource.id;
+                const bfIdArr = bfId.split("_");
+                const nxtIdArr = nxtId.split("_");
+                const bfNum = bfIdArr[1];
+                const nxtNum = nxtIdArr[1];
+                let bfSort = 0;
+                let nxtSort = 0;
+                let bfYear = 0;
+                let nxtYear = 0;
+
+
+                // 드래그 엘리먼트 수정
+                source.id = bfIdArr[0]+"_"+nxtNum;
+                for(const bfInput of source.getElementsByTagName("input")){
+
+                    const bfId = bfInput.getAttribute("id");
+                    const bfIdArr = bfId.split("_");
+
+                    bfInput.setAttribute("id", bfIdArr[0]+"_"+nxtNum);
+
+                    if(bfIdArr[0] == "dragSort"){
+                        bfSort = bfInput.getAttribute("value");
+                    }else if(bfIdArr[0] == "dragYear"){
+                        bfYear = bfInput.getAttribute("value");
+                    }
+                }
+                for(const bfLabel of source.getElementsByTagName("label")){
+                    const bfId = bfLabel.getAttribute("id");
+                    const bfIdArr = bfId.split("_");
+                    bfLabel.setAttribute("id", bfIdArr[0]+"_"+nxtNum);
+                }
+                for(const bfDiv of source.getElementsByTagName("div")){
+                    const bfId = bfDiv.getAttribute("id");
+                    const bfIdArr = bfId.split("_");
+                    bfDiv.setAttribute("id", bfIdArr[0]+"_"+nxtNum);
+                }
+                for(const bfP of source.getElementsByTagName("p")){
+                    const bfId = bfP.getAttribute("id");
+                    const bfIdArr = bfId.split("_");
+                    bfP.setAttribute("id", bfIdArr[0]+"_"+nxtNum);
+                }
+
+                // 타겟 엘리먼트 수정
+                targetSource.id = nxtIdArr[0]+"_"+bfNum;
+                for(const nxtInput of targetSource.getElementsByTagName("input")){
+                    const nxtId = nxtInput.getAttribute("id");
+                    const nxtIdArr = nxtId.split("_");
+                    nxtInput.setAttribute("id", nxtIdArr[0]+"_"+bfNum);
+
+                    if(nxtIdArr[0] == "dragSort"){
+                        nxtSort = nxtInput.getAttribute("value");
+                        nxtInput.setAttribute("value", bfSort.toString());
+                    }else if(nxtIdArr[0] == "dragYear"){
+                        nxtYear = nxtInput.getAttribute("value");
+                    }
+                }
+                console.log(bfYear+","+nxtYear);
+                if(bfYear != nxtYear){
+                    modal.alert("연도가 다른 포트폴리오끼리는 순서를 정렬할 수 없습니다.");
+                    return false;
+                }
+
+                for(const nxtLabel of targetSource.getElementsByTagName("label")){
+                    const nxtId = nxtLabel.getAttribute("id");
+                    const nxtIdArr = nxtId.split("_");
+                    nxtLabel.setAttribute("id", nxtIdArr[0]+"_"+bfNum);
+                }
+                for(const nxtDiv of targetSource.getElementsByTagName("div")){
+                    const nxtId = nxtDiv.getAttribute("id");
+                    const nxtIdArr = nxtId.split("_");
+                    nxtDiv.setAttribute("id", nxtIdArr[0]+"_"+bfNum);
+                }
+                for(const nxtP of targetSource.getElementsByTagName("p")){
+                    const nxtId = nxtP.getAttribute("id");
+                    const nxtIdArr = nxtId.split("_");
+                    nxtP.setAttribute("id", nxtIdArr[0]+"_"+bfNum);
+                }
+
+
+                //드래그 엘리먼트 순서 수정
+                for(const bfInput of source.getElementsByTagName("input")){
+
+                    const bfId = bfInput.getAttribute("id");
+                    const bfIdArr = bfId.split("_");
+
+                    if(bfIdArr[0] == "dragSort"){
+                        bfInput.setAttribute("value", nxtSort.toString());
+                    }
+                }
+
+                if(bfNum > nxtNum){
+                    ev.target.parentElement.after(source);
+                    //document.getElementById(bfIdArr[0]+"_"+(parseInt(bfNum)-1)).before(targetSource);
+                }else{
+                    ev.target.parentElement.before(source);
+                    //document.getElementById(bfIdArr[0]+"_"+(parseInt(bfNum)+1)).after(targetSource);
+                }
+            }
+        });
+
+        $('.RemoveBtn').on('click', function () {
+            $('#removeMo').addClass('on');
+        });
+
+        $("#btnModify").on("click", function(){
+
+        });
+    </script>
+</th:block>
+</body>
+</html>
