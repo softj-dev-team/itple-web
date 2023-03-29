@@ -1055,35 +1055,39 @@ i.i-date{
 }
 .main-banner {
     width: 100%;
-    height: 30.5vw;
-    min-height: 160px;
-    max-height: 584px;
+    height: 584px;
     margin-top: 80px;
     background: url(../img/main-bg.jpg) no-repeat top / cover;
     color: #ffffff;
+    overflow: hidden;
 }
 .banner-in{
     position: relative;
-    top: 0%;
-    transform: translateY(20%);
+    height: 100%;
+}
+.banner-in .bannerTxt{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-30%);
     opacity: 0;
     animation-name: bannerAni;
     animation-duration: .8s;
     animation-delay: 0;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
+
 }
-.banner-in p:nth-child(1){
-    font-size: 2vw;
+.banner-in .bannerTxt p:nth-child(1){
+    font-size: 38px;
     margin-bottom: 18px;
 }
-.banner-in p:nth-child(2){
-    font-size: 3.4vw;
+.banner-in .bannerTxt p:nth-child(2){
+    font-size: 65px;
 }
 
 @keyframes bannerAni{
     100%{
-        transform: translateY(70%);
+        transform: translateY(-60%);
         opacity: 1;
     }
 }
@@ -2627,6 +2631,128 @@ a.a-btn{
     border-top: none;
     border-radius: 0 0 5px 5px;
 }
+/*랭킹*/
+.rankWrap{
+    position: absolute;
+    right: 0;
+    height: 100%;
+}
+.rBg{
+    display: none;
+}
+.rankBtn{
+    display: none;
+    width: 30px;
+    height: 30px;
+    text-indent: -99999px;
+    background: #fff url("../img/rank.png") no-repeat center / contain;
+    border-radius: 5px 0 0 5px;
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+}
+.rankBox {
+    width: auto;
+    height: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff;
+    color: #333333;
+    border-radius: 20px;
+    padding: 30px 20px;
+}
+.rankBox .Rclose{
+    display: none;
+    width: 20px;
+    height: 20px;
+    text-indent: -999999px;
+    position: absolute;
+    top: -30px;
+    right: 0px;
+}
+.rankBox .Rclose:before{
+    content: "";
+    display:block;
+    position:absolute;
+    top:0px;
+    left:9px;
+    width:2px;
+    height:20px;
+    background:#ffffff;
+    transform: rotate(45deg);
+}
+.rankBox .Rclose::after{
+    content: "";
+    display:block;
+    position:absolute;
+    top:0px;
+    left:9px;
+    width:2px;
+    height:20px;
+    background:#ffffff;
+    transform: rotate(135deg);
+}
+.rankBox h2{
+    font-size: 25px;
+    text-align: center;
+}
+.rankBox .Rflex{
+    display: flex;
+    justify-content: space-evenly;
+}
+.rankBox .Rflex > div > p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #002C50;
+    text-align: center;
+    margin: 25px 0;
+}
+.rankBox .Rflex .rankUl{
+    font-size: 14px;
+    font-weight: normal;
+    padding: 0;
+}
+.rankBox .Rflex .rankUl li{
+    min-width: 145px;
+    width: auto;
+    height: 35px;
+    line-height: 35px;
+}
+.rankBox .Rflex .rankL .rankUl li{
+    padding-right: 15px;
+}
+.rankBox .Rflex .rankR .rankUl li{
+    padding-left: 15px;
+}
+.rankBox .Rflex .rankUl li:not(:last-child){
+    border-bottom: 1px solid #EBEBEB;
+}
+.rankBox .Rflex .rankUl li span{
+    display: inline-block;
+}
+.rankBox .Rflex .rankUl li span.Rnum{
+    width: 23px;
+    height: 23px;
+    line-height: 23px;
+    border-radius: 50px;
+    font-weight: bold;
+    text-align: center;
+    margin-right: 10px;
+    color: #002C50;
+}
+.rankBox .Rflex .rankUl li:nth-child(1) span.Rnum,
+.rankBox .Rflex .rankUl li:nth-child(2) span.Rnum,
+.rankBox .Rflex .rankUl li:nth-child(3) span.Rnum{
+    color: #ffffff;
+    background: #002C50;
+}
+.rankBox .Rflex .rankUl li span.Rpoint{
+    width: auto;
+    float: right;
+    font-weight: bold;
+    margin-left: 10px;
+}
 /*header ~1280p*/
 @media screen and (min-width: 1280px){
     .header{padding-right: calc((100% - 1280px)/2 + 23.5px)!important;}
@@ -2638,17 +2764,20 @@ a.a-btn{
 }
 /* mobile */
 @media screen and (max-width:1280px){
+    .main-banner {
+        height: 370px;
+    }
     .main-banner > div {
         max-width: 1000px;
     }
     .main-cont .sec .sec-in {
         max-width: 1000px;
     }
-    .banner-in p:nth-child(1){
+    .banner-in .bannerTxt p:nth-child(1){
         font-size: 2vw;
         margin-bottom: 10px;
     }
-    .banner-in p:nth-child(2){
+    .banner-in .bannerTxt p:nth-child(2){
         font-size: 3.4vw;
     }
     .main-cont .sec:not(:nth-child(1)) {
@@ -2771,6 +2900,22 @@ a.a-btn{
         width: 100%; margin-right: 0px;
     }
     .smsN div.smsN2{ width: 100%; margin-top: 10px;}
+    /*rank*/
+    .rankBox {
+        right: 20px;
+        border-radius: 15px;
+        padding: 20px 20px;
+    }
+    .rankBox .Rflex > div > p {
+        font-size: 15px;
+        margin: 15px 0;
+    }
+    .rankBox .Rflex .rankL .rankUl li {
+        padding-right: 10px;
+    }
+    .rankBox .Rflex .rankR .rankUl li {
+        padding-left: 10px;
+    }
 }
 @media screen and (max-width: 768px){
     /*default setting*/
@@ -2852,12 +2997,14 @@ a.a-btn{
     }
     .main-banner {
         margin-top: 53px;
+        height: 28vw;
+        min-height: 160px;
     }
-    .banner-in p:nth-child(1){
+    .banner-in .bannerTxt p:nth-child(1){
         font-size: 14px;
         margin-bottom: 5px;
     }
-    .banner-in p:nth-child(2){
+    .banner-in .bannerTxt p:nth-child(2){
         font-size: 20px;
     }
     .main-cont .sec:not(:nth-child(1)) {
@@ -3400,6 +3547,52 @@ a.a-btn{
         border: 1px solid #9E9E9E;
         border-top: none;
         border-radius: 0 0 5px 5px;
+    }
+/*    rank*/
+    .rankBtn {
+         display: block;
+    }
+    .rankBox {
+        display: none;
+    }
+    .rankBox.on{
+        display: block;
+        position: fixed;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+        z-index: 99;
+    }
+    .rankBox .Rclose {
+         display: block;
+    }
+    .rBg.on{
+        display: block;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom:0;
+        z-index: 99;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+    }
+    .rankBox .Rflex .rankUl li span.Rnum {
+        width: 19px;
+        height: 19px;
+        line-height: 19px;
+        margin-right: 5px;
+        font-size: 11px;
+    }
+    .rankBox .Rflex .rankUl li span.Rpoint {
+        margin-left: 5px;
+    }
+    .rankBox .Rflex .rankL .rankUl li {
+        padding-right: 5px;
+    }
+    .rankBox .Rflex .rankR .rankUl li {
+        padding-left: 5px;
     }
 }
 @media screen and (max-width: 476px){
