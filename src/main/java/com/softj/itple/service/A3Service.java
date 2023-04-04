@@ -114,11 +114,17 @@ public class A3Service{
 
         if(prevCoin != reqCoin){
             long diffCoin = reqCoin - prevCoin;
+            String coinMemo = params.getCoinMemo();
+            String coinEtc = params.getCoinEtc();
+            if(coinMemo.equals("기타")){
+                coinMemo = coinEtc;
+            }
+
             coinHistoryRepo.save(CoinHistory.builder()
                     .coinStatus(diffCoin > 0L ? Types.CoinStatus.PLUS : Types.CoinStatus.MINUS)
                     .user(save.getUser())
                     .coin(diffCoin)
-                    .memo(params.getCoinMemo())
+                    .memo(coinMemo)
                     .build());
         }
 

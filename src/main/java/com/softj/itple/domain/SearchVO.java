@@ -105,6 +105,7 @@ public class SearchVO {
 	private Long price;
 	private String memo;
 	private String coinMemo;
+	private String coinEtc;
 	private String approved;
 	private String edOrder;
 	private String searchCateogry;

@@ -21,7 +21,7 @@
                 <div class="inputSec">
                     <label for="coin" class="mb5">포인트</label>
                     <input type="text" class="input-df mb20" name="coin" id="coin" th:value="${el.coin}">
-                    <select name="coinMemo" class="input-df mb20">
+                    <select name="coinMemo" id="coinSel" class="input-df mb20">
                         <option value="">포인트 수정시 내역을 선택하세요.</option>
                         <option value="간식">간식</option>
                         <option value="숙제/독후감">숙제/독후감</option>
@@ -35,6 +35,7 @@
                         <option value="컴퓨터지식시험">컴퓨터지식시험</option>
                         <option value="기타">기타</option>
                     </select>
+                    <input type="text" class="input-df mb20" name="coinEtc" id="coinEtc" style="display: none">
                     <label for="" class="mb5">승인/미승인</label>
                     <select name="approved" class="input-df mb20">
                         <option value="true" th:selected="${el.user.approved}">승인</option>
@@ -248,6 +249,16 @@
     <script th:src="@{/assets/js/a3/a3p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
         $(function(){
+
+            $("#coinSel").on("change", function(){
+                var sel = $(this).val();
+                if(sel == "기타"){
+                    $("#coinEtc").css("display", "block");
+                }else{
+                    $("#coinEtc").css("display", "none");
+                }
+            });
+
             $(".datepicker").datepicker({
                 format: "yyyy-mm-dd",
                 language: "ko",
@@ -400,8 +411,10 @@
             var parentTel = $("input[name=parentTel]").val();
             var price = $("input[name=price]").val();
             var coin = $("input[name=coin]").val();
+            var coinSel = $("select[name=coinMemo]").val();
             var telNo = $("input[name=telNo]").val();
             var studentStatus = $("select[name=studentStatus]").val();
+
 
             if(attendanceNo.length != 4){
                 modal.alert("출결번호는 4자리 입력해주세요");
@@ -492,6 +505,14 @@
                 var outDate = $("input[name=outDate]").val();
                 if(ut.isEmpty(outDate)){
                     modal.alert("휴/퇴원생은 휴/퇴원일을 필수로 입력해주세요.");
+                    return;
+                }
+            }
+
+            if(coinSel == "기타"){
+                var coinEtc = $("input[name=coinEtc]").val();
+                if(ut.isEmpty(coinEtc)){
+                    modal.alert("포인트 수정 내역이 기타일 때에는 사유를 필수로 입력해주세요.");
                     return;
                 }
             }

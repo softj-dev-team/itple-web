@@ -8,6 +8,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.util.TempFile;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
@@ -16,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -60,6 +62,10 @@ public class A3P1E1ExcelView {
             excelList.add(i, map);
             i++;
         }
+
+        File dir = new File(System.getProperty("java.io.tmpdir"),"poifiles");
+        dir.mkdir();
+        TempFile.setTempFileCreationStrategy(new TempFile.DefaultTempFileCreationStrategy(dir));
 
         // flush되기 전까지 메모리에 들고있는 행의 갯수
         int ROW_ACCESS_WINDOW_SIZE = 1000;
