@@ -635,10 +635,12 @@
     });
     $(document).on("click", ".rankBtn", function(){
         $('.rankBox, .rBg').addClass('on');
+        $('body').attr('style', 'overflow:hidden');
     });
     $(document).on("click", ".Rclose, .rank-bg", function(){
         $(this).parents('.rankBox').removeClass('on');
         $('.rBg').removeClass('on');
+        $('body').attr('style', '');
     });
 </script>
 </body>

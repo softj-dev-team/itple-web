@@ -2902,7 +2902,6 @@ a.a-btn{
     .smsN div.smsN2{ width: 100%; margin-top: 10px;}
     /*rank*/
     .rankBox {
-        right: 20px;
         border-radius: 15px;
         padding: 20px 20px;
     }
@@ -3551,6 +3550,7 @@ a.a-btn{
 /*    rank*/
     .rankBtn {
          display: block;
+        right: -24px;
     }
     .rankBox {
         display: none;
@@ -3600,7 +3600,7 @@ a.a-btn{
 }
 
 /* admin */
-.adHead ~ .main{
+.adHead ~ .main,.adHead ~ .footer{
     min-width: 1280px;
 }
 .adHead .gnb > li > a{
@@ -3771,6 +3771,28 @@ a.a-btn{
 .adTable.list1 tr th:nth-child(7){width: 10%;}
 .adTable.list1 tr th:nth-child(8){width: 10%;}
 .adTable.list1 tr th:nth-child(9){width: 10%;}
+
+.pointT tr td:nth-child(2),
+.pointT tr td:nth-child(3){
+    text-align: left;
+}
+.pointT tr td:nth-child(4){font-weight: bold;}
+.pointT tr td.Ppoint{
+    color: #2D7AC0;
+}
+.pointT tr td.Ppoint::before{
+    content: "+";
+    display: inline-block;
+    margin-right: 2px;
+}
+.pointT tr td.Mpoint{
+    color: #DD5434;
+}
+.pointT tr td.Mpoint::before{
+    content: "-";
+    display: inline-block;
+    margin-right: 2px;
+}
 .hr2{
     width: 100%;
     height: 1px;

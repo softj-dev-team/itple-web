@@ -12,8 +12,42 @@
     <div class="main">
         <div class="main-banner">
             <div class="banner-in">
-                <p>잇플교육!</p>
-                <p><b>글로벌</b> 인재를 양성하는<br>소프트웨어 / 영어 선도학원! </p>
+                <div class="banner-in">
+                    <div class="bannerTxt">
+                        <p>잇플교육!</p>
+                        <p><b>글로벌</b> 인재를 양성하는<br>소프트웨어 / 영어 선도학원! </p>
+                    </div>
+                    <div class="rankWrap">
+                        <div class="rBg"></div>
+                        <button class="rankBtn">포인트 랭킹</button>
+                        <div class="rankBox">
+                            <button class="Rclose">닫기</button>
+                            <h2>포인트 랭킹 TOP5</h2>
+                            <div class="Rflex">
+                                <div class="rankL">
+                                    <p>잇플코딩</p>
+                                    <ul class="rankUl">
+                                        <li><span class="Rnum">1</span><span class="Rname">김잇플</span><span class="Rpoint">20,000P</span></li>
+                                        <li><span class="Rnum">2</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                        <li><span class="Rnum">3</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                        <li><span class="Rnum">4</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                        <li><span class="Rnum">5</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                    </ul>
+                                </div>
+                                <div class="rankR">
+                                    <p>잇플영어</p>
+                                    <ul class="rankUl">
+                                        <li><span class="Rnum">1</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                        <li><span class="Rnum">2</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                        <li><span class="Rnum">3</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                        <li><span class="Rnum">4</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                        <li><span class="Rnum">5</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="main-cont" th:if="${@authUtil.isRole('ADMIN')}">
@@ -330,7 +364,15 @@
 
             $('.po-slide').slick('setPosition');
         });
-
+        $(document).on("click", ".rankBtn", function(){
+            $('.rankBox, .rBg').addClass('on');
+            $('body').attr('style', 'overflow:hidden');
+        });
+        $(document).on("click", ".Rclose, .rank-bg, .rBg", function(){
+            $('.rankBox').removeClass('on');
+            $('.rBg').removeClass('on');
+            $('body').attr('style', '');
+        });
     </script>
 </th:block>
 </html>
