@@ -7,10 +7,7 @@ import com.softj.itple.entity.User;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.StudentRepo;
-import com.softj.itple.service.C1Service;
-import com.softj.itple.service.C2Service;
-import com.softj.itple.service.C3Service;
-import com.softj.itple.service.C4Service;
+import com.softj.itple.service.*;
 import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
 import com.softj.itple.util.StringUtils;
@@ -34,6 +31,7 @@ public class MainController {
     final private C2Service c2Service;
     final private C3Service c3Service;
     final private C4Service c4Service;
+	final private A3Service a3Service;
     final private AuthUtil authUtil;
 
 	final private StudentRepo studentRepo;
@@ -57,6 +55,8 @@ public class MainController {
 
 		params.setBoardType(AuthUtil.getStudent().getAcademyClass().getAcademyType());
 
+		model.addAttribute("codingRankingList", a3Service.getStudentCodingRankingList());
+		model.addAttribute("englishRankingList", a3Service.getStudentEnglishRankingList());
 		model.addAttribute("noticePopup", c1Service.getBoardNoticePopup());
 		model.addAttribute("noticeList", c1Service.getBoardNoticeList(params, pageable));
 	    model.addAttribute("taskList", c2Service.getStudentTaskList(params, pageable));

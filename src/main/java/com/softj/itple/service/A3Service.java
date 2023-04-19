@@ -1,5 +1,6 @@
 package com.softj.itple.service;
 
+import com.softj.itple.domain.A3StudentDTO;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
@@ -61,6 +62,14 @@ public class A3Service{
         List<Student> studentList = studentRepo.getStudentList(params.getStudentStatus() != null ? params.getStudentStatus().getCode() : null, params.getAcademyType() != null ? params.getAcademyType().getCode() : null, params.getGrade() != null ? params.getGrade().getCode() : null, params.getClassId(), params.getEdOrder() != null ? params.getEdOrder() : null, params.getSearchType(), params.getSearchValue(), pageable);
 
         return new PageImpl<Student>(studentList, pageable, studentListTotal);
+    }
+
+    public List<A3StudentDTO> getStudentCodingRankingList(){
+        return studentRepo.getStudentCodingRankingList();
+    }
+
+    public List<A3StudentDTO> getStudentEnglishRankingList(){
+        return studentRepo.getStudentEnglishRankingList();
     }
 
     public Student getStudent(SearchVO params){

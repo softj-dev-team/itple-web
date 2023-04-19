@@ -1,5 +1,6 @@
 package com.softj.itple.repo;
 
+import com.softj.itple.domain.A3StudentDTO;
 import com.softj.itple.domain.A8StudentDTO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AcademyClass;
@@ -40,6 +41,20 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
 
     @Query("select a from Student a where a.telNo = :telNo or a.parentTel = :telNo")
     List<Student> findTopByTelNoOrParentTel(@Param("telNo")String telNo);
+
+    @Query(value = "SELECT B.user_name AS userName, A.coin AS coin " +
+            "FROM tb_student A " +
+            "JOIN tb_user B ON B.id = A.user_id " +
+            "JOIN tb_class C ON C.id = A.class_id " +
+            "WHERE A.student_status = '01'  AND C.academy_type = '01' ORDER BY A.coin DESC LIMIT 5", nativeQuery = true)
+    List<A3StudentDTO> getStudentCodingRankingList();
+    @Query(value = "SELECT B.user_name AS userName, A.coin AS coin " +
+            "FROM tb_student A " +
+            "JOIN tb_user B ON B.id = A.user_id " +
+            "JOIN tb_class C ON C.id = A.class_id " +
+            "WHERE A.student_status = '01'  AND C.academy_type = '02' ORDER BY A.coin DESC LIMIT 5", nativeQuery = true)
+    List<A3StudentDTO> getStudentEnglishRankingList();
+
 
     @Query(value = "SELECT count(A.id)" +
             "       FROM " +

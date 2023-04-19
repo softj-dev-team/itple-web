@@ -27,21 +27,13 @@
                                 <div class="rankL">
                                     <p>잇플코딩</p>
                                     <ul class="rankUl">
-                                        <li><span class="Rnum">1</span><span class="Rname">김잇플</span><span class="Rpoint">20,000P</span></li>
-                                        <li><span class="Rnum">2</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
-                                        <li><span class="Rnum">3</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
-                                        <li><span class="Rnum">4</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
-                                        <li><span class="Rnum">5</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                        <li th:each="el : ${codingRankingList}"><span class="Rnum" th:text="${elStat.count}">1</span><span class="Rname" th:text="${el.userName}">김잇플</span><span class="Rpoint" th:text="${#numbers.formatInteger(el.coin, 0, 'COMMA') + 'P'}">20,000P</span></li>
                                     </ul>
                                 </div>
                                 <div class="rankR">
                                     <p>잇플영어</p>
                                     <ul class="rankUl">
-                                        <li><span class="Rnum">1</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
-                                        <li><span class="Rnum">2</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
-                                        <li><span class="Rnum">3</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
-                                        <li><span class="Rnum">4</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
-                                        <li><span class="Rnum">5</span><span class="Rname">김잇플</span><span class="Rpoint">200P</span></li>
+                                        <li th:each="el : ${englishRankingList}"><span class="Rnum" th:text="${elStat.count}">1</span><span class="Rname" th:text="${el.userName}">김잇플</span><span class="Rpoint" th:text="${#numbers.formatInteger(el.coin, 0, 'COMMA') + 'P'}">20,000P</span></li>
                                     </ul>
                                 </div>
                             </div>
