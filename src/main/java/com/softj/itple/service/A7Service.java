@@ -42,6 +42,16 @@ public class A7Service {
     private final AdminRepo adminRepo;
     private final RoleRepo roleRepo;
 
+    private final BoardRepo boardRepo;
+
+    private final BoardFileRepo boardFileRepo;
+
+    private final BoardCommentRepo boardCommentRepo;
+
+    private final BoardStarRepo boardStarRepo;
+
+    private final BoardLogRepo boardLogRepo;
+
     public Page<AcademyClass> getAcademyClassList(SearchVO params, Pageable pageable){
         QAcademyClass qAcademyClass = QAcademyClass.academyClass;
 
@@ -186,7 +196,38 @@ public class A7Service {
     }
 
     @Transactional
-    public void deleteAdmin(SearchVO params, HttpServletRequest request){
+    public void deleteFkAdmin(SearchVO params){
+        for(long id : params.getIdList()){
+            Admin delete1 = adminRepo.findById(id).orElseThrow(() -> new ApiException("선생님 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+
+            List<Board> delete5 = boardRepo.findByUser(delete1.getUser());
+            for(Board board : delete5){
+                boardRepo.delete(board);
+                List<BoardFile> boardFileList = boardFileRepo.findByBoard(board);
+                for(BoardFile boardFile : boardFileList){
+                    boardFileRepo.delete(boardFile);
+                }
+            }
+
+            List<BoardComment> delete9 = boardCommentRepo.findByUser(delete1.getUser());
+            for(BoardComment boardComment : delete9){
+                boardCommentRepo.delete(boardComment);
+            }
+
+            List<BoardStar> delete10 = boardStarRepo.findByUser(delete1.getUser());
+            for(BoardStar boardStar : delete10){
+                boardStarRepo.delete(boardStar);
+            }
+
+            List<BoardLog> delete11 = boardLogRepo.findByUser(delete1.getUser());
+            for(BoardLog boardLog : delete11){
+                boardLogRepo.delete(boardLog);
+            }
+        }
+    }
+
+    @Transactional
+    public void deleteAdmin(SearchVO params){
         for(long id : params.getIdList()){
             adminRepo.deleteById(id);
         }

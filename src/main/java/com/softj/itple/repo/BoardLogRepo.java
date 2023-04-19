@@ -13,4 +13,5 @@ import java.util.List;
 
 @Repository
 public interface BoardLogRepo extends JpaRepository<BoardLog, Long>, QuerydslPredicateExecutor<BoardLog> {
+    List<BoardLog> findByUser(User user);
 }

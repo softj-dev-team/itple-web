@@ -35,6 +35,8 @@ public class A3Service{
     private final AttendanceHistoryRepo attendanceHistoryRepo;
     private final BoardRepo boardRepo;
 
+    private final BoardLogRepo boardLogRepo;
+
     private final BoardFileRepo boardFileRepo;
 
     private final BoardCommentRepo boardCommentRepo;
@@ -194,6 +196,11 @@ public class A3Service{
             List<BoardStar> delete10 = boardStarRepo.findByUser(delete1.getUser());
             for(BoardStar boardStar : delete10){
                 boardStarRepo.delete(boardStar);
+            }
+
+            List<BoardLog> delete11 = boardLogRepo.findByUser(delete1.getUser());
+            for(BoardLog boardLog : delete11){
+                boardLogRepo.delete(boardLog);
             }
 
             List<BookRental> delete6 = bookRentalRepo.findByUserId(delete1.getUser().getId());
