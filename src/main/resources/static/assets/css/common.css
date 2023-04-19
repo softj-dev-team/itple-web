@@ -3594,6 +3594,9 @@ a.a-btn{
     .rankBox .Rflex .rankR .rankUl li {
         padding-left: 5px;
     }
+
+    .adHead ~ .main .rankBox {display: block;}
+    .adHead ~ .main .rankBtn,adHead ~ .main .rankBox .Rclose{display: none; }
 }
 @media screen and (max-width: 476px){
 
@@ -3606,8 +3609,16 @@ a.a-btn{
 .adHead .gnb > li > a{
     padding: 0 20px;
 }
-
-
+.adHead ~ .main .main-banner {
+    height: 500px;
+}
+.adHead ~ .main .banner-in .bannerTxt p:nth-child(1) {
+    font-size: 30px;
+    margin-bottom: 18px;
+}
+.adHead ~ .main .banner-in .bannerTxt p:nth-child(2) {
+    font-size: 50px;
+}
 @media screen and (max-width:1284px){
     .adHead .gnb > li > a {
         padding: 0 15px;
@@ -3912,12 +3923,22 @@ a.aBtn{
 .codClass{
     color: #5EA4CC;
 }
+.adTask-list li h3 p {margin-top: 5px;}
 .adTask-list li h3 span{
     font-size: 12px;
     font-family: 'Pretendard-Regular';
     color: #9E9E9E;
 }
-.adTask-list li h3 span::before{
+.adTask-list li h3 span:nth-child(1)::before{
+    content: "";
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    background: url(../img/clock.png) no-repeat center / contain;
+    margin-right: 4px;
+    vertical-align: -2px;
+}
+.adTask-list li h3 span:nth-child(2)::before{
     content: "";
     width: 8px;
     height: 9px;
@@ -3930,22 +3951,34 @@ a.aBtn{
     color: #888888;
     font-size: 14px;
     margin-bottom: 4px;
-    display: flex;
+    /*display: flex;*/
 }
 .adTask-list p:nth-child(3){
     margin-bottom: 0px;
 }
-.adTask-list p span:nth-child(1){
+.adTask-list li a > p span{
+    display: block;
+    float: left;
+}
+.adTask-list li a > p span:after{
+    content: ' / ';
     display: inline-block;
-    max-width: calc(100% - 70px );
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin: 0 5px;
 }
-.adTask-list p span:nth-child(2){
-    margin-left: 8px;
-    vertical-align: 3px;
+.adTask-list li a > p span:last-child:after{
+    display: none;
 }
+/*.adTask-list p span:nth-child(1){*/
+/*    display: inline-block;*/
+/*    max-width: calc(100% - 70px );*/
+/*    white-space: nowrap;*/
+/*    overflow: hidden;*/
+/*    text-overflow: ellipsis;*/
+/*}*/
+/*.adTask-list p span:nth-child(2){*/
+/*    margin-left: 8px;*/
+/*    vertical-align: 3px;*/
+/*}*/
 .studCh{
     overflow: hidden;
     margin-bottom: 20px;
