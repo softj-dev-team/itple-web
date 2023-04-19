@@ -1,5 +1,6 @@
 package com.softj.itple.service;
 
+import com.querydsl.core.BooleanBuilder;
 import com.softj.itple.domain.A3StudentDTO;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
@@ -7,6 +8,7 @@ import com.softj.itple.entity.*;
 import com.softj.itple.exception.ApiException;
 import com.softj.itple.exception.ErrorCode;
 import com.softj.itple.repo.*;
+import com.softj.itple.util.AuthUtil;
 import com.softj.itple.util.LongUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -229,5 +231,13 @@ public class A3Service{
         for(long id : params.getIdList()) {
             studentRepo.deleteById(id);
         }
+    }
+
+    /* 코인 히스토리 */
+    public Page<CoinHistory> getCoinHistoryList(SearchVO params, Pageable pageable){
+        QCoinHistory qCoinHistory = QCoinHistory.coinHistory;
+        User user = userRepo.findById(params.getId()).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+        BooleanBuilder where = new BooleanBuilder().and(qCoinHistory.isDeleted.eq(false).and(qCoinHistory.user.eq(user)));
+        return coinHistoryRepo.findAll(where, pageable);
     }
 }

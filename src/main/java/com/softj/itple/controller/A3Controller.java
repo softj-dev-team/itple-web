@@ -57,4 +57,17 @@ public class A3Controller {
         model.addAttribute("params", params);
         return "a3/a3p1-detail";
     }
+
+    //코인 히스토리
+    @GetMapping("/p1-point/{id}")
+    public String p1detail(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        params.setId(id);
+        if(Objects.isNull(params.getStudentStatus())) {
+            params.setStudentStatus(Types.StudentStatus.STUDENT);
+        }
+        model.addAttribute("list",a3Service.getCoinHistoryList(params, pageable));
+        model.addAttribute("el", a3Service.getStudent(params));
+        model.addAttribute("params", params);
+        return "a3/a3p1-point";
+    }
 }

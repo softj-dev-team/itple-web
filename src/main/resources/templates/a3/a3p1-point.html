@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout/layout">
+<head>
+    <title>학생관리</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <form id="form1">
+        <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
+    </form>
+    <div class="adContent">
+        <h1 class="adH1">포인트내역_<span th:text="${el.user.userName}"></span></h1>
+        <div class="content-in clearfix">
+            <div class="pointBox">
+                <div class="pointTit">포인트</div>
+                <div class="point"><span th:text="${#numbers.formatInteger(el.coin, 0, 'COMMA')}"></span> 포인트</div>
+            </div>
+            <table class="adTable">
+                <colgroup>
+                    <col style="width: 12%;">
+                    <col style="width: 25%;">
+                    <col style="width: auto;">
+                    <col style="width: 25%;">
+                </colgroup>
+                <thead class="adTable-head">
+                <tr>
+                    <th>일자</th>
+                    <th>구분</th>
+                    <th>내역</th>
+                    <th>포인트</th>
+                </tr>
+                </thead>
+                <tbody class="adTable-body adTbody pointT">
+                <tr th:each="pt : ${list}">
+                    <td th:text="${#temporals.format(pt.createdAt,'yyyy.MM.dd')}">23.04.05</td>
+                    <td th:text="${pt.coinStatus.message}">구분 내용입니다.</td>
+                    <td th:text="${pt.memo}">내역 내용입니다.</td>
+                    <td th:text="${#numbers.formatInteger(pt.coin,0,'COMMA')}" th:class="${pt.coin > 0 ? 'Ppoint' : ''}">1,000</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--페이지네이션-->
+        <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+
+        <div class="btn-center mt60">
+            <button type="button" class="btn" th:onclick="|goStudent(${params.id})|">학생정보로 이동</button>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        function goStudent(id){
+            location.href="/a3/p1-detail/"+id;
+        }
+    </script>
+</th:block>
+</body>
+</html>

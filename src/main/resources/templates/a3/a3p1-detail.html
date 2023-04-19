@@ -13,7 +13,7 @@
             학생관리_<span th:text="${el.user.userName}"></span>
             <span class="btn-right">
                 <button type="button" class="btn btn-right" style="width:120px;height:40px;font-size:15px" onclick="studentSave()">저장하기</button>
-                <button type="button" class="btn btn-right btn-red" style="width:120px;height:40px;font-size:15px;margin-right: 10px;" >포인트내역</button>
+                <button type="button" class="btn btn-right btn-red" style="width:120px;height:40px;font-size:15px;margin-right: 10px;" th:onclick="|goCoinHistory(${params.id})|" >포인트내역</button>
             </span>
         </h1>
         <div class="responsiveInner">
@@ -521,6 +521,9 @@
             $.post("/api/a3/p1/s1",$("#form1").serialize(),function(res){
                 modal.alert("저장되었습니다.");
             });
+        }
+        function goCoinHistory(id){
+            location.href = "/a3/p1-point/"+id;
         }
     </script>
 </th:block>
