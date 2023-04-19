@@ -69,6 +69,8 @@ public class MainController {
     @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping("/adminMain")
 	public String adminMain(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC, size = 7) Pageable pageable, HttpServletRequest request) {
+		model.addAttribute("codingRankingList", a3Service.getStudentCodingRankingList());
+		model.addAttribute("englishRankingList", a3Service.getStudentEnglishRankingList());
 		model.addAttribute("taskList", c2Service.getStudentTaskAdminList(params, pageable));
 		return "index";
 	}
