@@ -3596,7 +3596,7 @@ a.a-btn{
     }
 
     .adHead ~ .main .rankBox {display: block;}
-    .adHead ~ .main .rankBtn,adHead ~ .main .rankBox .Rclose{display: none; }
+    .adHead ~ .main .rankBtn,.adHead ~ .main .rankBox .Rclose {display: none; }
 }
 @media screen and (max-width: 476px){
 
