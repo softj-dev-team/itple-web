@@ -45,6 +45,10 @@ public class A2Service {
     private final AcademyClassRepo academyClassRepo;
     private final TaskRepo taskRepo;
 
+    private final AdminRepo adminRepo;
+
+    private final UserRepo userRepo;
+
     private final TaskFileRepo taskFileRepo;
     private final StudentTaskFileRepo studentTaskFileRepo;
     private final StudentTaskRepo studentTaskRepo;
@@ -63,7 +67,9 @@ public class A2Service {
         QAcademyClass qAcademyClass = QAcademyClass.academyClass;
         QTask qTask = QTask.task;
         QStudent qStudent = QStudent.student;
-        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false)).and(qAcademyClass.isInvisible.eq(false));
+
+        Admin admin = adminRepo.findById(params.getId()).orElseThrow(() -> new ApiException("선생님 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false)).and(qAcademyClass.isInvisible.eq(false)).and(qAcademyClass.user.eq(admin.getUser()));
 
         //반이름 검색
         if(StringUtils.noneEmpty(params.getSearchValue())){
@@ -111,6 +117,27 @@ public class A2Service {
 
     public Task getTask(SearchVO params){
         return taskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    public Page<Admin> getTeacherClassList(Pageable pageable){
+        QAdmin qAdmin = QAdmin.admin;
+        QAcademyClass qAcademyClass = QAcademyClass.academyClass;
+        BooleanBuilder where = new BooleanBuilder().and(qAdmin.isDeleted.eq(false)).and(qAdmin.user.userId.notIn("testA", "Admin0103"));
+
+        JPAQuery<Admin> query = jpaQueryFactory.select(Projections.fields(Admin.class,
+                        qAdmin.id,
+                        qAdmin.user,
+                        ExpressionUtils.as(
+                            JPAExpressions.select(qAcademyClass.count())
+                                    .from(qAcademyClass)
+                                    .where(qAcademyClass.user.eq(qAdmin.user)),"classCount")
+                        )
+        )
+        .from(qAdmin)
+        .where(where)
+        .orderBy(qAdmin.user.userName.asc());
+
+        return new PageImpl<Admin>(query.fetch(), pageable, query.fetchCount());
     }
 
     public Page<Task> getTaskList(SearchVO params, Pageable pageable){
@@ -395,6 +422,8 @@ public class A2Service {
         LocalDateTime endTimeDate = LocalDateTime.of(params.getEndDate(), LocalTime.of(params.getEndTimeHour(),params.getEndTimeMin()));
         save.setEndDate(endTimeDate);
         save.setCoin(params.getCoin());
+        Long saveId = taskRepo.save(save).getId();
+        save.setRootId(saveId);
         taskRepo.save(save);
 
         for(long studentId : params.getStudentIdList()){

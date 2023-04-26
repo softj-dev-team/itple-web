@@ -20,6 +20,12 @@
                                 th:value="${e}" th:text="${e.message}"
                                 th:selected="${e == params.academyType}">카테고리</option>
                     </select>
+                    <label for="teacherId" class="mb5">담당 선생님</label>
+                    <select name="teacherId" id="teacherId" class="select-md">
+                        <option th:each="e : ${teacherList}"
+                                th:value="${e.id}" th:text="${e.user.userName}"
+                                th:selected="${el.user != null ? el.user.id == e.user.id : false}">관리자</option>
+                    </select>
                     <label for="className" class="mb5">반 이름</label>
                     <input type="text" name="className" id="className" th:value="${el.className}" class="input-df mb20" >
                     <input type="checkbox" name="isInvisible" id="isInvisible" th:checked="${el.isInvisible == true}">

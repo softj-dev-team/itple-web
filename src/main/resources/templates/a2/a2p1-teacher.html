@@ -9,6 +9,7 @@
 <body>
 <th:block layout:fragment="content">
     <form id="form1">
+        <input type="hidden" id="bfpage" name="bfpage" th:value="${params.bfpage}">
         <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
         <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
     </form>
@@ -31,18 +32,30 @@
             </div>
             <ul class="adTask-list">
                 <li th:each="el : ${list}">
-                    <a th:href="|/a2/p1-teacher/${el.id}?taskType=${params.taskType}&bfpage=${list.pageable.pageNumber}|">
-                        <h3 class="codClass" th:utext="|${el.user.userName}  <span>${el.classCount}</span>|">선생님<span class="">10</span></h3>
+                    <a th:href="|/a2/p1-class/${el.id}?taskType=${params.taskType}&bfpage=${list.pageable.pageNumber}&teacherId=${params.id}|">
+                        <h3 class="codClass" th:utext="|${el.className} <span>${el.studentCount}</span>|">잇플 영어입문반A<span class="">10</span></h3>
+                        <p th:each="task : ${el.taskList}">
+                            <span th:text="${task.subject}">사람은 무엇으로 사는가</span>
+                            <span th:if="${#strings.equals(task.taskType,'BOOK_REPORT')}" th:text="| - ${task.teacher} |"> - 톨스토이</span>
+                            <span class="ml10" th:text="| ${#temporals.format(task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(task.endDate,'yyyy.MM.dd HH:mm')}|">~22.04.08</span>
+                        </p>
                     </a>
                 </li>
             </ul>
         </div>
         <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+
+        <div class="btn-center mt60">
+            <button type="button" class="btn" onclick="goList()">선생님 목록으로</button>
+        </div>
     </div>
 
     <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
+        function goList(){
+            location.href = "/a2/p1?page=[[${params.bfpage}]]";
+        }
 
     </script>
 </th:block>

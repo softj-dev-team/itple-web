@@ -7,6 +7,7 @@ import com.softj.itple.entity.Student;
 import com.softj.itple.entity.StudentTask;
 import com.softj.itple.entity.Task;
 import com.softj.itple.service.A2Service;
+import com.softj.itple.service.A7Service;
 import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -31,17 +32,30 @@ import java.util.Objects;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class A2Controller {
     private final A2Service a2Service;
+
+    private final A7Service a7Service;
     private final CommonService commonService;
 
     //목록
     @GetMapping("/p1")
-    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "User.userName" , direction = Sort.Direction.DESC) Pageable pageable){
+        if(Objects.isNull(params.getTaskType())) {
+            params.setTaskType(Types.TaskType.TASK);
+        }
+        model.addAttribute("list",a2Service.getTeacherClassList(pageable));
+        model.addAttribute("params",params);
+        return "a2/a2p1";
+    }
+
+    //목록
+    @GetMapping("/p1-teacher/{id}")
+    public String p1teacher(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
         if(Objects.isNull(params.getTaskType())) {
             params.setTaskType(Types.TaskType.TASK);
         }
         model.addAttribute("list",a2Service.getClassTaskList(params, pageable));
         model.addAttribute("params",params);
-        return "a2/a2p1";
+        return "a2/a2p1-teacher";
     }
     //반 과제
     @GetMapping("/p1-class/{id}")

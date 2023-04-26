@@ -51,6 +51,7 @@ public class A7Controller {
         params.setPage(page);
 
         model.addAttribute("el", a7Service.getAcademyClass(params));
+        model.addAttribute("teacherList", a7Service.getTeacherList());
         model.addAttribute("params",params);
         return "a7/a7p1-detail";
     }
@@ -60,6 +61,7 @@ public class A7Controller {
     public String p1write(SearchVO params, ModelMap model){
         params.setAcademyType(params.getAcademyType());
         model.addAttribute("params",params);
+        model.addAttribute("teacherList", a7Service.getTeacherList());
         return "a7/a7p1-write";
     }
 

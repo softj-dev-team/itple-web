@@ -31,6 +31,8 @@ public class A3Service{
 
     private final UserRepo userRepo;
     private final AttendanceRepo attendanceRepo;
+
+    private final AcademyClassRepo academyClassRepo;
     private final StudentTaskRepo studentTaskRepo;
 
     private final StudentTaskFileRepo studentTaskFileRepo;
@@ -52,6 +54,10 @@ public class A3Service{
 
     private final PaymentRepo paymentRepo;
     private final StudentRepo studentRepo;
+
+    private final TaskRepo taskRepo;
+
+    private final TaskFileRepo taskFileRepo;
 
     final private DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -83,9 +89,9 @@ public class A3Service{
     @Transactional
     public Student updateStudent(SearchVO params){
         Student save = studentRepo.findById(params.getStudentId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
-        Student attendSudent = studentRepo.findByAttendanceNo(params.getAttendanceNo()).orElse(Student.builder().build());
+        Student attendStudent = studentRepo.findByAttendanceNo(params.getAttendanceNo()).orElse(Student.builder().build());
 
-        if(!LongUtils.isEmpty(attendSudent.getId()) && save.getId() != attendSudent.getId()){
+        if(!LongUtils.isEmpty(attendStudent.getId()) && save.getId() != attendStudent.getId()){
             throw new ApiException("동일한 출결번호가 존재합니다. 출결번호를 변경해주세요.", ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
@@ -98,7 +104,87 @@ public class A3Service{
         long reqCoin = params.getCoin();
         save.setStudentStatus(params.getStudentStatus());
         if(LongUtils.noneEmpty(params.getClassId())) {
-            save.setAcademyClass(AcademyClass.builder().id(params.getClassId()).build());
+            AcademyClass academyClass = academyClassRepo.findById(params.getClassId()).orElseThrow(() -> new ApiException("반 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+            if(save.getAcademyClass() != null && save.getAcademyClass().getId() != params.getClassId()){
+                List<StudentTask> studentTaskList = studentTaskRepo.findByStudent(save.getUser().getStudent());
+                for(StudentTask studentTask : studentTaskList){
+                    Task task = studentTask.getTask();
+                    List<Task> afterTaskList = academyClass.getTaskList();
+                    Task newTask = Task.builder().build();
+                    boolean flag = false;
+
+                    if(afterTaskList != null) {
+                        for (Task afterTask : afterTaskList) {
+                            if (afterTask.getId() == task.getRootId()) {
+                                flag = true;
+                                newTask = afterTask;
+                            }
+                        }
+                    }
+
+                    if(!flag) {
+                        newTask.setAcademyClass(academyClass);
+                        newTask.setTaskType(task.getTaskType());
+                        newTask.setCoin(task.getCoin());
+                        newTask.setContents(task.getContents());
+                        newTask.setStartDate(task.getStartDate());
+                        newTask.setEndDate(task.getEndDate());
+                        newTask.setSubject(task.getSubject());
+                        newTask.setTeacher(academyClass.getUser().getUserName());
+                        newTask.setRootId(task.getRootId());
+                        taskRepo.save(newTask);
+
+                        for(TaskFile taskFile : task.getTaskFileList()){
+                            taskFile.setTask(newTask);
+                            taskFileRepo.save(taskFile);
+                        }
+                    }
+
+                    StudentTask newStudentTask = StudentTask.builder().build();
+                    newStudentTask.setStudent(save);
+                    newStudentTask.setTask(newTask);
+                    newStudentTask.setCoinComp(studentTask.getCoinComp());
+                    newStudentTask.setContents(studentTask.getContents());
+                    newStudentTask.setStatus(studentTask.getStatus());
+                    newStudentTask.setReturnMessage(studentTask.getReturnMessage());
+                    newStudentTask.setCompDate(studentTask.getCompDate());
+                    studentTaskRepo.save(newStudentTask);
+
+                    List<StudentTaskFile> newStudentTaskFileList = new ArrayList<>();
+                    for(StudentTaskFile studentTaskFile : studentTask.getStudentTaskFileList()){
+                        StudentTaskFile newStudentTaskFile = StudentTaskFile.builder().build();
+                        newStudentTaskFile.setStudentTask(newStudentTask);
+                        newStudentTaskFile.setOrgFileName(studentTaskFile.getOrgFileName());
+                        newStudentTaskFile.setUploadFileName(studentTaskFile.getUploadFileName());
+                        newStudentTaskFileList.add(newStudentTaskFile);
+                    }
+
+                    boolean orgFlag = false;
+
+                    for(StudentTask orgStudentTask : task.getStudentTasks()){
+                        if(orgStudentTask.getStudent() == save){
+                            studentTaskRepo.delete(orgStudentTask);
+                        }else{
+                            orgFlag = true;
+                        }
+                    }
+
+                    if(!orgFlag){
+                        taskRepo.delete(task);
+                    }
+
+
+                    studentTaskFileRepo.deleteAllByStudentTask(studentTask);
+                    studentTaskFileRepo.flush();
+
+                    for(StudentTaskFile newStudentTaskFile : newStudentTaskFileList){
+                        studentTaskFileRepo.save(newStudentTaskFile);
+                    }
+                }
+
+            }
+
+            save.setAcademyClass(academyClass);
         }else{
             save.setAcademyClass(null);
         }
@@ -236,8 +322,8 @@ public class A3Service{
     /* 코인 히스토리 */
     public Page<CoinHistory> getCoinHistoryList(SearchVO params, Pageable pageable){
         QCoinHistory qCoinHistory = QCoinHistory.coinHistory;
-        User user = userRepo.findById(params.getId()).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
-        BooleanBuilder where = new BooleanBuilder().and(qCoinHistory.isDeleted.eq(false).and(qCoinHistory.user.eq(user)));
+        Student student = studentRepo.findById(params.getId()).orElseThrow(() -> new ApiException("학생 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+        BooleanBuilder where = new BooleanBuilder().and(qCoinHistory.isDeleted.eq(false).and(qCoinHistory.user.eq(student.getUser())));
         return coinHistoryRepo.findAll(where, pageable);
     }
 }

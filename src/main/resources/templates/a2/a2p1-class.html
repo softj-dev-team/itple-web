@@ -20,6 +20,7 @@
         <div class="content-in clearfix">
             <div class="adSearch clearfix">
                 <form id="form1" class="adSearch-in">
+                    <input type="hidden" id="bfpage" name="bfpage" th:value="${params.bfpage}">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
                     <div class="in-box">
@@ -250,6 +251,11 @@
             </form>
         </div>
         <th:block th:with="list=${list}, formId='form1'" th:include="layout/pagination :: pagination"></th:block>
+
+        <div class="btn-center mt60">
+            <button type="button" class="btn" onclick="goList()">과제 목록으로</button>
+        </div>
+
     </div>
 
     <div class="modal" id="removeMo">
@@ -299,7 +305,10 @@
             $('#removeMo').addClass('on');
         });
         function goEdit(id){
-            location.href = "/a2/p1-detail/"+id+"?taskType="+[[${params.taskType}]];
+            location.href = "/a2/p1-detail/"+id+"?taskType="+[[${params.taskType}]]+"&teacherId=[[${params.teacherId}]]&classId=[[${params.id}]]&bfpage=[[${list.pageable.pageNumber}]]";
+        }
+        function goList(){
+            location.href = "/a2/p1-teacher/[[${params.teacherId}]]?taskType="+[[${params.taskType}]]+"&page=[[${params.bfpage}]]";
         }
     </script>
 </th:block>

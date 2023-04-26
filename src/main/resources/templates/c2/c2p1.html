@@ -40,7 +40,7 @@ DOCTYPE html>
                     <td><p th:text="${el.task.subject+(#strings.equals(params.taskType,'BOOK_REPORT') ? ' - '+el.task.teacher : '')}">수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용수업 내용을 바탕으로 파이썬 실습내용</p>
                         <div class="moTBody">
                             <p>
-                                <span th:text="${session.studentVO.academyClass.className}">잇플코딩 입문반A</span>ㅣ
+                                <span th:text="${el.student.academyClass.className}">잇플코딩 입문반A</span>ㅣ
                                 <span th:text="|${#temporals.format(el.task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(el.task.endDate,'yyyy.MM.dd HH:mm')}|">22.03.24 ~ 22.03.27</span>
                             </p>
                             <th:block th:switch="${#strings.toString(el.status)}">

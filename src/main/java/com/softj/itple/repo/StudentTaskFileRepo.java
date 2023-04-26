@@ -2,6 +2,7 @@ package com.softj.itple.repo;
 
 import com.softj.itple.entity.StudentTask;
 import com.softj.itple.entity.StudentTaskFile;
+import com.softj.itple.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,6 @@ public interface StudentTaskFileRepo extends JpaRepository<StudentTaskFile, Long
     Optional<StudentTaskFile> findByUploadFileName(@Param("uploadFileName")String uploadFileName);
 
     List<StudentTaskFile> findByStudentTask(StudentTask studentTask);
+
+    long deleteAllByStudentTask(StudentTask studentTask);
 }

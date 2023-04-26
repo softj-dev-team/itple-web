@@ -19,6 +19,7 @@ public class SearchVO {
 	private String searchType;
 	private String searchValue;
 	private int page;
+	private int bfpage;
 
 	//회원가입
 	private String email;
@@ -158,6 +159,7 @@ public class SearchVO {
 	//관리자-반관리
 	private String className;
 	private Boolean isInvisible;
+	private Long teacherId;
 
 	//관리자-관리자관리
 	private Long adminId;

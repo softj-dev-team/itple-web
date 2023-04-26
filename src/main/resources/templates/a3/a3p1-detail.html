@@ -241,7 +241,8 @@
                     </div>
                 </div>
                 <div class="btn-center mt60">
-                    <button type="button" class="btn" onclick="studentSave()">저장하기</button>
+                    <button type="button" class="btn m-btn" onclick="studentSave()">저장하기</button>
+                    <button type="button" class="btn m-btn" onclick="goList()">목록으로</button>
                 </div>
             </form>
         </div>
@@ -524,6 +525,9 @@
         }
         function goCoinHistory(id){
             location.href = "/a3/p1-point/"+id;
+        }
+        function goList(){
+            location.href="/a3/p1?page=[[${params.page}]]&academyType="+[[${params.academyType}]];
         }
     </script>
 </th:block>

@@ -92,17 +92,17 @@
                         <input type="checkbox" name="seqList" th:id="|a${elStat.count}|" ><label th:for="|a${elStat.count}|"></label>
                         <input type="hidden" name="id" th:id="|id${elStat.count}|" th:value="${el.id}"/>
                     </td>
-                    <td th:text="${list.pageable.offset+elStat.count}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|"></td>
-                    <td th:text="${el.user.userName}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">이름</td>
-                    <td th:text="${el.school}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">학교</td>
-                    <td th:text="${el.grade.message}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">학년</td>
-                    <td th:text="${el.academyClass?.className}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">반</td>
-                    <td th:text="${el.parentName}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">보호자 성함</td>
-                    <td th:text="${el.parentTel}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">보호자 연락처</td>
-                    <td th:text="${#temporals.format(el.enterDate,'yyyy.MM.dd')}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">2022.03.24</td>
+                    <td th:text="${list.pageable.offset+elStat.count}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])"></td>
+                    <td th:text="${el.user.userName}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])">이름</td>
+                    <td th:text="${el.school}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])">학교</td>
+                    <td th:text="${el.grade.message}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])">학년</td>
+                    <td th:text="${el.academyClass?.className}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])">반</td>
+                    <td th:text="${el.parentName}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])">보호자 성함</td>
+                    <td th:text="${el.parentTel}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])">보호자 연락처</td>
+                    <td th:text="${#temporals.format(el.enterDate,'yyyy.MM.dd')}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])">2022.03.24</td>
                     <td th:if="${!#strings.equals(params.studentStatus,T(com.softj.itple.domain.Types.StudentStatus).STUDENT)}"
-                        th:text="${#temporals.format(el.outDate,'yyyy.MM.dd')}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|"></td>
-                    <td th:text="${#numbers.formatInteger(el.coin,0,'COMMA')}" th:onclick="|location.href='/a3/p1-detail/${el.id}'|">1000</td>
+                        th:text="${#temporals.format(el.outDate,'yyyy.MM.dd')}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])"></td>
+                    <td th:text="${#numbers.formatInteger(el.coin,0,'COMMA')}" th:onclick="goDetail([[${el.id}]] , [[${list.pageable.pageNumber}]], [[${params.academyType}]])">1000</td>
                 </tr>
                 </tbody>
             </table>
@@ -176,6 +176,15 @@
             $(".ADbtn button").removeClass('on');
             $(this).addClass('on');
         });
+
+        function goDetail(id, page, academyType) {
+
+            var url = "/a3/p1-detail/" + id + "?page=" + page;
+            if (academyType != null) {
+                url += "&academyType=" + academyType;
+            }
+            location.href = url;
+        }
     </script>
 </th:block>
 </body>

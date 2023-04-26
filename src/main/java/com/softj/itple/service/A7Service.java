@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -84,12 +85,14 @@ public class A7Service {
     public void saveAcademyClass(SearchVO params, HttpServletRequest request){
 
         AcademyClass save = academyClassRepo.findById(params.getId()).orElse(AcademyClass.builder().build());
+        Admin admin = adminRepo.findById(params.getTeacherId()).orElseThrow(() -> new ApiException("선생님 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
         if(Objects.isNull(params.getIsInvisible())){
             params.setIsInvisible(false);
         }
         save.setIsInvisible(params.getIsInvisible());
         save.setAcademyType(params.getAcademyType());
         save.setClassName(params.getClassName());
+        save.setUser(admin.getUser());
         save.setDeleted(false);
 
         academyClassRepo.save(save);
@@ -128,6 +131,13 @@ public class A7Service {
         }
 
         return adminRepo.findAll(where, pageable);
+    }
+
+    public List<Admin> getTeacherList(){
+        QAdmin qAdmin = QAdmin.admin;
+        BooleanBuilder where = new BooleanBuilder().and(qAdmin.isDeleted.eq(false)).and(qAdmin.user.userId.notIn("testA", "Admin0103"));
+
+        return (List<Admin>) adminRepo.findAll(where, Sort.by(Sort.Direction.ASC, "User.userName"));
     }
 
     public Admin getAdmin(SearchVO params){
