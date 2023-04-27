@@ -2753,6 +2753,32 @@ a.a-btn{
     font-weight: bold;
     margin-left: 10px;
 }
+/*230427*/
+.classN{
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f1f1;
+}
+.classN > div.classN-in {
+    display: flex;
+}
+.classN > div.classN-in input{
+    width: calc(100% - 50px);
+    margin-bottom: 10px;
+}
+.classN > div.classN-in button{
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    border: 1px solid #0e3962;
+    color: #0e3962;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+.classN > div.classN-in button.deleteClass{
+    border: 1px solid #dc5335;
+    color: #dc5335;
+}
 /*header ~1280p*/
 @media screen and (min-width: 1280px){
     .header{padding-right: calc((100% - 1280px)/2 + 23.5px)!important;}
@@ -3923,22 +3949,12 @@ a.aBtn{
 .codClass{
     color: #5EA4CC;
 }
-.adTask-list li h3 p {margin-top: 5px;}
 .adTask-list li h3 span{
     font-size: 12px;
     font-family: 'Pretendard-Regular';
     color: #9E9E9E;
 }
-.adTask-list li h3 span:nth-child(1)::before{
-    content: "";
-    width: 11px;
-    height: 11px;
-    display: inline-block;
-    background: url(../img/clock.png) no-repeat center / contain;
-    margin-right: 4px;
-    vertical-align: -2px;
-}
-.adTask-list li h3 span:nth-child(2)::before{
+.adTask-list li h3 span::before{
     content: "";
     width: 8px;
     height: 9px;
@@ -3951,22 +3967,55 @@ a.aBtn{
     color: #888888;
     font-size: 14px;
     margin-bottom: 4px;
-    /*display: flex;*/
+    display: flex;
 }
 .adTask-list p:nth-child(3){
     margin-bottom: 0px;
 }
-.adTask-list li a > p span{
-    display: block;
-    float: left;
-}
-.adTask-list li a > p span:after{
-    content: ' / ';
+.adTask-list p span:nth-child(1){
     display: inline-block;
-    margin: 0 5px;
+    max-width: calc(100% - 70px );
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-.adTask-list li a > p span:last-child:after{
-    display: none;
+.adTask-list p span:nth-child(2){
+    margin-left: 8px;
+    vertical-align: 3px;
+}
+.adTask-list2 li {
+    width: calc((100% - 32px) / 3);
+    float: left;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    margin-bottom: 16px;
+}
+.adTask-list2 li:not(:nth-child(3n)) {
+    margin-right: 16px;
+}
+.adTask-list2 li h3{
+    font-size: 18px;
+    font-family: 'Pretendard-Bold';
+    padding: 20px 16px;
+}
+.adTask-list2 li h3 p {margin-top: 5px;}
+.adTask-list2 li h3 span{
+    font-size: 14px;
+    font-family: 'Pretendard-Regular';
+    color: #9E9E9E;
+    vertical-align: 2px;
+}
+.adTask-list2 li h3 span.classNum::before{
+    content: "";
+    width: 13px;
+    height: 13px;
+    display: inline-block;
+    background: url(../img/class.png) no-repeat center / contain;
+    margin-left: 5px;
+    margin-right: 3px;
+    vertical-align: -2px;
 }
 /*.adTask-list p span:nth-child(1){*/
 /*    display: inline-block;*/

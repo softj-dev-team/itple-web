@@ -8,11 +8,16 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.kr.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.standalone.min.css">
     <link href="../../assets/css/reset.css" rel="stylesheet" type="text/css">
     <link href="../../assets/css/common.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 </head>
-<body class="adminBody">
+<body>
     <div class="wrap">
         <header class="header clearfix">
             <h1 class="logo"><a href="indexAdmin.html">잇플</a></h1>
@@ -118,124 +123,67 @@
                 </div>
             </div>
         </div>
-        <div class="adContent">
-            <h1 class="adH1">수업연계</h1>
-            <div class="tab clearfix adTab">
-                <ul class="tab-ul">
-                    <li class="active"><a href="taskListAdmin.html">과제</a></li>
-                    <li ><a href="reportAdmin.html">독후감</a></li>
-                </ul>
-            </div>
-            <div class="content-in clearfix">
-                <div class="tableBtn-box">
-                    <div class="leftBox">
-                    </div>
-                    <div class="rightBox">
-                        <a href="taskAddClass.html" class="aBtn">선생님 / 반 등록</a>
-                        <a href="taskAddAdmin.html" class="aBtn">과제등록</a>
-                    </div>
+        <div class="responsiveWrap">
+            <h1 class="responsiveH1">선생님/반 등록</h1>
+            <div class="responsiveInner">
+               <form action="">
+                <div class="inputSec">
+                    <label for="" class="mb5">선생님 선택</label>
+                    <select name="" id="" class="input-df mb20">
+                        <option value="[잇플 영어] Kelly Tr">[잇플 영어] Kelly Tr</option>
+                        <option value="[잇플 영어] Kelly Tr">[잇플 영어] Kelly Tr</option>
+                    </select>
+                    <label for="" class="mb5">폴더명</label>
+                    <input type="text" class="input-df mb20">
                 </div>
-                <ul class="adTask-list2">
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="codClass">김보나 선생님<span class=" classNum">10</span></h3>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="engClass">김지원 선생님<span class="classNum">10</span></h3>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="codClass">김용환 선생님<span class="classNum">10</span></h3>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="codClass">윤가혜 선생님<span class="classNum">10</span></h3>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="codClass">제민우 선생님<span class="classNum">10</span></h3>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="codClass">테스트 선생님1<span class="classNum">10</span></h3>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="codClass">Lizzie_Tr<span class="classNum">10</span></h3>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="codClass">Kelly_Tr<span class="classNum">10</span></h3>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="codClass">Rachel_Tr<span class="classNum">10</span></h3>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="taskClassAdmin.html">
-                            <h3 class="codClass">Una_Tr<span class="classNum">10</span></h3>
-                       </a>
-                    </li>
-                </ul>
+                <div class="btn-center mt60">
+                    <button type="submit" class="btn m-btn">등록하기</button>
+                    <button type="submit" class="btn m-btn btn-gray ml10">목록으로</button>
+                </div>
+                </form>
             </div>
-            <ul class="pagination">
-                <li class="page-arrow"><a class="page-link p-L2" href="#"></a></li>
-                <li class="page-arrow"><a class="page-link p-L1" href="#"></a></li>
-                <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                <li class="page-item"><a class="page-link" href="#">8</a></li>
-                <li class="page-item"><a class="page-link" href="#">9</a></li>
-                <li class="page-item"><a class="page-link" href="#">10</a></li>
-                <li class="page-arrow"><a class="page-link p-R1" href="#"></a></li>
-                <li class="page-arrow"><a class="page-link p-R2" href="#"></a></li>
-            </ul>
+            
         </div>
         <footer class="footer">
-            <div class="footer-in clearfix">
-               <div class="f-info">
-                  <div class="foot-logo"></div>
-                  <div class="info-m">
-                       <p>사업자등록번호 : 366-86-01368 ㅣ 대표 : 정지숙</p>
-                       <p>주소 : 서울특별시 동대문구 답십리로 264, 201호, 303호(장안동, 성신빌딩)</p>
-                       <p>이메일 : (학원) itple333@naver.com , (출판사) itpleinfo@naver.com</p>
-                  </div>
-                  <p class="cop-p">Copyright (c) itpleinfo.com All Rights Reserved.</p>
-               </div>
-               <div class="f-cs">
-                   <p>CS CENTER</p>
-                   <div>
-                       <p><span>학원</span>0502-600-4926</p>
-                       <p><span>출판사</span>0502-600-4925</p>
-                       <p><span>팩스번호</span>0502-600-4924</p>
+             <div class="footer-in clearfix">
+                <div class="f-info">
+                   <div class="foot-logo"></div>
+                   <div class="info-m">
+                        <p>사업자등록번호 : 366-86-01368 ㅣ 대표 : 정지숙</p>
+                        <p>주소 : 서울특별시 동대문구 답십리로 264, 201호, 303호(장안동, 성신빌딩)</p>
+                        <p>이메일 : (학원) itple333@naver.com , (출판사) itpleinfo@naver.com</p>
                    </div>
-               </div>
-               <div class="f-bank">
-                   <p>BANK INFO</p>
-                   <div>
-                       <p><span>신한은행</span>140-012-545888</p>
-                       <p><span>국민은행</span>010937-04-005752</p>
-                       <p><span>예금주</span>㈜잇플ITPLE</p>
-                   </div>
-               </div>
-            </div>
-        </footer>
-        
+                   <p class="cop-p">Copyright (c) itpleinfo.com All Rights Reserved.</p>
+                </div>
+                <div class="f-cs">
+                    <p>CS CENTER</p>
+                    <div>
+                        <p><span>학원</span>0502-600-4926</p>
+                        <p><span>출판사</span>0502-600-4925</p>
+                        <p><span>팩스번호</span>0502-600-4924</p>
+                    </div>
+                </div>
+                <div class="f-bank">
+                    <p>BANK INFO</p>
+                    <div>
+                        <p><span>신한은행</span>140-012-545888</p>
+                        <p><span>국민은행</span>010937-04-005752</p>
+                        <p><span>예금주</span>㈜잇플ITPLE</p>
+                    </div>
+                </div>
+             </div>
+         </footer>
     </div>
-    <script src="/assets/js/common.js"></script>
 </body>
+    <script src="/assets/js/common.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".datepicker").datepicker({
+                format: "yyyy년 mm월 dd일",
+                language: "ko",
+                orientation: "auto"
+            });
+        });
+        
+    </script>
 </html>
