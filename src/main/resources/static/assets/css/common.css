@@ -2779,6 +2779,12 @@ a.a-btn{
     border: 1px solid #dc5335;
     color: #dc5335;
 }
+.tab-ul2.teacherTab li:nth-child(1).active a{
+    color: #0068B4 !important;
+}
+.tab-ul2.teacherTab li:nth-child(2).active a{
+    color: #DD5434;
+}
 /*header ~1280p*/
 @media screen and (min-width: 1280px){
     .header{padding-right: calc((100% - 1280px)/2 + 23.5px)!important;}
