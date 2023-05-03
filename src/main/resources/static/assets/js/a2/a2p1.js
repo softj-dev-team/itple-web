@@ -275,7 +275,8 @@ function setStudentList2() {
 }
 function setStudentList(){
     $("#studentList").empty();
-    var classId = $("select[id=classSel]").val();
+    var classId = parseInt($("select[id=classSel]").val());
+
     $.post("/api/classStudentList",{id: classId}, function(res) {
         var list = res.data;
         var html = "";
@@ -290,7 +291,7 @@ function setStudentList(){
     });
 
     $("#studentList2").empty();
-    var classId2 = $("select[id=classSel2]").val();
+    var classId2 = parseInt($("select[id=classSel2]").val());
     $.post("/api/classStudentList",{id: classId2}, function(res) {
         var list = res.data;
         var html = "";
@@ -315,10 +316,32 @@ function setClassList(){
         if(ut.isEmpty(list)){
             return;
         }
+        var i=0;
+        var firstClassId = "";
         list.forEach(function(el){
-            html += `<option value="${list.id}">${list.className}</option>`;
+            html += `<option value="${el.id}"`;
+            if(i==0){
+                html += " selected ";
+                firstClassId = el.id;
+            }
+            html += `>${el.className}</option>`;
+            i++;
         });
         $("#classSel").html(html);
+
+        $("#studentList").empty();
+        $.post("/api/classStudentList",{id: firstClassId}, function(res) {
+            var list = res.data;
+            var html = "";
+
+            if(ut.isEmpty(list)){
+                return;
+            }
+            list.forEach(function(el){
+                html += `<input type="checkbox" id="stud${el.id}" class="studentIdList" value="${el.id}"><label for="stud${el.id}">${el.user.userName}</label>`;
+            });
+            $("#studentList").html(html);
+        });
     });
 
     $("#classSel2").empty();
@@ -328,13 +351,32 @@ function setClassList(){
         if(ut.isEmpty(list)){
             return;
         }
+        var i=0;
+        var firstClassId = "";
         list.forEach(function(el){
-            html += `<option value="${list.id}">${list.className}</option>`;
+            html += `<option value="${el.id}"`;
+            if(i==0){
+                html += " selected ";
+                firstClassId = el.id;
+            }
+            html += `>${el.className}</option>`;
+            i++;
         });
         $("#classSel2").html(html);
-    });
 
-    setStudentList();
+        $.post("/api/classStudentList",{id: firstClassId}, function(res) {
+            var list = res.data;
+            var html = "";
+
+            if(ut.isEmpty(list)){
+                return;
+            }
+            list.forEach(function(el){
+                html += `<input type="checkbox" id="stud${el.id}" class="studentIdList" value="${el.id}"><label for="stud${el.id}">${el.user.userName}</label>`;
+            });
+            $("#studentList2").html(html);
+        });
+    });
 }
 /*
 function selectClassId(taskId){

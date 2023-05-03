@@ -115,8 +115,6 @@ public class A2Controller {
 
         params.setPage(page);
 
-
-
         List<Admin> teacherList = a7Service.getTeacherList();
 
         if(LongUtils.isEmpty(params.getTeacherId())){
