@@ -32,15 +32,10 @@ public class Admin extends Auditing{
     private boolean menu6;
     private boolean menu7;
     private boolean menu8;
-
     private boolean menu9;
 
-    @Transient
-    private long classCount;
-
-
     @Builder
-    public Admin(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, boolean menu1, boolean menu2, boolean menu3, boolean menu4, boolean menu5, boolean menu6, boolean menu7, boolean menu8, boolean menu9, long classCount) {
+    public Admin(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, User user, boolean menu1, boolean menu2, boolean menu3, boolean menu4, boolean menu5, boolean menu6, boolean menu7, boolean menu8, boolean menu9) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.user = user;
         this.menu1 = menu1;
@@ -52,7 +47,6 @@ public class Admin extends Auditing{
         this.menu7 = menu7;
         this.menu8 = menu8;
         this.menu9 = menu9;
-        this.classCount = classCount;
     }
 
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/layout">
+<head>
+    <title>수업연계</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="adContent">
+        <h1 class="responsiveH1">선생님/반 등록</h1>
+        <div class="responsiveInner">
+            <form name="form1" id="form1">
+                <div class="inputSec">
+                    <label for="" class="mb5">선생님 선택</label>
+                    <select name="teacherId" id="teacherId" class="input-df mb20">
+                        <option value="">선택하세요</option>
+                        <option th:each="el : ${list}" th:value="${el.user.id}" th:text="${el.user.userName}">Kelly Tr</option>
+                    </select>
+                    <label for="" class="mb5">폴더명</label>
+                    <input type="text" name="classTaskName" id="classTaskName" class="input-df mb20">
+                </div>
+                <div class="btn-center mt60">
+                    <button type="button" class="btn m-btn" onclick="goWrite();">등록하기</button>
+                    <button type="button" class="btn m-btn btn-gray ml10" onclick="goList();">목록으로</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
+
+    <script th:inline="javascript">
+        function goWrite(){
+            var teacherId = $("#teacherId").val();
+            var classTaskName = $("#classTaskName").val();
+
+            if(teacherId == ""){
+                modal.alert("선생님을 선택해주세요.");
+                return;
+            }
+
+            if(classTaskName == ""){
+                modal.alert("폴더명을 입력해주세요.");
+                return;
+            }
+
+            goAction("S4");
+        }
+
+        function goList(){
+            location.href = "/a2/p1?page=[[${params.page}]]";
+        }
+    </script>
+</th:block>
+</body>
+</html>

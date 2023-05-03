@@ -45,6 +45,8 @@ public class A2Service {
     private final AcademyClassRepo academyClassRepo;
     private final TaskRepo taskRepo;
 
+    private final ClassTaskRepo classTaskRepo;
+
     private final AdminRepo adminRepo;
 
     private final UserRepo userRepo;
@@ -119,25 +121,46 @@ public class A2Service {
         return taskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
     }
 
-    public Page<Admin> getTeacherClassList(Pageable pageable){
-        QAdmin qAdmin = QAdmin.admin;
+    public Page<ClassTask> getTeacherClassList(Pageable pageable){
+        QClassTask qClassTask = QClassTask.classTask;
         QAcademyClass qAcademyClass = QAcademyClass.academyClass;
-        BooleanBuilder where = new BooleanBuilder().and(qAdmin.isDeleted.eq(false)).and(qAdmin.user.userId.notIn("testA", "Admin0103"));
+        BooleanBuilder where = new BooleanBuilder().and(qClassTask.isDeleted.eq(false));
 
-        JPAQuery<Admin> query = jpaQueryFactory.select(Projections.fields(Admin.class,
-                        qAdmin.id,
-                        qAdmin.user,
+        JPAQuery<ClassTask> query = jpaQueryFactory.select(Projections.fields(ClassTask.class,
+                        qClassTask.id,
+                        qClassTask.user,
+                        qClassTask.classTaskName,
                         ExpressionUtils.as(
                             JPAExpressions.select(qAcademyClass.count())
                                     .from(qAcademyClass)
-                                    .where(qAcademyClass.user.eq(qAdmin.user)),"classCount")
+                                    .where(qAcademyClass.user.eq(qClassTask.user)),"classCount")
                         )
         )
-        .from(qAdmin)
+        .from(qClassTask)
         .where(where)
-        .orderBy(qAdmin.user.userName.asc());
+        .orderBy(qClassTask.user.userName.asc());
 
-        return new PageImpl<Admin>(query.fetch(), pageable, query.fetchCount());
+        return new PageImpl<ClassTask>(query.fetch(), pageable, query.fetchCount());
+    }
+
+    public ClassTask getClassTask(SearchVO params){
+        return classTaskRepo.findById(params.getId()).get();
+    }
+
+    @Transactional
+    public void saveClassTask(SearchVO params){
+
+        ClassTask save = ClassTask.builder().build();
+        if(LongUtils.noneEmpty(params.getId())){
+            save = classTaskRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        }
+
+        User user = userRepo.findById(params.getTeacherId()).orElseThrow(() -> new ApiException("선생님 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));;
+
+        save.setUser(user);
+        save.setClassTaskName(params.getClassTaskName());
+
+        classTaskRepo.save(save);
     }
 
     public Page<Task> getTaskList(SearchVO params, Pageable pageable){

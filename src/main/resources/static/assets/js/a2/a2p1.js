@@ -104,6 +104,15 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 });
             });
             break;
+        case "S4": // 선생님/반 등록
+            var formS1 = $('#form1');
+            modal.confirm("저장하시겠습니까?",function(){
+                $.post(path+'/s4',formS1.serialize(),function(res){
+                    modal.alert('저장되었습니다.');
+                    location.href="/a2/p1";
+                });
+            });
+            break;
         case "U1":
             $.post(`${path}/u1`,{id:arg1},function(){
                 location.reload();

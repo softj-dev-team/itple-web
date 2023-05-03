@@ -49,6 +49,14 @@ public class A2RestController {
                 .build();
     }
 
+    //선생님/반 저장
+    @PostMapping("/p1/s4")
+    public Response p1s4(SearchVO params){
+        a2Service.saveClassTask(params);
+        return Response.builder()
+                .build();
+    }
+
     //파일업로드
     @PostMapping("/p1/f1")
     public Response p1f1(MultipartHttpServletRequest request) throws Exception{

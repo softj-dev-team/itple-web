@@ -2,10 +2,7 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
-import com.softj.itple.entity.AcademyClass;
-import com.softj.itple.entity.Student;
-import com.softj.itple.entity.StudentTask;
-import com.softj.itple.entity.Task;
+import com.softj.itple.entity.*;
 import com.softj.itple.service.A2Service;
 import com.softj.itple.service.A7Service;
 import com.softj.itple.service.CommonService;
@@ -38,7 +35,7 @@ public class A2Controller {
 
     //목록
     @GetMapping("/p1")
-    public String p1(ModelMap model, SearchVO params, @PageableDefault(sort = "User.userName" , direction = Sort.Direction.DESC) Pageable pageable){
+    public String p1(ModelMap model, SearchVO params, @PageableDefault(size=12, sort = "User.userName" , direction = Sort.Direction.DESC) Pageable pageable){
         if(Objects.isNull(params.getTaskType())) {
             params.setTaskType(Types.TaskType.TASK);
         }
@@ -47,7 +44,24 @@ public class A2Controller {
         return "a2/a2p1";
     }
 
-    //목록
+    //폴더 등록
+    @GetMapping("/p1-tch-write/{id}")
+    public String p1tchwrite(@PathVariable long id, ModelMap model, SearchVO params){
+
+        ClassTask classTask = null;
+
+        if(id > 0){
+            params.setId(id);
+            classTask = a2Service.getClassTask(params);
+        }
+
+        model.addAttribute("el", classTask);
+        model.addAttribute("list", a7Service.getTeacherList());
+        model.addAttribute("params",params);
+        return "a2/a2p1-tch-write";
+    }
+
+    //선생님별 목록
     @GetMapping("/p1-teacher/{id}")
     public String p1teacher(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
         if(Objects.isNull(params.getTaskType())) {

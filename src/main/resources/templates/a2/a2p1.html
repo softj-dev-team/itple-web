@@ -26,13 +26,14 @@
                 <div class="leftBox">
                 </div>
                 <div class="rightBox">
+                    <a th:href="|/a2/p1-tch-write/0/?page=${list.pageable.pageNumber}|" class="aBtn">선생님 / 반 등록</a>
                     <a th:href="|/a2/p1-write/0/${list.pageable.pageNumber}?taskType=${params.taskType}|" class="aBtn" th:text="|${params.taskType.message} 등록|">독후감 등록</a>
                 </div>
             </div>
-            <ul class="adTask-list">
+            <ul class="adTask-list2">
                 <li th:each="el : ${list}">
-                    <a th:href="|/a2/p1-teacher/${el.id}?taskType=${params.taskType}&bfpage=${list.pageable.pageNumber}|">
-                        <h3 class="codClass" th:utext="|${el.user.userName}  <span>${el.classCount}</span>|">선생님<span class="">10</span></h3>
+                    <a th:href="|/a2/p1-teacher/${el.user.admin.id}?taskType=${params.taskType}&bfpage=${list.pageable.pageNumber}|">
+                        <h3 class="codClass" th:utext="|${el.classTaskName}  <span  class='classNum'>${el.classCount}</span>|">선생님<span class="">10</span></h3>
                     </a>
                 </li>
             </ul>
