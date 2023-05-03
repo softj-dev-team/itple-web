@@ -4008,7 +4008,7 @@ a.aBtn{
 }
 .adTask-list2 li h3 p {margin-top: 5px;}
 .adTask-list2 li h3 span{
-    font-size: 14px;
+    font-size: 13px;
     font-family: 'Pretendard-Regular';
     color: #9E9E9E;
     vertical-align: 2px;
@@ -4016,12 +4016,35 @@ a.aBtn{
 .adTask-list2 li h3 span.classNum::before{
     content: "";
     width: 13px;
-    height: 13px;
+    height: 12px;
     display: inline-block;
     background: url(../img/class.png) no-repeat center / contain;
     margin-left: 5px;
     margin-right: 3px;
     vertical-align: -2px;
+}
+.adTask-list2 li {
+    display: flex;
+    align-items: center;
+}
+.adTask-list2 li a{
+    width: calc(100% - 66px);
+}
+.adTask-list2 li button.TEdit{
+    width: 50px;
+    height: 35px;
+    line-height: 35px;
+    border: 1px solid #e8e9e9;
+    color: #848786;
+    border-radius: 3px;
+    margin-right: 16px;
+    font-family: 'Pretendard-Regular';
+}
+a.aBtn.TaBtn{
+    background: #fff;
+    margin-right: 5px;
+    color: #002C50;
+    border: 1px solid #002C50;
 }
 /*.adTask-list p span:nth-child(1){*/
 /*    display: inline-block;*/
@@ -4785,5 +4808,9 @@ input[type=radio]:checked+label::before{
     }
     .modalP.xs .modalBtnWrap {
         margin-top: 30px;
+    }
+    .btn-center .m-btn{
+        margin-left: 0;
+        margin-bottom: 10px;
     }
 }
