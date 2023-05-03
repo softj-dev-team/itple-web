@@ -113,4 +113,11 @@ public class A2RestController {
         a2Service.deleteStudentTask(params);
         return Response.builder().build();
     }
+
+    //선생님/반삭제
+    @PostMapping("/p1/d3")
+    public Response p1d3(SearchVO params){
+        a2Service.deleteClassTask(params);
+        return Response.builder().build();
+    }
 }

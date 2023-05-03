@@ -12,18 +12,20 @@
         <h1 class="responsiveH1">선생님/반 등록</h1>
         <div class="responsiveInner">
             <form name="form1" id="form1">
+                <input type="hidden" name="id" id="id" th:if="${el != null}" th:value="${el.id}">
                 <div class="inputSec">
                     <label for="" class="mb5">선생님 선택</label>
                     <select name="teacherId" id="teacherId" class="input-df mb20">
                         <option value="">선택하세요</option>
-                        <option th:each="el : ${list}" th:value="${el.user.id}" th:text="${el.user.userName}">Kelly Tr</option>
+                        <option th:each="el2 : ${list}" th:value="${el2.user.id}" th:text="${el2.user.userName}" th:selected="${el != null ? el2.user.id == el.user.id : false}">Kelly Tr</option>
                     </select>
                     <label for="" class="mb5">폴더명</label>
-                    <input type="text" name="classTaskName" id="classTaskName" class="input-df mb20">
+                    <input type="text" name="classTaskName" id="classTaskName" class="input-df mb20" th:value="${el != null ? el.classTaskName : ''}">
                 </div>
                 <div class="btn-center mt60">
                     <button type="button" class="btn m-btn" onclick="goWrite();">등록하기</button>
                     <button type="button" class="btn m-btn btn-gray ml10" onclick="goList();">목록으로</button>
+                    <button type="button" class="btn m-btn ml10" th:if="${el != null}" th:onclick="|goDelete(${el.id});|">삭제하기</button>
                 </div>
             </form>
         </div>
@@ -47,6 +49,10 @@
             }
 
             goAction("S4");
+        }
+
+        function goDelete(id){
+            goAction("D3", id);
         }
 
         function goList(){

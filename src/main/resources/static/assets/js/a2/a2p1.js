@@ -173,6 +173,14 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 location.reload();
             });
             break;
+        /*선생님/반 삭제*/
+        case "D3":
+            modal.confirm("삭제 하시겠습니까?",function(){
+                $.post(path+'/d3',{id: arg1},function(res){
+                    location.href="/a2/p1";
+                });
+            });
+            break;
         /*팝업*/
         case "P1":
             $.post(path+'/p1',{id: arg1},function(res){

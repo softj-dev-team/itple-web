@@ -63,10 +63,16 @@ public class A2Controller {
 
     //선생님별 목록
     @GetMapping("/p1-teacher/{id}")
-    public String p1teacher(ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+    public String p1teacher(@PathVariable long id, ModelMap model, SearchVO params, @PageableDefault(sort = "id" , direction = Sort.Direction.DESC) Pageable pageable){
+        params.setId(id);
         if(Objects.isNull(params.getTaskType())) {
             params.setTaskType(Types.TaskType.TASK);
         }
+
+        if(Objects.isNull(params.getAcademyType())){
+            params.setAcademyType(Types.AcademyType.CODING);
+        }
+
         model.addAttribute("list",a2Service.getClassTaskList(params, pageable));
         model.addAttribute("params",params);
         return "a2/a2p1-teacher";

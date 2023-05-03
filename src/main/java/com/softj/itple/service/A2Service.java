@@ -71,7 +71,7 @@ public class A2Service {
         QStudent qStudent = QStudent.student;
 
         Admin admin = adminRepo.findById(params.getId()).orElseThrow(() -> new ApiException("선생님 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
-        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false)).and(qAcademyClass.isInvisible.eq(false)).and(qAcademyClass.user.eq(admin.getUser()));
+        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false)).and(qAcademyClass.isInvisible.eq(false)).and(qAcademyClass.user.eq(admin.getUser())).and(qAcademyClass.academyType.eq(params.getAcademyType()));
 
         //반이름 검색
         if(StringUtils.noneEmpty(params.getSearchValue())){
@@ -145,6 +145,10 @@ public class A2Service {
 
     public ClassTask getClassTask(SearchVO params){
         return classTaskRepo.findById(params.getId()).get();
+    }
+
+    public void deleteClassTask(SearchVO params){
+        classTaskRepo.deleteById(params.getId());
     }
 
     @Transactional

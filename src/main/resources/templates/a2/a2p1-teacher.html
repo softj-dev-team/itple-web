@@ -22,6 +22,12 @@
                 <li th:classappend="${#strings.equals(params.taskType,'BOOK_REPORT') ? 'active' : ''}"><a href="/a2/p1?taskType=BOOK_REPORT">독후감</a></li>
             </ul>
         </div>
+        <div class="tab2 clearfix">
+            <ul class="tab-ul2 teacherTab">
+                <li th:class="${#strings.equals(params.academyType,'CODING') || #strings.equals(params.academyType,'') ? 'active' : ''}"><a th:href="|/a2/p1-teacher/${params.id}/?taskType=${params.taskType}&academyType=CODING|">잇플코딩</a></li>
+                <li th:class="${#strings.equals(params.academyType,'ENGLISH') ? 'active' : ''}"><a th:href="|/a2/p1-teacher/${params.id}/?taskType=${params.taskType}&academyType=ENGLISH|">잇플영어</a></li>
+            </ul>
+        </div>
         <div class="content-in clearfix">
             <div class="tableBtn-box">
                 <div class="leftBox">
@@ -33,7 +39,7 @@
             <ul class="adTask-list">
                 <li th:each="el : ${list}">
                     <a th:href="|/a2/p1-class/${el.id}?taskType=${params.taskType}&bfpage=${list.pageable.pageNumber}&teacherId=${params.id}|">
-                        <h3 class="codClass" th:utext="|${el.className} <span>${el.studentCount}</span>|">잇플 영어입문반A<span class="">10</span></h3>
+                        <h3 th:class="${#strings.equals(params.academyType,'ENGLISH') ? 'engClass' : 'codClass'}" th:utext="|${el.className} <span>${el.studentCount}</span>|">잇플 영어입문반A<span class="">10</span></h3>
                         <p th:each="task : ${el.taskList}">
                             <span th:text="${task.subject}">사람은 무엇으로 사는가</span>
                             <span th:if="${#strings.equals(task.taskType,'BOOK_REPORT')}" th:text="| - ${task.teacher} |"> - 톨스토이</span>
