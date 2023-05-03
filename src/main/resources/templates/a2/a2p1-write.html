@@ -52,6 +52,10 @@
                             <input type="checkbox" class="chkStud" id="stud2"><label for="stud2">김잇플</label>
                         </div>
                     </div>
+                    <button type="button" id="addStudent2" class="btn m-btn mb20">추가</button>
+                    <div class="classN" id="studentSelList2">
+                        <p>선택된 반/학생 목록</p>
+                    </div>
                     <label for="subject" class="mb5">제목</label>
                     <input type="text" class="input-df mb20" name="subject" id="subject" th:value="${el?.subject}">
                     <label th:if="${#strings.equals(params.taskType,'BOOK_REPORT')}" for="teacher" class="mb5">출제 선생님</label>
@@ -97,15 +101,56 @@
             <p></p>
         </div>
     </div>
+    <div id="dummySelStudent2">
+        <div class="classInfo">
+            <div class="classN-in classNadd">
+                <input type="text" name="classNameList" class="input-df mb20" placeholder="반이름">
+                <button class="deleteClass">-</button>
+            </div>
+            <p></p>
+        </div>
+    </div>
 
     <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
         /*<![CDATA[*/
+        $("#addStudent2").on("click", function(){
+            var classSel = $("#classSel2").val();
+            var className = $("#classSel2 option:selected").text();
+            var studentLength = $("#studentList2 input[type=checkbox]:checked").length;
+
+            if(studentLength < 1){
+                modal.alert("학생을 선택해주세요.");
+                return;
+            }else{
+                $("#studentSelList2 .classInfo").each(function(){
+                    var classId = $(this).find("input[name=classIdList]").val();
+                    if(classId == classSel){
+                        $(this).remove();
+                    }
+                });
+                $("#studentList2 input[class=studentIdList]:checked").each(function(){
+                    var id = $(this).prop("id");
+                    $("#dummySelStudent2 .classInfo > span").text(className);
+                    $("#dummySelStudent2").find("p").append("<input type='hidden' name='studentIdList' value='"+$(this).val()+"'/> <span>"+$("label[for='"+id+"']").text()+"</span>");
+                });
+                $("#dummySelStudent2").find("input[name=classIdList]").val(classSel);
+
+                var html = $("#dummySelStudent2").html();
+                $("#dummySelStudent2").html("<div class=\"classInfo\">\n" +
+                    "            <div class=\"classN-in classNadd\">\n" +
+                    "                <input type=\"text\" name=\"classNameList\" class=\"input-df mb20\" placeholder=\"반이름\">\n" +
+                    "                <button class=\"deleteClass\">-</button>\n" +
+                    "            </div>\n" +
+                    "            <p></p>\n" +
+                    "        </div>");
+                $("#studentSelList2").append(html);
+            }
+        });
         $("#addStudent").on("click", function(){
             var classSel = $("#classSel").val();
             var className = $("#classSel option:selected").text();
-            var studentList = null;
             var studentLength = $("#studentList input[type=checkbox]:checked").length;
 
             if(studentLength < 1){
