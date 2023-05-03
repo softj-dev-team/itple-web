@@ -19,17 +19,37 @@
             <form id="form1">
                 <input type="hidden" id="id" name="id" th:value="${el == null ? 0 : el?.id}">
                 <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
-                <input type="hidden" id="academyClass" name="academyClass" th:value="${el?.academyClass?.id}">
+                <!--<input type="hidden" id="academyClass" name="academyClass" th:value="${el?.academyClass?.id}">-->
                 <div class="inputSec">
-                    <label for="classId" class="mb5">반 선택</label>
-                    <select name="classId" id="classId" class="input-df mb20" onchange="setStudentList()">
-                        <option th:each="class : ${classList}" th:value="${class.id}" th:text="|[${class.academyType.message}] ${class.className}|">잇플코딩입문반</option>
+                    <label for="teacherId" class="mb5">출제 선생님 선택</label>
+                    <select name="teacherId" id="teacherId" class="input-df mb20" onchange="setClassList()">
+                        <option th:each="teacher : ${teacherList}" th:value="${teacher.user.id}" th:text="|${teacher.user.userName}|">선생님이름</option>
+                    </select>
+                    <label for="classSel" class="mb5">선생님 반 선택</label>
+                    <select id="classSel" class="input-df mb20" onchange="setStudentList1()">
+                        <option th:each="class : ${teacherClassList}" th:value="${class.id}" th:text="|[${class.academyType.message}] ${class.className}|">잇플코딩입문반</option>
                     </select>
                     <label for="studAll" class="mb5">학생 선택</label>
                     <div class="studCh">
                         <input type="checkbox" id="studAll"><label for="studAll">전체선택</label>
                         <div id="studentList">
                             <input type="checkbox" class="chkStud" id="stud1"><label for="stud1">김잇플</label>
+                        </div>
+                    </div>
+                    <button type="button" id="addStudent" class="btn m-btn mb20">추가</button>
+                    <div class="classN" id="studentSelList">
+                        <p>선택된 반/학생 목록</p>
+                    </div>
+
+                    <label for="classSel2" class="mb5">다른 반 선택</label>
+                    <select id="classSel2" class="input-df mb20" onchange="setStudentList2()">
+                        <option th:each="class : ${otherClassList}" th:value="${class.id}" th:text="|[${class.academyType.message}] ${class.className}|">잇플코딩입문반</option>
+                    </select>
+                    <label for="studAll" class="mb5">학생 선택</label>
+                    <div class="studCh">
+                        <input type="checkbox" id="studAll2"><label for="studAll">전체선택</label>
+                        <div id="studentList2">
+                            <input type="checkbox" class="chkStud" id="stud2"><label for="stud2">김잇플</label>
                         </div>
                     </div>
                     <label for="subject" class="mb5">제목</label>
@@ -70,11 +90,50 @@
             </form>
         </div>
     </div>
+    <div id="dummySelStudent">
+        <div class="classInfo">
+            <span></span>
+            <input type="hidden" name="classIdList" value=""/>
+            <p></p>
+        </div>
+    </div>
 
     <script th:src="@{/assets/js/a2/a2p1.js(v='1.0.0')}"></script>
 
     <script th:inline="javascript">
         /*<![CDATA[*/
+        $("#addStudent").on("click", function(){
+            var classSel = $("#classSel").val();
+            var className = $("#classSel option:selected").text();
+            var studentList = null;
+            var studentLength = $("#studentList input[type=checkbox]:checked").length;
+
+            if(studentLength < 1){
+                modal.alert("학생을 선택해주세요.");
+                return;
+            }else{
+                $("#studentSelList .classInfo").each(function(){
+                    var classId = $(this).find("input[name=classIdList]").val();
+                    if(classId == classSel){
+                        $(this).remove();
+                    }
+                });
+                $("#studentList input[class=studentIdList]:checked").each(function(){
+                    var id = $(this).prop("id");
+                    $("#dummySelStudent .classInfo > span").text(className);
+                    $("#dummySelStudent").find("p").append("<input type='hidden' name='studentIdList' value='"+$(this).val()+"'/> <span>"+$("label[for='"+id+"']").text()+"</span>");
+                });
+                $("#dummySelStudent").find("input[name=classIdList]").val(classSel);
+
+                var html = $("#dummySelStudent").html();
+                $("#dummySelStudent").html("<div class=\"classInfo\">\n" +
+                    "                <span></span>\n" +
+                    "                <input type=\"hidden\" name=\"classIdList\" value=\"\"/>\n" +
+                    "                <p></p>\n" +
+                    "            </div>");
+                $("#studentSelList").append(html);
+            }
+        });
         function goList(){
             var academyClass = $("#academyClass").val();
             var taskType = $("#taskType").val();
@@ -84,7 +143,7 @@
         $(document).ready(function(){
             var taskId = [[${el == null ? 0 : el?.id}]];
             if(taskId != 0) {
-                selectClassId(taskId);
+                //selectClassId(taskId);
             }else{
                 setStudentList();
             }
@@ -96,7 +155,7 @@
                 orientation: "auto"
             });
         });
-        $(document).on("click","input:checkbox[name='studentIdList']",function(){
+        $(document).on("click","input:checkbox[class='studentIdList']",function(){
             if(!$(this).is(":checked")){
                 $("#studAll").prop("checked",false);
             }

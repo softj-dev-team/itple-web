@@ -6,6 +6,7 @@ import com.softj.itple.entity.*;
 import com.softj.itple.service.A2Service;
 import com.softj.itple.service.A7Service;
 import com.softj.itple.service.CommonService;
+import com.softj.itple.util.LongUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -113,7 +114,17 @@ public class A2Controller {
         }
 
         params.setPage(page);
-        List<AcademyClass> classList = commonService.getClassList(params);
+
+
+
+        List<Admin> teacherList = a7Service.getTeacherList();
+
+        if(LongUtils.isEmpty(params.getTeacherId())){
+            params.setTeacherId(teacherList.get(0).getUser().getId());
+        }
+
+        List<AcademyClass> teacherClassList = commonService.getTeacherClassList(params);
+        List<AcademyClass> otherClassList = commonService.getOtherClassList(params);
 
         Task task = null;
 
@@ -133,7 +144,9 @@ public class A2Controller {
         }
 
         model.addAttribute("el", task);
-        model.addAttribute("classList", classList);
+        model.addAttribute("teacherList", teacherList);
+        model.addAttribute("teacherClassList", teacherClassList);
+        model.addAttribute("otherClassList", otherClassList);
         model.addAttribute("params",params);
 
         return "a2/a2p1-write";

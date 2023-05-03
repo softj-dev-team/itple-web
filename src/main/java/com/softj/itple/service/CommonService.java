@@ -3,8 +3,10 @@ package com.softj.itple.service;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.AcademyClass;
+import com.softj.itple.entity.Admin;
 import com.softj.itple.entity.Student;
 import com.softj.itple.repo.*;
+import com.softj.itple.util.LongUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,8 +59,15 @@ public class CommonService {
     }
 
     public List<AcademyClass> getClassList(SearchVO params){
-
         return academyClassRepo.getAllAcademyClassList(false, Objects.nonNull(params.getAcademyType()) ? params.getAcademyType().getCode() : null);
+    }
+
+    public List<AcademyClass> getTeacherClassList(SearchVO params){
+        return academyClassRepo.getTeacherAcademyClassList(false, Objects.nonNull(params.getAcademyType()) ? params.getAcademyType().getCode() : null, params.getTeacherId());
+    }
+
+    public List<AcademyClass> getOtherClassList(SearchVO params){
+        return academyClassRepo.getOtherAcademyClassList(false, Objects.nonNull(params.getAcademyType()) ? params.getAcademyType().getCode() : null, params.getTeacherId());
     }
 
     public List<AcademyClass> getClassListByType(SearchVO params){

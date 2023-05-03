@@ -3,6 +3,7 @@ package com.softj.itple.controller;
 import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.service.A2Service;
+import com.softj.itple.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class A2RestController {
     final private A2Service a2Service;
+    final private CommonService commonService;
 
 
     //학생리스트(과제등록)
@@ -31,6 +33,23 @@ public class A2RestController {
     public Response p1l2(SearchVO params){
         return Response.builder()
                 .data(a2Service.getStudentTaskMemberList(params))
+                .build();
+    }
+
+
+    //출제 선생님별 반 리스트
+    @PostMapping("/p1/l3")
+    public Response p1l3(SearchVO params){
+        return Response.builder()
+                .data(commonService.getTeacherClassList(params))
+                .build();
+    }
+
+    //출제 선생님별 다른 반 리스트
+    @PostMapping("/p1/l4")
+    public Response p1l4(SearchVO params){
+        return Response.builder()
+                .data(commonService.getOtherClassList(params))
                 .build();
     }
 
