@@ -128,6 +128,22 @@
             <div class="responsiveInner">
                <form action="">
                 <div class="inputSec">
+                    <label for="teacherId" class="mb5">출제 선생님 선택</label>
+                    <select name="teacherId" id="teacherId" class="input-df mb20" onchange="setClassList()">
+                        <option value="209">김보나 선생님</option>
+                        <option value="42">김용환 선생님</option>
+                        <option value="43">김지원 선생님</option>
+                        <option value="44">윤가혜 선생님</option>
+                        <option value="45">이서미 선생님</option>
+                        <option value="347">이종훈 선생님</option>
+                        <option value="306">제민우 선생님</option>
+                        <option value="380">테스트선생님1</option>
+                        <option value="381">테스트선생님2</option>
+                        <option value="46">Kelly_Tr</option>
+                        <option value="56">Lizzie_Tr</option>
+                        <option value="298">Rachel_Tr</option>
+                        <option value="47">Una_Tr</option>
+                    </select>
                     <label for="" class="mb5">반 선택</label>
                     <select name="" id="" class="input-df mb20">
                         <option value="잇플코딩입문반">잇플코딩입문반A</option>
@@ -146,13 +162,22 @@
                         <input type="checkbox" id="stud8"><label for="stud8">김잇</label>
                         <input type="checkbox" id="stud9"><label for="stud9">김잇플</label>
                     </div>
+                    <button type="button" id="addStudent" class="btn m-btn mb20 addBtn">추가</button>
+                    <div class="classN" id="studentSelList">
+                        <p>선택된 반/학생 목록</p>
+                        <div class="classInfo">
+                            <span>[잇플 코딩] 보나T_금330_승하 <button class="delBtn2">삭제</button></span>
+                            <input type="hidden" name="classIdList" value="80">
+                            <p><input type="hidden" name="studentIdList" value="310"> <span>유승하<button class="delBtn2">삭제</button></span></p>
+                        </div>
+                    </div>
                     <!--                    230427 ~-->
                     <label for="" class="mb5">반이름</label>
                     <div class="classN">
-                        <div class="classN-in">
-                            <input type="text" class="input-df mb20" placeholder="반이름">
-                            <button class="addClass">+</button>
-                        </div>
+<!--                        <div class="classN-in">-->
+<!--                            <input type="text" class="input-df mb20" placeholder="반이름">-->
+<!--                            <button class="addClass">+</button>-->
+<!--                        </div>-->
                         <div class="classN-in classNadd">
                             <input type="text" class="input-df mb20" placeholder="반이름">
                             <button class="deleteClass">-</button>

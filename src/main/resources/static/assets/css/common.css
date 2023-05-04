@@ -2756,17 +2756,19 @@ a.a-btn{
 /*230427*/
 .classN{
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f1f1f1;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px dashed #ccc;
+    padding-top: 20px;
 }
-.classN > div.classN-in {
+.classN div.classN-in {
     display: flex;
 }
-.classN > div.classN-in input{
+.classN div.classN-in input{
     width: calc(100% - 50px);
     margin-bottom: 10px;
 }
-.classN > div.classN-in button{
+.classN div.classN-in button{
     width: 45px;
     height: 45px;
     font-size: 20px;
@@ -2775,15 +2777,87 @@ a.a-btn{
     border-radius: 5px;
     margin-left: 5px;
 }
-.classN > div.classN-in button.deleteClass{
+.classN div.classN-in button.deleteClass{
     border: 1px solid #dc5335;
-    color: #dc5335;
+    position: relative;
+    color: transparent;
+    text-indent: -99999px;
+}
+.classN div.classN-in button.deleteClass::before{
+    content: "";
+    display: block;
+    width: 1px;
+    height: 25px;
+    position: absolute;
+    background: #dc5335;
+    transform: rotate(45deg);
+    top: 9px;
+    left: 21px;
+}
+.classN div.classN-in button.deleteClass::after{
+    content: "";
+    display: block;
+    width: 1px;
+    height: 25px;
+    position: absolute;
+    background: #dc5335;
+    transform: rotate(135deg);
+    top: 9px;
+    left: 21px;
+}
+.classInfo {
+    padding: 10px;
+    background: #f1f1f1;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.classInfo p {
+    /* margin-top: 10px; */
+    padding: 10px;
 }
 .tab-ul2.teacherTab li:nth-child(1).active a{
     color: #0068B4 !important;
 }
 .tab-ul2.teacherTab li:nth-child(2).active a{
     color: #DD5434;
+}
+button.btn.addBtn{
+    display: block;
+    width: 100% !important;
+    border: 1px solid #002C50;
+    color: #002C50;
+    background: #fff;
+}
+.delBtn2{
+    position: relative;
+    color: transparent;
+    text-indent: -99999px;
+    width: 18px;
+    height: 18px;
+    /*border: 1px solid #C24444;*/
+    /*border-radius: 3px;*/
+}
+.delBtn2::before{
+    content: "";
+    display: block;
+    width: 1px;
+    height: 10px;
+    position: absolute;
+    background: #C24444;
+    transform: rotate(45deg);
+    top: 3.6px;
+    left: 7.6px;
+}
+.delBtn2::after{
+    content: "";
+    display: block;
+    width: 1px;
+    height: 10px;
+    position: absolute;
+    background: #C24444;
+    transform: rotate(135deg);
+    top: 3.6px;
+    left: 7.6px;
 }
 /*header ~1280p*/
 @media screen and (min-width: 1280px){
