@@ -515,7 +515,7 @@ public class A2Service {
         if(classNameList != null) {
             for (String className : classNameList) {
                 AcademyClass academyClass = AcademyClass.builder().build();
-                academyClass.setAcademyType(Types.AcademyType.ENGLISH);
+                academyClass.setAcademyType(Types.AcademyType.ETC);
                 academyClass.setClassName(className);
                 academyClass.setUser(user);
                 academyClass.setIsInvisible(false);
