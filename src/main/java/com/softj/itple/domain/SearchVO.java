@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -20,6 +21,7 @@ public class SearchVO {
 	private String searchValue;
 	private int page;
 	private int bfpage;
+	private String bfPageStr;
 
 	//회원가입
 	private String email;
@@ -74,12 +76,17 @@ public class SearchVO {
 	private String teacher;
 
 	private Long studentId;
-	private Long[] studentIdList = new Long[0];
+	private List<Long> studentIdList;
+	private List<String> studentIdStrList1;
+	private List<String> studentIdStrList2;
 	private long coin;
 	private String returnMessage;
 	private int endTimeHour;
 	private int endTimeMin;
 	private Types.TaskStatus taskStatus;
+	private List<Long> classIdList;
+	private List<String> classNameList;
+	private long taskMapId;
 
 	//관리자-출판서적
 	private long bookId;

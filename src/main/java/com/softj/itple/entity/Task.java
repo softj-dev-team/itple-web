@@ -35,6 +35,11 @@ public class Task extends Auditing{
 
     private Long rootId;
 
+    private String taskMapName;
+
+    @ManyToOne
+    private TaskMap taskMap;
+
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<StudentTask> studentTasks;
 
@@ -43,7 +48,7 @@ public class Task extends Auditing{
     private List<TaskFile> taskFileList;
 
     @Builder
-    public Task(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, AcademyClass academyClass, Types.TaskType taskType, String subject, String teacher, LocalDate startDate, LocalDateTime endDate, String contents, long coin, Long rootId) {
+    public Task(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, AcademyClass academyClass, Types.TaskType taskType, String subject, String teacher, LocalDate startDate, LocalDateTime endDate, String contents, long coin, Long rootId, String taskMapName) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.academyClass = academyClass;
         this.taskType = taskType;
@@ -54,5 +59,6 @@ public class Task extends Auditing{
         this.contents = contents;
         this.coin = coin;
         this.rootId = rootId;
+        this.taskMapName = taskMapName;
     }
 }

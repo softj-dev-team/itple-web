@@ -42,6 +42,8 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             var endDate = $("input[name=endDate]").val();
             var coin = $("input[name=coin]").val();
             var taskType = $("input[name=taskType]").val();
+            var classIdListLength  = $("#form1 input[name=classIdList]").length;
+
 
             if(ut.isEmpty(subject)){
                 modal.required("제목");
@@ -56,29 +58,83 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 return;
             }
             if(ut.isEmpty(startDate) || ut.isEmpty(endDate)){
-                modal.required("독후감 마감일");
+                modal.required("과제 마감일");
                 return;
             }
             if(!ut.isValidDateRange(startDate, endDate)){
-                modal.alert("독후감 마감일을 확인해주세요.");
+                modal.alert("과제 마감일을 확인해주세요.");
                 return;
             }
             if(ut.isEmpty(coin)){
                 modal.required("지급포인트");
                 return;
             }
+
+            if(classIdListLength < 1){
+                modal.alert("학생을 한명 이상 선택해주세요.");
+                return;
+            }
+
+            var classNameListFlag = false;
+            $("#form1 input[name=classNameList]").each(function(){
+                if(ut.isEmpty($(this).val())) {
+                    classNameListFlag = true;
+                }
+            });
+
+            if(classNameListFlag){
+                modal.alert("선택된 학생의 반이름을 입력해주세요.");
+                return;
+            }
+
             var formS1 = $('#form1');
             modal.confirm("저장하시겠습니까?",function(){
-                $("input[name=idList]").prop("checked",true);
-                $.post(path+'/s1',formS1.serialize(),function(res){
 
+
+
+                $("input[name=studentIdStrList1]").each(function(){
+                   $(this).remove();
+                });
+
+                var len = $("#studentSelList input[name=classIdList]").length;
+                for(var i=0; i<len; i++){
+                    var list = "";
+                    var j=0;
+                    $("#studentSelList input[class=studentIdList2_"+i+"]").each(function(){
+                        if(j > 0){
+                            list += "|"+$(this).val();
+                        }else{
+                            list += $(this).val();
+                        }
+                        j++;
+                    });
+                    var html = "<input type='hidden' name='studentIdStrList1' value='"+list+"'/>";
+                    $("#form1").append(html);
+                }
+
+                var len2 = $("#studentSelList2 input[name=classNameList]").length;
+                $("input[name=studentIdStrList2]").each(function(){
+                    $(this).remove();
+                });
+
+                for(var i=0; i<len2; i++){
+                    var list = "";
+                    var j=0;
+                    $("#studentSelList2 input[class=studentIdList3_"+i+"]").each(function(){
+                        if(j > 0){
+                            list += "|"+$(this).val();
+                        }else{
+                            list += $(this).val();
+                        }
+                        j++;
+                    });
+                    var html = "<input type='hidden' name='studentIdStrList2' value='"+list+"'/>";
+                    $("#form1").append(html);
+                }
+
+                $.post(path+'/s1',formS1.serialize(),function(res){
                     modal.alert('저장되었습니다.');
-                    var id = $("#id").val();
-                    if(id > 0){
-                        location.reload();
-                    }else {
-                        ut.redirect("/a2/p1", "taskType", $("input[name=taskType]").val());
-                    }
+                    ut.redirect("/a2/p1", "taskType", $("input[name=taskType]").val(), "classId", $("#classId").val());
                 });
             });
             break;
@@ -258,18 +314,28 @@ function setStudentList1() {
     });
 }
 function setStudentList2() {
-    $("#studentList2").empty();
     var classId2 = $("select[id=classSel2]").val();
     $.post("/api/classStudentList",{id: classId2}, function(res) {
         var list = res.data;
         var html = "";
 
+        $("#studentList2 input[class=studentIdList]:checked").each(function(){
+            var id = $(this).prop("id");
+            var value = $(this).val();
+            var label = $("label[for='"+id+"']").text();
+            html += `<input type="checkbox" id="${id}" class="studentIdList" value="${value}" checked><label for="${id}">${label}</label>`;
+        });
+
+        $("#studentList2").empty();
+
         if(ut.isEmpty(list)){
             return;
         }
+
         list.forEach(function(el){
             html += `<input type="checkbox" id="stud${el.id}" class="studentIdList" value="${el.id}"><label for="stud${el.id}">${el.user.userName}</label>`;
         });
+
         $("#studentList2").html(html);
     });
 }

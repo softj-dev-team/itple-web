@@ -4114,6 +4114,22 @@ a.aBtn{
     margin-right: 16px;
     font-family: 'Pretendard-Regular';
 }
+.adTask-list-position li {
+    position: relative;
+}
+.adTask-list li button.TEdit{
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    width: 50px;
+    height: 35px;
+    line-height: 35px;
+    border: 1px solid #e8e9e9;
+    color: #848786;
+    border-radius: 3px;
+    font-family: 'Pretendard-Regular';
+}
+
 a.aBtn.TaBtn{
     background: #fff;
     margin-right: 5px;

@@ -23,6 +23,7 @@
                     <input type="hidden" id="bfpage" name="bfpage" th:value="${params.bfpage}">
                     <input type="hidden" id="page" name="page" th:value="${list.pageable.pageNumber}">
                     <input type="hidden" id="taskType" name="taskType" th:value="${params.taskType}">
+                    <input type="hidden" id="teacherId" name="teacherId" th:value="${academyClass.user.admin.id}">
                     <div class="in-box">
                         <select name="searchType" id="searchType">
                             <option value="subject" th:selected="${#strings.equals(param.searchType, 'subject')}">제목</option>
@@ -64,7 +65,7 @@
                         <input type="hidden" name="idList" th:id="|id${elStat.count}|" th:value="${el.id}"/>
                     </td>
                     <td th:text="${list.pageable.offset+elStat.count}"></td>
-                    <td><a th:href="|/a2/p1-write/${el.id}/${list.pageable.pageNumber}?taskType=${params.taskType}|" th:text="${el.subject}">사람은 무엇으로 사는가</a></td>
+                    <td><a th:href="|/a2/p1-write/${el.id}/${list.pageable.pageNumber}?taskType=${params.taskType}&classId=${academyClass.id}&bfpage=${params.bfpage}&teacherId=${academyClass.user.admin.id}|" th:text="${el.subject}">사람은 무엇으로 사는가</a></td>
                     <td>
                         <span class="tooltip" th:id="|submitTooltip${elStat.count}|"></span> /
                         <script th:inline="javascript">
@@ -305,10 +306,10 @@
             $('#removeMo').addClass('on');
         });
         function goEdit(id){
-            location.href = "/a2/p1-detail/"+id+"?taskType="+[[${params.taskType}]]+"&teacherId=[[${params.teacherId}]]&classId=[[${params.id}]]&bfpage=[[${list.pageable.pageNumber}]]";
+            location.href = "/a2/p1-detail/"+id+"?taskType="+[[${params.taskType}]]+"&teacherId=[[${academyClass.user.admin.id}]]&classId=[[${params.id}]]&bfpage=[[${list.pageable.pageNumber}]]";
         }
         function goList(){
-            location.href = "/a2/p1-teacher/[[${params.teacherId}]]?taskType="+[[${params.taskType}]]+"&page=[[${params.bfpage}]]";
+            location.href = "/a2/p1-teacher/[[${academyClass.user.admin.id}]]?taskType="+[[${params.taskType}]]+"&page=[[${params.bfpage}]]";
         }
     </script>
 </th:block>
