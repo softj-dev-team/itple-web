@@ -215,6 +215,7 @@ public class A3P1E1ExcelView {
 
         response.setContentType("Application/Msexcel");
         response.setHeader("Content-Disposition", "ATTachment; Filename=" + URLEncoder.encode(subject, "UTF-8") + ".xlsx");
+        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
 
         OutputStream fos = response.getOutputStream();
         workbook.write(fos);

@@ -152,9 +152,21 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         /*엑셀*/
         case "E1":
-            $("#form1").attr("action", "/excelFileDownload/a3/p1/e1");
-            $("#form1").attr("method", "POST");
-            $("#form1").submit();
+            loading(1);
+            $.fileDownload("/excelFileDownload/a3/p1/e1",{
+                httpMethod: "POST",
+                data:$("#form1").serialize(),
+                successCallback: function (url) {
+                    loading(0);
+                    modal.alert("파일다운로드에 성공하였습니다.");
+                    location.reload();
+                },
+                failCallback: function(responesHtml, url) {
+                    loading(0);
+                    modal.alert("파일다운로드에 실패하였습니다.");
+                    location.reload();
+                }
+            });
             break;
     }
 }
