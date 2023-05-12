@@ -46,7 +46,7 @@
                             <span class="ml10" th:text="| ${#temporals.format(task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(task.endDate,'yyyy.MM.dd HH:mm')}|">~22.04.08</span>
                         </p>
                     </a>
-                    <button th:if="${#strings.equals(el2.academyType, T(com.softj.itple.domain.Types.AcademyType).ENGLISH)}" class='TEdit' th:onclick="|goModify(${el2.taskList.get(0).id})|">수정</button>
+                    <button th:if="${#strings.equals(el2.academyType, T(com.softj.itple.domain.Types.AcademyType).ETC)}" class='TEdit' th:onclick="|goModify(${el2.taskList.get(0).id})|">수정</button>
                 </li>
             </ul>
         </div>
