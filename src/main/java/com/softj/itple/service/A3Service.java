@@ -132,6 +132,8 @@ public class A3Service{
                         newTask.setSubject(task.getSubject());
                         newTask.setTeacher(academyClass.getUser().getUserName());
                         newTask.setRootId(task.getRootId());
+                        newTask.setTaskMap(task.getTaskMap());
+                        newTask.setTaskMapName(task.getTaskMapName());
                         taskRepo.save(newTask);
 
                         for(TaskFile taskFile : task.getTaskFileList()){
