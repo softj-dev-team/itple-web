@@ -26,6 +26,7 @@
             <ul class="tab-ul2 teacherTab">
                 <li th:class="${#strings.equals(params.academyType,'CODING') || #strings.equals(params.academyType,'') ? 'active' : ''}"><a th:href="|/a2/p1-teacher/${params.id}/?taskType=${params.taskType}&academyType=CODING|">잇플코딩</a></li>
                 <li th:class="${#strings.equals(params.academyType,'ENGLISH') ? 'active' : ''}"><a th:href="|/a2/p1-teacher/${params.id}/?taskType=${params.taskType}&academyType=ENGLISH|">잇플영어</a></li>
+                <li th:class="${#strings.equals(params.academyType,'ETC') ? 'active' : ''}"><a th:href="|/a2/p1-teacher/${params.id}/?taskType=${params.taskType}&academyType=ETC|">기타</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">
@@ -40,13 +41,13 @@
                 <li th:each="el2 : ${list}">
                     <a th:href="|/a2/p1-class/${el2.id}?taskType=${params.taskType}&bfpage=${list.pageable.pageNumber}&teacherId=${params.id}|">
                         <h3 th:class="${#strings.equals(params.academyType,'ENGLISH') ? 'engClass' : 'codClass'}" th:utext="|${el2.className} <span>${el2.studentCount}</span>|">잇플 영어입문반A<span class="">10</span></h3>
-                        <p th:each="task : ${el2.taskList}">
+                        <p  th:if="${#lists.size(el2.taskList) > 0}" th:each="task : ${el2.taskList}">
                             <span th:text="${task.subject}">사람은 무엇으로 사는가</span>
                             <span th:if="${#strings.equals(task.taskType,'BOOK_REPORT')}" th:text="| - ${task.teacher} |"> - 톨스토이</span>
                             <span class="ml10" th:text="| ${#temporals.format(task.startDate,'yyyy.MM.dd')} ~ ${#temporals.format(task.endDate,'yyyy.MM.dd HH:mm')}|">~22.04.08</span>
                         </p>
                     </a>
-                    <button th:if="${#strings.equals(el2.academyType, T(com.softj.itple.domain.Types.AcademyType).ETC)}" class='TEdit' th:onclick="|goModify(${el2.taskList.get(0).id})|">수정</button>
+                    <button th:if="${#lists.size(el2.taskList) > 0 && #strings.equals(el2.academyType, T(com.softj.itple.domain.Types.AcademyType).ETC)}" class='TEdit' th:onclick="|goModify(${el2.taskList.get(0).id})|">수정</button>
                 </li>
             </ul>
         </div>
@@ -65,7 +66,7 @@
         }
 
         function goModify(id){
-            location.href="/a2/p1-write/"+id+"/[[${list.pageable.pageNumber}]]?taskType="+[[${params.taskType}]]+"&bfPageStr=teacher&teacherId=[[${el.user.id}]]";
+            location.href="/a2/p1-write/"+id+"/[[${list.pageable.pageNumber}]]?taskType="+[[${params.taskType}]]+"&bfPageStr=teacher&teacherId=[[${el.user.admin.id}]]";
         }
 
     </script>

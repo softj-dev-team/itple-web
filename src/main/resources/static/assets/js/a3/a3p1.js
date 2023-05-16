@@ -35,45 +35,6 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             break;
         /*저장*/
         case "S1":
-            var subject = $("input[name=subject]").val();
-            var author = $("input[name=author]").val();
-            var contents = $("textarea[name=contents]").val();
-            var startDate = $("input[name=startDate]").val();
-            var endDate = $("input[name=endDate]").val();
-            var coin = $("input[name=coin]").val();
-            var taskType = $("input[name=taskType]").val();
-
-            if(ut.isEmpty(subject)){
-                modal.required("제목");
-                return;
-            }
-            if(taskType == 'BOOK_REPORT' && ut.isEmpty(author)){
-                modal.required("저자");
-                return;
-            }
-            if(ut.isEmpty(contents)){
-                modal.required("내용");
-                return;
-            }
-            if(ut.isEmpty(startDate) || ut.isEmpty(endDate)){
-                modal.required("독후감 마감일");
-                return;
-            }
-            if(!ut.isValidDateRange(startDate, endDate)){
-                modal.alert("독후감 마감일을 확인해주세요.");
-                return;
-            }
-            if(ut.isEmpty(coin)){
-                modal.required("지급포인트");
-                return;
-            }
-            var formS1 = $('#form1');
-            modal.confirm("저장하시겠습니까?",function(){
-                $.post(path+'/s1',formS1.serialize(),function(res){
-                    modal.alert('저장되었습니다.');
-                    ut.redirect("/a3/p1","taskType", $("input[name=taskType]").val());
-                });
-            });
             break;
         case "S2":
             modal.confirm("확인 하시겠습니까?",function(){

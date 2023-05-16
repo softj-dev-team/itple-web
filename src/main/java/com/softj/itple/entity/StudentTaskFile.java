@@ -28,4 +28,7 @@ public class StudentTaskFile extends Auditing{
     private StudentTask studentTask;
     private String orgFileName;
     private String uploadFileName;
+
+    @Transient
+    private Long studentTaskId;
 }

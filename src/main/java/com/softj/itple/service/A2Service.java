@@ -78,7 +78,7 @@ public class A2Service {
         QStudent qStudent = QStudent.student;
 
         Admin admin = adminRepo.findById(params.getId()).orElseThrow(() -> new ApiException("선생님 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
-        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false)).and(qAcademyClass.isInvisible.eq(false)).and(qAcademyClass.user.eq(admin.getUser())).and(qAcademyClass.academyType.eq(params.getAcademyType()).or(qAcademyClass.academyType.eq(Types.AcademyType.ETC)));
+        BooleanBuilder where = new BooleanBuilder().and(qAcademyClass.isDeleted.eq(false)).and(qAcademyClass.isInvisible.eq(false)).and(qAcademyClass.user.eq(admin.getUser())).and(qAcademyClass.academyType.eq(params.getAcademyType()));
 
         //반이름 검색
         if(StringUtils.noneEmpty(params.getSearchValue())){
@@ -471,39 +471,41 @@ public class A2Service {
         List<String> StudentIdStrList1 = params.getStudentIdStrList1();
 
         int i=0;
-        for(Long classId : classIdList){
-            Task save = Task.builder().build();
-            save.setTaskType(params.getTaskType());
-            save.setAcademyClass(AcademyClass.builder().id(classId).build());
-            save.setSubject(params.getSubject());
+        if(classIdList != null) {
+            for (Long classId : classIdList) {
+                Task save = Task.builder().build();
+                save.setTaskType(params.getTaskType());
+                save.setAcademyClass(AcademyClass.builder().id(classId).build());
+                save.setSubject(params.getSubject());
 
-            save.setContents(params.getContents());
-            save.setTeacher(params.getTeacher());
-            save.setStartDate(params.getStartDate());
+                save.setContents(params.getContents());
+                save.setTeacher(params.getTeacher());
+                save.setStartDate(params.getStartDate());
 
-            LocalDateTime endTimeDate = LocalDateTime.of(params.getEndDate(), LocalTime.of(params.getEndTimeHour(),params.getEndTimeMin()));
-            save.setEndDate(endTimeDate);
-            save.setCoin(params.getCoin());
-            save.setTaskMap(taskMap);
-            Long saveId = taskRepo.save(save).getId();
-            save.setRootId(saveId);
-            taskRepo.save(save);
-            String[] studentArrays = StudentIdStrList1.get(i).split("\\|");
-            for(int j=0; j<studentArrays.length; j++){
-                Long studentId = Long.parseLong(studentArrays[j]);
-                Student studentSave = studentRepo.getOne(studentId);
-                StudentTask studentTaskSave = studentTaskRepo.findByTaskAndStudent(save, studentSave).orElse(StudentTask.builder().build());
-                studentTaskSave.setStudent(studentSave);
-                studentTaskSave.setTask(save);
-                studentTaskSave.setStatus(Types.TaskStatus.NOT_SUBMIT);
-                studentTaskRepo.save(studentTaskSave);
+                LocalDateTime endTimeDate = LocalDateTime.of(params.getEndDate(), LocalTime.of(params.getEndTimeHour(), params.getEndTimeMin()));
+                save.setEndDate(endTimeDate);
+                save.setCoin(params.getCoin());
+                save.setTaskMap(taskMap);
+                Long saveId = taskRepo.save(save).getId();
+                save.setRootId(saveId);
+                taskRepo.save(save);
+                String[] studentArrays = StudentIdStrList1.get(i).split("\\|");
+                for (int j = 0; j < studentArrays.length; j++) {
+                    Long studentId = Long.parseLong(studentArrays[j]);
+                    Student studentSave = studentRepo.getOne(studentId);
+                    StudentTask studentTaskSave = studentTaskRepo.findByTaskAndStudent(save, studentSave).orElse(StudentTask.builder().build());
+                    studentTaskSave.setStudent(studentSave);
+                    studentTaskSave.setTask(save);
+                    studentTaskSave.setStatus(Types.TaskStatus.NOT_SUBMIT);
+                    studentTaskRepo.save(studentTaskSave);
+                }
+                List<TaskFile> fileList = taskFileRepo.findAllById(Arrays.asList(params.getIdList()));
+                for (TaskFile f : fileList) {
+                    f.setTask(save);
+                }
+                taskFileRepo.saveAll(fileList);
+                i++;
             }
-            List<TaskFile> fileList = taskFileRepo.findAllById(Arrays.asList(params.getIdList()));
-            for(TaskFile f:fileList){
-                f.setTask(save);
-            }
-            taskFileRepo.saveAll(fileList);
-            i++;
         }
 
         List<String> classNameList = params.getClassNameList();
@@ -563,7 +565,10 @@ public class A2Service {
     public void deleteTask(SearchVO params){
         for(long id : params.getIdList()){
             Task task = taskRepo.findById(id).orElseThrow(() -> new ApiException("과제 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
-            taskMapRepo.delete(task.getTaskMap());
+            taskRepo.delete(task);
+            if(task.getAcademyClass().getAcademyType() == Types.AcademyType.ETC){
+                academyClassRepo.delete(task.getAcademyClass());
+            }
         }
     }
 

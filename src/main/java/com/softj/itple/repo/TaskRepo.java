@@ -18,4 +18,6 @@ import java.util.List;
 public interface TaskRepo extends JpaRepository<Task, Long>, QuerydslPredicateExecutor<Task> {
 
     List<Task> findByTaskMap(TaskMap taskMap);
+
+    Task findByAcademyClass(AcademyClass academyClass);
 }

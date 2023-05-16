@@ -87,9 +87,10 @@ public class A3Service{
     }
 
     @Transactional
-    public Student updateStudent(SearchVO params){
+    public List<StudentTaskFile> updateStudent(SearchVO params){
         Student save = studentRepo.findById(params.getStudentId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
         Student attendStudent = studentRepo.findByAttendanceNo(params.getAttendanceNo()).orElse(Student.builder().build());
+        List<StudentTaskFile> newStudentTaskFileList = new ArrayList<>();
 
         if(!LongUtils.isEmpty(attendStudent.getId()) && save.getId() != attendStudent.getId()){
             throw new ApiException("동일한 출결번호가 존재합니다. 출결번호를 변경해주세요.", ErrorCode.INTERNAL_SERVER_ERROR);
@@ -142,6 +143,7 @@ public class A3Service{
                         }
                     }
 
+
                     StudentTask newStudentTask = StudentTask.builder().build();
                     newStudentTask.setStudent(save);
                     newStudentTask.setTask(newTask);
@@ -150,21 +152,18 @@ public class A3Service{
                     newStudentTask.setStatus(studentTask.getStatus());
                     newStudentTask.setReturnMessage(studentTask.getReturnMessage());
                     newStudentTask.setCompDate(studentTask.getCompDate());
-                    studentTaskRepo.save(newStudentTask);
+                    StudentTask newStudentTaskId = studentTaskRepo.save(newStudentTask);
 
-                    List<StudentTaskFile> newStudentTaskFileList = new ArrayList<>();
+
                     for(StudentTaskFile studentTaskFile : studentTask.getStudentTaskFileList()){
-                        StudentTaskFile newStudentTaskFile = StudentTaskFile.builder().build();
-                        newStudentTaskFile.setStudentTask(newStudentTask);
-                        newStudentTaskFile.setOrgFileName(studentTaskFile.getOrgFileName());
-                        newStudentTaskFile.setUploadFileName(studentTaskFile.getUploadFileName());
-                        newStudentTaskFileList.add(newStudentTaskFile);
+                        studentTaskFile.setStudentTask(newStudentTaskId);
+                        studentTaskFileRepo.save(studentTaskFile);
                     }
 
                     boolean orgFlag = false;
 
                     for(StudentTask orgStudentTask : task.getStudentTasks()){
-                        if(orgStudentTask.getStudent() == save){
+                        if(orgStudentTask.getStudent().getId() == save.getId()){
                             studentTaskRepo.delete(orgStudentTask);
                         }else{
                             orgFlag = true;
@@ -175,15 +174,7 @@ public class A3Service{
                         taskRepo.delete(task);
                     }
 
-
-                    studentTaskFileRepo.deleteAllByStudentTask(studentTask);
-                    studentTaskFileRepo.flush();
-
-                    for(StudentTaskFile newStudentTaskFile : newStudentTaskFileList){
-                        studentTaskFileRepo.save(newStudentTaskFile);
-                    }
                 }
-
             }
 
             save.setAcademyClass(academyClass);
@@ -240,7 +231,26 @@ public class A3Service{
                     .attendanceDay(params.getDayOfWeekList()[i])
                     .build());
         }
-        return save;
+        return newStudentTaskFileList;
+    }
+
+    @Transactional
+    public void saveTaskFileList(SearchVO params) {
+
+        String[] studentTaskIdList = params.getStudentTaskIdList();
+        String[] orgFileNameList = params.getOrgFileNameList();
+        String[] uploadFileNameList = params.getUploadFileNameList();
+
+        if (studentTaskIdList.length > 0) {
+            for(int i=0; i<studentTaskIdList.length; i++){
+                StudentTask newStudentTask = studentTaskRepo.findById(Long.parseLong(studentTaskIdList[i])).orElseThrow(() -> new ApiException("과제 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
+                StudentTaskFile newStudentTaskFile = StudentTaskFile.builder().build();
+                newStudentTaskFile.setStudentTask(newStudentTask);
+                newStudentTaskFile.setOrgFileName(orgFileNameList[i]);
+                newStudentTaskFile.setUploadFileName(uploadFileNameList[i]);
+                studentTaskFileRepo.save(newStudentTaskFile);
+            }
+        }
     }
 
     @Transactional

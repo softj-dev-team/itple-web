@@ -42,7 +42,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             var endDate = $("input[name=endDate]").val();
             var coin = $("input[name=coin]").val();
             var taskType = $("input[name=taskType]").val();
-            var classIdListLength  = $("#form1 input[name=classIdList]").length;
+            //var classIdListLength  = $("#form1 input[name=classIdList]").length;
 
 
             if(ut.isEmpty(subject)){
@@ -70,10 +70,10 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
                 return;
             }
 
-            if(classIdListLength < 1){
+            /*if(classIdListLength < 1){
                 modal.alert("학생을 한명 이상 선택해주세요.");
                 return;
-            }
+            }*/
 
             var classNameListFlag = false;
             $("#form1 input[name=classNameList]").each(function(){
@@ -200,7 +200,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             $.post(url,formS1.serialize(),function(){
                 loading(0);
                 modal.alert('삭제되었습니다.');
-                location.reload();
+                ut.redirect("/a2/p1-teacher/"+$("#teacherId").val(),"taskType",$("#taskType").val());
             });
             break;
         /*학생 과제 삭제*/

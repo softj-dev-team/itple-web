@@ -527,7 +527,11 @@
             location.href = "/a3/p1-point/"+id;
         }
         function goList(){
-            location.href="/a3/p1?page=[[${params.page}]]&academyType="+[[${params.academyType}]];
+            if([[${params.academyType}]] != null) {
+                location.href = "/a3/p1?page=[[${params.page}]]&academyType=" + [[${params.academyType}]];
+            }else{
+                location.href = "/a3/p1?page=[[${params.page}]]";
+            }
         }
     </script>
 </th:block>
