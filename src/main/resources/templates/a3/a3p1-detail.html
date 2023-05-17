@@ -65,7 +65,7 @@
                         <i class="i-date"></i>
                     </div>
                     <label for="" class="mb5">반</label>
-                    <select name="classId" class="input-df mb20">
+                    <select name="classId" id="classId" class="input-df mb20">
                         <option value="">-- 선택 --</option>
                         <option th:each="class : ${classList}" th:value="${class.id}" th:text="|[${class.academyType.message}] ${class.className}|" th:selected="${#strings.equals(class.className, el.academyClass?.className)}">잇플코딩입문반</option>
                     </select>
@@ -414,6 +414,7 @@
             var price = $("input[name=price]").val();
             var coin = $("input[name=coin]").val();
             var coinSel = $("select[name=coinMemo]").val();
+            var classId = $("select[name=classId]").val();
             var telNo = $("input[name=telNo]").val();
             var studentStatus = $("select[name=studentStatus]").val();
 
@@ -432,6 +433,10 @@
             }
             if(ut.isEmpty(enterDate)){
                 modal.required("입학일");
+                return;
+            }
+            if(ut.isEmpty(classId)){
+                modal.required("반");
                 return;
             }
             if(ut.isEmpty(userName)){

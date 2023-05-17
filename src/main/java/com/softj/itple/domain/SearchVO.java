@@ -121,6 +121,7 @@ public class SearchVO {
 	private String searchCateogry;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate outDate;
+	private List<StudentTaskFile> studentTaskFileList;
 	private String[] studentTaskIdList;
 	private String[] orgFileNameList;
 	private String[] uploadFileNameList;

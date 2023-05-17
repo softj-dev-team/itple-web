@@ -2,12 +2,15 @@ package com.softj.itple.controller;
 
 import com.softj.itple.domain.Response;
 import com.softj.itple.domain.SearchVO;
+import com.softj.itple.entity.StudentTaskFile;
 import com.softj.itple.service.A3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 @RequestMapping("/api/a3")
@@ -20,15 +23,13 @@ public class A3RestController {
     //저장
     @PostMapping("/p1/s1")
     public Response p1s1(SearchVO params){
-        return Response.builder()
-                .data(a3Service.updateStudent(params))
-                .build();
+        a3Service.updateStudent(params);
+        return Response.builder().build();
     }
 
     //저장
     @PostMapping("/p1/s2")
     public Response p1s2(SearchVO params){
-        a3Service.saveTaskFileList(params);
         return Response.builder().build();
     }
 

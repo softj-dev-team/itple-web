@@ -152,13 +152,24 @@ public class A3Service{
                     newStudentTask.setStatus(studentTask.getStatus());
                     newStudentTask.setReturnMessage(studentTask.getReturnMessage());
                     newStudentTask.setCompDate(studentTask.getCompDate());
-                    StudentTask newStudentTaskId = studentTaskRepo.save(newStudentTask);
-
+                    studentTaskRepo.save(newStudentTask);
 
                     for(StudentTaskFile studentTaskFile : studentTask.getStudentTaskFileList()){
-                        studentTaskFile.setStudentTask(newStudentTaskId);
+                        studentTaskFile.setStudentTask(newStudentTask);
                         studentTaskFileRepo.save(studentTaskFile);
                     }
+
+
+                    /*for(StudentTaskFile studentTaskFile : studentTask.getStudentTaskFileList()){
+                        StudentTaskFile newStudentTaskFile = StudentTaskFile.builder().build();
+                        newStudentTaskFile.setStudentTask(newStudentTask);
+                        newStudentTaskFile.setOrgFileName(studentTaskFile.getOrgFileName());
+                        newStudentTaskFile.setUploadFileName(studentTaskFile.getUploadFileName());
+                        newStudentTaskFileList.add(newStudentTaskFile);
+                    }
+
+                    studentTaskFileRepo.deleteAllByStudentTask(studentTask);
+                    studentTaskFileRepo.flush();*/
 
                     boolean orgFlag = false;
 
@@ -173,7 +184,6 @@ public class A3Service{
                     if(!orgFlag){
                         taskRepo.delete(task);
                     }
-
                 }
             }
 
@@ -237,12 +247,20 @@ public class A3Service{
     @Transactional
     public void saveTaskFileList(SearchVO params) {
 
-        String[] studentTaskIdList = params.getStudentTaskIdList();
-        String[] orgFileNameList = params.getOrgFileNameList();
-        String[] uploadFileNameList = params.getUploadFileNameList();
+        List<StudentTaskFile> studentTaskFileList = params.getStudentTaskFileList();
 
-        if (studentTaskIdList.length > 0) {
-            for(int i=0; i<studentTaskIdList.length; i++){
+        /*String[] studentTaskIdList = params.getStudentTaskIdList();
+        String[] orgFileNameList = params.getOrgFileNameList();
+        String[] uploadFileNameList = params.getUploadFileNameList();*/
+
+        if(studentTaskFileList.size() > 0){
+            for(StudentTaskFile studentTaskFile : studentTaskFileList){
+                studentTaskFileRepo.save(studentTaskFile);
+            }
+        }
+
+        /*if (studentTaskFileList.size() > 0) {
+            for(int i=0; i<studentTaskFileList.size(); i++){
                 StudentTask newStudentTask = studentTaskRepo.findById(Long.parseLong(studentTaskIdList[i])).orElseThrow(() -> new ApiException("과제 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
                 StudentTaskFile newStudentTaskFile = StudentTaskFile.builder().build();
                 newStudentTaskFile.setStudentTask(newStudentTask);
@@ -250,7 +268,7 @@ public class A3Service{
                 newStudentTaskFile.setUploadFileName(uploadFileNameList[i]);
                 studentTaskFileRepo.save(newStudentTaskFile);
             }
-        }
+        }*/
     }
 
     @Transactional
