@@ -19,5 +19,7 @@ public interface TaskRepo extends JpaRepository<Task, Long>, QuerydslPredicateEx
 
     List<Task> findByTaskMap(TaskMap taskMap);
 
-    Task findByAcademyClass(AcademyClass academyClass);
+    List<Task> findByAcademyClass(AcademyClass academyClass);
+
+    Task getById(long id);
 }

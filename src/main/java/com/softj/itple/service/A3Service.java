@@ -87,10 +87,12 @@ public class A3Service{
     }
 
     @Transactional
-    public List<StudentTaskFile> updateStudent(SearchVO params){
+    public HashMap<String, Object> updateStudent(SearchVO params){
         Student save = studentRepo.findById(params.getStudentId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
         Student attendStudent = studentRepo.findByAttendanceNo(params.getAttendanceNo()).orElse(Student.builder().build());
-        List<StudentTaskFile> newStudentTaskFileList = new ArrayList<>();
+        HashMap<String, Object> resultMap = new HashMap<>();
+        List<Long> bfStudentTaskList = new ArrayList<>();
+        List<Long> bfTaskList = new ArrayList<>();
 
         if(!LongUtils.isEmpty(attendStudent.getId()) && save.getId() != attendStudent.getId()){
             throw new ApiException("동일한 출결번호가 존재합니다. 출결번호를 변경해주세요.", ErrorCode.INTERNAL_SERVER_ERROR);
@@ -98,7 +100,7 @@ public class A3Service{
 
         save.getUser().setUserName(params.getUserName());
         save.getUser().setApproved(Boolean.parseBoolean(params.getApproved()));
-        //        save.getUser().setUserId(params.getUserId());
+
         userRepo.save(save.getUser());
 
         long prevCoin = save.getCoin();
@@ -107,82 +109,70 @@ public class A3Service{
         if(LongUtils.noneEmpty(params.getClassId())) {
             AcademyClass academyClass = academyClassRepo.findById(params.getClassId()).orElseThrow(() -> new ApiException("반 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
             if(save.getAcademyClass() != null && save.getAcademyClass().getId() != params.getClassId()){
-                List<StudentTask> studentTaskList = studentTaskRepo.findByStudent(save.getUser().getStudent());
-                for(StudentTask studentTask : studentTaskList){
-                    Task task = studentTask.getTask();
-                    List<Task> afterTaskList = academyClass.getTaskList();
-                    Task newTask = Task.builder().build();
-                    boolean flag = false;
+                List<Task> taskList = taskRepo.findByAcademyClass(save.getAcademyClass());
+                List<Task> afterTaskList = taskRepo.findByAcademyClass(academyClass);
+                boolean orgFlag = false;
+                for(Task task : taskList){
+                    List<StudentTask> studentTaskList = task.getStudentTasks();
 
-                    if(afterTaskList != null) {
-                        for (Task afterTask : afterTaskList) {
-                            if (afterTask.getId() == task.getRootId()) {
-                                flag = true;
-                                newTask = afterTask;
+                    for(StudentTask studentTask : studentTaskList){
+                        if(studentTask.getStudent().getId() == save.getId()){
+
+                            Task newTask = Task.builder().build();
+                            boolean flag = false;
+
+                            if(afterTaskList != null) {
+                                for (Task afterTask : afterTaskList) {
+                                    if (afterTask.getId() == task.getRootId()) {
+                                        flag = true;
+                                        newTask = afterTask;
+                                    }
+                                }
                             }
-                        }
-                    }
 
-                    if(!flag) {
-                        newTask.setAcademyClass(academyClass);
-                        newTask.setTaskType(task.getTaskType());
-                        newTask.setCoin(task.getCoin());
-                        newTask.setContents(task.getContents());
-                        newTask.setStartDate(task.getStartDate());
-                        newTask.setEndDate(task.getEndDate());
-                        newTask.setSubject(task.getSubject());
-                        newTask.setTeacher(academyClass.getUser().getUserName());
-                        newTask.setRootId(task.getRootId());
-                        newTask.setTaskMap(task.getTaskMap());
-                        newTask.setTaskMapName(task.getTaskMapName());
-                        taskRepo.save(newTask);
+                            if(!flag) {
+                                newTask.setAcademyClass(academyClass);
+                                newTask.setTaskType(task.getTaskType());
+                                newTask.setCoin(task.getCoin());
+                                newTask.setContents(task.getContents());
+                                newTask.setStartDate(task.getStartDate());
+                                newTask.setEndDate(task.getEndDate());
+                                newTask.setSubject(task.getSubject());
+                                newTask.setTeacher(academyClass.getUser().getUserName());
+                                newTask.setRootId(task.getRootId());
+                                newTask.setTaskMap(task.getTaskMap());
+                                newTask.setTaskMapName(task.getTaskMapName());
+                                taskRepo.save(newTask);
 
-                        for(TaskFile taskFile : task.getTaskFileList()){
-                            taskFile.setTask(newTask);
-                            taskFileRepo.save(taskFile);
-                        }
-                    }
+                                for(TaskFile taskFile : task.getTaskFileList()){
+                                    taskFile.setTask(newTask);
+                                    taskFileRepo.save(taskFile);
+                                }
+                            }
 
+                            StudentTask newStudentTask = StudentTask.builder().build();
+                            newStudentTask.setStudent(save);
+                            newStudentTask.setTask(newTask);
+                            newStudentTask.setCoinComp(studentTask.getCoinComp());
+                            newStudentTask.setContents(studentTask.getContents());
+                            newStudentTask.setStatus(studentTask.getStatus());
+                            newStudentTask.setReturnMessage(studentTask.getReturnMessage());
+                            newStudentTask.setCompDate(studentTask.getCompDate());
+                            StudentTask newStudentTaskId = studentTaskRepo.save(newStudentTask);
 
-                    StudentTask newStudentTask = StudentTask.builder().build();
-                    newStudentTask.setStudent(save);
-                    newStudentTask.setTask(newTask);
-                    newStudentTask.setCoinComp(studentTask.getCoinComp());
-                    newStudentTask.setContents(studentTask.getContents());
-                    newStudentTask.setStatus(studentTask.getStatus());
-                    newStudentTask.setReturnMessage(studentTask.getReturnMessage());
-                    newStudentTask.setCompDate(studentTask.getCompDate());
-                    studentTaskRepo.save(newStudentTask);
+                            for(StudentTaskFile studentTaskFile : studentTask.getStudentTaskFileList()){
+                                studentTaskFile.setStudentTask(newStudentTaskId);
+                                studentTaskFileRepo.save(studentTaskFile);
+                            }
+                            bfStudentTaskList.add(studentTask.getId());
 
-                    for(StudentTaskFile studentTaskFile : studentTask.getStudentTaskFileList()){
-                        studentTaskFile.setStudentTask(newStudentTask);
-                        studentTaskFileRepo.save(studentTaskFile);
-                    }
-
-
-                    /*for(StudentTaskFile studentTaskFile : studentTask.getStudentTaskFileList()){
-                        StudentTaskFile newStudentTaskFile = StudentTaskFile.builder().build();
-                        newStudentTaskFile.setStudentTask(newStudentTask);
-                        newStudentTaskFile.setOrgFileName(studentTaskFile.getOrgFileName());
-                        newStudentTaskFile.setUploadFileName(studentTaskFile.getUploadFileName());
-                        newStudentTaskFileList.add(newStudentTaskFile);
-                    }
-
-                    studentTaskFileRepo.deleteAllByStudentTask(studentTask);
-                    studentTaskFileRepo.flush();*/
-
-                    boolean orgFlag = false;
-
-                    for(StudentTask orgStudentTask : task.getStudentTasks()){
-                        if(orgStudentTask.getStudent().getId() == save.getId()){
-                            studentTaskRepo.delete(orgStudentTask);
                         }else{
                             orgFlag = true;
                         }
                     }
 
                     if(!orgFlag){
-                        taskRepo.delete(task);
+                        bfTaskList.add(task.getId());
                     }
                 }
             }
@@ -241,26 +231,22 @@ public class A3Service{
                     .attendanceDay(params.getDayOfWeekList()[i])
                     .build());
         }
-        return newStudentTaskFileList;
+
+        resultMap.put("studentTaskList", bfStudentTaskList);
+        resultMap.put("taskList", bfTaskList);
+
+        return resultMap;
     }
 
     @Transactional
     public void saveTaskFileList(SearchVO params) {
 
-        List<StudentTaskFile> studentTaskFileList = params.getStudentTaskFileList();
-
-        /*String[] studentTaskIdList = params.getStudentTaskIdList();
+        String[] studentTaskIdList = params.getStudentTaskIdList();
         String[] orgFileNameList = params.getOrgFileNameList();
-        String[] uploadFileNameList = params.getUploadFileNameList();*/
+        String[] uploadFileNameList = params.getUploadFileNameList();
 
-        if(studentTaskFileList.size() > 0){
-            for(StudentTaskFile studentTaskFile : studentTaskFileList){
-                studentTaskFileRepo.save(studentTaskFile);
-            }
-        }
-
-        /*if (studentTaskFileList.size() > 0) {
-            for(int i=0; i<studentTaskFileList.size(); i++){
+        if (studentTaskIdList.length > 0) {
+            for(int i=0; i<studentTaskIdList.length; i++){
                 StudentTask newStudentTask = studentTaskRepo.findById(Long.parseLong(studentTaskIdList[i])).orElseThrow(() -> new ApiException("과제 정보가 없습니다.", ErrorCode.INTERNAL_SERVER_ERROR));
                 StudentTaskFile newStudentTaskFile = StudentTaskFile.builder().build();
                 newStudentTaskFile.setStudentTask(newStudentTask);
@@ -268,7 +254,7 @@ public class A3Service{
                 newStudentTaskFile.setUploadFileName(uploadFileNameList[i]);
                 studentTaskFileRepo.save(newStudentTaskFile);
             }
-        }*/
+        }
     }
 
     @Transactional
@@ -346,6 +332,34 @@ public class A3Service{
     public void deleteStudent(SearchVO params){
         for(long id : params.getIdList()) {
             studentRepo.deleteById(id);
+        }
+    }
+
+    @Transactional
+    public void deleteStudentTask(SearchVO params){
+        String[] studentTaskIdList = params.getStudentTaskIdList();
+        StudentTask studentTask  = null;
+        if(studentTaskIdList != null) {
+            for (String studentTaskId : studentTaskIdList) {
+                studentTask = studentTaskRepo.getById(Long.parseLong(studentTaskId));
+                if (studentTask != null) {
+                    studentTaskRepo.delete(studentTask);
+                }
+            }
+        }
+    }
+
+    @Transactional
+    public void deleteTask(SearchVO params){
+        String[] taskIdList = params.getTaskIdList();
+        Task task  = null;
+        if(taskIdList != null) {
+            for (String taskId : taskIdList) {
+                task = taskRepo.getById(Long.parseLong(taskId));
+                if (task != null) {
+                    taskRepo.delete(task);
+                }
+            }
         }
     }
 

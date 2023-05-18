@@ -23,13 +23,15 @@ public class A3RestController {
     //저장
     @PostMapping("/p1/s1")
     public Response p1s1(SearchVO params){
-        a3Service.updateStudent(params);
-        return Response.builder().build();
+        return Response.builder()
+                .data(a3Service.updateStudent(params))
+                .build();
     }
 
     //저장
     @PostMapping("/p1/s2")
     public Response p1s2(SearchVO params){
+        a3Service.saveTaskFileList(params);
         return Response.builder().build();
     }
 
@@ -38,6 +40,14 @@ public class A3RestController {
     public Response p1d1(SearchVO params) {
         a3Service.deleteFkStudent(params);
         a3Service.deleteStudent(params);
+        return Response.builder().build();
+    }
+
+    //기존과제삭제
+    @PostMapping("/p1/d2")
+    public Response p1d2(SearchVO params) {
+        a3Service.deleteStudentTask(params);
+        a3Service.deleteTask(params);
         return Response.builder().build();
     }
 }

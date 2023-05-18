@@ -24,5 +24,7 @@ public interface StudentTaskRepo extends JpaRepository<StudentTask, Long>, Query
     List<StudentTask> findByTask(Task task);
 
     List<StudentTask> findByTaskIdAndStatus(long taskId, Types.TaskStatus status);
+
+    StudentTask getById(long id);
 }
 
