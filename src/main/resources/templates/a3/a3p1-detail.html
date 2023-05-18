@@ -553,35 +553,6 @@
                         modal.alert("저장되었습니다.");
                     });
                 }
-                /*if(res.data.length > 0){
-                    var form2 = document.createElement("form");
-                    form2.setAttribute("id","form2");
-                    var studentTaskFileList = res.data;
-                    for(var i=0; i<studentTaskFileList.length; i++){
-                        console.log(studentTaskFileList[i].studentTaskId);
-                        console.log(studentTaskFileList[i].orgFileName);
-                        console.log(studentTaskFileList[i].uploadFileName);
-
-                        var inputStudentTaskIdList = document.createElement("input");
-                        inputStudentTaskIdList.setAttribute("name","studentTaskIdList");
-                        inputStudentTaskIdList.setAttribute("value", studentTaskFileList[i].studentTaskId);
-                        var inputOrgFileNameList = document.createElement("input");
-                        inputOrgFileNameList.setAttribute("name","orgFileNameList");
-                        inputOrgFileNameList.setAttribute("value", studentTaskFileList[i].orgFileName);
-                        var inputUploadFileNameList = document.createElement("input");
-                        inputUploadFileNameList.setAttribute("name","uploadFileNameList");
-                        inputUploadFileNameList.setAttribute("value", studentTaskFileList[i].uploadFileName);
-
-                        form2.append(inputStudentTaskIdList);
-                        form2.append(inputOrgFileNameList);
-                        form2.append(inputUploadFileNameList);
-                        form2.setAttribute("style", "display:none");
-                    }
-                    document.body.append(form2);
-                    $.post("/api/a3/p1/s2", $("#form2").serialize(), function(res){
-                        modal.alert("저장되었습니다.");
-                    });
-                }*/
             });
         }
         function goCoinHistory(id){
