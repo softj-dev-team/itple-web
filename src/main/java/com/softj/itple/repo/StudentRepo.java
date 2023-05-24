@@ -62,10 +62,10 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       LEFT JOIN tb_class B ON B.id = A.class_id " +
             "       JOIN tb_user C ON C.id = A.user_id " +
             "       WHERE A.is_deleted = false " +
-            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NULL THEN A.class_id IS NULL " +
-            "       ELSE A.class_id IS NOT NULL END " +
-            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN B.academy_type = CAST(:academyType AS TEXT) " +
-            "       ELSE B.academy_type IS NULL END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NULL THEN (A.class_id IS NULL OR C.is_approved = false) " +
+            "       ELSE (A.class_id IS NOT NULL AND C.is_approved = true) END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN (B.academy_type = CAST(:academyType AS TEXT) AND C.is_approved = true) " +
+            "       ELSE (B.academy_type IS NULL  OR C.is_approved = false) END " +
             "       AND A.student_status = CASE WHEN CAST(:studentStatus AS TEXT) IS NOT NULL THEN CAST(:studentStatus AS TEXT) " +
             "       ELSE '01' END " +
             "       AND CASE WHEN CAST(:grade AS TEXT) IS NOT NULL THEN A.grade = CAST(:grade AS TEXT) " +
@@ -90,10 +90,10 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       LEFT JOIN tb_class B ON B.id = A.class_id " +
             "       JOIN tb_user C ON C.id = A.user_id " +
             "       WHERE A.is_deleted = false " +
-            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NULL THEN A.class_id IS NULL " +
-            "       ELSE A.class_id IS NOT NULL END " +
-            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN B.academy_type = CAST(:academyType AS TEXT) " +
-            "       ELSE B.academy_type IS NULL END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NULL THEN (A.class_id IS NULL OR C.is_approved = false) " +
+            "       ELSE (A.class_id IS NOT NULL AND C.is_approved = true) END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN (B.academy_type = CAST(:academyType AS TEXT) AND C.is_approved = true) " +
+            "       ELSE (B.academy_type IS NULL  OR C.is_approved = false) END " +
             "       AND A.student_status = CASE WHEN CAST(:studentStatus AS TEXT) IS NOT NULL THEN CAST(:studentStatus AS TEXT) " +
             "       ELSE '01' END " +
             "       AND CASE WHEN CAST(:grade AS TEXT) IS NOT NULL THEN A.grade = CAST(:grade AS TEXT) " +
@@ -110,7 +110,7 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       ELSE A.parent_tel LIKE '%' OR A.parent_tel IS NULL END " +
             "       AND CASE WHEN CAST(:searchType AS TEXT) = 'attendanceNo' THEN A.attendance_no LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE A.attendance_no LIKE '%' OR A.attendance_no IS NULL END " +
-            "       ORDER BY CASE WHEN :edOrder IS NULL THEN C.user_name collate \"ko_KR.utf8\" END asc, " +//
+            "       ORDER BY CASE WHEN (:edOrder IS NULL OR :edOrder = '')THEN C.user_name collate \"ko_KR.utf8\" END asc, " +//
             "       CASE WHEN :edOrder = 'asc' THEN A.enter_date END asc, " +
             "       CASE WHEN :edOrder = 'desc' THEN A.enter_date END desc", nativeQuery = true)
     List<Student> getStudentList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue, Pageable pageable);
@@ -121,10 +121,10 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       LEFT JOIN tb_class B ON B.id = A.class_id " +
             "       JOIN tb_user C ON C.id = A.user_id " +
             "       WHERE A.is_deleted = false " +
-            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NULL THEN A.class_id IS NULL " +
-            "       ELSE A.class_id IS NOT NULL END " +
-            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN B.academy_type = CAST(:academyType AS TEXT) " +
-            "       ELSE B.academy_type IS NULL END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NULL THEN (A.class_id IS NULL OR C.is_approved = false) " +
+            "       ELSE (A.class_id IS NOT NULL AND C.is_approved = true) END " +
+            "       AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN (B.academy_type = CAST(:academyType AS TEXT) AND C.is_approved = true) " +
+            "       ELSE (B.academy_type IS NULL  OR C.is_approved = false) END " +
             "       AND A.student_status = CASE WHEN CAST(:studentStatus AS TEXT) IS NOT NULL THEN CAST(:studentStatus AS TEXT) " +
             "       ELSE '01' END " +
             "       AND CASE WHEN CAST(:grade AS TEXT) IS NOT NULL THEN A.grade = CAST(:grade AS TEXT) " +
@@ -141,7 +141,7 @@ public interface StudentRepo extends JpaRepository<Student, Long>, QuerydslPredi
             "       ELSE A.parent_tel LIKE '%' OR A.parent_tel IS NULL END " +
             "       AND CASE WHEN CAST(:searchType AS TEXT) = 'attendanceNo' THEN A.attendance_no LIKE '%'||CAST(:searchValue AS TEXT)||'%' " +
             "       ELSE A.attendance_no LIKE '%' OR A.attendance_no IS NULL END " +
-            "       ORDER BY CASE WHEN :edOrder IS NULL THEN C.user_name collate \"ko_KR.utf8\" END asc, " +
+            "       ORDER BY CASE WHEN (:edOrder IS NULL OR :edOrder = '') THEN C.user_name collate \"ko_KR.utf8\" END asc, " +
             "       CASE WHEN :edOrder = 'asc' THEN A.enter_date END asc, " +
             "       CASE WHEN :edOrder = 'desc' THEN A.enter_date END desc", nativeQuery = true)
     List<Student> getStudentExcelList(@Param("studentStatus")String studentStatus, @Param("academyType")String academyType, @Param("grade")String grade, @Param("classId")Long classId, @Param("edOrder")String edOrder, @Param("searchType")String searchType, @Param("searchValue")String searchValue);
