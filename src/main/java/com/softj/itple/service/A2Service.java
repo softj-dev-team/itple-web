@@ -241,7 +241,7 @@ public class A2Service {
                 .from(qTask)
                 .leftJoin(qStudentTask).on(qStudentTask.task.eq(qTask))
                 .where(where)
-                .orderBy(qTask.id.desc())
+                .orderBy(qTask.startDate.desc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset());
 

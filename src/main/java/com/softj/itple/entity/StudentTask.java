@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -27,11 +28,11 @@ public class StudentTask extends Auditing{
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
 
-    @Convert(converter = Types.TaskStatus.Converter.class)
-    private Types.TaskStatus status;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Task task;
+
+    @Convert(converter = Types.TaskStatus.Converter.class)
+    private Types.TaskStatus status;
 
     private String contents;
 
@@ -44,5 +45,4 @@ public class StudentTask extends Auditing{
     @OneToMany(mappedBy = "studentTask",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     private List<StudentTaskFile> studentTaskFileList;
-
 }

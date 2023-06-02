@@ -18,8 +18,7 @@ import com.softj.itple.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -47,13 +46,27 @@ public class C2Service {
 
     public Page<StudentTask> getStudentTaskList(SearchVO params, Pageable pageable){
         QStudentTask qStudentTask = QStudentTask.studentTask;
+        QTask qTask = QTask.task;
         BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qStudentTask.student.eq(AuthUtil.getStudent())));
 
         if(Objects.nonNull(params.getTaskType())){
             where.and(qStudentTask.task.taskType.eq(params.getTaskType()));
         }
 
-        return studentTaskRepo.findAll(where, pageable);
+        JPAQuery<StudentTask> query = jpaQueryFactory.select(Projections.fields(StudentTask.class,
+                        qStudentTask.id,
+                        qStudentTask.status,
+                        qStudentTask.student,
+                        qTask
+                ))
+                .from(qTask)
+                .leftJoin(qStudentTask).on(qStudentTask.task.eq(qTask))
+                .where(where)
+                .orderBy(qTask.startDate.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
+
+        return new PageImpl<StudentTask>(query.fetch(), pageable, query.fetchCount());
     }
 
     public Page<StudentTask> getStudentTaskAdminList(SearchVO params, Pageable pageable){
