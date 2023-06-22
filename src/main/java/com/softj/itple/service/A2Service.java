@@ -85,6 +85,10 @@ public class A2Service {
             where.and(qAcademyClass.className.contains(params.getSearchValue()));
         }
 
+        if(params.getAcademyType().equals(Types.AcademyType.ETC)){
+            where.and(qAcademyClass.taskType.eq(params.getTaskType()));
+        }
+
         JPAQuery<AcademyClass> query = jpaQueryFactory.select(Projections.fields(AcademyClass.class,
                         qAcademyClass.id,
                         qAcademyClass.className,
@@ -521,6 +525,7 @@ public class A2Service {
                 academyClass.setClassName(className);
                 academyClass.setUser(user);
                 academyClass.setIsInvisible(false);
+                academyClass.setTaskType(params.getTaskType());
                 AcademyClass savedClass = academyClassRepo.save(academyClass);
 
                 Task save = Task.builder().build();

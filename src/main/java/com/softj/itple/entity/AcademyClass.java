@@ -32,8 +32,11 @@ public class AcademyClass extends Auditing{
     @Transient
     private List<Task> taskList;
 
+    @Convert(converter = Types.TaskType.Converter.class)
+    private Types.TaskType taskType;
+
     @Builder
-    public AcademyClass(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, Types.AcademyType academyType, String className, long studentCount, List<Task> taskList, Boolean isInvisible, User user) {
+    public AcademyClass(long id, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, String createdId, String updatedId, Types.AcademyType academyType, String className, long studentCount, List<Task> taskList, Boolean isInvisible, User user, Types.TaskType taskType) {
         super(id, createdAt, updatedAt, isDeleted, createdId, updatedId);
         this.academyType = academyType;
         this.className = className;
@@ -41,5 +44,6 @@ public class AcademyClass extends Auditing{
         this.taskList = taskList;
         this.isInvisible = isInvisible;
         this.user = user;
+        this.taskType = taskType;
     }
 }
