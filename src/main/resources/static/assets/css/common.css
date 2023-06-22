@@ -582,6 +582,22 @@ i.i-date{
     background:#ffffff;
     border-radius: 0 0 10px 10px;
 }
+.modalBody.mobodyScroll{
+    height: calc(100vh - 100px);
+    max-height: 832px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.modalBody.mobodyScroll::-webkit-scrollbar {
+    display: none;
+}
+.modalBody.mobodyScroll .modalMain{
+    min-height: 350px;
+}
+.modalBody.mobodyScroll .modalMain img{
+    width: 100% !important;
+}
 .xs .modalBody{
     text-align: center;
 }
