@@ -17,7 +17,9 @@
             <ul class="tab-ul">
                 <li th:if="${#strings.equals(session.studentVO.academyClass.academyType,T(com.softj.itple.domain.Types.AcademyType).CODING)}" th:classappend="${#strings.equals(params.portfolioType,'COMPETITION') ? 'active' : ''}"><a th:href="|/c4/p1?portfolioType=COMPETITION|">각종대회/영재원</a></li>
                 <li th:if="${#strings.equals(session.studentVO.academyClass.academyType,T(com.softj.itple.domain.Types.AcademyType).CODING)}" th:classappend="${#strings.equals(params.portfolioType,'CERTIFICATE') ? 'active' : ''}"><a th:href="|/c4/p1?portfolioType=CERTIFICATE|">자격증/인증서</a></li>
+                <li th:if="${#strings.equals(session.studentVO.academyClass.academyType,T(com.softj.itple.domain.Types.AcademyType).CODING)}" th:classappend="${#strings.equals(params.portfolioType,'CODELEVEL') ? 'active' : ''}"><a th:href="|/c4/p1?portfolioType=CODELEVEL|">레벨테스트</a></li>
                 <li th:if="${#strings.equals(session.studentVO.academyClass.academyType,T(com.softj.itple.domain.Types.AcademyType).ENGLISH)}" th:classappend="${#strings.equals(params.portfolioType,'LEARNING') ? 'active' : ''}"><a th:href="|/c4/p1?portfolioType=LEARNING|">Learning History</a></li>
+                <li th:if="${#strings.equals(session.studentVO.academyClass.academyType,T(com.softj.itple.domain.Types.AcademyType).ENGLISH)}" th:classappend="${#strings.equals(params.portfolioType,'ENGLISHLEVEL') ? 'active' : ''}"><a th:href="|/c4/p1?portfolioType=ENGLISHLEVEL|">레벨테스트</a></li>
             </ul>
         </div>
         <div class="content-in clearfix">
