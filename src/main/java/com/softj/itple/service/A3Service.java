@@ -325,6 +325,7 @@ public class A3Service{
                     portfolioFileRepo.delete(portfolioFile);
                 }
             }
+            studentRepo.deleteById(id);
         }
     }
 

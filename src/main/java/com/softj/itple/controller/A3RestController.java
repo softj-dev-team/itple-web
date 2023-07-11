@@ -39,7 +39,7 @@ public class A3RestController {
     @PostMapping("/p1/d1")
     public Response p1d1(SearchVO params) {
         a3Service.deleteFkStudent(params);
-        a3Service.deleteStudent(params);
+        //a3Service.deleteStudent(params);
         return Response.builder().build();
     }
 

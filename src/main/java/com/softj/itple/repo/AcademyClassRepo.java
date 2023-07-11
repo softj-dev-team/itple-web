@@ -23,13 +23,13 @@ public interface AcademyClassRepo extends JpaRepository<AcademyClass, Long>, Que
     @Query(value = "SELECT count(a.id) from tb_class a WHERE CASE WHEN CAST(:className AS TEXT) IS NULL THEN (1=1) ELSE (a.class_name LIKE '%'||CAST(:className AS TEXT)||'%') END AND a.is_deleted=false AND a.academy_type = :academyType", nativeQuery = true)
     int getAcademyClassListTotal(@Param("academyType") String academyType, @Param("className") String className);
 
-    @Query(value = "SELECT a.* from tb_class a WHERE a.is_deleted = :isDeleted AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN a.academy_type = COALESCE(CAST(:academyType AS TEXT), '') ELSE 1=1 END ORDER BY a.class_name collate \"ko_KR.utf8\" asc, a.id asc", nativeQuery = true)//
+    @Query(value = "SELECT a.* from tb_class a WHERE a.is_deleted = :isDeleted AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN a.academy_type = COALESCE(CAST(:academyType AS TEXT), '') ELSE a.academy_type != '03' END ORDER BY a.class_name collate \"ko_KR.utf8\" asc, a.id asc", nativeQuery = true)//
     List<AcademyClass> getAllAcademyClassList(@Param("isDeleted") Boolean isDeleted, @Param("academyType") String academyType);
 
-    @Query(value = "SELECT a.* from tb_class a WHERE a.is_deleted = :isDeleted AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN a.academy_type = COALESCE(CAST(:academyType AS TEXT), '') ELSE 1=1 END AND a.user_id = :teacherId ORDER BY a.class_name collate \"ko_KR.utf8\" asc, a.id asc", nativeQuery = true)
+    @Query(value = "SELECT a.* from tb_class a WHERE a.is_deleted = :isDeleted AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN a.academy_type = COALESCE(CAST(:academyType AS TEXT), '') ELSE a.academy_type != '03' END AND a.user_id = :teacherId ORDER BY a.class_name collate \"ko_KR.utf8\" asc, a.id asc", nativeQuery = true)
     List<AcademyClass> getTeacherAcademyClassList(@Param("isDeleted") Boolean isDeleted, @Param("academyType") String academyType, @Param("teacherId") Long teacherId);
 
-    @Query(value = "SELECT a.* from tb_class a WHERE a.is_deleted = :isDeleted AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN a.academy_type = COALESCE(CAST(:academyType AS TEXT), '') ELSE 1=1 END AND a.user_id != :teacherId ORDER BY a.class_name collate \"ko_KR.utf8\" asc, a.id asc", nativeQuery = true)
+    @Query(value = "SELECT a.* from tb_class a WHERE a.is_deleted = :isDeleted AND CASE WHEN CAST(:academyType AS TEXT) IS NOT NULL THEN a.academy_type = COALESCE(CAST(:academyType AS TEXT), '') ELSE a.academy_type != '03' END AND a.user_id != :teacherId ORDER BY a.class_name collate \"ko_KR.utf8\" asc, a.id asc", nativeQuery = true)
     List<AcademyClass> getOtherAcademyClassList(@Param("isDeleted") Boolean isDeleted, @Param("academyType") String academyType, @Param("teacherId") Long teacherId);
 
 }
