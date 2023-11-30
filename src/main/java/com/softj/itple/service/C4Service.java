@@ -48,6 +48,10 @@ public class C4Service {
     }
 
     public Portfolio getPortfolio(SearchVO params){
-        return portfolioRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        Portfolio find = portfolioRepo.findById(params.getId()).orElseThrow(() -> new ApiException(ErrorCode.DATA_NOT_FOUND));
+        if(AuthUtil.getUser().getId() != find.getUser().getId()){
+            throw new ApiException(ErrorCode.DATA_NOT_FOUND);
+        }
+        return find;
     }
 }
