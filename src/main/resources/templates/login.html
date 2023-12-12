@@ -29,6 +29,20 @@
         </div>
     </form>
 
+    <div th:if="${@environment.getProperty('spring.profiles.active') eq 'dev'}" style="position: fixed;
+    top: 50%;
+    left: 20%;">
+        <input type="text" id="userName">
+        <button type="button" onclick="proxyLogin()">프록시 로그인</button>
+        <script>
+            function proxyLogin() {
+                $.post("/proxyLogin", {userName: $("#userName").val()}, function() {
+                    location.reload();
+                });
+            }
+        </script>
+    </div>
+
     <script th:inline="javascript">
         /*<![CDATA[*/
         /*]]>*/

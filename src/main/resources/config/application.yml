@@ -156,15 +156,24 @@ file:
 
 logging:
   file:
-    path: ./log
+    name: ./log/spring.log
+  logback:
+    rollingpolicy:
+      max-history: 7
+      total-size-cap: 10GB
+      max-file-size: 30MB
   pattern:
     console: ${CONSOLE_LOG_PATTERN:%clr(%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m (%file:%line\) %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}}
-    file:  ${CONSOLE_LOG_PATTERN:%clr(%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m (%file:%line\) %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}}
+    file: ${CONSOLE_LOG_PATTERN:%clr(%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m (%file:%line\) %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}}
   level:
     ROOT: INFO
-    com.softj.itple: DEBUG
+    com.softj.naek: DEBUG
     org.springframework.boot: INFO
     org.springframework.web: DEBUG
     org.hibernate.SQL: ERROR
     org.hibernate.type.descriptor.sql: ERROR
     jdbc.resultset: ERROR
+    jdbc.sqlonly: INFO
+    jdbc.audit: ERROR
+    jdbc.resultsettable: ERROR
+    jdbc.sqltiming: ERROR

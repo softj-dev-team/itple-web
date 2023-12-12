@@ -72,9 +72,25 @@ public class C2Service {
     public Page<StudentTask> getStudentTaskAdminList(SearchVO params, Pageable pageable){
         QStudentTask qStudentTask = QStudentTask.studentTask;
         QTask qTask = QTask.task;
-        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false).and(qTask.createdId.eq(Long.toString(AuthUtil.getAdmin().getUser().getId()))).and(qStudentTask.status.eq(Types.TaskStatus.SUBMIT)));
+        BooleanBuilder where = new BooleanBuilder().and(qStudentTask.isDeleted.eq(false));
+        where.and(qStudentTask.task.createdId.eq(String.valueOf(AuthUtil.getUserId())));
+        where.and(qStudentTask.status.eq(Types.TaskStatus.SUBMIT));
 
-        return studentTaskRepo.findAll(where, pageable);
+        JPAQuery<StudentTask> query = jpaQueryFactory.select(Projections.fields(StudentTask.class,
+                        qStudentTask.id,
+                        qStudentTask.status,
+                        qStudentTask.student,
+                        qTask
+                ))
+                .from(qStudentTask)
+                .leftJoin(qTask)
+                .on(qStudentTask.task.eq(qTask))
+                .where(where)
+                .orderBy(qTask.startDate.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
+
+        return new PageImpl<StudentTask>(query.fetch(), pageable, query.fetchCount());
     }
 
     public List<BookReportStampDTO> getBookReportStampList(SearchVO params){
