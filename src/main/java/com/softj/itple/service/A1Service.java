@@ -188,12 +188,18 @@ public class A1Service {
         }else{
             if(StringUtils.equals(book.getBookStatus(),"RETURN") || StringUtils.equals(book.getBookStatus(),"AVAILABLE"))
                 throw new ApiException("대여되지 않은 도서입니다.", ErrorCode.INTERNAL_SERVER_ERROR);
-            if(!StringUtils.equals(save.getUser().getUserName(),params.getUserName()))
+            if(StringUtils.equals(params.getEvBookRental(),"RELOAN") && !StringUtils.equals(save.getUser().getUserName(),params.getUserName())){
+                throw new ApiException("연장하는 대여자와 기존 대여자가 일치하지 않습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+            }else if (!StringUtils.equals(save.getUser().getUserName(),params.getUserName())) {
                 throw new ApiException("대여한 대여자와 반납하는 대여자가 일치하지 않습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+            }
             if(save.getUser().getId() != student.getUser().getId())
                 throw new ApiException("대여한 출결번호와 반납하는 출결번호가 일치하지 않습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
 
             status = Types.BookRentalStatus.RETURN;
+            if(StringUtils.equals(params.getEvBookRental(),"RELOAN")) {
+                status = Types.BookRentalStatus.LOAN;
+            }
             returnDate = LocalDate.now();
         }
 

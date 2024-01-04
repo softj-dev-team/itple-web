@@ -67,6 +67,9 @@
     </form>
     <script th:src="@{/assets/js/a1/a1p1.js(v='1.0.0')}"></script>
     <script th:inline="javascript">
+        var nmvailChk = $("#userName").val();
+        var dateVailChk = $("#endDate").val();
+
         $(".datepicker").datepicker({
             format: "yyyy-mm-dd",
             language: "ko",
@@ -74,7 +77,6 @@
         });
 
         function goLoanReturn(evBookRental){
-
             var userName = $("#userName").val();
 
             if(userName === ""){
@@ -105,7 +107,12 @@
                 return;
             }
 
-            $("#evBookRental").val(evBookRental);
+            if(vailChk == $("#userName").val() && dateVailChk!=$("#endDate").val()){
+                $("#evBookRental").val("RELOAN");
+            } else {
+                $("#evBookRental").val(evBookRental);
+            }
+
             goAction('S2');
 
         }
