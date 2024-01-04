@@ -240,12 +240,14 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
         /*팝업*/
         case "P1":
             $.post(path+'/p1',{id: arg1},function(res){
+                console.log(res);
                 var el = res.data;
 
                 $("#reportMo .modalGroup").html(`[${el.student.academyClass.className}]`);
                 $("#reportMo .modalTit").html(el.task.subject);
                 $("#reportMo .modalName").html(el.student.user.userName);
-                $("#reportMo .modalMain").html(el.contents);
+                $("#reportMo .modalMain").eq(0).html(el.task.contents); // 과제 내용
+                $("#reportMo .modalMain").eq(1).html(el.contents);      // 제출 내용
                 $("#reportMo #studentTaskId").val(el.id);
 
                 var caracteres = $("#reportMo .modalMain").text();

@@ -4247,6 +4247,11 @@ input.txtRight{text-align: right;}
     overflow: auto;
     line-height: 150%;
 }
+
+.taskContent {
+    margin-bottom: 10px;
+}
+
 .mo-fileBox {
     margin-top: 0px;
     padding: 12px 10px 0;
