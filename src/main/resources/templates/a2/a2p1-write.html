@@ -89,6 +89,24 @@
                         <label for="contents" class="mb5" th:case="BOOK_REPORT">독후감 내용</label>
                     </th:block>
                     <textarea name="contents" id="contents" cols="30" rows="10" class="mb20" th:utext="${el?.contents}"></textarea>
+
+                    <div class="mb20">
+                        <div class="fileHead">
+                            <p>첨부파일</p>
+                            <div class="file-btn">
+                                <button type="button" class="chRemove">선택삭제</button>
+                                <input type="file" multiple="multiple" class="" id="fileInput" name="files">
+                                <label for="fileInput" class="fileBtn">파일첨부</label>
+                            </div>
+                        </div>
+                        <ul class="fileUP" id="articlefileChange">
+                            <li th:each="file : ${el.taskFileList}">
+                                <input th:id="|file-ch${file.id}|" type="checkbox" name="idList" th:value="${file.id}">
+                                <label th:for="|file-ch${file.id}|"><a th:href="|/taskFileDownload/${file.uploadFileName}|"><span th:text="${file.orgFileName}"></span></a></label>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div class="dateBox mb20">
                         <th:block th:switch="${#strings.toString(params.taskType)}">
                             <label class="mb5" th:case="TASK">과제 마감일</label>
@@ -152,7 +170,6 @@
                 var preOrder = /*[[${#lists.size(taskList2)}]]*/;
                 $("#dummySelStudent2").find("input[class=order]").val(parseInt(preOrder));
             }
-
         });
         $("#studAll2").on("click", function(){
             if($(this).prop("checked")) {
@@ -341,6 +358,9 @@
         /*]]>*/
         $(document).ready(function(){
             setStudentList();
+
+            // input file 파일 첨부시 fileCheck 함수 실행
+            $("#fileInput").on("change", fileUpload);
         });
         $(function(){
             $(".datepicker").datepicker({
@@ -360,6 +380,77 @@
                 $("#studAll3").prop("checked",false);
             }
         });
+
+        // 파일 현재 필드 숫자 totalCount랑 비교값
+        var fileCount = 0;
+        // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+        var totalCount = 10;
+        // 파일 고유넘버
+        var fileNum = 0;
+        // 첨부파일 배열
+        var content_files = new Array();
+
+        function fileUpload(e) {
+            var files = e.target.files;
+            var formData = new FormData($("#form1")[0]);
+
+            $.ajax({
+                data : formData,
+                type : "POST",
+                url : "/api/a2/p1/f1",
+                contentType : false,
+                processData : false,
+                success : function(res) {
+                    if(ut.isEmpty(res.data)){
+                        return;
+                    }
+
+                    res.data.forEach(function(el){
+                        $('#articlefileChange').append(
+                            `<li><input id="file-ch${el.id}" type="checkbox" name="idList" value="${el.id}"><label for="file-ch${el.id}"><span onclick="studentTaskFileDownload('${el.uploadFileName}')">${el.orgFileName}</span></label></li>`
+                        );
+                    });
+                    $("#fileInput").val("");
+                }
+            });
+        }
+
+        // 파일 부분 삭제 함수
+        $('.chRemove').click(function(){
+            if(confirm("삭제하시겠습니까?")){
+                $(".fileUP input[type=checkbox]:checked").each(function(){
+                    var tr_value =$(this).val();
+                    var tr=$("li[file-value='"+tr_value+"']");
+                    var no = tr_value.replace(/[^0-9]/g, "");
+                    content_files[no].is_delete = true;
+
+                    tr.remove();
+                    fileCount --;
+                    console.log(content_files);
+                });
+            }else{
+                return false;
+            }
+        });
+
+        // 파일 부분 삭제 함수
+        $('.chRemove').click(function(){
+            if(confirm("삭제하시겠습니까?")){
+                $(".fileUP input[type=checkbox]:checked").each(function(){
+                    var tr_value =$(this).val();
+                    var tr=$("li[file-value='"+tr_value+"']");
+                    var no = tr_value.replace(/[^0-9]/g, "");
+                    content_files[no].is_delete = true;
+
+                    tr.remove();
+                    fileCount --;
+                    console.log(content_files);
+                });
+            }else{
+                return false;
+            }
+        });
+
     </script>
 </th:block>
 </body>

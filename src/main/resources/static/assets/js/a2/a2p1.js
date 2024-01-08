@@ -90,7 +90,7 @@ function goAction(flag, arg1, arg2, arg3, arg4) {
             var formS1 = $('#form1');
             modal.confirm("저장하시겠습니까?",function(){
 
-
+                $("input[name=idList]").prop("checked",true);
 
                 $("input[name=studentIdStrList1]").each(function(){
                    $(this).remove();

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -23,4 +20,7 @@ public class TaskFile extends Auditing{
     private Task task;
     private String orgFileName;
     private String uploadFileName;
+
+    @Transient
+    private Long taskId;
 }
