@@ -1,7 +1,10 @@
 package com.softj.itple.service;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.softj.itple.domain.A3StudentDTO;
+import com.softj.itple.domain.A4ResourceDTO;
 import com.softj.itple.domain.SearchVO;
 import com.softj.itple.domain.Types;
 import com.softj.itple.entity.*;
@@ -28,6 +31,8 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class A3Service{
+
+    private final JPAQueryFactory jpaQueryFactory;
 
     private final UserRepo userRepo;
     private final AttendanceRepo attendanceRepo;
@@ -325,6 +330,7 @@ public class A3Service{
                     portfolioFileRepo.delete(portfolioFile);
                 }
             }
+
             studentRepo.deleteById(id);
         }
     }
@@ -333,6 +339,28 @@ public class A3Service{
     public void deleteStudent(SearchVO params){
         for(long id : params.getIdList()) {
             studentRepo.deleteById(id);
+        }
+    }
+
+    @Transactional
+    public void updateStudentDelete(SearchVO params){
+        QStudent qStudent = QStudent.student;
+        QUser qUser = QUser.user;
+        for(long id : params.getIdList()) {
+            Student save  = studentRepo.findById(id).get();
+
+            BooleanBuilder where1 = new BooleanBuilder().and(qStudent.isDeleted.eq(false).and(qStudent.id.eq(id)));
+            jpaQueryFactory.update(qStudent)
+                    .set(qStudent.isDeleted, true)
+                    .where(where1)
+                    .execute();
+
+            BooleanBuilder where2 = new BooleanBuilder().and(qUser.isDeleted.eq(false).and(qUser.id.eq(save.getUser().getId())));
+            jpaQueryFactory.update(qUser)
+                    .set(qUser.isDeleted, true)
+                    .where(where2)
+                    .execute();
+
         }
     }
 
