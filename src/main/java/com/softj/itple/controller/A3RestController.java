@@ -41,7 +41,7 @@ public class A3RestController {
         a3Service.updateStudentDelete(params);
         //a3Service.deleteFkStudent(params);
         //a3Service.deleteStudent(params);
-        return Response.builder().build();
+        //return Response.builder().build();
     }
 
     //기존과제삭제
