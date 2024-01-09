@@ -52,9 +52,10 @@ public class A7RestController {
 
     //삭제
     @PostMapping("/p2/d1")
-    public Response p2d1(SearchVO params) throws Exception {
-        a7Service.deleteFkAdmin(params);
-        a7Service.deleteAdmin(params);
-        return Response.builder().build();
+    public void p2d1(SearchVO params) throws Exception {
+        // a7Service.deleteFkAdmin(params);
+        // a7Service.deleteAdmin(params);
+        a7Service.deleteAdminRelation(params);
+        // return Response.builder().build();
     }
 }

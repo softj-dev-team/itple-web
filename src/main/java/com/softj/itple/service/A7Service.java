@@ -242,4 +242,25 @@ public class A7Service {
             adminRepo.deleteById(id);
         }
     }
+
+    @Transactional
+    public void deleteAdminRelation(SearchVO params){
+        QAdmin qAdmin = QAdmin.admin;
+        QUser qUser = QUser.user;
+        for(long id : params.getIdList()){
+            Admin save = adminRepo.findById(id).get();
+
+            BooleanBuilder where1 = new BooleanBuilder().and(qAdmin.isDeleted.eq(false).and(qAdmin.id.eq(id)));
+            jpaQueryFactory.update(qAdmin)
+                    .set(qAdmin.isDeleted, true)
+                    .where(where1)
+                    .execute();
+
+            BooleanBuilder where2 = new BooleanBuilder().and(qUser.isDeleted.eq(false).and(qUser.id.eq(save.getUser().getId())));
+            jpaQueryFactory.update(qUser)
+                    .set(qUser.isDeleted, true)
+                    .where(where2)
+                    .execute();
+        }
+    }
 }
