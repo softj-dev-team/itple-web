@@ -100,7 +100,7 @@
                             </div>
                         </div>
                         <ul class="fileUP" id="articlefileChange">
-                            <li th:each="file : ${el.taskFileList}">
+                            <li th:if="${el != null && el.taskFileList != null }" th:each="file : ${el?.taskFileList}">
                                 <input th:id="|file-ch${file.id}|" type="checkbox" name="idList" th:value="${file.id}">
                                 <label th:for="|file-ch${file.id}|"><a th:href="|/taskFileDownload/${file.uploadFileName}|"><span th:text="${file.orgFileName}"></span></a></label>
                             </li>
