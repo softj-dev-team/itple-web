@@ -417,38 +417,30 @@
 
         // 파일 부분 삭제 함수
         $('.chRemove').click(function(){
-            if(confirm("삭제하시겠습니까?")){
+            if($("input[name=idList]:checked").length == 0){
+                modal.alert("체크한 데이터가 없습니다.");
+                return;
+            }
+
+            var formData = "";
+            $("input[name=idList]:checked").each(function(){
+                var id = $(this).val();
+                formData += `idList=${id}&`;
+            });
+
+            modal.confirm("체크한 파일을 삭제하시겠습니까?", function(){
+
                 $(".fileUP input[type=checkbox]:checked").each(function(){
                     var tr_value =$(this).val();
                     var tr=$("li[file-value='"+tr_value+"']");
                     var no = tr_value.replace(/[^0-9]/g, "");
-                    content_files[no].is_delete = true;
 
-                    tr.remove();
                     fileCount --;
-                    console.log(content_files);
-                });
-            }else{
-                return false;
-            }
-        });
 
-        // 파일 부분 삭제 함수
-        $('.chRemove').click(function(){
-            if(confirm("삭제하시겠습니까?")){
-                $(".fileUP input[type=checkbox]:checked").each(function(){
-                    var tr_value =$(this).val();
-                    var tr=$("li[file-value='"+tr_value+"']");
-                    var no = tr_value.replace(/[^0-9]/g, "");
-                    content_files[no].is_delete = true;
-
-                    tr.remove();
-                    fileCount --;
-                    console.log(content_files);
+                    $(this).closest("li").remove();
                 });
-            }else{
-                return false;
-            }
+
+            });
         });
 
     </script>
