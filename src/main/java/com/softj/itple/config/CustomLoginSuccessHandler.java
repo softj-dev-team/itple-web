@@ -44,10 +44,16 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
                 adminVO = adminRepo.findWithUserByUser(User.builder().id(Long.parseLong(principal.getUsername())).build());
             }else{
                 studentVO = studentRepo.findWithUserByUser(User.builder().id(Long.parseLong(principal.getUsername())).build());
+
+                if(studentVO.getStudentStatus().getCode() != "01") {
+                    SecurityContextHolder.clearContext();
+                    // Notification 없음
+                }
             }
 
             if(adminVO == null && studentVO == null)
                 SecurityContextHolder.clearContext();
+
         }catch (Exception e){
             e.printStackTrace();
             SecurityContextHolder.clearContext();
